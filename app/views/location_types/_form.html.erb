@@ -1,0 +1,12 @@
+<%= form_for @location_type, url: location_types_path do |f| %>
+  <fieldset>
+    <legend></legend>
+    <ul>
+      <li>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </li>
+    </ul>
+    <%= f.submit %>
+  </fieldset>
+<% end %>
