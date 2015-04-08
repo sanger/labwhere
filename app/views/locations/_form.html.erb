@@ -1,0 +1,20 @@
+<%= form_for @location do |f| %>
+  <fieldset>
+    <legend></legend>
+    <ul>
+      <li>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </li>
+      <li>
+        <%= f.label :location_type_id, "Location type" %>
+        <%= f.select :location_type_id, options_from_collection_for_select(LocationType.all, :id, :name) %>
+      </li>
+      <li>
+        <%= f.label :container %>
+        <%= f.check_box :container %>
+      </li>
+    </ul>
+    <%= f.submit %>
+  </fieldset>
+<% end %>

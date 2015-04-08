@@ -1,2 +1,45 @@
-<h1>LocationTypes#index</h1>
-<p>Find me in app/views/location_types/index.html.erb</p>
+<h1>
+    Location Types
+</h1>
+<section class="location-types">
+    <table>
+        <caption>
+            Location Types
+        </caption>
+        <tr colspan="4">
+          <td>
+            <%= link_to "Add new location type", new_location_type_path %>
+          </td>
+        </tr>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+        </tr>
+        <% location_types.each do |location_type| %>
+          <tr id="<%= dom_id(location_type) %>">
+              <td>
+                  <%= location_type.id %>
+              </td>
+              <td>
+                  <%= location_type.name %>
+              </td>
+              <td>
+                  <%= link_to "Edit", edit_location_type_path(location_type) %>
+              </td>
+              <td>
+                  <%= link_to "Delete", location_type_path(location_type), method: :delete, data: {confirm: "Are you sure?"} %>
+              </td>
+          </tr>
+        <% end %>
+    </table>
+</section>

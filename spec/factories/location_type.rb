@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :location_type do
-    name "Incubator 37C"
+    sequence(:name) {|n| "Location Type #{n}" }
   end
 end

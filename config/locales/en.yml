@@ -21,3 +21,10 @@
 
 en:
   hello: "Hello world"
+
+en:
+  errors:
+    messages:
+      existence: "must exist"
+      parentage: "cannot have itself as a parent"
+

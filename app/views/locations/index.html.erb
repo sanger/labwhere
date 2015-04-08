@@ -1,0 +1,61 @@
+<h1>
+  Locations
+</h1>
+<section class="location">
+  <table>
+    <caption>Locations</caption>
+    <tr colspan="7">
+      <td>
+        <%= link_to "Add new location", new_location_path %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+          ID
+      </th>
+      <th>
+          Name
+      </th>
+      <th>
+        Barcode
+      </th>
+      <th>
+        Location Type
+      </th>
+      <th>
+        Container
+      </th>
+      <th>
+          &nbsp;
+      </th>
+      <th>
+          &nbsp;
+      </th>
+    </tr>
+      <% locations.each do |location| %>
+        <tr id="<%= dom_id(location) %>">
+            <td>
+                <%= location.id %>
+            </td>
+            <td>
+                <%= location.name %>
+            </td>
+            <td>
+                <%= location.barcode %>
+            </td>
+            <td>
+                <%= location.location_type.name %>
+            </td>
+            <td>
+                <%= location.container %>
+            </td>
+            <td>
+                <%= link_to "Edit", edit_location_path(location) %>
+            </td>
+            <td>
+                <%= link_to "Delete", location_path(location), method: :delete, data: {confirm: "Are you sure?"} %>
+            </td>
+        </tr>
+      <% end %>
+  </table>
+</section>

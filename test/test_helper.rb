@@ -14,16 +14,3 @@ class ActiveSupport::TestCase
   # Allow use of path and url helpers
   include Rails.application.routes.url_helpers
 end
-
-class ActionDispatch::IntegrationTest
-  # Make the Capybara DSL available in all integration tests
-  include Capybara::DSL
-
-  # Ensure that capybara uses the correct driver and visits the correct host.
-  Capybara.configure do |config|
-    config.run_server = false
-    config.default_driver = :selenium
-    config.app_host = 'http://localhost:9292'
-  end
-
-end
