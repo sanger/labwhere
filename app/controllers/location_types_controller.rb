@@ -44,7 +44,7 @@ class LocationTypesController < ApplicationController
     if @location_type.destroy
       notice = "Location type successfully deleted"
     else
-      notice = "Unable to delete booking"
+      notice = "Unable to delete Location type"
     end
     flash[:notice] = notice
     redirect_to location_types_path

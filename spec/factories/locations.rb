@@ -1,7 +1,8 @@
 FactoryGirl.define do
   factory :location do
-    name "A safe place"
+    sequence(:name) {|n| "Location #{n}" }
     container true
+    active true
     location_type
   end
 

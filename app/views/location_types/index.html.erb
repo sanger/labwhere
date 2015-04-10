@@ -1,16 +1,16 @@
-<h1>
-    Location Types
-</h1>
-<section class="location-types">
+
+<section class="<%= header.to_css_class %>">
+    <h1>
+      <%= header.to_s %>
+    </h1>
+    <div>
+      <%= link_to "Add new location type", new_location_type_path %>
+    </div>
     <table>
         <caption>
-            Location Types
+            <%= header.to_s %>
         </caption>
-        <tr colspan="4">
-          <td>
-            <%= link_to "Add new location type", new_location_type_path %>
-          </td>
-        </tr>
+       
         <tr>
             <th>
                 ID

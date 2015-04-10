@@ -35,6 +35,17 @@ class LocationsController < ApplicationController
     end
   end
 
+  def destroy
+    @location = current_resource
+    if @location.destroy
+      notice = "Location successfully deactivated"
+    else
+      notice = "Unable to deactivate Location"
+    end
+    flash[:notice] = notice
+    redirect_to locations_path
+  end
+
 protected
 
   def locations
@@ -50,6 +61,6 @@ private
   end
   
   def location_params
-    params.require(:location).permit(:name, :barcode, :location_type_id, :container)
+    params.require(:location).permit(:name, :location_type_id, :parent_id, :container, :active)
   end
 end

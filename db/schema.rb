@@ -24,9 +24,10 @@ ActiveRecord::Schema.define(version: 20150407121346) do
     t.string   "barcode"
     t.integer  "parent_id"
     t.boolean  "container"
+    t.boolean  "active",           default: true
     t.integer  "location_type_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   add_index "locations", ["location_type_id"], name: "index_locations_on_location_type_id"

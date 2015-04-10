@@ -5,6 +5,7 @@ class CreateLocations < ActiveRecord::Migration
       t.string :barcode
       t.integer :parent_id
       t.boolean :container
+      t.boolean :active, default: true
       t.references :location_type, index: true, foreign_key: true
 
       t.timestamps null: false

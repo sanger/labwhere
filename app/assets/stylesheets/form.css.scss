@@ -1,0 +1,23 @@
+fieldset{
+
+  legend{
+    display: none
+  }
+
+  ul{
+    margin: 5% auto 5% auto;
+    width: 80%;
+
+    li{
+      margin: 0 0 0 10px;
+      padding: 10px 0 0 0;
+    }
+  }
+
+  label{
+    float: left;
+    width: 120px;
+    margin-right: 10px;
+    text-align: right;
+  }
+}

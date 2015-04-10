@@ -1,5 +1,5 @@
-<section class="new-location">
-  <h1>New Location</h1>
+<section class="<%= header.to_css_class %>">
+  <h1><%= header.to_s %></h1>
   <%= render "error_messages", target: @location %>
-  <%= render "form" %> 
+  <%= render "form" %>
 </section>

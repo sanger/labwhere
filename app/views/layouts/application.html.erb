@@ -8,10 +8,12 @@
   </head>
   <body>
     <div class="container">
+      <%= render "header" %>
       <div class="body">
         <%= render "flashes" %>
         <%= yield %>
       </div>
+      <%= render "footer" %>
     </div>
   </body>
 </html>

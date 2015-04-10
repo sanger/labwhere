@@ -1,6 +1,6 @@
 <%= form_for @location do |f| %>
   <fieldset>
-    <legend></legend>
+    <legend><%= header.to_s %></legend>
     <ul>
       <li>
         <%= f.label :name %>
@@ -11,8 +11,16 @@
         <%= f.select :location_type_id, options_from_collection_for_select(LocationType.all, :id, :name) %>
       </li>
       <li>
+        <%= f.label :parent_id, "Parent" %>
+        <%= f.select :parent_id, options_from_collection_for_select(Location.without(@location), :id, :barcode), {include_blank: true} %>
+      </li>
+      <li>
         <%= f.label :container %>
         <%= f.check_box :container %>
+      </li>
+      <li>
+        <%= f.label :active %>
+        <%= f.check_box :active %>
       </li>
     </ul>
     <%= f.submit %>

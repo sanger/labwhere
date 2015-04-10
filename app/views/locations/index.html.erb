@@ -1,14 +1,12 @@
-<h1>
-  Locations
-</h1>
-<section class="location">
+<section class="<%= header.to_css_class %>">
+  <h1>
+    <%= header.to_s %>
+  </h1>
+  <div>
+      <%= link_to "Add new location", new_location_path %>
+  </div>
   <table>
-    <caption>Locations</caption>
-    <tr colspan="7">
-      <td>
-        <%= link_to "Add new location", new_location_path %>
-      </td>
-    </tr>
+    <caption><%= header.to_s %></caption>
     <tr>
       <th>
           ID
@@ -23,10 +21,13 @@
         Location Type
       </th>
       <th>
+        Parent
+      </th>
+      <th>
         Container
       </th>
       <th>
-          &nbsp;
+        Active
       </th>
       <th>
           &nbsp;
@@ -47,13 +48,16 @@
                 <%= location.location_type.name %>
             </td>
             <td>
+                <%= location.parent.barcode %>
+            </td>
+            <td>
                 <%= location.container %>
+            </td>
+             <td>
+                <%= location.active %>
             </td>
             <td>
                 <%= link_to "Edit", edit_location_path(location) %>
-            </td>
-            <td>
-                <%= link_to "Delete", location_path(location), method: :delete, data: {confirm: "Are you sure?"} %>
             </td>
         </tr>
       <% end %>
