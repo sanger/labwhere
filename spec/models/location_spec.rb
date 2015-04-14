@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Location do
+describe Location, :type => :model do
 
   it "is invalid without a name" do
     expect(build(:location, name: nil)).to_not be_valid
@@ -49,6 +49,33 @@ describe Location do
     expect(Location.without(locations.last).count).to eq(2)
     expect(Location.without(locations.last)).to_not include(locations.last)
     expect(Location.without(locations.last)).to_not include(inactive_location)
+  end
+
+  it "#residents should provide a message about the number of pieces of labware living in the location" do
+    location_empty = build(:location)
+    location_labware_1 = create(:location_with_parent, labwares: [build(:labware)])
+    location_labware_3 = create(:location_with_parent, labwares: build_list(:labware, 3))
+
+    expect(location_empty.residents).to eq("Location is empty")
+    expect(location_labware_1.residents).to eq("Location has 1 piece of Labware")
+    expect(location_labware_3.residents).to eq("Location has 3 pieces of Labware")
+  end
+
+  it "should be able to accept nested attributes for labware" do
+    location = build(:location_with_parent, labwares_attributes: [ attributes_for(:labware), attributes_for(:labware) ])
+    expect(location.labwares.length).to eq(2)
+  end
+
+  it "should reject associated labwares with blank barcodes" do
+    location = create(:location_with_parent, labwares_attributes: [ attributes_for(:labware, barcode: nil) ])
+    expect(location).to be_valid
+  end
+
+  it "should allow deletion of associated labwares" do
+    location = create(:location_with_parent, labwares: build_list(:labware, 2))
+    labware_to_delete = location.labwares.last
+    location.update_attributes(labwares_attributes: [{ id: labware_to_delete.id, _destroy: '1'}])
+    expect(location.labwares.count).to eq(1)
   end
   
 end

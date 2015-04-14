@@ -31,8 +31,8 @@ html, body{
 }
 
 nav{
-  margin-top: 20px;
-  padding-left: 20px;
+  margin: 20px 0 0 0;
+  padding: 0 0 0 20px;
 
   ul{
     li{
@@ -45,4 +45,9 @@ nav{
 header, footer{
   float: left;
   min-width: 100%;
+}
+
+header{
+  border-bottom: 1px dotted gray;
+  padding-bottom: 10px;
 }

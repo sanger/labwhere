@@ -24,10 +24,15 @@
         Parent
       </th>
       <th>
+      </th>
+      <th>
         Container
       </th>
       <th>
         Active
+      </th>
+      <th>
+          &nbsp;
       </th>
       <th>
           &nbsp;
@@ -51,10 +56,16 @@
                 <%= location.parent.barcode %>
             </td>
             <td>
+              <%= location.residents %>
+            </td>
+            <td>
                 <%= location.container %>
             </td>
              <td>
                 <%= location.active %>
+            </td>
+             <td>
+                <%= link_to "View", location_path(location) %>
             </td>
             <td>
                 <%= link_to "Edit", edit_location_path(location) %>

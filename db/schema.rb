@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150407121346) do
+ActiveRecord::Schema.define(version: 20150410104157) do
+
+  create_table "labwares", force: :cascade do |t|
+    t.string   "barcode"
+    t.integer  "location_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "labwares", ["location_id"], name: "index_labwares_on_location_id"
 
   create_table "location_types", force: :cascade do |t|
     t.string   "name"

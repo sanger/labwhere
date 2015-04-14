@@ -1,9 +1,13 @@
 class Location < ActiveRecord::Base
 
+  include ActionView::Helpers::TextHelper
+
   belongs_to :location_type
 
   belongs_to :parent, class_name: "Location"
   has_many :children, class_name: "Location", foreign_key: "parent_id"
+
+  has_many :labwares
 
   validates :name, presence: true
 
@@ -11,9 +15,11 @@ class Location < ActiveRecord::Base
 
   after_create :generate_barcode
 
-  scope :active, -> { where(active: true)}
-  scope :inactive, -> { where(active: false)}
-  scope :without, ->(location) { active.where.not(id: location.id)}
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
+  scope :without, ->(location) { active.where.not(id: location.id) }
+
+  accepts_nested_attributes_for :labwares, allow_destroy: true, reject_if: proc { |attributes| attributes['barcode'].blank? }
 
   def inactive?
     !active?
@@ -31,6 +37,14 @@ class Location < ActiveRecord::Base
   #     end
   #   end
   # end
+
+  def residents
+    "Location " << if labwares.empty?
+                    "is empty"
+                  else
+                    "has #{pluralize(labwares.length, 'piece')} of Labware"
+                  end
+  end
 
 private
   

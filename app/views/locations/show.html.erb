@@ -1,0 +1,31 @@
+<article class="<%= header.to_css_class %>">
+  <p>
+    ID: <%= @location.id %>
+  </p>
+  <p>
+    Name: <%= @location.name %>
+  </p>
+  <p>
+    Barcode: <%= @location.barcode %>
+  </p>
+  <p>
+    Location Type: <%= @location.location_type.name %>
+  </p>
+  <p>
+    Parent: <%= @location.parent.barcode %>
+  </p>
+  <p>
+    Container: <%= @location.container %>
+  </p>
+  <p>
+    Active: <%= @location.active %>
+  </p>
+  <p>
+    <%= @location.residents %>:
+  </p>
+   <ul>
+    <% @location.labwares.each do |labware| %>
+      <li><%= labware.barcode %></li>
+    <% end %>
+  </ul>
+</article>

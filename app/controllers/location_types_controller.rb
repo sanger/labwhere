@@ -1,6 +1,7 @@
 class LocationTypesController < ApplicationController
 
-  before_filter :location_types, only: [:index]
+  before_action :location_types, only: [:index]
+  before_action :set_location_type, except: [:index, :new, :create]
 
   def index
   end
@@ -21,11 +22,9 @@ class LocationTypesController < ApplicationController
   end
 
   def edit
-    @location_type = current_resource
   end
 
   def update
-    @location_type = current_resource
 
     if @location_type.update_attributes(location_type_params)
       flash[:notice] = "Location type successfully updated"
@@ -36,11 +35,9 @@ class LocationTypesController < ApplicationController
   end
 
   def show
-    @location_type = current_resource
   end
 
   def destroy
-    @location_type = current_resource
     if @location_type.destroy
       notice = "Location type successfully deleted"
     else
@@ -53,12 +50,16 @@ class LocationTypesController < ApplicationController
 protected
 
   def location_types
-    @location_types ||= LocationType.all
+    @location_type ||= LocationType.all
   end
 
   helper_method :location_types
 
 private
+
+  def set_location_type
+    @location_type = current_resource
+  end
 
   def current_resource
     @current_resource ||= LocationType.find(params[:id]) if params[:id]

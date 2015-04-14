@@ -1,15 +1,19 @@
 class NullLocation
 
   def name
-    "No parent"
+    "Empty"
   end
 
   def barcode
-    "No Parent"
+    "Empty"
   end
 
   def parent
     nil
+  end
+
+  def valid?
+    false
   end
   
 end

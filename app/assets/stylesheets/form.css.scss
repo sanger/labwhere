@@ -20,4 +20,11 @@ fieldset{
     margin-right: 10px;
     text-align: right;
   }
+
+  fieldset{
+
+    legend{
+      display: block;
+    }
+  }
 }

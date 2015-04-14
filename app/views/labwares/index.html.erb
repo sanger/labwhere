@@ -1,0 +1,26 @@
+<article class="<%= header.to_css_class %>">
+   <h1>
+    <%= header.to_s %>
+  </h1>
+  <table>
+    <caption><%= header.to_s %></caption>
+    <tr>
+      <th>
+        Barcode
+      </th>
+      <th>
+        Location
+      </th>
+    </tr>
+    <% labwares.each do |labware| %>
+      <tr>
+        <td>
+          <%= labware.barcode %>
+        </td>
+        <td>
+          <%= labware.current_location %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</article>

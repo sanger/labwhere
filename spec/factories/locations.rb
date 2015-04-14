@@ -4,6 +4,13 @@ FactoryGirl.define do
     container true
     active true
     location_type
+    parent nil
+
+    factory :location_with_parent do
+      parent { FactoryGirl.create(:location)}
+    end
   end
+
+
 
 end
