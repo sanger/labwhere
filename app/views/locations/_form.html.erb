@@ -22,20 +22,6 @@
         <%= f.label :active %>
         <%= f.check_box :active %>
       </li>
-      <li class="labwares">
-        <fieldset>
-          <legend>Labwares</legend>
-          <ul id="labwares">
-            <%= f.fields_for :labwares do |builder| %>
-              <%= render 'labware_fields', f: builder %>
-            <% end %>
-            <div>
-              <%= link_to_add_fields "Add", f, :labwares %>
-            </div>
-          </ul>
-          
-        </fieldset>
-      </li>
     </ul>
     <%= f.submit %>
   </fieldset>

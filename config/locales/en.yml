@@ -26,6 +26,5 @@ en:
   errors:
     messages:
       existence: "must exist"
-      parentage: "cannot have itself as a parent"
       nested: "must have a parent"
 

@@ -21,11 +21,6 @@
     Active: <%= @location.active %>
   </p>
   <p>
-    <%= @location.residents %>:
+    <%= @location.residents %>
   </p>
-   <ul>
-    <% @location.labwares.each do |labware| %>
-      <li><%= labware.barcode %></li>
-    <% end %>
-  </ul>
 </article>

@@ -19,8 +19,6 @@ class Location < ActiveRecord::Base
   scope :inactive, -> { where(active: false) }
   scope :without, ->(location) { active.where.not(id: location.id) }
 
-  accepts_nested_attributes_for :labwares, allow_destroy: true, reject_if: proc { |attributes| attributes['barcode'].blank? }
-
   def inactive?
     !active?
   end
@@ -28,15 +26,6 @@ class Location < ActiveRecord::Base
   def parent
     super || NullLocation.new
   end
-
-  # def parents(parents = [])
-  #   parents.tap do |p|
-  #     unless self.parent.nil?
-  #       p << self.parent
-  #       self.parent.parents(p)
-  #     end
-  #   end
-  # end
 
   def residents
     "Location " << if labwares.empty?
@@ -46,11 +35,18 @@ class Location < ActiveRecord::Base
                   end
   end
 
+  def self.unknown
+    find_by(name: "UNKNOWN")
+  end
+
+  def unknown?
+    name == "UNKNOWN"
+  end
+
 private
   
   def generate_barcode
-    self.barcode = "#{self.name}:#{self.id}"
-    save
+    update(barcode: "#{self.name}:#{self.id}")
   end
 
 end

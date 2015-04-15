@@ -15,7 +15,14 @@ RSpec.describe Labware, :type => :model do
     expect(build(:labware, location: build(:location_with_parent))).to be_valid
   end
 
-  it "if it has no location should show an a appropriate message" do
-    expect(build(:labware).current_location).to eq("on bench/in lab/in processing")
+  it "can be added to a location that is unknown" do
+    expect(build(:labware, location: build(:location_unknown))).to be_valid
+  end
+
+  it "is destroyed it will be soft deleted with all associations removed" do
+    labware = create(:labware, location: create(:location_with_parent))
+    labware.destroy
+    expect(Labware.deleted.count).to eq(1)
+    expect(labware.reload.location).to be_nil
   end
 end

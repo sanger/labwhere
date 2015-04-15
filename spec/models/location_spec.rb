@@ -19,13 +19,6 @@ describe Location, :type => :model do
     expect(parent_location.children.first).to eq(child_location)
   end
 
-  # it "#parents should produce a list of parents" do
-  #   location_1 = create(:location)
-  #   location_2 = create(:location, parent: location_1)
-  #   location_3 = create(:location, parent: location_2)
-  #   expect(location_3.parents).to eq([location_2, location_1])
-  # end
-
   it "should add a barcode after the location is created" do
     location = create(:location)
     expect(location.reload.barcode).to eq("#{location.name}:#{location.id}")
@@ -61,21 +54,10 @@ describe Location, :type => :model do
     expect(location_labware_3.residents).to eq("Location has 3 pieces of Labware")
   end
 
-  it "should be able to accept nested attributes for labware" do
-    location = build(:location_with_parent, labwares_attributes: [ attributes_for(:labware), attributes_for(:labware) ])
-    expect(location.labwares.length).to eq(2)
-  end
-
-  it "should reject associated labwares with blank barcodes" do
-    location = create(:location_with_parent, labwares_attributes: [ attributes_for(:labware, barcode: nil) ])
-    expect(location).to be_valid
-  end
-
-  it "should allow deletion of associated labwares" do
-    location = create(:location_with_parent, labwares: build_list(:labware, 2))
-    labware_to_delete = location.labwares.last
-    location.update_attributes(labwares_attributes: [{ id: labware_to_delete.id, _destroy: '1'}])
-    expect(location.labwares.count).to eq(1)
+  it "#unknown should return a location with name UNKNOWN" do
+    location = create(:location_unknown)
+    expect(Location.unknown).to eq(location)
+    expect(location.unknown?).to be_truthy
   end
   
 end
