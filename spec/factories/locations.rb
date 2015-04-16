@@ -10,11 +10,6 @@ FactoryGirl.define do
       parent { FactoryGirl.create(:location)}
     end
 
-    factory :location_unknown do
-      name "UNKNOWN"
-    end
   end
-
-
 
 end

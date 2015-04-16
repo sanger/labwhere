@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :event do
-    labware
-    location
+    scan nil
+labware nil
   end
 
 end

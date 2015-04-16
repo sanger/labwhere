@@ -55,9 +55,19 @@ describe Location, :type => :model do
   end
 
   it "#unknown should return a location with name UNKNOWN" do
-    location = create(:location_unknown)
-    expect(Location.unknown).to eq(location)
-    expect(location.unknown?).to be_truthy
+    expect(Location.unknown.name).to eq("UNKNOWN")
+    expect(Location.unknown.unknown?).to be_truthy
+  end
+
+  it "location should be valid without a location type if location is UNKNOWN" do
+    expect(build(:location, name: "UNKNOWN", location_type: nil)).to be_valid
+  end
+
+  it "changing a location to inactive should set deactivated_at to current date and time" do
+    location = create(:location, active: true)
+    expect(location.deactivated_at).to be_nil
+    location.update(active: false)
+    expect(location.deactivated_at).to_not be_nil
   end
   
 end

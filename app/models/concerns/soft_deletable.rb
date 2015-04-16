@@ -1,3 +1,20 @@
+##
+# Based loosely on the GoRails tutorial
+# Adds soft deletable capability to an ActiveRecord model.
+# The model requires the deleted_at:datetime attribute.
+# It overrides the destroy method so instead of deleting the record
+# it will add the current datetime to deleted_at.
+# You also get some scoped methods for free.
+# * deleted: returns a list of objects which have been soft deleted.
+# * without_deleted: returns a list of objects excluding those which have been soft deleted.
+# * with deleted: returns everything.
+#
+# There is also some capability to remove associations if you so wish.
+# usage:
+#  removable_associations :assoc_a, :assoc_b
+#
+# if implemented when you soft delete these associations will be set to nil.
+#
 module SoftDeletable
 
   extend ActiveSupport::Concern
@@ -26,6 +43,10 @@ module SoftDeletable
 
   end
 
+  ##
+  # Takes tha arguments :hard or :soft
+  # If :soft will do a soft delete.
+  # If :hard will implement normal ActiveRecord behaviour i.e. destroy the object.
   def destroy(mode = :soft)
     if mode == :hard
       super()
@@ -34,10 +55,14 @@ module SoftDeletable
     end
   end
 
+  ##
+  # This will un soft delete the record and restore it to its original state.
   def restore
     update(deleted_at: nil)
   end
 
+  ##
+  # Has the record been soft deleted?
   def deleted?
     deleted_at?
   end

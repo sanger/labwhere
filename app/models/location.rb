@@ -11,9 +11,10 @@ class Location < ActiveRecord::Base
 
   validates :name, presence: true
 
-  validates :location_type, existence: true
+  validates :location_type, existence: true, unless: Proc.new { |l| l.unknown? }
 
   after_create :generate_barcode
+  before_save :update_active
 
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
@@ -36,17 +37,21 @@ class Location < ActiveRecord::Base
   end
 
   def self.unknown
-    find_by(name: "UNKNOWN")
+    find_by(name: "UNKNOWN") || create(name: "UNKNOWN")
   end
 
   def unknown?
-    name == "UNKNOWN"
+    name == "UNKNOWN" 
   end
 
 private
   
   def generate_barcode
     update(barcode: "#{self.name}:#{self.id}")
+  end
+
+  def update_active
+    self.deactivated_at = Time.zone.now if active_changed?(from: true, to: false)
   end
 
 end
