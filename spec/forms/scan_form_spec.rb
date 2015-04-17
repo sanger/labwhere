@@ -52,17 +52,23 @@ describe ScanForm do
 
   it "existing location with no parent should not add any type of labware and return an error" do
     orphan_location = create(:location)
-    scan_form.submit({"location_barcode" => orphan_location.barcode, "labware_barcodes" => join_barcodes(new_labware+existing_labware)})
+    scan_form.submit({"location_barcode" => orphan_location.barcode, "labware_barcodes" => join_barcodes(new_labware)})
     expect(Scan.all).to be_empty
     expect(scan_form.errors.full_messages).to include("Location must have a parent")
   end
 
   it "existing location which is not a container should not add any type of labware and return an error" do
-    skip
+    location.update(container: false)
+    scan_form.submit({"location_barcode" => location.barcode, "labware_barcodes" => join_barcodes(new_labware)})
+    expect(Scan.all).to be_empty
+    expect(scan_form.errors.full_messages).to include("Location must be a container")
   end
 
   it "existing location which is not active should not add any type of labware and return an error" do
-    skip
+    location.update(active: false)
+    scan_form.submit({"location_barcode" => location.barcode, "labware_barcodes" => join_barcodes(new_labware)})
+    expect(Scan.all).to be_empty
+    expect(scan_form.errors.full_messages).to include("Location must be active")
   end
 
 private

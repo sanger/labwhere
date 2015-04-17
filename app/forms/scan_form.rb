@@ -4,7 +4,7 @@ class ScanForm
 
   delegate :location, to: :scan
 
-  validates :location, nested: true, unless: Proc.new { |l| l.location.nil? } 
+  validate :check_for_errors
 
   def persisted?
     false
@@ -39,6 +39,14 @@ private
         labware.location = scan.location
         labware.save
         labwares << labware
+      end
+    end
+  end
+
+  def check_for_errors
+    unless scan.valid?
+      scan.errors.each do |key, value|
+        errors.add key, value
       end
     end
   end

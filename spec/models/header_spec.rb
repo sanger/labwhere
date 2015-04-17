@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Header do
+RSpec.describe Header, type: :model do
 
  it "params with index should produce a header which is not singularised" do
   params = {action: 'index', controller: 'localhost/controllers'}

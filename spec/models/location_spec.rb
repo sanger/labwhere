@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Location, :type => :model do
+RSpec.describe Location, type: :model do
 
   it "is invalid without a name" do
     expect(build(:location, name: nil)).to_not be_valid

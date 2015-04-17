@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Labware, :type => :model do
+RSpec.describe Labware, type: :model do
   it "is invalid without a barcode" do
     expect(build(:labware, barcode: nil)).to_not be_valid
   end

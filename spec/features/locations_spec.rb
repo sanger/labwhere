@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe "Locations", :type => :request do
+RSpec.describe "Locations", type: :feature do
   it "Allows a user to add a new location type" do
     location_type = build(:location_type)
     visit location_types_path
