@@ -1,0 +1,18 @@
+<%= form_for @scan, url: scans_path do |f| %>
+  <fieldset>
+    <legend><%= header.to_s %></legend>
+    <ul>
+      <li>
+        <div><%= f.label :location_barcode %></div>
+        <div><%= f.text_field :location_barcode %></div>
+      </li>
+      <li>
+        <div><%= f.label :labware_barcodes %></div>
+        <div class="pr-5"><%= f.text_area :labware_barcodes %></div>
+      </li>
+      <li>
+        <%= f.submit "Go!" %>
+      </li>
+    </ul>
+  </fieldset>
+<% end %>

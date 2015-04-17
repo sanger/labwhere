@@ -1,0 +1,5 @@
+<section class="<%= header.to_css_class %>">
+  <h1><%= header.to_s %></h1>
+  <%= render "error_messages", target: @scan %>
+  <%= render "form" %>
+</section>

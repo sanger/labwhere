@@ -49,9 +49,11 @@ header, footer{
 
 header{
   border-bottom: 1px dotted gray;
-  padding: 10px;
+  padding-bottom: 10px;
 
   p{
+    padding: 10px;
+
     font:{
       size: 2em;
       weight: bold;

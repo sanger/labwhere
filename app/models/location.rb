@@ -19,6 +19,7 @@ class Location < ActiveRecord::Base
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
   scope :without, ->(location) { active.where.not(id: location.id) }
+  scope :without_unknown, ->{ without(Location.unknown)}
 
   def inactive?
     !active?

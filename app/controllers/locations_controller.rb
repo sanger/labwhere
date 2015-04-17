@@ -50,7 +50,7 @@ class LocationsController < ApplicationController
 protected
 
   def locations
-    @locations ||= Location.all
+    @locations ||= Location.without_unknown
   end
 
   helper_method :locations

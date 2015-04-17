@@ -2,6 +2,8 @@ class ScanForm
 
   include ActiveModel::Model
 
+  attr_accessor :location_barcode, :labware_barcodes
+
   delegate :location, to: :scan
 
   validate :check_for_errors
