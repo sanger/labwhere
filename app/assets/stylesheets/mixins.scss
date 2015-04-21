@@ -1,0 +1,5 @@
+@mixin rounded-corners($width){
+  border-radius: $width;
+  -moz-border-radius: $width;
+  -webkit-border-radius: $width;
+}

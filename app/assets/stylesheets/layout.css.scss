@@ -35,6 +35,9 @@ nav{
   padding: 0 0 0 20px;
 
   ul{
+
+    margin-left: 300px;
+
     li{
       float: left;
       padding-right: 10px;
@@ -51,7 +54,8 @@ header{
   border-bottom: 1px dotted gray;
   padding-bottom: 10px;
 
-  p{
+  div{
+    float: left;
     padding: 10px;
 
     font:{
@@ -59,5 +63,14 @@ header{
       weight: bold;
     }
 
+    a{
+
+      text-decoration: none;
+
+      &:visited{
+        color: black;
+      }
+
+    }
   }
 }

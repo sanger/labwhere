@@ -66,7 +66,7 @@ private
   end
   
   def location_params
-    params.require(:location).permit(:name, :location_type_id, :parent_id, :container, :active, labwares_attributes: [:id, :barcode, :_destroy])
+    params.require(:location).permit(:name, :location_type_id, :parent_id, :container, :active)
   end
 
 end

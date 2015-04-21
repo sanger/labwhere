@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe "Scans", type: :feature do
 
-  it "Allows a user to scan in some labware with a location" do
+  it "allows a user to scan in some labware with a location" do
     location = create(:location_with_parent)
     labwares = build_list(:labware, 10)
     visit new_scan_path
@@ -16,7 +16,7 @@ RSpec.describe "Scans", type: :feature do
     expect(page).to have_content("Scan done!")
   end
 
-  it "Allows a user to scan out some labware with no location" do
+  it "allows a user to scan out some labware with no location" do
     labwares = create_list(:labware, 10, location: create(:location_with_parent))
     visit new_scan_path
     expect {
@@ -26,7 +26,7 @@ RSpec.describe "Scans", type: :feature do
     expect(page).to have_content("Scan done!")
   end
 
-  it "Shows an error if the location is invalid" do
+  it "shows an error if the location is invalid" do
     location = create(:location)
     labwares = build_list(:labware, 10)
     visit new_scan_path

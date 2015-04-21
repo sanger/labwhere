@@ -27,4 +27,6 @@ en:
     messages:
       existence: "must exist"
       nested: "must have a parent"
+      container: "must be a container"
+      active: "must be active"
 
