@@ -1,5 +1,7 @@
 class ScanForm
 
+  include HashAttributes
+
   include ActiveModel::Model
 
   attr_accessor :location_barcode, :labware_barcodes
@@ -20,6 +22,7 @@ class ScanForm
   end
 
   def submit(params)
+    set_attributes(params)
     @scan_processor = ScanProcessor.new(scan, params)
     @scan_processor.save
   end

@@ -36,7 +36,7 @@ nav{
 
   ul{
 
-    margin-left: 300px;
+    margin-left: 80%;
 
     li{
       float: left;
@@ -71,6 +71,47 @@ header{
         color: black;
       }
 
+    }
+  }
+}
+
+.flash, .errors{
+  width: 65%;
+  margin: 0 auto;
+}
+
+.flash{
+  .notice, .alert{
+    border: 1px solid black;
+    padding: 10px;
+
+    p{
+      text-align: left;
+      margin-top: 5px;
+      padding-left: 40px;
+      width: auto;
+    }
+  }
+}
+
+.errors{
+
+  border: 1px solid black;
+
+  margin-bottom: 20px;
+  padding: 10px;
+
+  h3{
+    font-size: 1.4em;
+    padding-bottom: 10px;
+  }
+
+  ul{
+
+    margin-left: 20px;
+
+    li{
+      list-style-type: disc;
     }
   }
 }

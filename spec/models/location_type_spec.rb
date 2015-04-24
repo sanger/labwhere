@@ -24,4 +24,13 @@ RSpec.describe LocationType, type: :model do
     location_type.destroy
     expect(location_type.errors.full_messages).to include("Can't delete a location type which is being used for a location.")
   end
+
+  it "#ordered should produce a list ordered by name" do
+    location1 = LocationType.create(name: "abc")
+    location2 = LocationType.create(name: "abc1")
+    location3 = LocationType.create(name: "bacd")
+    expect(LocationType.ordered.count).to eq(3)
+    expect(LocationType.ordered.first.name).to eq("abc")
+    expect(LocationType.ordered.last.name).to eq("bacd")
+  end
 end

@@ -1,3 +1,4 @@
+#TODO: This may need some mild refactoring to ensure that attributes are not set twice.
 class ScanProcessor
 
   include ActiveModel::Validations
@@ -28,7 +29,7 @@ private
 
   def build_labwares
     labware_barcodes.split("\n").each do |barcode|
-      scan.labwares << Labware.find_or_initialize_by(barcode: barcode)
+      scan.labwares << Labware.find_or_initialize_by(barcode: barcode.remove_control_chars)
     end
   end
 

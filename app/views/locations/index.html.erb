@@ -29,7 +29,7 @@
         Container
       </th>
       <th>
-        Active
+        Status
       </th>
       <th>
           &nbsp;
@@ -62,7 +62,7 @@
                 <%= location.container %>
             </td>
              <td>
-                <%= location.active %>
+                <%= location.status.humanize %>
             </td>
              <td>
                 <%= link_to "View", location_path(location) %>

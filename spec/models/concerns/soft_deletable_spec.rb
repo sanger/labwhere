@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe SoftDeletable do
+RSpec.describe SoftDeletable, type: :model do
 
   with_model :BlogPost do
 

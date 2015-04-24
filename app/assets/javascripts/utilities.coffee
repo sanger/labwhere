@@ -1,0 +1,1 @@
+$.fn.fade = (time) -> this.fadeOut time

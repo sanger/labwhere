@@ -8,19 +8,19 @@
       </li>
       <li>
         <%= f.label :location_type_id, "Location type" %>
-        <%= f.select :location_type_id, options_from_collection_for_select(LocationType.all, :id, :name) %>
+        <%= f.select :location_type_id, options_from_collection_for_select(LocationType.ordered, :id, :name) %>
       </li>
       <li>
         <%= f.label :parent_id, "Parent" %>
         <%= f.select :parent_id, options_from_collection_for_select(Location.without_unknown.without(@location), :id, :barcode, @location.parent_id), {include_blank: true} %>
       </li>
+       <li>
+        <%= f.label :status %>
+        <%= f.select :status, options_for_select(Location.statuses.keys) %>
+      </li>
       <li>
         <%= f.check_box :container %>
         <%= f.label :container %>
-      </li>
-      <li>
-        <%= f.check_box :active %>
-        <%= f.label :active %>
       </li>
     </ul>
     <%= f.submit %>

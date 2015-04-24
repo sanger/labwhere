@@ -1,4 +1,8 @@
 class Labware < ActiveRecord::Base
+
+  include SoftDeletable
+  include Searchable::Client
+
   belongs_to :location
   has_many :events
   has_many :scans, through: :events
@@ -8,9 +12,9 @@ class Labware < ActiveRecord::Base
 
   before_save :assert_location
 
-  include SoftDeletable
-
   removable_associations :location
+
+  searchable_by :barcode
 
 private
 

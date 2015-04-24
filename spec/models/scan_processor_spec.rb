@@ -67,7 +67,7 @@ RSpec.describe ScanProcessor, type: :model do
   end
 
   it "existing location which is not active should not add any type of labware and return an error" do
-    location.update(active: false)
+    location.update(status: :inactive)
     scan_processor = ScanProcessor.new(scan, {"location_barcode" => location.barcode, "labware_barcodes" => new_labware.join_barcodes})
     scan_processor.save
     expect(Scan.all).to be_empty
@@ -79,6 +79,13 @@ RSpec.describe ScanProcessor, type: :model do
     scan_processor.save
     expect(Scan.all).to be_empty
     expect(scan_processor.errors.full_messages).to include("Location must exist")
+  end
+
+  it "should strip all non ascii characters from the labware barcode" do
+    ScanProcessor.new(scan, {"location_barcode" => location.barcode, "labware_barcodes" => new_labware.join_barcodes("\r\n")}).save
+    scan = Scan.first
+    expect(scan.labwares.count).to eq(4)
+    expect(scan.labwares.all? {|labware| !labware.barcode.include?("\r") }).to be_truthy
   end
 
   

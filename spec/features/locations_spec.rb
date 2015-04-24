@@ -104,7 +104,7 @@ RSpec.describe "Locations", type: :feature do
   end
 
   it "Does not allow a user to select inactive parent location" do
-    location_parent = create(:location, active: false)
+    location_parent = create(:location, status: Location.statuses[:inactive])
     location_child = create(:location)
     visit edit_location_path(location_child)
     within("#location_parent_id") do
@@ -119,7 +119,7 @@ RSpec.describe "Locations", type: :feature do
       within("#location_#{location.id}") do
         click_link "Edit"
       end
-      uncheck "Active"
+      select "inactive", from: "Status"
       click_button "Update Location"
     }.to change {location.reload.active?}.to(false)
     expect(page).to have_content("Location successfully updated")

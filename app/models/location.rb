@@ -1,6 +1,9 @@
 class Location < ActiveRecord::Base
 
   include ActionView::Helpers::TextHelper
+  include Searchable::Client
+
+  enum status: [:active, :inactive]
 
   belongs_to :location_type
 
@@ -14,16 +17,13 @@ class Location < ActiveRecord::Base
   validates :location_type, existence: true, unless: Proc.new { |l| l.unknown? }
 
   after_create :generate_barcode
-  before_save :update_active
+  before_save :update_status
 
-  scope :active, -> { where(active: true) }
-  scope :inactive, -> { where(active: false) }
   scope :without, ->(location) { active.where.not(id: location.id) }
   scope :without_unknown, ->{ without(Location.unknown)}
 
-  def inactive?
-    !active?
-  end
+  searchable_by :name, :barcode
+
 
   def parent
     super || NullLocation.new
@@ -51,8 +51,8 @@ private
     update(barcode: "#{self.name}:#{self.id}")
   end
 
-  def update_active
-    self.deactivated_at = Time.zone.now if active_changed?(from: true, to: false)
+  def update_status
+    self.deactivated_at = Time.zone.now if status_changed?(from: "active", to: "inactive")
   end
 
 end

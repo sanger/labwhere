@@ -1,10 +1,16 @@
 class LocationType < ActiveRecord::Base
 
+  include Searchable::Client
+
   has_many :locations
 
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 
   before_destroy :check_existing_locations
+
+  scope :ordered, -> { order(:name) }
+
+  searchable_by :name
 
 private
 

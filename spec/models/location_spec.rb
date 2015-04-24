@@ -26,19 +26,19 @@ RSpec.describe Location, type: :model do
 
   it "should provide list of active/inactive locations" do
     locations_active = create_list(:location, 2)
-    locations_inactive = create_list(:location, 2, active: false)
+    locations_inactive = create_list(:location, 2, status: Location.statuses[:inactive])
     expect(Location.count).to eq(4)
     expect(Location.active.count).to eq(2)
     expect(Location.inactive.count).to eq(2)
   end
 
   it "#inactive? should identify if a location has been deactivated" do
-    expect(build(:location, active: false).inactive?).to be_truthy
+    expect(build(:location, status: 1).inactive?).to be_truthy
   end
 
   it "#without_location should return a list of locations without a specified location" do
     locations = create_list(:location, 3)
-    inactive_location = create(:location, active: false)
+    inactive_location = create(:location, status: Location.statuses[:inactive])
     expect(Location.without(locations.last).count).to eq(2)
     expect(Location.without(locations.last)).to_not include(locations.last)
     expect(Location.without(locations.last)).to_not include(inactive_location)
@@ -64,9 +64,9 @@ RSpec.describe Location, type: :model do
   end
 
   it "changing a location to inactive should set deactivated_at to current date and time" do
-    location = create(:location, active: true)
+    location = create(:location)
     expect(location.deactivated_at).to be_nil
-    location.update(active: false)
+    location.update(status: Location.statuses[:inactive])
     expect(location.deactivated_at).to_not be_nil
   end
   

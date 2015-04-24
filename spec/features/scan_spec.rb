@@ -33,9 +33,12 @@ RSpec.describe "Scans", type: :feature do
     expect {
       fill_in "Location barcode", with: location.barcode
       fill_in "Labware barcodes", with: labwares.join_barcodes
+      
       click_button "Go!"
     }.to_not change(Scan, :count)
     expect(page.text).to match("error prohibited this record from being saved")
+    expect(page).to have_field("Location barcode", with: location.barcode)
+    expect(page).to have_content(labwares.join_barcodes)
   end
 
 end

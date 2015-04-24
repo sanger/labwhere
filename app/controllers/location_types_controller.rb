@@ -50,7 +50,7 @@ class LocationTypesController < ApplicationController
 protected
 
   def location_types
-    @location_type ||= LocationType.all
+    @location_type ||= LocationType.ordered
   end
 
   helper_method :location_types

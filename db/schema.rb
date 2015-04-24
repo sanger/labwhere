@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416081715) do
+ActiveRecord::Schema.define(version: 20150423083616) do
 
   create_table "events", force: :cascade do |t|
     t.integer  "scan_id"
@@ -43,8 +43,8 @@ ActiveRecord::Schema.define(version: 20150416081715) do
     t.string   "name"
     t.string   "barcode"
     t.integer  "parent_id"
-    t.boolean  "container"
-    t.boolean  "active",           default: true
+    t.boolean  "container",        default: true
+    t.integer  "status",           default: 0
     t.integer  "location_type_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
@@ -60,5 +60,12 @@ ActiveRecord::Schema.define(version: 20150416081715) do
   end
 
   add_index "scans", ["location_id"], name: "index_scans_on_location_id"
+
+  create_table "searches", force: :cascade do |t|
+    t.string   "term"
+    t.integer  "search_count", default: 1
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
 end
