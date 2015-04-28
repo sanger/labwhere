@@ -1,0 +1,16 @@
+<div class="search">
+  <%= form_for :search, url: searches_path do |f| %>
+  <fieldset>
+    <legend>Search form</legend>
+    <ul>
+      <li>
+        <div><%= f.label :term %></div>
+        <div><%= f.search_field :term %></div>
+      </li>
+      <li>
+        <%= f.submit "Search" %>
+      </li>
+    </ul>
+  </fieldset>
+<% end %>
+</div>

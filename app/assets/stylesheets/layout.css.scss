@@ -36,8 +36,6 @@ nav{
 
   ul{
 
-    margin-left: 80%;
-
     li{
       float: left;
       padding-right: 10px;
@@ -113,5 +111,12 @@ header{
     li{
       list-style-type: disc;
     }
+  }
+}
+
+article{
+  margin:{
+    top: 20px;
+    bottom: 20px;
   }
 }

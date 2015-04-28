@@ -61,5 +61,7 @@ group :test do
 
 end
 
-
-
+# For testin using minitest
+# group :test do
+#   gem 'minitest-rails-capybara'
+# end

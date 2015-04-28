@@ -44,16 +44,6 @@ RSpec.describe Location, type: :model do
     expect(Location.without(locations.last)).to_not include(inactive_location)
   end
 
-  it "#residents should provide a message about the number of pieces of labware living in the location" do
-    location_empty = build(:location)
-    location_labware_1 = create(:location_with_parent, labwares: [build(:labware)])
-    location_labware_3 = create(:location_with_parent, labwares: build_list(:labware, 3))
-
-    expect(location_empty.residents).to eq("Location is empty")
-    expect(location_labware_1.residents).to eq("Location has 1 piece of Labware")
-    expect(location_labware_3.residents).to eq("Location has 3 pieces of Labware")
-  end
-
   it "#unknown should return a location with name UNKNOWN" do
     expect(Location.unknown.name).to eq("UNKNOWN")
     expect(Location.unknown.unknown?).to be_truthy

@@ -1,14 +1,13 @@
 class ScansController < ApplicationController
   def new
-    @scan = ScanForm.new
+    @scan = CreateScan.new
   end
 
   def create
-    @scan = ScanForm.new
+    @scan = CreateScan.new
 
     if @scan.submit(params[:scan])
-      flash[:notice] = "Scan done!"
-      redirect_to root_path
+      redirect_to root_path, notice: "Scan done!"
     else
       render :new
     end

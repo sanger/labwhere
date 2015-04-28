@@ -6,40 +6,5 @@
     <div>
       <%= link_to "Add new location type", new_location_type_path %>
     </div>
-    <table>
-        <caption>
-            <%= header.to_s %>
-        </caption>
-       
-        <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                &nbsp;
-            </th>
-            <th>
-                &nbsp;
-            </th>
-        </tr>
-        <% location_types.each do |location_type| %>
-          <tr id="<%= dom_id(location_type) %>">
-              <td>
-                  <%= location_type.id %>
-              </td>
-              <td>
-                  <%= location_type.name %>
-              </td>
-              <td>
-                  <%= link_to "Edit", edit_location_type_path(location_type) %>
-              </td>
-              <td>
-                  <%= link_to "Delete", location_type_path(location_type), method: :delete, data: {confirm: "Are you sure?"} %>
-              </td>
-          </tr>
-        <% end %>
-    </table>
+    <%= render location_types %>
 </section>

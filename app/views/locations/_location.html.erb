@@ -1,0 +1,14 @@
+<article id="<%= dom_id(location) %>" class="<%= header.to_css_class %>">
+  <p>
+    <%= location.id %>. <%= location.name %> - <%= location.barcode %> <%= link_to "Edit", edit_location_path(location) %>
+  </p>
+  <p>
+    Container: <%= location.container %>
+  </p>
+  <p>
+    Status: <%= location.status %>
+  </p>
+  <p>
+    Labwares: <%= location.labwares.count %>
+  </p>
+</article>

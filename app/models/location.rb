@@ -1,6 +1,5 @@
 class Location < ActiveRecord::Base
 
-  include ActionView::Helpers::TextHelper
   include Searchable::Client
 
   enum status: [:active, :inactive]
@@ -24,17 +23,8 @@ class Location < ActiveRecord::Base
 
   searchable_by :name, :barcode
 
-
   def parent
     super || NullLocation.new
-  end
-
-  def residents
-    "Location " << if labwares.empty?
-                    "is empty"
-                  else
-                    "has #{pluralize(labwares.length, 'piece')} of Labware"
-                  end
   end
 
   def self.unknown

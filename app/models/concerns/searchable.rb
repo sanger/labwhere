@@ -33,14 +33,38 @@ module Searchable
 
       def searches_in(*models)
         define_singleton_method :searchable_models do
-          models.collect { |model| model.to_s.classify.constantize }
+          Hash[models.collect { |model| [model, model.to_s.classify.constantize] }]
         end
       end
 
     end
 
     def results
-      @results ||= self.class.searchable_models.collect { |model| model.search(self.term) }.flatten
+      @results ||= SearchResult.new.tap do |result|
+        self.class.searchable_models.each do |k, v|
+          result.add k, v.search(self.term)
+        end
+      end
+    end
+
+    class SearchResult
+      include Enumerable
+      attr_reader :results, :count
+      delegate [], :empty?, to: :results
+
+      def initialize
+        @results = {}
+        @count = 0
+      end
+
+      def each(&block)
+        results.each(&block)
+      end
+
+      def add(k,v)
+        @results[k] = v unless v.empty?
+        @count += v.length
+      end
     end
   end
   

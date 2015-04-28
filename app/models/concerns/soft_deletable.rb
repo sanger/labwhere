@@ -44,7 +44,7 @@ module SoftDeletable
   end
 
   ##
-  # Takes tha arguments :hard or :soft
+  # Takes the arguments :hard or :soft
   # If :soft will do a soft delete.
   # If :hard will implement normal ActiveRecord behaviour i.e. destroy the object.
   def destroy(mode = :soft)

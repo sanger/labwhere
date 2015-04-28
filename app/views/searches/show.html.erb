@@ -1,0 +1,9 @@
+<section>
+  <h3>Your search returned <%= pluralize(@search.results.count, 'result') %></h3>
+  <% @search.results.each do |heading, records| %>
+    <h4><%= heading.to_s.titleize %></h4>
+    <% records.each do |record| %>
+      <%= render record %>
+    <% end %>
+  <% end %>
+</section>

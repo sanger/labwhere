@@ -17,8 +17,7 @@ class LocationsController < ApplicationController
     @location = Location.new(location_params)
 
     if @location.save
-      flash[:notice] = "Location successfully created"
-      redirect_to locations_path
+      redirect_to locations_path, notice: "Location successfully created"
     else
       render :new
     end
@@ -30,21 +29,15 @@ class LocationsController < ApplicationController
   def update
 
     if @location.update_attributes(location_params)
-      flash[:notice] = "Location successfully updated"
-      redirect_to locations_path
+      redirect_to locations_path, notice: "Location successfully updated"
     else
       render :edit
     end
   end
 
   def destroy
-    if @location.destroy
-      notice = "Location successfully deactivated"
-    else
-      notice = "Unable to deactivate Location"
-    end
-    flash[:notice] = notice
-    redirect_to locations_path
+    notice = @location.destroy ? "Location successfully deactivated" : "Unable to deactivate Location"
+    redirect_to locations_path, notice: notice
   end
 
 protected
