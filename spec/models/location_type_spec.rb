@@ -26,11 +26,20 @@ RSpec.describe LocationType, type: :model do
   end
 
   it "#ordered should produce a list ordered by name" do
-    location1 = LocationType.create(name: "abc")
-    location2 = LocationType.create(name: "abc1")
-    location3 = LocationType.create(name: "bacd")
+    location_type_1 = LocationType.create(name: "abc")
+    location_type_2 = LocationType.create(name: "abc1")
+    location_type_3 = LocationType.create(name: "bacd")
     expect(LocationType.ordered.count).to eq(3)
     expect(LocationType.ordered.first.name).to eq("abc")
     expect(LocationType.ordered.last.name).to eq("bacd")
+  end
+
+  it "should implement a counter cache for locations" do
+    location_type = create(:location_type)
+    create(:location, location_type: location_type)
+    create(:location, location_type: location_type)
+    expect(location_type.locations_count).to eq(2)
+    Location.last.destroy
+    expect(location_type.reload.locations_count).to eq(1)
   end
 end

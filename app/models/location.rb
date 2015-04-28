@@ -4,7 +4,7 @@ class Location < ActiveRecord::Base
 
   enum status: [:active, :inactive]
 
-  belongs_to :location_type
+  belongs_to :location_type, counter_cache: true
 
   belongs_to :parent, class_name: "Location"
   has_many :children, class_name: "Location", foreign_key: "parent_id"

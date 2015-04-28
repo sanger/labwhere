@@ -1,3 +1,7 @@
+##
+# This will create a persisted scan.
+# It can be used from a view or elsewhere.
+# 
 class CreateScan
 
   include ActiveModel::Model
@@ -40,9 +44,7 @@ private
 
   def build_labwares
     labware_barcodes.split("\n").each do |barcode|
-      labware = Labware.find_or_initialize_by(barcode: barcode.remove_control_chars)
-      labware.update(location: scan.location)
-      scan.labwares << labware
+      scan.labwares << Labware.find_or_initialize_by(barcode: barcode.remove_control_chars)
     end
   end
 

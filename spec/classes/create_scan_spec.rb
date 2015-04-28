@@ -2,10 +2,11 @@ require "rails_helper"
 
 RSpec.describe CreateScan, type: :model do
 
-  let!(:location)         { create(:location_with_parent)}
-  let(:new_labware)       { build_list(:labware, 4)}
-  let(:create_scan)       { CreateScan.new }
-  let!(:existing_labware) { create_list(:labware, 4, location: create(:location_with_parent))}
+  let!(:location)           { create(:location_with_parent)}
+  let!(:existing_location)  { create(:location_with_parent)}
+  let(:new_labware)         { build_list(:labware, 4)}
+  let(:create_scan)         { CreateScan.new }
+  let!(:existing_labware)   { create_list(:labware, 4, location: existing_location)}
 
   it "existing location with new labware should create labware and add them to the location" do
     create_scan.submit({"location_barcode" => location.barcode, "labware_barcodes" => new_labware.join_barcodes})
@@ -84,5 +85,4 @@ RSpec.describe CreateScan, type: :model do
     expect(scan.labwares.all? {|labware| !labware.barcode.include?("\r") }).to be_truthy
   end
 
-  
 end

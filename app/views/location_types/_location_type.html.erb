@@ -1,6 +1,8 @@
 <article id="<%= dom_id(location_type) %>">
+    <p><%= location_type.id %>. <%= location_type.name %></p>
+    <p> Locations: <%= location_type.locations_count %></p>
     <p>
-        <%= location_type.id %>. <%= location_type.name %> <%= link_to "Edit", edit_location_type_path(location_type) %> | 
-        <%= link_to "Delete", location_type_path(location_type), method: :delete, data: {confirm: "Are you sure?"} %>
+      <%= link_to "Edit", edit_location_type_path(location_type) %> | 
+      <%= link_to "Delete", location_type_path(location_type), method: :delete, data: {confirm: "Are you sure?"} %>
     </p>
 </article>
