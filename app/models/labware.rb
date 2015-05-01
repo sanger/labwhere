@@ -28,7 +28,7 @@ class Labware < ActiveRecord::Base
   end
 
   def previous_location
-    at = scans.length-2
+    at = scans.count-2
     at < 0 ? nil : scans.at(at-2).location
   end
 
