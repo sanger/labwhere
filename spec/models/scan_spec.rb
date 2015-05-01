@@ -26,5 +26,21 @@ RSpec.describe Scan, type: :model do
     expect(location.reload.labwares_count).to eq(4)
   end
 
+  it "should correctly set the type based on the nature of the scan" do
+    scan = create(:scan, location: location, labwares: new_labwares)
+    expect(scan.in?).to be_truthy
+    scan = create(:scan, location: nil, labwares: new_labwares)
+    expect(scan.out?).to be_truthy
+  end
+
+  it "should provide a message to indicate the nature of the scan" do
+    scan = create(:scan, location: location, labwares: new_labwares)
+    expect(scan.message).to eq("#{scan.labwares.count} labwares scanned in to #{scan.location.name}")
+    labwares = scan.labwares
+    locations = Labware.locations(scan.labwares)
+    scan = create(:scan, location: nil, labwares: labwares)
+    expect(scan.message).to eq("#{scan.labwares.count} labwares scanned out from #{Location.names(locations)}")
+  end
+
 
 end

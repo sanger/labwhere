@@ -1,32 +1,37 @@
 class Scan < ActiveRecord::Base
 
+  include AssertLocation
+
+  enum status: [:in, :out]
+
   belongs_to :location
   has_many :histories
   has_many :labwares, through: :histories
 
-  before_save :get_labware_locations, :set_labware_locations
+  before_save :update_labware_locations, :set_status
   after_save :update_location_counts
 
-  def location_name
-    (location || NullLocation.new).name
+  def message
+    "#{labwares.count} labwares scanned #{self.status} " << if location.unknown?
+      "from #{Location.names(Labware.previous_locations(labwares))}"
+    else
+      "to #{location.name}"
+    end
   end
 
-#TODO: These methods can be improved for performance and succinctness. Maybe a concern for general counter caching? Maybe use the last scan?
 private
-
-  def get_labware_locations
-    @locations_to_update = labwares.collect { |labware| labware.location}
-  end
-
-  def set_labware_locations
+ 
+  def update_labware_locations
     labwares.each {|labware| labware.update(location: self.location)}
   end
 
   def update_location_counts
-    @locations_to_update += [self.location, Location.unknown]
-    @locations_to_update.compact.uniq.each do |location|
-      location.update(labwares_count: location.labwares.count)
-    end
+    Labware.update_previous_location_counts(labwares)
+    location.save
+  end
+
+  def set_status
+    self.status = Scan.statuses[:out] if self.location.unknown?
   end
 
 end

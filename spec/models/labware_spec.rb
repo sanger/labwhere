@@ -39,4 +39,52 @@ RSpec.describe Labware, type: :model do
     expect(labware.reload.histories_count).to eq(2)
   end
 
+  it "locations should return a list of locations" do
+    location1 = create(:location_with_parent)
+    location2 = create(:location_with_parent)
+    labware1 = create(:labware, location: location1)
+    labware2 = create(:labware, location: location2)
+    labware3 = create(:labware, location: location2)
+    labwares = [labware1, labware2, labware3, build(:labware)]
+    expect(Labware.locations(labwares)).to eq([location1, location2])
+  end
+
+  it "#previous_location should return previous location for the labware" do
+    labware1 = build(:labware)
+    labware2 = build(:labware)
+    location1 = create(:location_with_parent)
+    location2 = create(:location_with_parent)
+    create(:scan, location: location1, labwares: [labware1, labware2])
+    create(:scan, location: location2, labwares: [labware2])
+    expect(labware1.reload.previous_location).to be_nil
+    expect(labware2.reload.previous_location).to eq(location1)
+  end
+
+  it "#previous_locations should return previous locations for the labware" do
+    labware1 = build(:labware)
+    labware2 = build(:labware)
+    labware3 = build(:labware)
+    location1 = create(:location_with_parent)
+    location2 = create(:location_with_parent)
+    location3 = create(:location_with_parent)
+    create(:scan, location: location1, labwares: [labware1, labware2, labware3])
+    create(:scan, location: location2, labwares: [labware2, labware3])
+    create(:scan, location: location2, labwares: [labware3])
+    expect(Labware.previous_locations(Labware.all)).to eq([location1, location2])
+  end
+
+  it "#adding to a scan should set the correct number of labwares on the previous locations" do
+    labware1 = build(:labware)
+    labware2 = build(:labware)
+    location1 = create(:location_with_parent)
+    location2 = create(:location_with_parent)
+    create(:scan, location: location1, labwares: [labware1, labware2])
+    Labware.update_previous_location_counts([labware1, labware2])
+    expect(location1.labwares_count).to eq(2)
+    create(:scan, location: location2, labwares: [labware2])
+    Labware.update_previous_location_counts([labware1, labware2])
+    expect(location1.reload.labwares_count).to eq(1)
+    expect(location2.reload.labwares_count).to eq(1)
+  end
+
 end

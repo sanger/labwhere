@@ -13,7 +13,7 @@ RSpec.describe "Scans", type: :feature do
       fill_in "Labware barcodes", with: labwares.join_barcodes
       click_button "Go!"
     }.to change(Scan, :count).by(1)
-    expect(page).to have_content("Scan done!")
+    expect(page).to have_content(Scan.first.message)
   end
 
   it "allows a user to scan out some labware with no location" do
@@ -23,7 +23,7 @@ RSpec.describe "Scans", type: :feature do
       fill_in "Labware barcodes", with: labwares.join_barcodes
       click_button "Go!"
     }.to change(Scan, :count).by(1)
-    expect(page).to have_content("Scan done!")
+    expect(page).to have_content(Scan.first.message)
   end
 
   it "shows an error if the location is invalid" do

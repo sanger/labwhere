@@ -37,7 +37,7 @@ RSpec.describe CreateScan, type: :model do
   it "no location with existing labware should remove them from the location" do
     create_scan.submit({"labware_barcodes" => existing_labware.join_barcodes})
     scan = Scan.first
-    expect(scan.location).to be_nil
+    expect(scan.location).to be_unknown
     expect(scan.labwares.count).to eq(4)
     expect(scan.labwares.all? {|labware| labware.location.unknown? }).to be_truthy
   end
@@ -45,7 +45,7 @@ RSpec.describe CreateScan, type: :model do
   it "no location with new labware create labware with no location" do
     create_scan.submit({"labware_barcodes" => new_labware.join_barcodes})
     scan = Scan.first
-    expect(scan.location).to be_nil
+    expect(scan.location).to be_unknown
     expect(scan.labwares.count).to eq(4)
     expect(scan.labwares.all? {|labware| labware.location.unknown? }).to be_truthy
   end

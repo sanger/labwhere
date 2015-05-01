@@ -3,6 +3,9 @@
     <%= location.id %>. <%= location.name %> - <%= location.barcode %> <%= link_to "Edit", edit_location_path(location) %>
   </p>
   <p>
+    Parent: <%= location.parent.name %>
+  </p>
+  <p>
     Container: <%= location.container %>
   </p>
   <p>

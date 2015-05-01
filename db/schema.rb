@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150429073107) do
+ActiveRecord::Schema.define(version: 20150501143452) do
 
   create_table "histories", force: :cascade do |t|
     t.integer  "scan_id"
@@ -58,8 +58,9 @@ ActiveRecord::Schema.define(version: 20150429073107) do
 
   create_table "scans", force: :cascade do |t|
     t.integer  "location_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "status",      default: 0
   end
 
   add_index "scans", ["location_id"], name: "index_scans_on_location_id"
@@ -69,6 +70,15 @@ ActiveRecord::Schema.define(version: 20150429073107) do
     t.integer  "search_count", default: 1
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "login"
+    t.string   "swipe_card"
+    t.string   "barcode"
+    t.string   "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

@@ -13,7 +13,7 @@ RSpec.describe "Searches", type: :feature do
   it "should fail silently if somebody clicks the search button for no reason" do
     visit root_path
     click_button "Search"
-    expect(page).to have_content("New Scan")
+    expect(page).to have_content("Scan In/Out")
   end
 
   it "with a search term that finds a location should output the results" do

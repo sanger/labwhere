@@ -16,7 +16,7 @@ class Location < ActiveRecord::Base
   validates :location_type, existence: true, unless: Proc.new { |l| l.unknown? }
 
   after_create :generate_barcode
-  before_save :update_status
+  before_save :update_status, :update_labwares_count
 
   scope :without, ->(location) { active.where.not(id: location.id) }
   scope :without_unknown, ->{ without(Location.unknown)}
@@ -31,14 +31,22 @@ class Location < ActiveRecord::Base
     find_by(name: "UNKNOWN") || create(name: "UNKNOWN")
   end
 
+  def self.names(locations, spacer = " ")
+    locations.map(&:name).join(spacer)
+  end
+
   def unknown?
     name == "UNKNOWN" 
+  end
+
+  def update_labwares_count
+    self.labwares_count = labwares.count
   end
 
 private
   
   def generate_barcode
-    update(barcode: "#{self.name}:#{self.id}")
+    update_attribute :barcode, "#{self.name}:#{self.id}"
   end
 
   def update_status

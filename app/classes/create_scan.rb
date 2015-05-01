@@ -10,7 +10,7 @@ class CreateScan
 
   attr_reader :scan
   attr_accessor :location_barcode, :labware_barcodes
-  delegate :location, to: :scan
+  delegate :location, :message, to: :scan
 
   validate :check_for_errors
 

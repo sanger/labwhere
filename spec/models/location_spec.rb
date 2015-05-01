@@ -59,5 +59,17 @@ RSpec.describe Location, type: :model do
     location.update(status: Location.statuses[:inactive])
     expect(location.deactivated_at).to_not be_nil
   end
+
+  it "#update_labware_count should update labware_count to number of labwares" do
+    location = create(:location_with_parent, labwares: create_list(:labware, 5))
+    location.update_labwares_count
+    expect(location.labwares_count).to eq(5)
+  end
+
+  it "#name should produce a list of location names" do
+    location1 = create(:location)
+    location2 = create(:location)
+    expect(Location.names([location1, location2])).to eq("#{location1.name} #{location2.name}")
+  end
   
 end

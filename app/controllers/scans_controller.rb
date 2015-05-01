@@ -7,7 +7,7 @@ class ScansController < ApplicationController
     @scan = CreateScan.new
 
     if @scan.submit(params[:scan])
-      redirect_to root_path, notice: "Scan done!"
+      redirect_to root_path, notice: @scan.message
     else
       render :new
     end
