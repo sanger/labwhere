@@ -53,4 +53,59 @@ RSpec.describe "Searches", type: :feature do
     expect(page).to have_content(location.name)
     expect(page).to have_content(labware.barcode)
   end
+
+  describe "drilling down", js: true do
+
+    it "with a location type should allow viewing of associated locations" do
+      location_type = create(:location_type)
+      locations = create_list(:location, 10, location_type: location_type)
+      other_locations = create_list(:location, 10, location_type: create(:location_type))
+      visit root_path
+      fill_in "Term", with: location_type.name
+      click_button "Search"
+      within("#location_type_#{location_type.id}") do
+        click_link "Locations"
+      end
+      locations.each do |location|
+        expect(page).to have_content(location.barcode)
+      end
+      other_locations.each do |location|
+        expect(page).to_not have_content(location.barcode)
+      end
+    end
+
+    it "with a location should allow viewing of associated labwares" do
+      labwares = create_list(:labware, 10)
+      location = create(:location_with_parent, labwares: labwares)
+      other_labwares = create_list(:labware, 10)
+      visit root_path
+      fill_in "Term", with: location.barcode
+      click_button "Search"
+      within("#location_#{location.id}") do
+        click_link "Labwares"
+      end
+      labwares.each do |labware|
+        expect(page).to have_content(labware.barcode)
+      end
+      other_labwares.each do |labware|
+        expect(page).to_not have_content(labware.barcode)
+      end
+    end
+
+    it "with a labware should allow viewing of associated history" do
+      labware = create(:labware)
+      this_event = create(:history, scan: create(:scan), labware: labware)
+      that_event = create(:history, scan: create(:scan), labware: create(:labware))
+      visit root_path
+      fill_in "Term", with: labware.barcode
+      click_button "Search"
+      within("#labware_#{labware.id}") do
+        click_link "History"
+        expect(page).to have_selector("article", count: 1)
+      end
+      
+    end
+
+  end
+
 end

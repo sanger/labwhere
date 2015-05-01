@@ -43,7 +43,11 @@ class LocationsController < ApplicationController
 protected
 
   def locations
-    @locations ||= Location.without_unknown
+    @locations ||= if params[:location_type_id]
+      LocationType.find(params[:location_type_id]).locations
+    else
+      Location.without_unknown
+    end
   end
 
   helper_method :locations

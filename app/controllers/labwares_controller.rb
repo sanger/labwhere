@@ -9,7 +9,7 @@ class LabwaresController < ApplicationController
 protected
 
   def labwares
-    @labwares ||= Labware.all
+    @labwares ||= Location.find(params[:location_id]).labwares
   end
 
   helper_method :labwares

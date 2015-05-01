@@ -15,5 +15,5 @@ class NullLocation
   def valid?
     false
   end
-  
+
 end

@@ -4,8 +4,8 @@ class Labware < ActiveRecord::Base
   include Searchable::Client
 
   belongs_to :location
-  has_many :events
-  has_many :scans, through: :events
+  has_many :histories
+  has_many :scans, through: :histories
 
   validates :barcode, presence: true, uniqueness: true
   validates :location, nested: true, unless: Proc.new { |l| l.location.nil? || l.location.unknown? }

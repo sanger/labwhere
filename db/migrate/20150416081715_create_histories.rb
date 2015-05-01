@@ -1,6 +1,6 @@
-class CreateEvents < ActiveRecord::Migration
+class CreateHistories < ActiveRecord::Migration
   def change
-    create_table :events do |t|
+    create_table :histories do |t|
       t.references :scan, index: true, foreign_key: true
       t.references :labware, index: true, foreign_key: true
 

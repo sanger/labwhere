@@ -1,10 +1,16 @@
 Rails.application.routes.draw do
 
-  resources :location_types
+  resources :location_types do
+    resources :locations, only: [:index]
+  end
 
-  resources :locations
+  resources :locations do
+    resources :labwares, only: [:index]
+  end
 
-  resources :labwares, only: [:index, :show]
+  resources :labwares, only: [:index, :show] do
+    resources :histories, only: [:index]
+  end
 
   resources :scans, only: [:new, :create]
 
@@ -64,4 +70,5 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
 end

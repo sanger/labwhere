@@ -1,4 +1,5 @@
 <article id="<%= dom_id(labware) %>">
   <p><%= labware.id %>. <%= labware.barcode %></p>
   <p>Location: <%= labware.location.name %></p>
+  <p><%= link_to_add_data "History:", labware_histories_path(labware) %> <%= labware.histories_count %></p>
 </article>

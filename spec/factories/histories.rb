@@ -1,7 +1,7 @@
 FactoryGirl.define do
-  factory :event do
+  factory :history do
     scan nil
     labware nil
   end
-
+ 
 end

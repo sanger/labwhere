@@ -31,4 +31,12 @@ RSpec.describe Labware, type: :model do
     expect(labware.location.unknown?).to be_truthy
   end
 
+  it "when it is added to scan should increase the events count" do
+    labware = create(:labware)
+    create(:scan, labwares: [labware])
+    expect(labware.reload.histories_count).to eq(1)
+    create(:scan, labwares: [labware])
+    expect(labware.reload.histories_count).to eq(2)
+  end
+
 end

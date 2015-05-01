@@ -1,4 +1,4 @@
-<article id="<%= dom_id(location) %>" class="<%= header.to_css_class %>">
+<article id="<%= dom_id(location) %>" class="location">
   <p>
     <%= location.id %>. <%= location.name %> - <%= location.barcode %> <%= link_to "Edit", edit_location_path(location) %>
   </p>
@@ -9,6 +9,6 @@
     Status: <%= location.status %>
   </p>
   <p>
-    Labwares: <%= location.labwares_count %>
+    <%= link_to_add_data "Labwares", location_labwares_path(location) %>: <%= location.labwares_count %>
   </p>
 </article>
