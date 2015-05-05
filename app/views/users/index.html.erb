@@ -1,0 +1,11 @@
+<section class="<%= header.to_css_class %>">
+  <h1>
+    <%= header.to_s %>
+  </h1>
+  <div>
+      <%= link_to "Add new user", new_user_path %>
+  </div>
+   <div id="collection">
+    <%= render partial: "user", collection: @users %>
+  </div>
+</section>

@@ -27,7 +27,6 @@ class LocationsController < ApplicationController
   end
 
   def update
-
     if @location.update_attributes(location_params)
       redirect_to locations_path, notice: "Location successfully updated"
     else

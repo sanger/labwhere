@@ -5,6 +5,7 @@ class Labware < ActiveRecord::Base
   include AssertLocation
 
   belongs_to :location
+  belongs_to :previous_location, class_name: "Location"
   has_many :histories
   has_many :scans, through: :histories
 
@@ -15,21 +16,20 @@ class Labware < ActiveRecord::Base
 
   searchable_by :barcode
 
-  def self.locations(labwares)
-    labwares.collect { |labware| labware.location}.compact.uniq
-  end
+  before_save :update_previous_location
 
   def self.previous_locations(labwares)
-    labwares.collect { |labware| labware.previous_location}.compact.uniq
+    Location.find(labwares.pluck(:previous_location_id).compact.uniq)
   end
 
   def self.update_previous_location_counts(labwares)
     previous_locations(labwares).map(&:save)
   end
 
-  def previous_location
-    at = scans.count-2
-    at < 0 ? nil : scans.at(at-2).location
+private
+
+  def update_previous_location
+    self.previous_location_id = self.location_id_was if  self.location_id_changed?
   end
 
 end

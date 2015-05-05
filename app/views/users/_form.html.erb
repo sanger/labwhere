@@ -1,0 +1,24 @@
+<%= form_for @user do |f| %>
+  <fieldset>
+    <legend><%= header.to_s %></legend>
+    <ul>
+      <li>
+        <%= f.label :login %>
+        <%= f.text_field :login %>
+      </li>
+      <li>
+        <%= f.label :swipe_card %>
+        <%= f.text_field :swipe_card %>
+      </li>
+       <li>
+        <%= f.label :barcode %>
+        <%= f.text_field :barcode %>
+      </li>
+       <li>
+        <%= f.label :type %>
+        <%= f.select :type, options_for_select(User.types) %>
+      </li>
+    </ul>
+    <%= f.submit %>
+  </fieldset>
+<% end %>

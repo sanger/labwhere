@@ -1,0 +1,21 @@
+<article id="<%= dom_id(user) %>" class="user">
+  <p>
+    Id: <%= user.id %>
+  </p>
+  <p>
+    Login: <%= user.login %>
+  </p>
+  <p>
+    Swipe card: <%= user.swipe_card %>
+  </p>
+  <p>
+    Barcode: <%= user.barcode %>
+  </p>
+  <p>
+    <%= link_to "Edit", edit_user_path(user) %>
+  </p>
+  <p>
+    <%= link_to "Archive", user_path(user), method: :delete, data: {confirm: "Are you sure?"} %>
+  </p>
+  </p>
+</article>

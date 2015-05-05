@@ -12,10 +12,10 @@ class Scan < ActiveRecord::Base
   after_save :update_location_counts
 
   def message
-    "#{labwares.count} labwares scanned #{self.status} " << if location.unknown?
-      "from #{Location.names(Labware.previous_locations(labwares))}"
-    else
+    "#{labwares.count} labwares scanned #{self.status} " << if in?
       "to #{location.name}"
+    else
+      "from #{Labware.previous_locations(labwares).map(&:name).join(" ")}"
     end
   end
 

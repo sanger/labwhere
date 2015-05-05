@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   resources :scans, only: [:new, :create]
 
   resources :searches, only: [:new, :create, :show]
+
+  resources :users
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

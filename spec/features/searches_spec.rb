@@ -1,4 +1,4 @@
-
+#(l4) As a Sample management RA I want to search for labware or location via barcode to find biomaterial I need for processing 
 require 'rails_helper'
 
 RSpec.describe "Searches", type: :feature do
