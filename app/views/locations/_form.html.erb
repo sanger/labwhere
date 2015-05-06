@@ -14,10 +14,6 @@
         <%= f.label :parent_id, "Parent" %>
         <%= f.select :parent_id, options_from_collection_for_select(Location.without_unknown.without(@location), :id, :barcode, @location.parent_id), {include_blank: true} %>
       </li>
-       <li>
-        <%= f.label :status %>
-        <%= f.select :status, options_for_select(Location.statuses.keys) %>
-      </li>
       <li>
         <%= f.check_box :container %>
         <%= f.label :container %>

@@ -5,4 +5,9 @@
 $(document).ready ->
   $(".notice").fade 10000
   $(".alert").fade 15000
+  $('nav li ul').hide()
+  $('nav li').hover(
+    -> $('ul', this).stop().slideDown(100),
+    -> $('ul', this).stop().slideUp(100)
+    )
   return

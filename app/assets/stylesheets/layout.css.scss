@@ -33,12 +33,49 @@ html, body{
 nav{
   margin: 20px 0 0 0;
   padding: 0 0 0 20px;
+  background:#FFF;
+  float:left;
+  width: 150px;
+  position: absolute;
+  right: 300px;
 
   ul{
 
     li{
-      float: left;
-      padding-right: 10px;
+      float:left;
+      display:inline;
+      height: 30px;
+
+      &:hover{
+        background:#E6E6E6;
+      }
+
+      a{
+        display:block;
+        color:#444;
+        text-decoration: none;
+      }
+
+      ul{
+        position:absolute;
+        width:150px;
+        background:#FFF;
+
+        li{
+          width:150px;
+
+          a{
+            display:block;
+            padding-top:5px;
+            color:#444;
+          }
+
+          &:hover{
+            background:#F7F7F7;
+            text-decoration: underline;
+          }
+        }
+      }
     }
   }
 }

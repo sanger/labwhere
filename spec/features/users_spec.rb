@@ -29,17 +29,6 @@ RSpec.describe "Users", type: :feature do
     }.to change { user.reload.swipe_card}.to(user_2.swipe_card)
   end
 
-   it "Allows a user to archive an existing user" do
-    user = create(:user)
-    visit users_path
-    expect {
-      within("#user_#{user.id}") do
-        click_link "Archive"
-      end
-    }.to change{ user.reload.deleted? }.to(true)
-    expect(page).to have_content("User successfully archived")
-  end
-
   it "Allows a user to create a different type of user" do
     user = build(:user)
     visit users_path
@@ -52,6 +41,29 @@ RSpec.describe "Users", type: :feature do
       click_button "Create User"
     }.to change(Admin, :count).by(1)
     expect(page).to have_content("User successfully created")
+  end
+
+  it "Allows a user to be deactivated" do
+    user = create(:user)
+    visit users_path
+    expect {
+      within("#user_#{user.id}") do
+        click_link "Deactivate"
+      end
+    }.to change{user.reload.active?}.from(true).to(false)
+    expect(page).to have_content("User successfully deactivated")
+  end
+
+  it "Allows a user to be activated" do
+    user = create(:user)
+    user.deactivate
+    visit users_path
+    expect {
+      within("#user_#{user.id}") do
+        click_link "Activate"
+      end
+    }.to change{user.reload.active?}.from(false).to(true)
+    expect(page).to have_content("User successfully activated")
   end
 
 end

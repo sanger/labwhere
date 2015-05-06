@@ -1,8 +1,7 @@
 class Location < ActiveRecord::Base
 
   include Searchable::Client
-
-  enum status: [:active, :inactive]
+  include HasActive
 
   belongs_to :location_type, counter_cache: true
 
@@ -16,10 +15,10 @@ class Location < ActiveRecord::Base
   validates :location_type, existence: true, unless: Proc.new { |l| l.unknown? }
 
   after_create :generate_barcode
-  before_save :update_status, :update_labwares_count
+  before_save :update_labwares_count
 
   scope :without, ->(location) { active.where.not(id: location.id) }
-  scope :without_unknown, ->{ without(Location.unknown)}
+  scope :without_unknown, ->{ where.not(id: Location.unknown.id) }
 
   searchable_by :name, :barcode
 
@@ -47,10 +46,6 @@ private
   
   def generate_barcode
     update_attribute :barcode, "#{self.name}:#{self.id}"
-  end
-
-  def update_status
-    self.deactivated_at = Time.zone.now if status_changed?(from: "active", to: "inactive")
   end
 
 end

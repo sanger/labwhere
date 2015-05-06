@@ -118,12 +118,22 @@ RSpec.describe "Locations", type: :feature do
     visit locations_path
     expect {
       within("#location_#{location.id}") do
-        click_link "Edit"
+        click_link "Deactivate"
       end
-      select "inactive", from: "Status"
-      click_button "Update Location"
-    }.to change {location.reload.active?}.to(false)
-    expect(page).to have_content("Location successfully updated")
+    }.to change { location.reload.active? }.from(true).to(false)
+    expect(page).to have_content("Location successfully deactivated")
+  end
+
+  it "Allows a user to activate a location" do
+    location = create(:location)
+    location.deactivate
+    visit locations_path
+    expect {
+      within("#location_#{location.id}") do
+        click_link "Activate"
+      end
+    }.to change { location.reload.active? }.from(false).to(true)
+    expect(page).to have_content("Location successfully activated")
   end
 
 end

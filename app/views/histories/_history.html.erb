@@ -1,4 +1,4 @@
 <article id="<%= dom_id(history) %>">
   <p><%= history.scan.location.name %></p>
-  <p><%= history.created_at %></p>
+  <p><%= history.created_at.to_s(:uk) %></p>
 </article>

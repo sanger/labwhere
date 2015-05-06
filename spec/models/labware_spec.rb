@@ -41,33 +41,24 @@ RSpec.describe Labware, type: :model do
   end
 
   it "#previous_locations should return a unique list of the previous locations for some Labware" do
-    location_1 = create(:location_with_parent)
-    location_2 = create(:location_with_parent)
-    location_3 = create(:location_with_parent)
+    locations = create_list(:location_with_parent, 3)
+    labwares_1 = create_list(:labware, 2, location: locations.first)
+    labwares_2 = create_list(:labware, 2, location: locations.second)
 
-    labware_1 = create(:labware, location: location_1)
-    labware_2 = create(:labware, location: location_1)
-    labware_3 = create(:labware, location: location_2)
-    labware_4 = create(:labware, location: location_2)
+    labwares_1.first.update(location: locations.second)
+    labwares_1.last.update(location: locations.second)
+    labwares_2.first.update(location: locations.last)
 
-    labware_1.update(location: location_2)
-    labware_2.update(location: location_2)
-    labware_3.update(location: location_3)
-
-    expect(Labware.previous_locations(Labware.all)).to eq([location_1, location_2])
+    expect(Labware.previous_locations(Labware.all)).to eq([locations.first, locations.second])
   end
 
   it "#update_previous_locations_counts should update the previous location counts" do
-    location_1 = create(:location_with_parent)
-    location_2 = create(:location_with_parent)
-
-    labware_1 = create(:labware, location: location_1)
-    labware_2 = create(:labware, location: location_1)
-    labware_3 = create(:labware, location: location_1)
+    locations = create_list(:location_with_parent, 2)
+    labwares = create_list(:labware, 3, location: locations.first)
     
-    labware_3.update(location: location_2)
+    labwares.last.update(location: locations.last)
     Labware.update_previous_location_counts(Labware.all)
-    expect(location_1.reload.labwares_count).to eq(2)
+    expect(locations.first.reload.labwares_count).to eq(2)
   end
 
 end

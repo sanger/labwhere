@@ -30,9 +30,14 @@ class UsersController < ApplicationController
     end
   end
 
-  def destroy
-    notice = @user.destroy ? "User successfully archived" : "Unable to archive User"
-    redirect_to users_path, notice: notice
+  def deactivate
+    @user.deactivate
+    redirect_to users_path, notice: "User successfully deactivated"
+  end
+
+  def activate
+    @user.activate
+    redirect_to users_path, notice: "User successfully activated"
   end
 
   def users

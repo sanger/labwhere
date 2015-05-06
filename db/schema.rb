@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505132902) do
+ActiveRecord::Schema.define(version: 20150501143452) do
 
   create_table "histories", force: :cascade do |t|
     t.integer  "scan_id"
@@ -25,21 +25,22 @@ ActiveRecord::Schema.define(version: 20150505132902) do
 
   create_table "labwares", force: :cascade do |t|
     t.string   "barcode"
-    t.integer  "location_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
     t.datetime "deleted_at"
     t.integer  "histories_count",      default: 0
+    t.integer  "location_id"
     t.integer  "previous_location_id"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   add_index "labwares", ["location_id"], name: "index_labwares_on_location_id"
+  add_index "labwares", ["previous_location_id"], name: "index_labwares_on_previous_location_id"
 
   create_table "location_types", force: :cascade do |t|
     t.string   "name"
+    t.integer  "locations_count", default: 0
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
-    t.integer  "locations_count", default: 0
   end
 
   create_table "locations", force: :cascade do |t|
@@ -48,20 +49,20 @@ ActiveRecord::Schema.define(version: 20150505132902) do
     t.integer  "parent_id"
     t.boolean  "container",        default: true
     t.integer  "status",           default: 0
+    t.datetime "deactivated_at"
+    t.integer  "labwares_count",   default: 0
     t.integer  "location_type_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.datetime "deactivated_at"
-    t.integer  "labwares_count",   default: 0
   end
 
   add_index "locations", ["location_type_id"], name: "index_locations_on_location_type_id"
 
   create_table "scans", force: :cascade do |t|
+    t.integer  "status",      default: 0
     t.integer  "location_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
-    t.integer  "status",      default: 0
   end
 
   add_index "scans", ["location_id"], name: "index_scans_on_location_id"
@@ -78,9 +79,10 @@ ActiveRecord::Schema.define(version: 20150505132902) do
     t.string   "swipe_card"
     t.string   "barcode"
     t.string   "type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
+    t.integer  "status",         default: 0
+    t.datetime "deactivated_at"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
 end

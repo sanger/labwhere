@@ -29,10 +29,4 @@ RSpec.describe User, type: :model do
     expect(Standard.all.count).to eq(1)
   end
 
-  it "destroying a user should soft delete it" do
-    user = create(:user)
-    user.destroy
-    expect(User.exists?(user.id)).to be_truthy
-    expect(user.reload).to be_deleted
-  end
 end

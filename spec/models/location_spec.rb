@@ -24,18 +24,6 @@ RSpec.describe Location, type: :model do
     expect(location.reload.barcode).to eq("#{location.name}:#{location.id}")
   end
 
-  it "should provide list of active/inactive locations" do
-    locations_active = create_list(:location, 2)
-    locations_inactive = create_list(:location, 2, status: Location.statuses[:inactive])
-    expect(Location.count).to eq(4)
-    expect(Location.active.count).to eq(2)
-    expect(Location.inactive.count).to eq(2)
-  end
-
-  it "#inactive? should identify if a location has been deactivated" do
-    expect(build(:location, status: 1).inactive?).to be_truthy
-  end
-
   it "#without_location should return a list of locations without a specified location" do
     locations = create_list(:location, 3)
     inactive_location = create(:location, status: Location.statuses[:inactive])
@@ -51,13 +39,6 @@ RSpec.describe Location, type: :model do
 
   it "location should be valid without a location type if location is UNKNOWN" do
     expect(build(:location, name: "UNKNOWN", location_type: nil)).to be_valid
-  end
-
-  it "changing a location to inactive should set deactivated_at to current date and time" do
-    location = create(:location)
-    expect(location.deactivated_at).to be_nil
-    location.update(status: Location.statuses[:inactive])
-    expect(location.deactivated_at).to_not be_nil
   end
 
   it "#update_labware_count should update labware_count to number of labwares" do

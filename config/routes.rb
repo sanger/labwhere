@@ -1,10 +1,15 @@
 Rails.application.routes.draw do
 
+  concern :change_status do
+    patch 'activate', on: :member
+    patch 'deactivate', on: :member
+  end
+
   resources :location_types do
     resources :locations, only: [:index]
   end
 
-  resources :locations do
+  resources :locations, concerns: :change_status do
     resources :labwares, only: [:index]
   end
 
@@ -16,7 +21,7 @@ Rails.application.routes.draw do
 
   resources :searches, only: [:new, :create, :show]
 
-  resources :users
+  resources :users, concerns: :change_status
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,10 +1,12 @@
 <nav>
   <ul>
     <li>
-      <%= link_to "Location Types", location_types_path %>
-    </li>
-    <li>
-      <%= link_to "Locations", locations_path %>
+      <a href="#">Admin</a>
+      <ul>
+        <li><%= link_to "Location Types", location_types_path %></li>
+        <li><%= link_to "Locations", locations_path %></li>
+        <li><%= link_to "Users", users_path %></li>
+      </ul>
     </li>
   </ul>
 </nav>
