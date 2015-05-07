@@ -1,0 +1,16 @@
+<%= form_for @team do |f| %>
+  <fieldset>
+    <legend><%= header.to_s %></legend>
+    <ul>
+      <li>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </li>
+      <li>
+        <%= f.label :number %>
+        <%= f.text_field :number %>
+      </li>
+    </ul>
+    <%= f.submit %>
+  </fieldset>
+<% end %>

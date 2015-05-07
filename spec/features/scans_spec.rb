@@ -26,14 +26,13 @@ RSpec.describe "Scans", type: :feature do
     expect(page).to have_content(Scan.first.message)
   end
 
-  it "shows an error if the location is invalid" do
+  it "reports an error if the user adds a scan with invalid attributes" do
     location = create(:location)
     labwares = build_list(:labware, 10)
     visit new_scan_path
     expect {
       fill_in "Location barcode", with: location.barcode
       fill_in "Labware barcodes", with: labwares.join_barcodes
-      
       click_button "Go!"
     }.to_not change(Scan, :count)
     expect(page.text).to match("error prohibited this record from being saved")

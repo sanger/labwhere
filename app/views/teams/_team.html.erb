@@ -1,0 +1,14 @@
+<article id="<%= dom_id(team) %>" class="team">
+  <p>
+    Id: <%= team.id %>
+  </p>
+  <p>
+    Name: <%= team.name %>
+  </p>
+  <p>
+    Number: <%= team.number %>
+  </p>
+  <p>
+    <%= link_to "Edit", edit_team_path(team) %>
+  </p>
+</article>

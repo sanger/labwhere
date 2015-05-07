@@ -1,0 +1,11 @@
+<section class="<%= header.to_css_class %>">
+  <h1>
+    <%= header.to_s %>
+  </h1>
+  <div>
+      <%= link_to "Add new team", new_team_path %>
+  </div>
+  <div id="collection">
+    <%= render teams %>
+  </div>
+</section>

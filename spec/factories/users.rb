@@ -1,8 +1,9 @@
 FactoryGirl.define do
   factory :user do
     sequence(:login) {|n| "User:#{n}" }
-    sequence(:swipe_card) {|n| "SwipeCard:#{n}" }
-    sequence(:barcode) {|n| "Barcode:#{n}" }
+    swipe_card { "SwipeCard:#{login}" }
+    barcode { "Barcode:#{login}" }
+    team
 
     factory :admin, class: "Admin" do
     end

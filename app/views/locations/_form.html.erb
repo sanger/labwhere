@@ -18,6 +18,10 @@
         <%= f.check_box :container %>
         <%= f.label :container %>
       </li>
+      <li>
+        <%= f.label :status, "Active" %>
+        <%= f.check_box :status, {}, Location.statuses.keys.first, Location.statuses.keys.last %>
+      </li>
     </ul>
     <%= f.submit %>
   </fieldset>

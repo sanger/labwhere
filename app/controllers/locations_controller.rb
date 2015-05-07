@@ -67,7 +67,7 @@ private
   end
   
   def location_params
-    params.require(:location).permit(:name, :location_type_id, :parent_id, :container)
+    params.require(:location).permit(:name, :location_type_id, :parent_id, :container, :status)
   end
 
 end

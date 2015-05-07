@@ -14,7 +14,16 @@
         <%= f.label :barcode %>
         <%= f.text_field :barcode %>
       </li>
-       <li>
+      <li>
+        <%= f.label :team_id, "Team" %>
+        <%= f.select :team_id, options_from_collection_for_select(Team.all, :id, :name) %>
+      </li>
+      <li>
+        <%= f.label :status, "Active" %>
+        <%= f.check_box :status, {}, User.statuses.keys.first, User.statuses.keys.last %>
+      </li>
+    
+      <li>
         <%= f.label :type %>
         <%= f.select :type, options_for_select(User.types) %>
       </li>

@@ -19,6 +19,10 @@ RSpec.describe User, type: :model do
     expect(build(:user, login: user.login)).to_not be_valid
   end
 
+  it "should not be valid without a team" do
+    expect(build(:user, team: nil)).to_not be_valid
+  end
+
   it "should be able to create an Admin user" do
     user = create(:user, type: "Admin")
     expect(Admin.all.count).to eq(1)

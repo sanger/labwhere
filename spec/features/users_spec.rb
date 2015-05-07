@@ -1,7 +1,9 @@
-
+#(l4) As an admin I want to be able to create new users in the system and edit them in order to allow users to be tracked in the system.
 require "rails_helper"
 
 RSpec.describe "Users", type: :feature do
+
+  let!(:teams) { create_list(:team, 2)}
 
   it "Allows a user to create a new user" do
     user = build(:user)
@@ -11,6 +13,7 @@ RSpec.describe "Users", type: :feature do
       fill_in "Login", with: user.login
       fill_in "Swipe card", with: user.swipe_card
       fill_in "Barcode", with: user.barcode
+      select teams.first.name, from: "Team"
       click_button "Create User"
     }.to change(User, :count).by(1)
     expect(page).to have_content("User successfully created")
@@ -37,6 +40,7 @@ RSpec.describe "Users", type: :feature do
       fill_in "Login", with: user.login
       fill_in "Swipe card", with: user.swipe_card
       fill_in "Barcode", with: user.barcode
+      select teams.first.name, from: "Team"
       select "Admin", from: "Type"
       click_button "Create User"
     }.to change(Admin, :count).by(1)
@@ -46,24 +50,41 @@ RSpec.describe "Users", type: :feature do
   it "Allows a user to be deactivated" do
     user = create(:user)
     visit users_path
+    within("#user_#{user.id}") do
+      click_link "Edit"
+    end
     expect {
-      within("#user_#{user.id}") do
-        click_link "Deactivate"
-      end
+        uncheck "Active"
+        click_button "Update User"
     }.to change{user.reload.active?}.from(true).to(false)
-    expect(page).to have_content("User successfully deactivated")
+    expect(page).to have_content("User successfully updated")
   end
 
   it "Allows a user to be activated" do
     user = create(:user)
     user.deactivate
     visit users_path
+     within("#user_#{user.id}") do
+      click_link "Edit"
+    end
     expect {
-      within("#user_#{user.id}") do
-        click_link "Activate"
-      end
+      check "Active"
+      click_button "Update User"
     }.to change{user.reload.active?}.from(false).to(true)
-    expect(page).to have_content("User successfully activated")
+    expect(page).to have_content("User successfully updated")
+  end
+
+  it "Reports an error if the user adds a user with invalid attributes" do
+    user = build(:user)
+    visit users_path
+    click_link "Add new user"
+    expect {
+      fill_in "Swipe card", with: user.swipe_card
+      fill_in "Barcode", with: user.barcode
+      select teams.first.name, from: "Team"
+      click_button "Create User"
+    }.to_not change(User, :count)
+    expect(page).to have_content("error prohibited this record from being saved")
   end
 
 end
