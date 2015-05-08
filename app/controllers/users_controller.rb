@@ -49,7 +49,7 @@ class UsersController < ApplicationController
 private
 
   def user_params
-    params.require(:user).permit(:login, :swipe_card, :barcode, :type, :status, :team_id)
+    params.require(:user).permit(:login, :swipe_card_id, :barcode, :type, :status, :team_id)
   end
 
   def set_user

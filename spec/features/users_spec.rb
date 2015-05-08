@@ -11,7 +11,7 @@ RSpec.describe "Users", type: :feature do
     click_link "Add new user"
     expect {
       fill_in "Login", with: user.login
-      fill_in "Swipe card", with: user.swipe_card
+      fill_in "Swipe card", with: user.swipe_card_id
       fill_in "Barcode", with: user.barcode
       select teams.first.name, from: "Team"
       click_button "Create User"
@@ -27,9 +27,9 @@ RSpec.describe "Users", type: :feature do
       click_link "Edit"
     end
     expect {
-      fill_in "Swipe card", with: user_2.swipe_card
+      fill_in "Swipe card", with: user_2.swipe_card_id
       click_button "Update User"
-    }.to change { user.reload.swipe_card}.to(user_2.swipe_card)
+    }.to change { user.reload.swipe_card_id}.to(user_2.swipe_card_id)
   end
 
   it "Allows a user to create a different type of user" do
@@ -38,7 +38,7 @@ RSpec.describe "Users", type: :feature do
     click_link "Add new user"
     expect {
       fill_in "Login", with: user.login
-      fill_in "Swipe card", with: user.swipe_card
+      fill_in "Swipe card", with: user.swipe_card_id
       fill_in "Barcode", with: user.barcode
       select teams.first.name, from: "Team"
       select "Admin", from: "Type"
@@ -79,7 +79,7 @@ RSpec.describe "Users", type: :feature do
     visit users_path
     click_link "Add new user"
     expect {
-      fill_in "Swipe card", with: user.swipe_card
+      fill_in "Swipe card", with: user.swipe_card_id
       fill_in "Barcode", with: user.barcode
       select teams.first.name, from: "Team"
       click_button "Create User"

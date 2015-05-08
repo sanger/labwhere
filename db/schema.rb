@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 20150507081812) do
 
   create_table "users", force: :cascade do |t|
     t.string   "login"
-    t.string   "swipe_card"
+    t.string   "swipe_card_id"
     t.string   "barcode"
     t.string   "type"
     t.integer  "status",         default: 0

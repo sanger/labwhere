@@ -7,8 +7,8 @@
         <%= f.text_field :login %>
       </li>
       <li>
-        <%= f.label :swipe_card %>
-        <%= f.text_field :swipe_card %>
+        <%= f.label :swipe_card_id %>
+        <%= f.text_field :swipe_card_id %>
       </li>
        <li>
         <%= f.label :barcode %>
@@ -19,13 +19,12 @@
         <%= f.select :team_id, options_from_collection_for_select(Team.all, :id, :name) %>
       </li>
       <li>
-        <%= f.label :status, "Active" %>
-        <%= f.check_box :status, {}, User.statuses.keys.first, User.statuses.keys.last %>
-      </li>
-    
-      <li>
         <%= f.label :type %>
         <%= f.select :type, options_for_select(User.types) %>
+      </li>
+        <li>
+        <%= f.label :status, "Active" %>
+        <%= f.check_box :status, {}, User.statuses.keys.first, User.statuses.keys.last %>
       </li>
     </ul>
     <%= f.submit %>
