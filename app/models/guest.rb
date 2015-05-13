@@ -1,25 +1,21 @@
-class Guest
+class Guest < User
 
   include Permissions
-
-  def name
-    "Guest"
-  end
 
   def swipe_card_id
     0
   end
 
   def barcode
-    ""
+    "Guest:1"
   end
 
-  def valid?
-    true
+  def login
+    "Guest"
   end
 
-  def guest?
-    true
+  def team_id
+    1
   end
   
 end

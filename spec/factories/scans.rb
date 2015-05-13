@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :scan do
+    user
     location nil
   end
 

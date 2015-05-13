@@ -41,5 +41,4 @@ RSpec.describe Scan, type: :model do
     expect(scan_2.message).to eq("#{scan_2.labwares.count} labwares scanned out from #{scan_1.location.name}")
   end
 
-
 end

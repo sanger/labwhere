@@ -61,4 +61,12 @@ RSpec.describe Labware, type: :model do
     expect(locations.first.reload.labwares_count).to eq(2)
   end
 
+  it "#build_for should find or initialize labware for associated object" do
+    existing_labwares = create_list(:labware, 2, location: create(:location_with_parent))
+    new_labwares = build_list(:labware, 2)
+    scan = build(:scan)
+    Labware.build_for(scan, existing_labwares.join_barcodes+"\n"+new_labwares.join_barcodes)
+    expect(scan.labwares.length).to eq(4)
+  end
+
 end

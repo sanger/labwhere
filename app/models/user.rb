@@ -16,10 +16,10 @@ class User < ActiveRecord::Base
   end
 
   def guest?
-    false
+    type == "Guest"
   end
 
-  def allow?
+  def allow?(controller, action)
     false
   end
 

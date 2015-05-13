@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe Guest, type: :model do 
 
-  it "should have a name" do
-    expect(build(:guest).name).to eq("Guest")
+  it "should have a login" do
+    expect(build(:guest).login).to eq("Guest")
   end
 
   it "should be a guest" do
@@ -11,6 +11,6 @@ RSpec.describe Guest, type: :model do
   end
 
   it "should not allow anything" do
-    expect(build(:guest)).to_not allow(:any, :thing)
+    expect(build(:guest)).to_not allow_permission(:any, :thing)
   end
 end

@@ -1,22 +1,20 @@
 class LocationsController < ApplicationController
 
-  before_action :set_location, except: [:index, :new, :create]
   before_action :locations, only: [:index]
   
   def index
   end
 
   def new
-    @location = Location.new
+    @location = LocationForm.new
   end
 
   def show
   end
 
   def create
-    @location = Location.new(location_params)
-
-    if @location.save
+    @location = LocationForm.new
+    if @location.submit(params)
       redirect_to locations_path, notice: "Location successfully created"
     else
       render :new
@@ -24,10 +22,12 @@ class LocationsController < ApplicationController
   end
 
   def edit
+    @location = LocationForm.new(current_resource)
   end
 
   def update
-    if @location.update_attributes(location_params)
+    @location = LocationForm.new(current_resource)
+    if @location.submit(params)
       redirect_to locations_path, notice: "Location successfully updated"
     else
       render :edit
@@ -35,11 +35,13 @@ class LocationsController < ApplicationController
   end
 
   def deactivate
+    @location = current_resource
     @location.deactivate
     redirect_to locations_path, notice: "Location successfully deactivated"
   end
 
   def activate
+    @location = current_resource
     @location.activate
     redirect_to locations_path, notice: "Location successfully activated"
   end
@@ -58,16 +60,8 @@ protected
 
 private
 
-  def set_location
-    @location = current_resource
-  end
-
   def current_resource
     @current_resource ||= Location.includes(:labwares).find(params[:id]) if params[:id]
-  end
-  
-  def location_params
-    params.require(:location).permit(:name, :location_type_id, :parent_id, :container, :status)
   end
 
 end

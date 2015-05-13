@@ -3,6 +3,10 @@
     <legend><%= header.to_s %></legend>
     <ul>
       <li>
+        <%= f.label :user %>
+        <%= f.password_field :user %>
+      </li>
+      <li>
         <%= f.label :name %>
         <%= f.text_field :name %>
       </li>

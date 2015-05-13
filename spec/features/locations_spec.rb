@@ -3,12 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe "Locations", type: :feature do
+
+  let!(:user) { create(:admin)}
   
   it "Allows a user to add a new location type" do
     location_type = build(:location_type)
     visit location_types_path
     click_link "Add new location type"
     expect {
+      fill_in "User", with: user.swipe_card_id
       fill_in "Name", with: location_type.name
       click_button "Create Location type"
     }.to change(LocationType, :count).by(1)
@@ -18,6 +21,7 @@ RSpec.describe "Locations", type: :feature do
   it "Reports an error if user adds a location type with invalid attributes" do
     visit new_location_type_path
     expect {
+      fill_in "User", with: user.swipe_card_id
       click_button "Create Location type"
     }.to_not change(LocationType, :count)
     expect(page.text).to match("error prohibited this record from being saved")
@@ -30,6 +34,7 @@ RSpec.describe "Locations", type: :feature do
       within("#location_type_#{location_type.id}") do
         click_link "Edit"
       end
+      fill_in "User", with: user.swipe_card_id
       fill_in "Name", with: "Updated location type"
       click_button "Update Location type"
     }.to change { location_type.reload.name }.to("Updated location type")
@@ -54,6 +59,7 @@ RSpec.describe "Locations", type: :feature do
     visit locations_path
     click_link "Add new location"
     expect {
+      fill_in "User", with: user.swipe_card_id
       fill_in "Name", with: location.name
       select location_types.first.name, from: "Location type"
       check "Container"
@@ -66,6 +72,7 @@ RSpec.describe "Locations", type: :feature do
     location = build(:location)
     visit new_location_path
     expect {
+      fill_in "User", with: user.swipe_card_id
       select location_types.first.name, from: "Location type"
       check "Container"
       click_button "Create Location"
@@ -80,6 +87,7 @@ RSpec.describe "Locations", type: :feature do
       within("#location_#{location.id}") do
         click_link "Edit"
       end
+      fill_in "User", with: user.swipe_card_id
       fill_in "Name", with: "An updated location name"
       click_button "Update Location"
     }.to change { location.reload.name }.to("An updated location name")
@@ -90,6 +98,7 @@ RSpec.describe "Locations", type: :feature do
     location_parent = create(:location)
     location_child = create(:location)
     visit edit_location_path(location_child)
+    fill_in "User", with: user.swipe_card_id
     select location_parent.name, from: "Parent"
     click_button "Update Location"
     expect(location_child.reload.parent).to eq(location_parent)
@@ -120,6 +129,7 @@ RSpec.describe "Locations", type: :feature do
         click_link "Edit"
       end
     expect {
+      fill_in "User", with: user.swipe_card_id
       uncheck "Active"
       click_button "Update Location"
     }.to change { location.reload.active? }.from(true).to(false)
@@ -134,10 +144,26 @@ RSpec.describe "Locations", type: :feature do
         click_link "Edit"
       end
     expect {
+      fill_in "User", with: user.swipe_card_id
       check "Active"
       click_button "Update Location"
     }.to change { location.reload.active? }.from(false).to(true)
     expect(page).to have_content("Location successfully updated")
+  end
+
+  it "Does not allow an unauthorised user to modify locations" do
+    location = build(:location)
+    standard_user = create(:standard)
+    visit locations_path
+    click_link "Add new location"
+    expect {
+      fill_in "User", with: standard_user.swipe_card_id
+      fill_in "Name", with: location.name
+      select location_types.first.name, from: "Location type"
+      check "Container"
+      click_button "Create Location"
+    }.to_not change(Location, :count)
+    expect(page).to have_content("error prohibited this record from being saved")
   end
 
 end

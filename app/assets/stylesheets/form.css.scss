@@ -19,13 +19,13 @@ fieldset{
     font-weight: bold;
   }
 
-  input[type=text], input[type=submit], textarea {
+  input[type=text], input[type=submit], input[type=password], textarea {
     border-style: solid;
     border-width: 2px;
     @include rounded-corners(5px);
   }
 
-  input[type=text], select, textarea{
+  input[type=text], input[type=password], select, textarea{
     width: 100%;
     padding: 5px;
     margin-top: 10px;

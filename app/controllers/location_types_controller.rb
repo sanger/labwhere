@@ -1,18 +1,18 @@
 class LocationTypesController < ApplicationController
 
   before_action :location_types, only: [:index]
-  before_action :set_location_type, except: [:index, :new, :create]
+  before_action :set_location_type, except: [:index, :edit, :new, :create]
 
   def index
   end
 
   def new
-    @location_type = LocationType.new
+    @location_type = LocationTypeForm.new
   end
 
   def create
-    @location_type = LocationType.new(location_type_params)
-    if @location_type.save
+    @location_type = LocationTypeForm.new
+    if @location_type.submit(params)
       redirect_to location_types_path, notice: "Location type successfully created"
     else
       render :new
@@ -20,10 +20,12 @@ class LocationTypesController < ApplicationController
   end
 
   def edit
+    @location_type = LocationTypeForm.new(current_resource)
   end
 
   def update
-    if @location_type.update_attributes(location_type_params)
+    @location_type = LocationTypeForm.new(current_resource)
+    if @location_type.submit(params)
       redirect_to location_types_path, notice: "Location type successfully updated"
     else
       render :edit

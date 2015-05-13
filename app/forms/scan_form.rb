@@ -2,9 +2,10 @@
 # This will create a persisted scan.
 # It can be used from a view or elsewhere.
 # 
-class CreateScan
+class ScanForm
 
   include ActiveModel::Model
+  #include AuditForm
 
   include HashAttributes
 
@@ -29,7 +30,7 @@ class CreateScan
     set_attributes(params)
     scan.location = Location.find_by(barcode: location_barcode)
     if valid?
-      build_labwares
+      Labware.build_for(scan, labware_barcodes)
       scan.save
     else
       false
@@ -41,12 +42,6 @@ class CreateScan
   end
 
 private
-
-  def build_labwares
-    labware_barcodes.split("\n").each do |barcode|
-      scan.labwares << Labware.find_or_initialize_by(barcode: barcode.remove_control_chars)
-    end
-  end
 
   def check_for_errors
     LocationValidator.new.validate(self)

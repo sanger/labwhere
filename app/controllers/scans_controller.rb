@@ -1,10 +1,10 @@
 class ScansController < ApplicationController
   def new
-    @scan = CreateScan.new
+    @scan = ScanForm.new
   end
 
   def create
-    @scan = CreateScan.new
+    @scan = ScanForm.new
 
     if @scan.submit(params[:scan])
       redirect_to root_path, notice: @scan.message

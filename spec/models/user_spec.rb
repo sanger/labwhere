@@ -38,11 +38,11 @@ RSpec.describe User, type: :model do
   end
 
   it "Admin use should be allowed to do anything" do
-    expect(build(:admin)).to allow(:any, :thing)
+    expect(build(:admin)).to allow_permission(:any, :thing)
   end
 
   it "Standard user should be allowed to create a scan" do
-    expect(build(:standard)).to allow(:scans, :create)
+    expect(build(:standard)).to allow_permission(:scans, :create)
   end
 
   it "#find_by_code should be able to find user by swipe card id or barcode" do

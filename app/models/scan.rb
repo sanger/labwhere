@@ -5,6 +5,7 @@ class Scan < ActiveRecord::Base
   enum status: [:in, :out]
 
   belongs_to :location
+  belongs_to :user
   has_many :histories
   has_many :labwares, through: :histories
 

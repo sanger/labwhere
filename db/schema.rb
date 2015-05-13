@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150507081812) do
+ActiveRecord::Schema.define(version: 20150511072844) do
+
+  create_table "audits", force: :cascade do |t|
+    t.string   "record_type"
+    t.integer  "record_id"
+    t.string   "action"
+    t.text     "record_data"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "audits", ["user_id"], name: "index_audits_on_user_id"
 
   create_table "histories", force: :cascade do |t|
     t.integer  "scan_id"
@@ -61,11 +73,13 @@ ActiveRecord::Schema.define(version: 20150507081812) do
   create_table "scans", force: :cascade do |t|
     t.integer  "status",      default: 0
     t.integer  "location_id"
+    t.integer  "user_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
 
   add_index "scans", ["location_id"], name: "index_scans_on_location_id"
+  add_index "scans", ["user_id"], name: "index_scans_on_user_id"
 
   create_table "searches", force: :cascade do |t|
     t.string   "term"

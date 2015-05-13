@@ -1,11 +1,11 @@
 require "rails_helper"
 
-RSpec.describe CreateScan, type: :model do
+RSpec.describe ScanForm, type: :model do
 
   let!(:location)           { create(:location_with_parent)}
   let!(:existing_location)  { create(:location_with_parent)}
   let(:new_labware)         { build_list(:labware, 4)}
-  let(:create_scan)         { CreateScan.new }
+  let(:create_scan)         { ScanForm.new }
   let!(:existing_labware)   { create_list(:labware, 4, location: existing_location)}
 
   it "existing location with new labware should create labware and add them to the location" do
