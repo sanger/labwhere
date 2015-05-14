@@ -1,18 +1,17 @@
 class UsersController < ApplicationController
 
-  before_action :set_user, except: [:index, :new, :create]
   before_action :users, only: [:index]
 
   def index
   end
 
   def new
-    @user = User.new
+    @user = UserForm.new
   end
 
   def create
-    @user = User.new(user_params)
-    if @user.save
+    @user = UserForm.new
+    if @user.submit(params)
       redirect_to users_path, notice: "User successfully created"
     else
       render :new
@@ -20,10 +19,12 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @user = UserForm.new(current_resource)
   end
 
   def update
-    if @user.update_attributes(user_params)
+    @user = UserForm.new(current_resource)
+    if @user.submit(params)
       redirect_to users_path, notice: "User successfully updated"
     else
       render :edit
@@ -31,11 +32,13 @@ class UsersController < ApplicationController
   end
 
   def deactivate
+    @user = current_resource
     @user.deactivate
     redirect_to users_path, notice: "User successfully deactivated"
   end
 
   def activate
+    @user = current_resource
     @user.activate
     redirect_to users_path, notice: "User successfully activated"
   end
@@ -47,14 +50,6 @@ class UsersController < ApplicationController
   helper_method :users
 
 private
-
-  def user_params
-    params.require(:user).permit(:login, :swipe_card_id, :barcode, :type, :status, :team_id)
-  end
-
-  def set_user
-    @user = current_resource
-  end
 
    def current_resource
     @current_resource ||= User.find(params[:id]) if params[:id]

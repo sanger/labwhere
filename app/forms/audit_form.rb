@@ -73,7 +73,7 @@ module AuditForm
     end
 
     attr_accessor :user_code
-    attr_reader :model, :controller, :action, :user
+    attr_reader :model, :controller, :action, :current_user
     alias_attribute _model.underscore.to_sym, :model
 
     validate :check_for_errors, :check_user
@@ -87,11 +87,11 @@ module AuditForm
 
   def submit(params)
     set_params_attributes(self.model_name.i18n_key, params)
-    @user = User.find_by_code(user_code)
+    @current_user = User.find_by_code(user_code)
     model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
     if valid?
       model.save
-      Audit.add(model, user, action)
+      Audit.add(model, current_user, action)
     else
       false
     end

@@ -1,19 +1,17 @@
 class TeamsController < ApplicationController
 
   before_action :teams, only: [:index]
-  before_action :set_team, except: [:index, :new, :create]
-
 
   def index
   end
 
   def new
-    @team = Team.new
+    @team = TeamForm.new
   end
 
   def create
-    @team = Team.new(team_params)
-    if @team.save
+    @team = TeamForm.new
+    if @team.submit(params)
       redirect_to teams_path, notice: "Team successfully created"
     else
       render :new
@@ -21,10 +19,12 @@ class TeamsController < ApplicationController
   end
 
   def edit
+    @team = TeamForm.new(current_resource)
   end
 
   def update
-    if @team.update_attributes(team_params)
+    @team = TeamForm.new(current_resource)
+    if @team.submit(params)
       redirect_to teams_path, notice: "Team successfully updated"
     else
       render :edit
@@ -38,14 +38,6 @@ class TeamsController < ApplicationController
   helper_method :teams
 
 private
-
-  def team_params
-    params.require(:team).permit(:name, :number)
-  end
-
-  def set_team
-    @team = current_resource
-  end
 
    def current_resource
     @current_resource ||= Team.find(params[:id]) if params[:id]

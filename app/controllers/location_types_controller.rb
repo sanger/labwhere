@@ -1,7 +1,6 @@
 class LocationTypesController < ApplicationController
 
   before_action :location_types, only: [:index]
-  before_action :set_location_type, except: [:index, :edit, :new, :create]
 
   def index
   end
@@ -37,6 +36,7 @@ class LocationTypesController < ApplicationController
   end
 
   def destroy
+    @location_type = current_resource
     notice = @location_type.destroy ? "Location type successfully deleted" : "Unable to delete Location type"
     redirect_to location_types_path, notice: notice
   end
@@ -51,16 +51,8 @@ protected
 
 private
 
-  def set_location_type
-    @location_type = current_resource
-  end
-
   def current_resource
     @current_resource ||= LocationType.find(params[:id]) if params[:id]
-  end
-
-  def location_type_params
-    params.require(:location_type).permit(:name)
   end
 
 end

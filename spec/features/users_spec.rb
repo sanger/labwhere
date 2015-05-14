@@ -4,12 +4,14 @@ require "rails_helper"
 RSpec.describe "Users", type: :feature do
 
   let!(:teams) { create_list(:team, 2)}
+  let!(:admin_user) { create(:admin)}
 
   it "Allows a user to create a new user" do
     user = build(:user)
     visit users_path
     click_link "Add new user"
     expect {
+      fill_in "User swipe card id/barcode", with: admin_user.swipe_card_id
       fill_in "Login", with: user.login
       fill_in "Swipe card", with: user.swipe_card_id
       fill_in "Barcode", with: user.barcode
@@ -27,6 +29,7 @@ RSpec.describe "Users", type: :feature do
       click_link "Edit"
     end
     expect {
+      fill_in "User swipe card id/barcode", with: admin_user.swipe_card_id
       fill_in "Swipe card", with: user_2.swipe_card_id
       click_button "Update User"
     }.to change { user.reload.swipe_card_id}.to(user_2.swipe_card_id)
@@ -37,6 +40,7 @@ RSpec.describe "Users", type: :feature do
     visit users_path
     click_link "Add new user"
     expect {
+      fill_in "User swipe card id/barcode", with: admin_user.swipe_card_id
       fill_in "Login", with: user.login
       fill_in "Swipe card", with: user.swipe_card_id
       fill_in "Barcode", with: user.barcode
@@ -54,8 +58,9 @@ RSpec.describe "Users", type: :feature do
       click_link "Edit"
     end
     expect {
-        uncheck "Active"
-        click_button "Update User"
+      fill_in "User swipe card id/barcode", with: admin_user.swipe_card_id
+      uncheck "Active"
+      click_button "Update User"
     }.to change{user.reload.active?}.from(true).to(false)
     expect(page).to have_content("User successfully updated")
   end
@@ -68,6 +73,7 @@ RSpec.describe "Users", type: :feature do
       click_link "Edit"
     end
     expect {
+      fill_in "User swipe card id/barcode", with: admin_user.swipe_card_id
       check "Active"
       click_button "Update User"
     }.to change{user.reload.active?}.from(false).to(true)
@@ -79,6 +85,7 @@ RSpec.describe "Users", type: :feature do
     visit users_path
     click_link "Add new user"
     expect {
+      fill_in "User swipe card id/barcode", with: admin_user.swipe_card_id
       fill_in "Swipe card", with: user.swipe_card_id
       fill_in "Barcode", with: user.barcode
       select teams.first.name, from: "Team"

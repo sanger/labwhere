@@ -7,7 +7,7 @@ class ScanForm
   include ActiveModel::Model
   include HashAttributes
 
-  attr_reader :scan, :controller, :action, :user
+  attr_reader :scan, :controller, :action, :current_user
   attr_accessor :location_barcode, :labware_barcodes, :user_code
   delegate :location, :message, to: :scan
 
@@ -26,9 +26,9 @@ class ScanForm
 
   def submit(params)
     set_params_attributes(:scan, params)
-    @user = User.find_by_code(user_code)
+    @current_user = User.find_by_code(user_code)
     scan.location = Location.find_by(barcode: location_barcode)
-    scan.user = user
+    scan.user = current_user
     if valid?
       Labware.build_for(scan, labware_barcodes)
       scan.save
