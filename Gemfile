@@ -33,6 +33,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Puma as the app server
 gem 'puma'
 
+group :deployment do
+  gem 'mysql2'
+end
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
