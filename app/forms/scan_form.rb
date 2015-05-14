@@ -5,13 +5,13 @@
 class ScanForm
 
   include ActiveModel::Model
-  include AuditUser
+  include HashAttributes
 
-  attr_reader :scan
-  attr_accessor :location_barcode, :labware_barcodes
+  attr_reader :scan, :controller, :action, :user
+  attr_accessor :location_barcode, :labware_barcodes, :user_code
   delegate :location, :message, to: :scan
 
-  validate :check_for_errors
+  validate :check_for_errors, :check_user
 
   def persisted?
     false
@@ -25,10 +25,8 @@ class ScanForm
   end
 
   def submit(params)
-    @params = params
-    @location_barcode = params[:scan][:location_barcode]
-    @labware_barcodes = params[:scan][:labware_barcodes]
-    @user = find_user(params[:scan][:user])
+    set_params_attributes(:scan, params)
+    @user = User.find_by_code(user_code)
     scan.location = Location.find_by(barcode: location_barcode)
     scan.user = user
     if valid?
@@ -47,6 +45,10 @@ private
 
   def check_for_errors
     LocationValidator.new.validate(self)
+  end
+
+  def check_user
+    UserValidator.new.validate(self)
   end
   
 end

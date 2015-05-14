@@ -3,8 +3,7 @@
     <legend><%= header.to_s %></legend>
     <ul>
       <li>
-        <%= f.label :user %>
-        <%= f.password_field :user %>
+        <%= render "user_code", object: f %>
       </li>
       <li>
         <%= f.label :name %>

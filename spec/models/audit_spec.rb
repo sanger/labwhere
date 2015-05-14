@@ -4,7 +4,7 @@ RSpec.describe Audit, type: :model do
 
   let!(:location) {create(:location)}
   
-  it "should not be valid without a record type" do
+  it "should not be valid without a user" do
     expect(build(:audit, user: nil)).to_not be_valid
   end
 

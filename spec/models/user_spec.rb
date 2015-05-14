@@ -50,7 +50,7 @@ RSpec.describe User, type: :model do
     user = build(:user)
     expect(User.find_by_code(users.first.swipe_card_id)).to eq(users.first)
     expect(User.find_by_code(users.first.barcode)).to eq(users.first)
-    expect(User.find_by_code(user.swipe_card_id)).to be_nil
+    expect(User.find_by_code(user.swipe_card_id)).to be_guest
   end
 
 end

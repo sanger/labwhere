@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   end
 
   def self.find_by_code(code)
-    where("swipe_card_id = :code OR barcode = :code", { code: code}).take
+    where("swipe_card_id = :code OR barcode = :code", { code: code}).take || Guest.new
   end
 
 end

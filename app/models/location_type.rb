@@ -16,7 +16,7 @@ private
 
   def check_existing_locations
     unless locations.empty?
-      errors.add(:base, "Can't delete a location type which is being used for a location.")
+      errors.add(:base, I18n.t("errors.messages.location_type_in_use"))
       false
     else
       true

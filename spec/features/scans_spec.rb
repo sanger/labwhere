@@ -11,7 +11,7 @@ RSpec.describe "Scans", type: :feature do
     labwares = build_list(:labware, 10)
     visit new_scan_path
     expect {
-      fill_in "User", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Location barcode", with: location.barcode
       fill_in "Labware barcodes", with: labwares.join_barcodes
       click_button "Go!"
@@ -23,7 +23,7 @@ RSpec.describe "Scans", type: :feature do
     labwares = create_list(:labware, 10, location: create(:location_with_parent))
     visit new_scan_path
     expect {
-      fill_in "User", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Labware barcodes", with: labwares.join_barcodes
       click_button "Go!"
     }.to change(Scan, :count).by(1)
@@ -35,7 +35,7 @@ RSpec.describe "Scans", type: :feature do
     labwares = build_list(:labware, 10)
     visit new_scan_path
     expect {
-      fill_in "User", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Location barcode", with: location.barcode
       fill_in "Labware barcodes", with: labwares.join_barcodes
       click_button "Go!"

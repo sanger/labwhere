@@ -64,7 +64,7 @@ module AuditForm
   
   included do
 
-    include AuditUser
+    include HashAttributes
 
     _model = self.to_s.gsub("Form","")
 
@@ -72,10 +72,11 @@ module AuditForm
       ActiveModel::Name.new(_model.constantize, nil, _model)
     end
 
-    attr_reader :model
+    attr_accessor :user_code
+    attr_reader :model, :controller, :action, :user
     alias_attribute _model.underscore.to_sym, :model
 
-    validate :check_for_errors
+    validate :check_for_errors, :check_user
 
     delegate :id, to: :model
   end
@@ -85,12 +86,12 @@ module AuditForm
   end
 
   def submit(params)
-    @params = params
-    @user = find_user(params[self.model_name.i18n_key][:user])
+    set_params_attributes(self.model_name.i18n_key, params)
+    @user = User.find_by_code(user_code)
     model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
     if valid?
       model.save
-      Audit.add(model, user, params[:action])
+      Audit.add(model, user, action)
     else
       false
     end
@@ -108,6 +109,10 @@ private
         errors.add key, value
       end
     end
+  end
+
+  def check_user
+    UserValidator.new.validate(self)
   end
 
 end
