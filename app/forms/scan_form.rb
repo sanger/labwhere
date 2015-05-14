@@ -5,9 +5,7 @@
 class ScanForm
 
   include ActiveModel::Model
-  #include AuditForm
-
-  include HashAttributes
+  include AuditUser
 
   attr_reader :scan
   attr_accessor :location_barcode, :labware_barcodes
@@ -27,8 +25,12 @@ class ScanForm
   end
 
   def submit(params)
-    set_attributes(params)
+    @params = params
+    @location_barcode = params[:scan][:location_barcode]
+    @labware_barcodes = params[:scan][:labware_barcodes]
+    @user = find_user(params[:scan][:user])
     scan.location = Location.find_by(barcode: location_barcode)
+    scan.user = user
     if valid?
       Labware.build_for(scan, labware_barcodes)
       scan.save
