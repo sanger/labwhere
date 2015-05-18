@@ -1,0 +1,8 @@
+<%= render "error_messages", target: @record %>
+<%= form_tag request.url, method: :delete, remote: :true do %>
+  <h4>Are you sure you want to delete this record?</h4>
+  <p>
+    <%= label_tag :user_code, "User swipe card id/barcode" %> <%= password_field_tag :user_code %>
+    <%= submit_tag "Delete" %>
+  </p>  
+<% end %>

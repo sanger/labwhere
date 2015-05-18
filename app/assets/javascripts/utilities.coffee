@@ -9,3 +9,13 @@ jQuery ->
       dataType: "html"
       success: (data, textStatus, jqXHR) ->
         $($this).parent().after($(data).find("#collection"))
+
+$.fn.addDialog = (partial, title) ->
+  this.dialog
+    autoOpen: true
+    height: 300
+    width: 600
+    title: title
+    open: -> $(this).html(partial)
+    buttons:
+      Cancel: -> $(this).dialog("close")

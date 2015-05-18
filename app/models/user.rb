@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
 
   include HasActive
+  include AddAudit
 
   belongs_to :team
+  has_many :audits, as: :auditable
 
   validates_presence_of :login, :swipe_card_id, :barcode
 

@@ -41,15 +41,43 @@ RSpec.describe "Locations", type: :feature do
     expect(page).to have_content("Location type successfully updated")
   end
 
-  it "Allows a user to delete an existing location type" do
-    location_type = create(:location_type)
-    visit location_types_path
-    expect {
+  describe "deleting", js: true do
+
+    it "Allows a user to delete an existing location type" do
+      location_type = create(:location_type)
+      visit location_types_path
       within("#location_type_#{location_type.id}") do
         click_link "Delete"
       end
-    }.to change(LocationType, :count).by(-1)
-    expect(page).to have_content("Location type successfully deleted")
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      click_button "Delete"
+      expect(page).to have_content("Location type successfully deleted")
+      expect(LocationType.find_by(id: location_type.id)).to be_nil
+    end
+
+    it "Prevents a user from deleting an existing location type if they are not authorised" do
+      location_type = create(:location_type)
+      standard_user = create(:standard)
+      visit location_types_path
+      expect {
+        within("#location_type_#{location_type.id}") do
+          click_link "Delete"
+        end
+        fill_in "User swipe card id/barcode", with: standard_user.swipe_card_id
+        click_button "Delete"
+      }.to_not change(LocationType, :count)
+      expect(page).to have_content("error prohibited this record from being saved")
+    end
+
+  end
+
+  it "Should not be able to destroy a location type with an association location" do
+    location_type = create(:location_type)
+    location = create(:location, location_type: location_type)
+    visit location_types_path
+    within("#location_type_#{location_type.id}") do
+      expect(page).to_not have_content("Delete")
+    end
   end
 
   let!(:location_types) { create_list(:location_type, 4)}

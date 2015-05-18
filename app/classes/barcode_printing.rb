@@ -1,0 +1,3 @@
+class BarcodePrinting
+  
+end

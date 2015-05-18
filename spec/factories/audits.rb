@@ -3,10 +3,10 @@ FactoryGirl.define do
     transient do
       location { create(:location) }
     end
-    record_type { location.class }
+    auditable_type { location.class }
     action "create"
     record_data  { location.to_json }
-    record_id { location.id }
+    auditable_id { location.id }
     user
   end
 

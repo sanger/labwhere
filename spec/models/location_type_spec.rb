@@ -18,12 +18,17 @@ RSpec.describe LocationType, type: :model do
     expect(build(:location_type, name: "unique name")).to_not be_valid
   end
 
-  it "should only be deleted if it has not been used for a location" do
+  it "#has_locations? should signify whether a location type can be destroyed" do
     location_type = create(:location_type)
     location = create(:location, location_type: location_type)
-    location_type.destroy
-    expect(location_type.errors.full_messages).to include(I18n.t("errors.messages.location_type_in_use"))
+    expect(location_type.has_locations?).to be_truthy
   end
+
+   it "#has_locations? should signify whether a location type can be destroyed" do
+    location_type = create(:location_type)
+    expect(location_type.has_locations?).to be_falsey
+  end
+
 
   it "#ordered should produce a list ordered by name" do
     location_type_1 = LocationType.create(name: "abc")
@@ -42,4 +47,5 @@ RSpec.describe LocationType, type: :model do
     Location.last.destroy
     expect(location_type.reload.locations_count).to eq(1)
   end
+
 end

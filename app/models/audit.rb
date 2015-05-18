@@ -3,12 +3,10 @@ class Audit < ActiveRecord::Base
 
   validates :user, existence: true
 
-  validates :record_type, :action, :record_data, :record_id, presence: true
+  validates :action, :record_data, presence: true
 
   serialize :record_data, JSON
 
-  def self.add(record, user, action)
-    create(record_id: record.id, record_type: record.class, action: action,
-            user: user, record_data: record.to_json)
-  end
+  belongs_to :auditable, polymorphic: true, counter_cache: true
+
 end

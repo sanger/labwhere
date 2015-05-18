@@ -3,6 +3,7 @@ class CreateLocationTypes < ActiveRecord::Migration
     create_table :location_types do |t|
       t.string :name
       t.integer :locations_count, default: 0
+      t.integer :audits_count, default: 0
 
       t.timestamps null: false
     end

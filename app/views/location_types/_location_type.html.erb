@@ -2,7 +2,9 @@
     <p><%= location_type.id %>. <%= location_type.name %></p>
     <p><%= link_to_add_data "Locations", location_type_locations_path(location_type) %>: <%= location_type.locations_count %></p>
     <p>
-      <%= link_to "Edit", edit_location_type_path(location_type) %> | 
-      <%= link_to "Delete", location_type_path(location_type), method: :delete, data: {confirm: "Are you sure?"} %>
+      <%= link_to "Edit", edit_location_type_path(location_type) %> 
+      <% location_type.destroyable do %>
+        | <%= link_to "Delete", [:delete, location_type], remote: true %>
+      <% end %>
     </p>
 </article>

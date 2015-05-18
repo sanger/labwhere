@@ -2,11 +2,13 @@ class Location < ActiveRecord::Base
 
   include Searchable::Client
   include HasActive
+  include AddAudit
 
   belongs_to :location_type, counter_cache: true
 
   belongs_to :parent, class_name: "Location"
   has_many :children, class_name: "Location", foreign_key: "parent_id"
+  has_many :audits, as: :auditable
 
   has_many :labwares
 

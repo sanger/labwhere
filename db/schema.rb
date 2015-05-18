@@ -14,15 +14,17 @@
 ActiveRecord::Schema.define(version: 20150511072844) do
 
   create_table "audits", force: :cascade do |t|
-    t.string   "record_type"
-    t.integer  "record_id"
+    t.integer  "auditable_id"
+    t.string   "auditable_type"
     t.string   "action"
     t.text     "record_data"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
+  add_index "audits", ["auditable_id", "auditable_type"], name: "index_audits_on_auditable_id_and_auditable_type"
+  add_index "audits", ["auditable_type"], name: "index_audits_on_auditable_type"
   add_index "audits", ["user_id"], name: "index_audits_on_user_id"
 
   create_table "histories", force: :cascade do |t|
@@ -51,6 +53,7 @@ ActiveRecord::Schema.define(version: 20150511072844) do
   create_table "location_types", force: :cascade do |t|
     t.string   "name"
     t.integer  "locations_count", default: 0
+    t.integer  "audits_count",    default: 0
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
   end
@@ -63,6 +66,7 @@ ActiveRecord::Schema.define(version: 20150511072844) do
     t.integer  "status",           default: 0
     t.datetime "deactivated_at"
     t.integer  "labwares_count",   default: 0
+    t.integer  "audits_count",     default: 0
     t.integer  "location_type_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
@@ -91,8 +95,9 @@ ActiveRecord::Schema.define(version: 20150511072844) do
   create_table "teams", force: :cascade do |t|
     t.string   "name"
     t.integer  "number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "audits_count", default: 0
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -101,6 +106,7 @@ ActiveRecord::Schema.define(version: 20150511072844) do
     t.string   "barcode"
     t.string   "type"
     t.integer  "status",         default: 0
+    t.integer  "audits_count",   default: 0
     t.datetime "deactivated_at"
     t.integer  "team_id"
     t.datetime "created_at",                 null: false

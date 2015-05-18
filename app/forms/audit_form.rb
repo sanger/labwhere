@@ -76,7 +76,9 @@ module AuditForm
     attr_reader :model, :controller, :action, :current_user
     alias_attribute _model.underscore.to_sym, :model
 
-    validate :check_for_errors, :check_user
+    validate :check_for_errors, unless: Proc.new { |model| model.destroying? }
+    validate :check_user
+    validate :before_destroy, if: Proc.new { |model| model.destroying? }
 
     delegate :id, to: :model
   end
@@ -87,11 +89,22 @@ module AuditForm
 
   def submit(params)
     set_params_attributes(self.model_name.i18n_key, params)
-    @current_user = User.find_by_code(user_code)
+    set_current_user
     model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
     if valid?
       model.save
-      Audit.add(model, current_user, action)
+      model.create_audit(current_user, action)
+    else
+      false
+    end
+  end
+
+  def destroy(params)
+    set_attributes(params)
+    set_current_user
+    if valid?
+      model.create_audit(current_user, action)
+      model.destroy
     else
       false
     end
@@ -101,7 +114,15 @@ module AuditForm
     model.id?
   end
 
+  def destroying?
+    action == "destroy"
+  end
+
 private
+
+  def set_current_user
+    @current_user = User.find_by_code(user_code)
+  end
 
   def check_for_errors
     unless model.valid?
@@ -113,6 +134,9 @@ private
 
   def check_user
     UserValidator.new.validate(self)
+  end
+
+  def before_destroy
   end
 
 end

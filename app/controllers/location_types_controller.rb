@@ -35,10 +35,23 @@ class LocationTypesController < ApplicationController
     @location_type = current_resource
   end
 
+  def delete
+    @record = LocationTypeForm.new(current_resource)
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def destroy
-    @location_type = current_resource
-    notice = @location_type.destroy ? "Location type successfully deleted" : "Unable to delete Location type"
-    redirect_to location_types_path, notice: notice
+    @record = LocationTypeForm.new(current_resource)
+    respond_to do |format|
+      if @record.destroy(params)
+        flash_keep "Location type successfully deleted"
+        format.js { render js: "window.location.pathname='#{location_types_path}'" }
+      else
+        format.js 
+      end
+    end
   end
 
 protected

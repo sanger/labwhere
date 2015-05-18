@@ -7,6 +7,11 @@ class ApplicationController < ActionController::Base
     @header ||= Header.new(params)
   end
 
+  def flash_keep(message)
+    flash[:notice] = message
+    flash.keep(:notice)
+  end
+
   helper_method :header
 
 end
