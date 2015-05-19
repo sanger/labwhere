@@ -1,0 +1,16 @@
+<%= form_for @printer do |f| %>
+  <fieldset>
+    <legend><%= header.to_s %></legend>
+    <ul>
+      <li>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </li>
+       <li>
+        <%= f.label :uuid %>
+        <%= f.text_field :uuid %>
+      </li>
+    </ul>
+    <%= f.submit %>
+  </fieldset>
+<% end %>

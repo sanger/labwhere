@@ -1,0 +1,11 @@
+<article id="<%= dom_id(printer) %>" class="printer">
+  <p>
+    <%= printer.id %> <%= link_to "Edit", edit_printer_path(printer) %>
+  </p>
+  <p>
+    Name: <%= printer.name %>
+  </p>
+  <p>
+    Uuid: <%= printer.uuid %>
+  </p>
+</article>

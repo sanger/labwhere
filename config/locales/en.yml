@@ -32,3 +32,8 @@ en:
       authorised: "is not authorised"
       location_type_in_use: "Can't delete a location type which is being used for a location."
 
+  printing:
+    success: "Barcode was successfully printed"
+    failure: "Unable to print the barcode"
+    unavailable: "Printer is unavailable"
+
