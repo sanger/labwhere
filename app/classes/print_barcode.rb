@@ -6,40 +6,39 @@ class PrintBarcode
   class_attribute :headers
   self.headers = {'Content-Type' => "application/json", 'Accept' => "application/json"}
 
-  attr_reader :request, :response, :printer, :location, :uri, :message
+  attr_reader :request, :uri, :body
   
   def initialize(printer_id, location_id)
     @printer = Printer.find(printer_id)
     @location = Location.find(location_id)
 
-    create_request
+    @uri = URI.parse("#{self.site}/#{printer.uuid}")
+    @http = Net::HTTP.new(uri.host, uri.port)
+    @body = LabelPrinter.new(location).to_json
+    
+  end
+
+  def message
+    response_ok? ? I18n.t("printing.success") : I18n.t("printing.failure")
   end
 
   def post
-    @response = http.request(request)
-    add_message
-    response.code == 200
+    @request = Net::HTTP::Post.new(uri.path, initheader = self.headers)
+    request.body = body
+    @response_code = http.request(request).code.to_i
+    response_ok?
+  end
+
+  def response_code
+    @response_code ||= 200
+  end
+
+  def response_ok?
+    response_code == 200
   end
 
 private
 
-  attr_reader :http
+  attr_reader :http, :printer, :location
 
-  def add_message
-    @message = case response.code
-      when 200
-        I18n.t("printing.success")
-      when 423
-        I18n.t("printing.unavailable")
-      else
-        I18n.t("printing.failure")
-      end
-  end
-
-  def create_request
-    @uri = URI.parse("#{self.site}/#{printer.uuid}")
-    @http = Net::HTTP.new(uri.host, uri.port)
-    @request = Net::HTTP::Post.new(uri.path, initheader = self.headers)
-    @request.body = LabelPrinter.new(location).to_json
-  end
 end

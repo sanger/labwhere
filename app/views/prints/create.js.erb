@@ -1,0 +1,2 @@
+$("#errors").remove();
+$("#delete-form").prepend("<%= escape_javascript(render('error_messages', target: @location)) %>");

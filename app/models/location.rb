@@ -44,6 +44,17 @@ class Location < ActiveRecord::Base
     self.labwares_count = labwares.count
   end
 
+  class NullLocation
+    def name; "Empty" end
+
+    def barcode; "Empty" end
+
+    def parent; nil end
+
+    def valid?; false end
+    
+  end
+
 private
   
   def generate_barcode

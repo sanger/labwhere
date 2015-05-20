@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'prints/new'
+
+  get 'prints/create'
+
   concern :change_status do
     patch 'activate', on: :member
     patch 'deactivate', on: :member
@@ -11,6 +15,7 @@ Rails.application.routes.draw do
 
   resources :locations, concerns: :change_status do
     resources :labwares, only: [:index]
+    resources :prints, only: [:new, :create]
   end
 
   resources :labwares, only: [:index, :show] do

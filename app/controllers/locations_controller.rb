@@ -10,6 +10,7 @@ class LocationsController < ApplicationController
   end
 
   def show
+    @location = current_resource
   end
 
   def create
