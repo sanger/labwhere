@@ -106,4 +106,31 @@ fieldset{
     top: -10px;
   }
 
-} 
+}
+
+.ui-dialog{
+
+  fieldset{
+    font-size: 0.8em;
+    width: 80%;
+
+    legend{
+      font-size: 1em;
+    }
+  }
+
+  .errors{
+    width: 80%;
+
+    h3{
+      font-size: 0.9em;
+    }
+
+    ul{
+      li{
+        font-size: 0.8em;
+      }
+    }
+    
+  }
+}

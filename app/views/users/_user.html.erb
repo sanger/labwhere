@@ -14,4 +14,7 @@
   <p>
     <%= link_to "Edit", edit_user_path(user) %>
   </p>
+   <p>
+    <%= link_to_add_data "Audits", user_audits_path(user) %>: <%= user.audits_count %>
+  </p>
 </article>

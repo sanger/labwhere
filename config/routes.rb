@@ -1,21 +1,29 @@
 Rails.application.routes.draw do
 
-  get 'prints/new'
-
-  get 'prints/create'
-
   concern :change_status do
     patch 'activate', on: :member
     patch 'deactivate', on: :member
   end
 
-  resources :location_types do
-    resources :locations, only: [:index]
+  concern :auditable do |options|
+    scope module: options[:parent] do
+      resources :audits, only: [:index]
+    end
   end
 
-  resources :locations, concerns: :change_status do
+  resources :location_types do
+    resources :locations, only: [:index]
+
+    concerns :auditable, parent: :location_types
+  end
+
+  resources :locations do 
     resources :labwares, only: [:index]
     resources :prints, only: [:new, :create]
+
+    concerns :change_status
+    concerns :auditable, parent: :locations
+
   end
 
   resources :labwares, only: [:index, :show] do
@@ -26,7 +34,10 @@ Rails.application.routes.draw do
 
   resources :searches, only: [:new, :create, :show]
 
-  resources :users, concerns: :change_status
+  resources :users do
+    concerns :auditable, parent: :users
+    concerns :change_status
+  end
 
   resources :teams
 

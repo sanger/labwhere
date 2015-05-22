@@ -92,6 +92,32 @@ RSpec.describe "Searches", type: :feature do
       end
     end
 
+    it "with a location type should allow viewing of associated audits" do
+      location_type = create(:location_type_with_audits)
+      visit root_path
+      fill_in "Term", with: location_type.name
+      click_button "Search"
+      within("#location_type_#{location_type.id}") do
+        click_link "Audits"
+      end
+       location_type.audits.each do |audit|
+        expect(page).to have_content(audit.record_data)
+      end
+    end
+
+    it "with a location should allow viewing of associated audits" do
+      location = create(:location_with_audits)
+      visit root_path
+      fill_in "Term", with: location.barcode
+      click_button "Search"
+      within("#location_#{location.id}") do
+        click_link "Audits"
+      end
+       location.audits.each do |audit|
+        expect(page).to have_content(audit.record_data)
+      end
+    end
+
     it "with a labware should allow viewing of associated history" do
       labware = create(:labware)
       this_event = create(:history, scan: create(:scan), labware: labware)

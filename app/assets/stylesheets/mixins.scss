@@ -3,3 +3,10 @@
   -moz-border-radius: $width;
   -webkit-border-radius: $width;
 }
+
+@mixin drop-shadow($width, $colour){
+  -moz-box-shadow: $width $width $width $colour;
+  -webkit-box-shadow: $width $width $width $colour;
+  -o-box-shadow: $width $width $width $colour;
+  box-shadow: $width $width $width $colour;
+}

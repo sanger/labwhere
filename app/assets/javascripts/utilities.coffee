@@ -13,7 +13,7 @@ jQuery ->
 $.fn.addDialog = (partial, title) ->
   this.dialog
     autoOpen: true
-    height: 300
+    height: 400
     width: 600
     title: title
     open: -> $(this).html(partial)

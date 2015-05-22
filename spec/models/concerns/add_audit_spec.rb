@@ -26,12 +26,13 @@ RSpec.describe AddAudit, type: :model do
     expect(audit.record_data).to eq(my_model.to_json)
   end
 
-   it "should be able to create an audit record" do 
+  it "should be able to create an audit record" do 
     my_model = MyModel.create(name: "My Model")
     my_model.create_audit(user, "create")
     audit = my_model.audits.first
     expect(audit.user).to eq(user)
     expect(audit.record_data).to eq(my_model.to_json)
+    expect(my_model.reload.audits_count).to eq(1)
   end
     
 end

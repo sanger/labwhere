@@ -94,4 +94,17 @@ RSpec.describe "Users", type: :feature do
     expect(page).to have_content("error prohibited this record from being saved")
   end
 
+  describe "drilling down", js: true do
+    it "should allow viewing of associated audits" do
+      user = create(:user_with_audits)
+      visit users_path
+      within("#user_#{user.id}") do
+        click_link "Audits"
+      end
+      user.audits.each do |audit|
+        expect(page).to have_content(audit.record_data)
+      end
+    end
+  end
+
 end

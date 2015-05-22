@@ -1,3 +1,4 @@
+@import "shared";
 
 *{
   padding: 0;
@@ -39,16 +40,25 @@ nav{
   position: absolute;
   right: 330px;
 
+  .root{
+
+    width: 80%;
+    height: 30px;
+
+    background:{
+      image: image-url("arrow-down.png");
+      position: right 20px bottom 3px;
+      repeat: no-repeat;
+
+      }
+    }
+
   ul{
 
     li{
       float:left;
       display:inline;
       width: 150px;
-
-      &:hover{
-        background:#E6E6E6;
-      }
 
       a{
         display:block;
@@ -60,8 +70,11 @@ nav{
 
       ul{
         position:absolute;
-        width:150px;
+        width:120px;
         background:#FFF;
+
+        @include rounded-corners(5px);
+        @include drop-shadow(2px, gray);
 
         border:{
           width: 0.5px 0.5px 0.5px 0.5px;
@@ -70,6 +83,12 @@ nav{
         }
 
         li{
+          width:120px;
+          font-size: 0.9em;
+
+          &:hover{
+            background:#E6E6E6;
+          }
 
 
           a{
