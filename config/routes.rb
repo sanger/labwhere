@@ -5,16 +5,18 @@ Rails.application.routes.draw do
     patch 'deactivate', on: :member
   end
 
-  concern :auditable do |options|
-    scope module: options[:parent] do
+  concern :auditable do
+    scope_module do
       resources :audits, only: [:index]
     end
   end
 
   resources :location_types do
-    resources :locations, only: [:index]
+    scope_module do
+      resources :locations, only: [:index]
+    end
 
-    concerns :auditable, parent: :location_types
+    concerns :auditable
   end
 
   resources :locations do 
@@ -22,7 +24,7 @@ Rails.application.routes.draw do
     resources :prints, only: [:new, :create]
 
     concerns :change_status
-    concerns :auditable, parent: :locations
+    concerns :auditable
 
   end
 
@@ -35,7 +37,7 @@ Rails.application.routes.draw do
   resources :searches, only: [:new, :create, :show]
 
   resources :users do
-    concerns :auditable, parent: :users
+    concerns :auditable
     concerns :change_status
   end
 

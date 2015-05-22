@@ -1,3 +1,6 @@
+##
+# This concern can be added into any sub-controller which handles audits.
+# It will infer the name of the model from the controller name and create the respective find method.
 module Auditing
 
   extend ActiveSupport::Concern
@@ -17,13 +20,17 @@ module Auditing
     helper_method :audits
   end
 
+  ##
+  # Audits should only implement the index action as they are system created.
   def index
   end
 
 protected
-
+  
+  ##
+  # Get a list of audits for the model.
   def audits
-    @audits = model.find(params[key]).audits
+    @audits ||= model.find(params[key]).audits if params[key]
   end
 
 end

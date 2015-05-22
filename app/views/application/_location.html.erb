@@ -1,0 +1,22 @@
+<article id="<%= dom_id(location) %>" class="location">
+  <p>
+    <%= location.id %>. <%= location.name %> - <%= location.barcode %> 
+    <%= link_to "Reprint barcode", new_location_print_path(location), remote: true %> | 
+    <%= link_to "Edit", edit_location_path(location) %>
+  </p>
+  <p>
+    Parent: <%= location.parent.name %>
+  </p>
+  <p>
+    Container: <%= location.container %>
+  </p>
+  <p>
+    Status: <%= location.status %>
+  </p>
+  <p>
+    <%= link_to_add_data "Labwares", location_labwares_path(location) %>: <%= location.labwares_count %>
+  </p>
+   <p>
+    <%= link_to_add_data "Audits", location_audits_path(location) %>: <%= location.audits_count %>
+  </p>
+</article>

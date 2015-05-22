@@ -3,13 +3,15 @@
 # Audit form includes ActiveModel::Model and all its wonderment.
 #
 # An audit form will do three things:
-#  * Create an object for the model and check it for errors.
-#  * Check whether the user exists and whether the use is authorised to created the record.
-#  * Add an audit record.
+# * Create an object for the model and check it for errors.
+# * Check whether the user exists and whether the use is authorised to created the record.
+# * Add an audit record.
 #
-# = Usage
-#  * The name of the model is inferred from the name of the form.
-#  * The name must follow convention ModelForm.
+# === Usage
+# * The name of the model is inferred from the name of the form.
+# * The name must follow convention ModelForm.
+# * The +set_attributes+ method should contain any attributes that are whitelisted and
+#   will be added to the model.
 #
 # Example:
 #
@@ -83,10 +85,17 @@ module AuditForm
     delegate :id, to: :model
   end
 
+  ##
+  # If an object is passed it will be assigned otherwise a new one is created.
+  # This covers new/edit and destroy action.
   def initialize(object = nil)
     @model = object || self.model_name.name.constantize.new
   end
 
+  ##
+  # Check whether the user is valid, save the model if it is valid
+  # and create an audit record.
+  # Returns boolean depending on whether everything is valid.
   def submit(params)
     set_params_attributes(self.model_name.i18n_key, params)
     set_current_user
@@ -99,6 +108,9 @@ module AuditForm
     end
   end
 
+  ##
+  # Will destroy the record if the user is authorised and the record can be destroyed.
+  # Will create an audit record.
   def destroy(params)
     set_attributes(params)
     set_current_user
@@ -110,10 +122,15 @@ module AuditForm
     end
   end
 
+  ##
+  # This is necessary for any forms.
+  # Checks whether the record already exists.
   def persisted?
     model.id?
   end
 
+  ##
+  # Checks whether this is passed from the destroy action.
   def destroying?
     action == "destroy"
   end

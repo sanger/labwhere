@@ -36,3 +36,6 @@ bower.json
 .powenv
 
 .DS_Store
+
+#ignore docs
+/doc/app

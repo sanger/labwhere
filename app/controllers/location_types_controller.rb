@@ -1,16 +1,15 @@
 class LocationTypesController < ApplicationController
 
   before_action :location_types, only: [:index]
+  before_action :set_location_type, except: [:index]
 
   def index
   end
 
   def new
-    @location_type = LocationTypeForm.new
   end
 
   def create
-    @location_type = LocationTypeForm.new
     if @location_type.submit(params)
       redirect_to location_types_path, notice: "Location type successfully created"
     else
@@ -19,11 +18,9 @@ class LocationTypesController < ApplicationController
   end
 
   def edit
-    @location_type = LocationTypeForm.new(current_resource)
   end
 
   def update
-    @location_type = LocationTypeForm.new(current_resource)
     if @location_type.submit(params)
       redirect_to location_types_path, notice: "Location type successfully updated"
     else
@@ -32,20 +29,17 @@ class LocationTypesController < ApplicationController
   end
 
   def show
-    @location_type = current_resource
   end
 
   def delete
-    @record = LocationTypeForm.new(current_resource)
     respond_to do |format|
       format.js
     end
   end
 
   def destroy
-    @record = LocationTypeForm.new(current_resource)
     respond_to do |format|
-      if @record.destroy(params)
+      if @location_type.destroy(params)
         flash_keep "Location type successfully deleted"
         format.js { render js: "window.location.pathname='#{location_types_path}'" }
       else
@@ -58,6 +52,10 @@ protected
 
   def location_types
     @location_type ||= LocationType.ordered
+  end
+
+  def set_location_type
+    @location_type = LocationTypeForm.new(current_resource)
   end
 
   helper_method :location_types

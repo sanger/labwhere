@@ -1,10 +1,14 @@
 ###
 # Useful in initializers.
-# There are certain things such as Settings without which the app will be rendered useless.
+#
+# There are certain lists  such as location types without which the app will be rendered useless.
+#
 # Normally these will be in a database table but not when the app is first started.
-# This class has one method which will check whether the table exists and if there are any records in it.
-# If there are it will execute the failure block
-# If there are no records the success block will be executed.
+#
+# This class has one method which will check whether the table exists and if there are any records in it:
+# * If there are it will execute the failure block
+# * If there are no records the success block will be executed.
+#
 # Neither block will run in the test environment.
 class DependentLoader
   ##

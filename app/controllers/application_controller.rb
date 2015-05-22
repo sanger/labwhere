@@ -3,10 +3,15 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  ##
+  # Creates a standard header in case no other header is passed.
   def header
     @header ||= Header.new(params)
   end
 
+  ##
+  # Useful for Ajax calls.
+  # This will keep any messages across a request.
   def flash_keep(message)
     flash[:notice] = message
     flash.keep(:notice)
