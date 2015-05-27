@@ -40,6 +40,7 @@ gem 'puma'
 
 group :deployment do
   gem 'mysql2'
+  gem 'therubyracer'
 end
 
 # Use Capistrano for deployment
