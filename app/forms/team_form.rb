@@ -1,6 +1,6 @@
 class TeamForm
 
-  include AuditForm
+  include Auditor
 
   set_attributes :name, :number
 

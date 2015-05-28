@@ -1,5 +1,5 @@
 class LocationTypeForm
-  include AuditForm
+  include Auditor
 
   set_attributes :name
 

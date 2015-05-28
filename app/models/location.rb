@@ -52,6 +52,8 @@ class Location < ActiveRecord::Base
     def parent; nil end
 
     def valid?; false end
+
+    def empty?; true end
     
   end
 

@@ -1,52 +1,4 @@
-##
-#
-# Audit form includes ActiveModel::Model and all its wonderment.
-#
-# An audit form will do three things:
-# * Create an object for the model and check it for errors.
-# * Check whether the user exists and whether the use is authorised to created the record.
-# * Add an audit record.
-#
-# === Usage
-# * The name of the model is inferred from the name of the form.
-# * The name must follow convention ModelForm.
-# * The +set_attributes+ method should contain any attributes that are whitelisted and
-#   will be added to the model.
-#
-# Example:
-#
-#  class MyModelForm
-#   include AuditForm
-#   set_attributes :attr_a, :attr_b
-#  end
-#
-# Usage in controller:
-#  
-#  def new
-#   @my_model = MyModelForm.new
-#  end
-#
-#  def create
-#   @my_model = MyModelForm.new
-#   if @my_model.submit(params)
-#    ...
-#   end
-#  end
-#
-#  def edit
-#   @my_model = MyModelForm.new(MyModel.find(params[:id]))
-#  end
-#
-#  def update
-#   @my_model = MyModelForm.new(MyModel.find(params[:id]))
-#   if @my_model.submit(params)
-#    ...
-#   end
-#  end
-#
-
-module AuditForm
-
+module Auditor
   extend ActiveSupport::Concern
   include ActiveModel::Model 
   
@@ -63,12 +15,12 @@ module AuditForm
       end
     end
   end
-  
+
   included do
 
     include HashAttributes
 
-    _model = self.to_s.gsub("Form","")
+    _model = self.to_s.remove_last_word
 
     define_singleton_method :model_name do
       ActiveModel::Name.new(_model.constantize, nil, _model)
@@ -83,6 +35,7 @@ module AuditForm
     validate :before_destroy, if: Proc.new { |model| model.destroying? }
 
     delegate :id, to: :model
+
   end
 
   ##
@@ -100,12 +53,7 @@ module AuditForm
     set_params_attributes(self.model_name.i18n_key, params)
     set_current_user
     model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
-    if valid?
-      model.save
-      model.create_audit(current_user, action)
-    else
-      false
-    end
+    save_if_valid
   end
 
   ##
@@ -114,12 +62,7 @@ module AuditForm
   def destroy(params)
     set_attributes(params)
     set_current_user
-    if valid?
-      model.create_audit(current_user, action)
-      model.destroy
-    else
-      false
-    end
+    destroy_if_valid
   end
 
   ##
@@ -136,6 +79,28 @@ module AuditForm
   end
 
 private
+
+  def save_if_valid
+    if valid?
+      model.save
+      create_audit
+    else
+      false
+    end
+  end
+
+  def destroy_if_valid
+    if valid?
+      create_audit
+      model.destroy
+    else
+      false
+    end
+  end
+
+  def create_audit
+    model.create_audit(current_user, action)
+  end
 
   def set_current_user
     @current_user = User.find_by_code(user_code)

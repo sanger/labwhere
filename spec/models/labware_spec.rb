@@ -69,4 +69,10 @@ RSpec.describe Labware, type: :model do
     expect(scan.labwares.length).to eq(4)
   end
 
+  it "should be able to add a coordinate" do
+    coordinate = create(:coordinate)
+    labware = create(:labware, coordinate: coordinate)
+    expect(labware.coordinate).to eq(coordinate)
+  end
+
 end

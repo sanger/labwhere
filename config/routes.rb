@@ -5,18 +5,18 @@ Rails.application.routes.draw do
     patch 'deactivate', on: :member
   end
 
-  concern :auditable do
-    scope_module do
+  concern :auditable do |options|
+    scope module: options[:parent] do
       resources :audits, only: [:index]
     end
   end
 
   resources :location_types do
-    scope_module do
+    scope module: :location_types do
       resources :locations, only: [:index]
     end
 
-    concerns :auditable
+    concerns :auditable, parent: :location_types
   end
 
   resources :locations do 
@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     resources :prints, only: [:new, :create]
 
     concerns :change_status
-    concerns :auditable
+    concerns :auditable, parent: :locations
 
   end
 
@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   resources :searches, only: [:new, :create, :show]
 
   resources :users do
-    concerns :auditable
+    concerns :auditable, parent: :users
     concerns :change_status
   end
 
@@ -50,6 +50,10 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'scans#new'
+
+  namespace :api do
+    resources :locations, param: :barcode, only: [:show, :create, :update, :destroy]
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150518142205) do
+ActiveRecord::Schema.define(version: 20150527135650) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id"
@@ -26,6 +26,12 @@ ActiveRecord::Schema.define(version: 20150518142205) do
   add_index "audits", ["auditable_id", "auditable_type"], name: "index_audits_on_auditable_id_and_auditable_type"
   add_index "audits", ["auditable_type"], name: "index_audits_on_auditable_type"
   add_index "audits", ["user_id"], name: "index_audits_on_user_id"
+
+  create_table "coordinates", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "histories", force: :cascade do |t|
     t.integer  "scan_id"
@@ -45,8 +51,10 @@ ActiveRecord::Schema.define(version: 20150518142205) do
     t.integer  "previous_location_id"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
+    t.integer  "coordinate_id"
   end
 
+  add_index "labwares", ["coordinate_id"], name: "index_labwares_on_coordinate_id"
   add_index "labwares", ["location_id"], name: "index_labwares_on_location_id"
   add_index "labwares", ["previous_location_id"], name: "index_labwares_on_previous_location_id"
 

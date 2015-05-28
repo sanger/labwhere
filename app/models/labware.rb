@@ -6,6 +6,7 @@ class Labware < ActiveRecord::Base
 
   belongs_to :location
   belongs_to :previous_location, class_name: "Location"
+  belongs_to :coordinate
   has_many :histories
   has_many :scans, through: :histories
 
