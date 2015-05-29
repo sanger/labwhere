@@ -52,5 +52,11 @@ RSpec.describe Location, type: :model do
     location2 = create(:location)
     expect(Location.names([location1, location2])).to eq("#{location1.name} #{location2.name}")
   end
+
+  it "#find_by_code should find a location by it's barcode" do
+    location1 = create(:location)
+    location2 = create(:location)
+    expect(Location.find_by_code(location1.barcode)).to eq(location1)
+  end
   
 end

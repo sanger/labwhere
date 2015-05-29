@@ -1,22 +1,27 @@
 class Api::LocationsController < ApplicationController
+
+  def index
+    render json: Location.all
+  end
+
   def show
     render json: current_resource
   end
 
   def create
-    @location = LocationProcessor.new
+    @location = LocationForm.new
     process_location
   end
 
   def update
-    @location = LocationProcessor.new(current_resource)
+    @location = LocationForm.new(current_resource)
     process_location
   end
 
 private
 
   def current_resource
-    Location.find_by(barcode: params[:barcode])
+    Location.find_by_code(params[:barcode]) if params[:barcode]
   end
 
   def process_location

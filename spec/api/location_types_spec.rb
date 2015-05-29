@@ -1,0 +1,57 @@
+# As a LIMS developer I want to be able to access the functionality of LabWhere via a RESTful API in order to integrate LIMS with it.
+# Create location types
+require "rails_helper"
+
+RSpec.describe Api::LocationTypes, type: :request do
+
+  let!(:user) { create(:admin) }
+
+  it "should retrieve information about location types get /api/location_types" do
+    location_types = create_list(:location_type, 5)
+    get api_location_types_path
+    expect(response).to be_success
+    expect(ActiveSupport::JSON.decode(response.body).length).to eq(location_types.length)
+  end
+
+  it "should retrieve information about a location type get/api/location_types/<id>" do
+    location_type = create(:location_type)
+    get api_location_type_path(location_type)
+    expect(response).to be_success
+    expect(response.body).to eq(location_type.to_json)
+  end
+
+  it "should create a new location type" do
+    post api_location_types_path, location_type: attributes_for(:location_type).merge(user_code: user.swipe_card_id)
+    expect(response).to be_success
+    expect(response.body).to eq(LocationType.first.to_json)
+  end
+
+  it "should return an error if the location type has invalid attributes" do
+    post api_location_types_path, location_type: attributes_for(:location_type).except(:name).merge(user_code: user.swipe_card_id)
+    expect(response).to have_http_status(:unprocessable_entity)
+    expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
+  end
+
+  it "should return an error if the user is invalid" do
+    post api_location_types_path, location_type: attributes_for(:location_type)
+    expect(response).to have_http_status(:unprocessable_entity)
+    expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
+  end
+
+  it "should update an existing location type" do
+    location_type = create(:location_type)
+    location_type_new = build(:location_type)
+    patch api_location_type_path(location_type), location_type: { user_code: user.swipe_card_id, name: location_type_new.name }
+    expect(response).to be_success
+    expect(location_type.reload.name).to eq(location_type_new.name)
+  end
+
+  it "should return an error if the updated location type has invalid attributes" do
+    location_type_1 = create(:location_type)
+    location_type_2 = create(:location_type)
+    patch api_location_type_path(location_type_1), location_type: { user_code: user.swipe_card_id, name: location_type_2.name }
+    expect(response).to have_http_status(:unprocessable_entity)
+    expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
+  end
+  
+end

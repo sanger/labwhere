@@ -52,7 +52,8 @@ Rails.application.routes.draw do
   root 'scans#new'
 
   namespace :api do
-    resources :locations, param: :barcode, only: [:show, :create, :update, :destroy]
+    resources :locations, param: :barcode, except: [:destroy]
+    resources :location_types, except: [:destroy]
   end
 
   # Example of regular route:

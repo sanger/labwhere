@@ -34,7 +34,7 @@ module Auditor
     validate :check_user
     validate :before_destroy, if: Proc.new { |model| model.destroying? }
 
-    delegate :id, to: :model
+    delegate :id, :to_json, to: :model
 
   end
 

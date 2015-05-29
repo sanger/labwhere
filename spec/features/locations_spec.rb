@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe "Locations", type: :feature do
 
   let!(:user) { create(:admin)}
-  
+
   it "Allows a user to add a new location type" do
     location_type = build(:location_type)
     visit location_types_path
@@ -80,7 +80,9 @@ RSpec.describe "Locations", type: :feature do
     end
   end
 
-  let!(:location_types) { create_list(:location_type, 4)}
+  let!(:location_types)   { create_list(:location_type, 4)}
+  let!(:parent_location)  { create(:location)}
+
   
   it "Allows a user to add a new location" do
     location = build(:location)
@@ -93,6 +95,22 @@ RSpec.describe "Locations", type: :feature do
       check "Container"
       click_button "Create Location"
     }.to change(Location, :count).by(1)
+    expect(page).to have_content("Location successfully created")
+  end
+
+  it "Allows a user to add a new location with a parent via a barcode" do
+    location = build(:location)
+    visit locations_path
+    click_link "Add new location"
+    #expect {
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "Name", with: location.name
+      fill_in "Parent barcode", with: parent_location.barcode
+      select location_types.first.name, from: "Location type"
+      check "Container"
+      click_button "Create Location"
+    #}.to change(Location, :count).by(1)
+    expect(Location.last.parent).to eq(parent_location)
     expect(page).to have_content("Location successfully created")
   end
 
@@ -121,6 +139,8 @@ RSpec.describe "Locations", type: :feature do
     }.to change { location.reload.name }.to("An updated location name")
     expect(page).to have_content("Location successfully updated")
   end
+
+
 
   it "Allows a user to nest locations" do
     location_parent = create(:location)

@@ -27,7 +27,7 @@ class ScanForm
   def submit(params)
     set_params_attributes(:scan, params)
     @current_user = User.find_by_code(user_code)
-    scan.location = Location.find_by(barcode: location_barcode)
+    scan.location = Location.find_by_code(location_barcode)
     scan.user = current_user
     if valid?
       Labware.build_for(scan, labware_barcodes)

@@ -36,6 +36,10 @@ class Location < ActiveRecord::Base
     locations.map(&:name).join(spacer)
   end
 
+  def self.find_by_code(code)
+    find_by(barcode: code)
+  end
+
   def unknown?
     name == "UNKNOWN" 
   end
