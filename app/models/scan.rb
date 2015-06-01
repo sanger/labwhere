@@ -21,7 +21,8 @@ class Scan < ActiveRecord::Base
   end
 
 private
- 
+  
+  #TODO: abstract labware and location behaviour into appropriate place.
   def update_labware_locations
     labwares.each {|labware| labware.update(location: self.location)}
   end

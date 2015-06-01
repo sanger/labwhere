@@ -75,4 +75,9 @@ RSpec.describe Labware, type: :model do
     expect(labware.coordinate).to eq(coordinate)
   end
 
+  it "#find_by_code should find labware by barcode" do
+    labware = create(:labware)
+    expect(Labware.find_by_code(labware.barcode)).to eq(labware)
+  end
+
 end

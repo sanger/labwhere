@@ -2,7 +2,7 @@
 # Create location types
 require "rails_helper"
 
-RSpec.describe Api::LocationTypes, type: :request do
+RSpec.describe Api::LocationTypesController, type: :request do
 
   let!(:user) { create(:admin) }
 

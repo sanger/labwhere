@@ -54,6 +54,12 @@ Rails.application.routes.draw do
   namespace :api do
     resources :locations, param: :barcode, except: [:destroy]
     resources :location_types, except: [:destroy]
+    resources :scans, only: [:create]
+    resources :labwares, param: :barcode, only: [:show] do
+      resources :histories, param: :barcode, only: [:index]
+    end
+
+    resources :searches, only: [:create]
   end
 
   # Example of regular route:

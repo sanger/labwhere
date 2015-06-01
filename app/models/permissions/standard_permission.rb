@@ -3,6 +3,7 @@ module Permissions
     def initialize(user)
       super
       allow :scans, [:create]
+      allow "api/scans", [:create]
     end
   end
 end

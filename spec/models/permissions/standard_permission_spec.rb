@@ -8,6 +8,10 @@ RSpec.describe Permissions::StandardPermission, type: :model do
     expect(permissions).to allow_permission(:scans, :create)
   end
 
+  it "should allow access to create a scan through the api" do
+    expect(permissions).to allow_permission("api/scans", :create)
+  end
+
   it "should not allow access to create or modify a location" do
     expect(permissions).to_not allow_permission(:locations, :create)
     expect(permissions).to_not allow_permission(:locations, :update)

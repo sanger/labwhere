@@ -8,7 +8,7 @@ class PrintsController < ApplicationController
   end
 
   def create
-    @print_barcode = PrintBarcode.new(params[:printer_id], params[:location_id])
+    @print_barcode = LabelPrinter.new(params[:printer_id], params[:location_id])
     @print_barcode.post
     respond_to do |format|
       flash_keep @print_barcode.message

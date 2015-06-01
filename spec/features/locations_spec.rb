@@ -102,14 +102,14 @@ RSpec.describe "Locations", type: :feature do
     location = build(:location)
     visit locations_path
     click_link "Add new location"
-    #expect {
+    expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: location.name
       fill_in "Parent barcode", with: parent_location.barcode
       select location_types.first.name, from: "Location type"
       check "Container"
       click_button "Create Location"
-    #}.to change(Location, :count).by(1)
+    }.to change(Location, :count).by(1)
     expect(Location.last.parent).to eq(parent_location)
     expect(page).to have_content("Location successfully created")
   end

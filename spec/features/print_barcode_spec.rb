@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "PrintBarcde", type: :feature do
+RSpec.describe LabelPrinter, type: :feature do
 
   let!(:location) { create(:location)}
   let!(:printer)  { create(:printer)}
 
   before(:each) do
-    allow_any_instance_of(PrintBarcode).to receive(:post).and_return(true)
+    allow_any_instance_of(LabelPrinter).to receive(:post).and_return(true)
   end
 
   describe "printing", js: true do

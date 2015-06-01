@@ -5,6 +5,7 @@
 class ScanForm
 
   include ActiveModel::Model
+  include ActiveModel::Serialization
   include HashAttributes
 
   attr_reader :scan, :controller, :action, :current_user

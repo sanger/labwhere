@@ -19,6 +19,7 @@ class Labware < ActiveRecord::Base
 
   before_save :update_previous_location
 
+  #TODO: abstract previous location behaviour into appropriate place
   def self.previous_locations(labwares)
     Location.find(labwares.pluck(:previous_location_id).compact.uniq)
   end
@@ -31,6 +32,10 @@ class Labware < ActiveRecord::Base
      barcodes.split("\n").each do |barcode|
       object.labwares << find_or_initialize_by(barcode: barcode.remove_control_chars)
     end
+  end
+
+  def self.find_by_code(code)
+    find_by(barcode: code)
   end
 
 private

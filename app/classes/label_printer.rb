@@ -1,4 +1,4 @@
-class PrintBarcode
+class LabelPrinter
 
   class_attribute :site
   self.site = "http://psd2g.internal.sanger.ac.uk:8000/lims-support"
@@ -6,7 +6,9 @@ class PrintBarcode
   class_attribute :headers
   self.headers = {'Content-Type' => "application/json", 'Accept' => "application/json"}
 
-  attr_reader :request, :uri, :body
+  attr_reader :request, :uri, :body, :location
+
+  delegate :as_json, :to_json, to: :serializer
   
   def initialize(printer_id, location_id)
     @printer = Printer.find(printer_id)
@@ -14,8 +16,7 @@ class PrintBarcode
 
     @uri = URI.parse("#{self.site}/#{printer.uuid}")
     @http = Net::HTTP.new(uri.host, uri.port)
-    @body = LabelPrinter.new(location).to_json
-    
+    @body = self.to_json
   end
 
   def message
@@ -37,8 +38,12 @@ class PrintBarcode
     response_code == 200
   end
 
+  def serializer
+    @serializer ||= LabelPrinterSerializer.new(self)
+  end
+
 private
 
-  attr_reader :http, :printer, :location
+  attr_reader :http, :printer
 
 end

@@ -2,7 +2,7 @@
 # Create locations
 require "rails_helper"
 
-RSpec.describe Api::Locations, type: :request do
+RSpec.describe Api::LocationsController, type: :request do
 
   let!(:user) { create(:admin) }
 
