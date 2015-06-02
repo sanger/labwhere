@@ -34,33 +34,33 @@ RSpec.describe Search, type: :model do
     it "should return location type if it matches the term" do
       search = Search.create(term: "room")
       expect(search.results.count).to eq(1)
-      expect(search.results[:location_type]).to include(location_type_room)
+      expect(search.results[:location_types]).to include(location_type_room)
     end
 
     it "should return the location if it matches the term" do
       search = Search.create(term: "Freezer 1")
       expect(search.results.count).to eq(1)
-      expect(search.results[:location]).to include(location_freezer_1)
+      expect(search.results[:locations]).to include(location_freezer_1)
     end
 
     it "should return the labware if it matches the term" do
       search = Search.create(term: labware_1.barcode)
       expect(search.results.count).to eq(1)
-      expect(search.results[:labware]).to include(labware_1)
+      expect(search.results[:labwares]).to include(labware_1)
     end
 
     it "should return multiple resources if they match the term" do
       search = Search.create(term: "freezer")
       expect(search.results.count).to eq(3)
-      expect(search.results[:location_type]).to include(location_type_freezer)
-      expect(search.results[:location]).to include(location_freezer_1)
-      expect(search.results[:location]).to include(location_freezer_2)
+      expect(search.results[:location_types]).to include(location_type_freezer)
+      expect(search.results[:locations]).to include(location_freezer_1)
+      expect(search.results[:locations]).to include(location_freezer_2)
     end
 
     it "should return a result if the barcode matches the term" do
       search = Search.create(term: location_shelf_123.barcode)
       expect(search.results.count).to eq(1)
-      expect(search.results[:location]).to include(location_shelf_123)
+      expect(search.results[:locations]).to include(location_shelf_123)
     end
 
   end

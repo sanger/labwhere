@@ -8,7 +8,7 @@ class ScanForm
   include ActiveModel::Serialization
   include HashAttributes
 
-  attr_reader :scan, :controller, :action, :current_user
+  attr_reader :scan, :controller, :action, :current_user, :labwares
   attr_accessor :location_barcode, :labware_barcodes, :user_code
   delegate :location, :message, to: :scan
 
@@ -31,7 +31,7 @@ class ScanForm
     scan.location = Location.find_by_code(location_barcode)
     scan.user = current_user
     if valid?
-      Labware.build_for(scan, labware_barcodes)
+      Labware.build_for(scan, labwares || labware_barcodes)
       scan.save
     else
       false

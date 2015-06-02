@@ -61,12 +61,32 @@ RSpec.describe Labware, type: :model do
     expect(locations.first.reload.labwares_count).to eq(2)
   end
 
-  it "#build_for should find or initialize labware for associated object" do
+  it "#build_for should find or initialize labware for associated object for a string of labware barcodes" do
     existing_labwares = create_list(:labware, 2, location: create(:location_with_parent))
     new_labwares = build_list(:labware, 2)
     scan = build(:scan)
     Labware.build_for(scan, existing_labwares.join_barcodes+"\n"+new_labwares.join_barcodes)
     expect(scan.labwares.length).to eq(4)
+  end
+
+  it "#build_for should find or initialize labware for associated object for a hash of labwares" do
+    coordinate_1 = create(:coordinate)
+    coordinate_2 = build(:coordinate)
+    existing_labware_1 = create(:labware, location: create(:location_with_parent))
+    existing_labware_2 = create(:labware, location: create(:location_with_parent))
+    new_labware_1 = attributes_for(:labware)
+    new_labware_2 = attributes_for(:labware)
+
+    labwares = [  {barcode: existing_labware_1.barcode, coordinate: coordinate_2.name},
+                  {barcode: existing_labware_2.barcode, coordinate: coordinate_1.name},
+                  new_labware_1, 
+                  new_labware_2.merge(coordinate: coordinate_1.name) ]
+
+    scan = build(:scan)
+    Labware.build_for(scan, labwares)
+    expect(scan.labwares.length).to eq(4)
+    expect(scan.labwares.all? { |labware| labware.new_record?}).to be_falsey
+    expect(Coordinate.all.count).to eq(2)
   end
 
   it "should be able to add a coordinate" do

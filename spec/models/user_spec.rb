@@ -6,17 +6,27 @@ RSpec.describe User, type: :model do
     expect(build(:user, login: nil)).to_not be_valid
   end
 
-  it "should not be valid without a swipe card Id" do
-    expect(build(:user, swipe_card_id: nil)).to_not be_valid
+  it "should be valid without a swipe card Id" do
+    expect(build(:user, swipe_card_id: nil)).to be_valid
   end
 
-  it "should not be valid without a barcode" do
-    expect(build(:user, barcode: nil)).to_not be_valid
+  it "should be valid without a barcode" do
+    expect(build(:user, barcode: nil)).to be_valid
   end
 
   it "should not be valid without a unique login" do
     user = create(:user)
     expect(build(:user, login: user.login)).to_not be_valid
+  end
+
+  it "should not be valid without a unique swipe card" do
+    user = create(:user)
+    expect(build(:user, swipe_card_id: user.swipe_card_id)).to_not be_valid
+  end
+
+  it "should not be valid without a unique barcode" do
+    user = create(:user)
+    expect(build(:user, barcode: user.barcode)).to_not be_valid
   end
 
   it "should not be valid without a team" do

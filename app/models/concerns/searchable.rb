@@ -73,7 +73,7 @@ module Searchable
     def results
       @results ||= SearchResult.new.tap do |result|
         self.class.searchable_models.each do |k, v|
-          result.add k, v.search(self.term)
+          result.add k.pluralize, v.search(self.term)
         end
       end
     end

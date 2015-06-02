@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :coordinate do
-    name "1"
+    sequence(:name) {|n| "#{n}" }
   end
 
 end

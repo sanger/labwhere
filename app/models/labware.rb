@@ -28,9 +28,12 @@ class Labware < ActiveRecord::Base
     previous_locations(labwares).map(&:save)
   end
 
-  def self.build_for(object, barcodes)
-     barcodes.split("\n").each do |barcode|
-      object.labwares << find_or_initialize_by(barcode: barcode.remove_control_chars)
+  def self.build_for(object, labwares)
+    case labwares
+    when String
+      build_by_barcodes(object, labwares)
+    when Array 
+      build_by_attributes(object, labwares)
     end
   end
 
@@ -42,6 +45,24 @@ private
 
   def update_previous_location
     self.previous_location_id = self.location_id_was if  self.location_id_changed?
+  end
+
+  def self.build_by_barcodes(object, barcodes)
+    barcodes.split("\n").each do |barcode|
+      object.labwares << find_or_initialize_by(barcode: barcode.remove_control_chars)
+    end
+  end
+
+  def self.build_by_attributes(object, labwares)
+    labwares.each do |labware|
+      object.labwares << find_or_new_by_barcode_with_coordinates(labware)
+    end
+  end
+
+  def self.find_or_new_by_barcode_with_coordinates(attributes)
+    labware = find_or_initialize_by(barcode: attributes[:barcode])
+    labware.coordinate = Coordinate.find_or_create_by_name(attributes[:coordinate])
+    labware
   end
 
 end

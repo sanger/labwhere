@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :labware do
     sequence(:barcode) {|n| "Labware:#{n}" }
     location nil
+    coordinate nil
 
     factory :labware_with_histories do
 
@@ -11,6 +12,7 @@ FactoryGirl.define do
         end
       end
     end
+
   end
 
 end
