@@ -128,6 +128,7 @@ RSpec.describe "Searches", type: :feature do
       within("#labware_#{labware.id}") do
         click_link "History"
         expect(page).to have_selector("article", count: 1)
+        expect(page).to have_content(this_event.scan.user.login)
       end
       
     end

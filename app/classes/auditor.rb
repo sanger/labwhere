@@ -49,11 +49,15 @@ module Auditor
   # Check whether the user is valid, save the model if it is valid
   # and create an audit record.
   # Returns boolean depending on whether everything is valid.
+  # TODO: Improve the way this is done so when the module is included with some change
+  # then only super should need to be called instead of overriding submit method
   def submit(params)
-    set_params_attributes(self.model_name.i18n_key, params)
+
+    set_instance_variables(params)
     set_current_user
-    model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
+    set_model_attributes(params)
     save_if_valid
+    
   end
 
   ##
@@ -79,6 +83,14 @@ module Auditor
   end
 
 private
+
+  def set_instance_variables(params)
+    set_params_attributes(self.model_name.i18n_key, params)
+  end
+
+  def set_model_attributes(params)
+    model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
+  end
 
   def save_if_valid
     if valid?

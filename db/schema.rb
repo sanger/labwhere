@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150527135650) do
+ActiveRecord::Schema.define(version: 20150603133828) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id"
@@ -85,8 +85,9 @@ ActiveRecord::Schema.define(version: 20150527135650) do
   create_table "printers", force: :cascade do |t|
     t.string   "name"
     t.string   "uuid"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "audits_count", default: 0
   end
 
   create_table "scans", force: :cascade do |t|

@@ -10,9 +10,9 @@ class LocationForm
   delegate :parent, to: :location
 
   def submit(params)
-    set_params_attributes(self.model_name.i18n_key, params)
+    set_instance_variables(params)
     set_current_user
-    model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
+    set_model_attributes(params)
     add_parent_location
     save_if_valid
   end

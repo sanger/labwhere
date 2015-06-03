@@ -30,7 +30,11 @@ RSpec.describe Api::LabwaresController, type: :request do
  it "link to labware history should return history for labware" do
   get ActiveSupport::JSON.decode(response.body)["history"]
   expect(response).to be_success
-  expect(response.body).to eq(labware.histories.to_json)
+  json = ActiveSupport::JSON.decode(response.body).first
+  history = labware.histories.first
+  expect(json["user"]).to eq(history.scan.user.login)
+  expect(json["location"]).to eq(history.scan.location.name)
+  expect(json["created_at"]).to eq(history.created_at.to_s(:uk))
  end
 
 end

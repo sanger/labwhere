@@ -6,12 +6,12 @@ class PrintersController < ApplicationController
   end
 
   def new
-    @printer = Printer.new
+    @printer = PrinterForm.new
   end
 
   def create
-    @printer = Printer.new(printer_params)
-    if @printer.save
+    @printer = PrinterForm.new
+    if @printer.submit(params)
       redirect_to printers_path, notice: "Printer successfully created"
     else
       render :new
@@ -23,8 +23,8 @@ class PrintersController < ApplicationController
   end
 
   def update
-     @printer = current_resource
-    if @printer.update_attributes(printer_params)
+     @printer = PrinterForm.new(current_resource)
+    if @printer.submit(params)
       redirect_to printers_path, notice: "Printer successfully updated"
     else
       render :new

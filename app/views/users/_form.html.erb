@@ -11,11 +11,11 @@
       </li>
       <li>
         <%= f.label :swipe_card_id %>
-        <%= f.text_field :swipe_card_id %>
+        <%= f.password_field :swipe_card_id %>
       </li>
        <li>
         <%= f.label :barcode %>
-        <%= f.text_field :barcode %>
+        <%= f.password_field :barcode %>
       </li>
       <li>
         <%= f.label :team_id, "Team" %>
@@ -23,7 +23,7 @@
       </li>
       <li>
         <%= f.label :type %>
-        <%= f.select :type, options_for_select(User.types) %>
+        <%= f.select :type, options_for_select(User.types, @user.type) %>
       </li>
         <li>
         <%= f.label :status, "Active" %>

@@ -11,7 +11,7 @@
       </li>
       <li>
         <%= f.label :location_type_id, "Location type" %>
-        <%= f.select :location_type_id, options_from_collection_for_select(LocationType.ordered, :id, :name) %>
+        <%= f.select :location_type_id, options_from_collection_for_select(LocationType.ordered, :id, :name, @location.location_type_id) %>
       </li>
       <li>
         <%= f.label :parent_barcode %>
