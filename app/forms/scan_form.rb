@@ -10,7 +10,7 @@ class ScanForm
 
   attr_reader :scan, :controller, :action, :current_user, :labwares
   attr_accessor :location_barcode, :labware_barcodes, :user_code
-  delegate :location, :message, to: :scan
+  delegate :location, :message, :created_at, :updated_at, to: :scan
 
   validate :check_for_errors, :check_user
 

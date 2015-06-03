@@ -5,6 +5,11 @@ RSpec.describe Coordinate, type: :model do
     expect(build(:coordinate, name: nil)).to_not be_valid
   end
 
+  it "is invalid without a unique name" do
+    coordinate = create(:coordinate)
+    expect(build(:coordinate, name: coordinate.name)).to_not be_valid
+  end
+
   it "#find_or_create_by_name should find or create a coordinate or do nothing if coordinate is nil" do
     coordinate = create(:coordinate)
     expect {

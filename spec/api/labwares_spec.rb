@@ -11,9 +11,12 @@ RSpec.describe Api::LabwaresController, type: :request do
   get api_labware_path(labware.barcode)
  end
 
- it "should return labware object" do
+ it "should be a success" do
   expect(response).to be_success
-  expect(response.body).to eq(LabwareSerializer.new(labware).to_json)
+ end
+
+ it "should return labware barcode" do
+  expect(ActiveSupport::JSON.decode(response.body)["barcode"]).to eq(labware.barcode)
  end
 
  it "should return location object associated with labware" do

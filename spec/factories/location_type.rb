@@ -14,5 +14,14 @@ FactoryGirl.define do
         end
       end
     end
+
+    factory :location_type_with_locations do
+
+      after(:create) do |location_type, evaluator|
+        1.upto(5) do |n|
+          FactoryGirl.create(:location, location_type: location_type)
+        end
+      end
+    end
   end
 end

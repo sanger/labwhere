@@ -52,9 +52,28 @@ Rails.application.routes.draw do
   root 'scans#new'
 
   namespace :api do
-    resources :locations, param: :barcode, except: [:destroy]
-    resources :location_types, except: [:destroy]
+
+    resources :locations, param: :barcode, except: [:destroy] do
+      scope module: :locations do
+        resources :labwares, only: [:index]
+        resources :children, only: [:index]
+      end
+
+      concerns :auditable, parent: :locations
+      
+    end
+
+    resources :location_types, except: [:destroy] do
+      scope module: :location_types do
+        resources :locations, only: [:index]
+      end
+
+      concerns :auditable, parent: :location_types
+
+    end
+
     resources :scans, only: [:create]
+
     resources :labwares, param: :barcode, only: [:show] do
       resources :histories, param: :barcode, only: [:index]
     end

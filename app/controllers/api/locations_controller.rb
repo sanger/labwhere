@@ -1,7 +1,7 @@
 class Api::LocationsController < ApplicationController
 
   def index
-    render json: Location.all
+    render json: Location.without_unknown
   end
 
   def show
