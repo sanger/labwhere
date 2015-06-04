@@ -1,4 +1,4 @@
-class Api::LabwaresController < ApplicationController
+class Api::LabwaresController < ApiController
 
   def show
     render json: current_resource

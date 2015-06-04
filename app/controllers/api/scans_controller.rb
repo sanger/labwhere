@@ -1,4 +1,4 @@
-class Api::ScansController < ApplicationController
+class Api::ScansController < ApiController
 
   def create
     @scan = ScanForm.new

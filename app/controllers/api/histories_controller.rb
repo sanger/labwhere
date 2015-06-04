@@ -1,4 +1,4 @@
-class Api::HistoriesController < ApplicationController
+class Api::HistoriesController < ApiController
 
   def index
     render json: current_resource

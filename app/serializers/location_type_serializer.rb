@@ -2,7 +2,7 @@ class LocationTypeSerializer < ActiveModel::Serializer
 
   self.root = false
 
-  attributes :name, :locations, :audits
+  attributes :id, :name, :locations, :audits
 
   include SerializerDates
 

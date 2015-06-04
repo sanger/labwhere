@@ -1,4 +1,4 @@
-class Api::LocationsController < ApplicationController
+class Api::LocationsController < ApiController
 
   def index
     render json: Location.without_unknown

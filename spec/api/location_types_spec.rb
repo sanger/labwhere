@@ -18,6 +18,7 @@ RSpec.describe Api::LocationTypesController, type: :request do
     get api_location_type_path(location_type)
     expect(response).to be_success
     json = ActiveSupport::JSON.decode(response.body)
+    expect(json["id"]).to eq(location_type.id)
     expect(json["name"]).to eq(location_type.name)
     expect(json["created_at"]).to eq(location_type.created_at.to_s(:uk))
     expect(json["updated_at"]).to eq(location_type.updated_at.to_s(:uk))

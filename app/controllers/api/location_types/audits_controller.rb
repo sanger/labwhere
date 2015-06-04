@@ -1,4 +1,4 @@
-class Api::LocationTypes::AuditsController < ApplicationController
+class Api::LocationTypes::AuditsController < ApiController
 
   def index
     render json: current_resource

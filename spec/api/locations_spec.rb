@@ -34,6 +34,9 @@ RSpec.describe Api::LocationsController, type: :request do
     expect(json["updated_at"]).to eq(location.updated_at.to_s(:uk))
     expect(json["labwares"]).to eq(api_location_labwares_path(location.barcode))
     expect(json["audits"]).to eq(api_location_audits_path(location.barcode))
+    expect(json["barcode"]).to eq(location.barcode)
+    expect(json["children"]).to eq(api_location_children_path(location.barcode))
+    expect(json["id"]).to eq(location.id)
   end
 
   it "should retrieve information about a locations labwares get api/locations/<barcode>/labwares" do

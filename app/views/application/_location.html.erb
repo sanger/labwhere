@@ -5,6 +5,9 @@
     <%= link_to "Edit", edit_location_path(location) %>
   </p>
   <p>
+    Location type: <%= location.location_type.name %>
+  </p>
+  <p>
     Parent: <%= location.parent.name %>
   </p>
   <p>

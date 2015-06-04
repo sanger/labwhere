@@ -1,4 +1,4 @@
-class Api::SearchesController < ApplicationController
+class Api::SearchesController < ApiController
 
   def create
     @search = Search.find_or_create_by(search_params)

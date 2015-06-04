@@ -1,0 +1,183 @@
+#%RAML 0.8
+---
+title: LabWhere
+baseUri:
+version:
+---
+
+/scans:
+  description: Scan Labware in or out of a Location
+  post:
+    body:
+      application/json:
+        schema: |
+          {
+            "type" : "object",
+            "required": true,
+            "properties": {
+              "user_code": {
+                "description": "The swipe card id or barcode of the user creating the scan",
+                required: true
+                "type": "string"
+              },
+              "labwares":{ 
+                "type" : "object",
+                "required": false,
+                "properties:" [
+                  {
+                    "barcode":{
+                      "description": "The labware barcode",
+                      "type": "string"
+                      "required": false
+                    },
+                    "coordinate":{
+                      "description": "The coordinate of the labware",
+                      "type": "string"
+                      "required": false
+                    }
+                  }
+                ]
+              },
+              "labware_barcodes": {
+                "description": "Any number of labware barcodes as a string separated by returns or carriage returns",
+                "type": "string",
+                "required": false,
+                "example": "barcode1\nbarcode2\nbarcode3\n"
+              }
+            }
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "message": "100 Labwares scanned in to location 1",
+                "created_at": "Thursday 4 June 08:54",
+                "updated_at": "Thursday 4 June 08:54"
+              }
+      422:
+        body:
+          application/json:
+            example: |
+              [
+                { 
+                  "message": "user does not exist"
+                },
+                {
+                  "message": "user is not authorsed"
+
+                },
+                {
+                  "message": "Location does not exist"
+                },
+                {
+                  "message": "Location is not active"
+                },
+                {
+                  "message": "Location is not a container"
+                },
+                {
+                  "message": "Location does not have a parent"
+                }
+              ]             
+/locations:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "name": "Location 1",
+                  "barcode": "Location1:1",
+                  "parent": "Empty",
+                  "container": true,
+                  "status": "active",
+                  "location_type_id": 1,
+                  "labwares": "api/locations/location1:1/labwares",
+                  "audits": "api/locations/location1:1/audits",
+                  "children": api/locations/location1:1/children
+
+                },
+                {
+                  "name": "Location 2",
+                  "barcode": "Location2:2",
+                  "parent": "Location 1",
+                  "container": true,
+                  "status": "active",
+                  "location_type_id": 2,
+                  "labwares": "api/locations/location2:2/labwares",
+                  "audits": "api/locations/location2:2/audits",
+                  "children": api/locations/location2:2/children
+                }
+              ]
+  post:
+    body:
+      application/json:
+        schema: |
+          {
+            "type" : "object",
+            "required": true,
+            "properties": {
+              "user_code": {
+                "description": "The swipe card id or barcode of the user creating the scan",
+                required: true,
+                "type": "string"
+              },
+              "name": {
+                "description": "Location name",
+                "required": true,
+                "type": "string"
+              },
+              "container": {
+                "description": "Can the location store stuff",
+                "required": "false",
+                "type": "boolean"
+              },
+              "status": {
+                "description": "active or inactive",
+                "required": "false"
+                "type": "boolean"
+              },
+              "parent_id": {
+                "description": "id of the parent location",
+                "required": false,
+                "type": integer
+              },
+              "location_type_id": {
+                "description": "id of the location type",
+                "required": true
+              }
+
+
+              
+            }
+          }
+  /{barcode}:
+    get:
+    patch:
+    /labwares:
+      get:
+    /children:
+      get:
+    /audits:
+      get:
+/location_types:
+  get:
+  post:
+  /{id}:
+    get:
+    patch:
+      /locations:
+        get:
+      /audits:
+        get:
+/labwares:
+  /{barcode}:
+    get:
+    /histories:
+      get:
+/searches:
+  post:

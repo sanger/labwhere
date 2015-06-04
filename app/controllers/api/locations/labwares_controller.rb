@@ -1,4 +1,4 @@
-class Api::Locations::LabwaresController < ApplicationController
+class Api::Locations::LabwaresController < ApiController
 
   def index
     render json: current_resource, each_serializer: LocationLabwareSerializer
