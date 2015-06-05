@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>LabWhere 1.0</title>
+  <style type="text/css">
+    .highlight table td { padding: 5px; }
+    .highlight table pre { margin: 0; }
+    .highlight .cm {
+      color: #999988;
+      font-style: italic;
+    }
+    .highlight .cp {
+      color: #999999;
+      font-weight: bold;
+    }
+    .highlight .c1 {
+      color: #999988;
+      font-style: italic;
+    }
+    .highlight .cs {
+      color: #999999;
+      font-weight: bold;
+      font-style: italic;
+    }
+    .highlight .c, .highlight .cd {
+      color: #999988;
+      font-style: italic;
+    }
+    .highlight .err {
+      color: #a61717;
+      background-color: #e3d2d2;
+    }
+    .highlight .gd {
+      color: #000000;
+      background-color: #ffdddd;
+    }
+    .highlight .ge {
+      color: #000000;
+      font-style: italic;
+    }
+    .highlight .gr {
+      color: #aa0000;
+    }
+    .highlight .gh {
+      color: #999999;
+    }
+    .highlight .gi {
+      color: #000000;
+      background-color: #ddffdd;
+    }
+    .highlight .go {
+      color: #888888;
+    }
+    .highlight .gp {
+      color: #555555;
+    }
+    .highlight .gs {
+      font-weight: bold;
+    }
+    .highlight .gu {
+      color: #aaaaaa;
+    }
+    .highlight .gt {
+      color: #aa0000;
+    }
+    .highlight .kc {
+      color: #000000;
+      font-weight: bold;
+    }
+    .highlight .kd {
+      color: #000000;
+      font-weight: bold;
+    }
+    .highlight .kn {
+      color: #000000;
+      font-weight: bold;
+    }
+    .highlight .kp {
+      color: #000000;
+      font-weight: bold;
+    }
+    .highlight .kr {
+      color: #000000;
+      font-weight: bold;
+    }
+    .highlight .kt {
+      color: #445588;
+      font-weight: bold;
+    }
+    .highlight .k, .highlight .kv {
+      color: #000000;
+      font-weight: bold;
+    }
+    .highlight .mf {
+      color: #009999;
+    }
+    .highlight .mh {
+      color: #009999;
+    }
+    .highlight .il {
+      color: #009999;
+    }
+    .highlight .mi {
+      color: #009999;
+    }
+    .highlight .mo {
+      color: #009999;
+    }
+    .highlight .m, .highlight .mb, .highlight .mx {
+      color: #009999;
+    }
+    .highlight .sb {
+      color: #d14;
+    }
+    .highlight .sc {
+      color: #d14;
+    }
+    .highlight .sd {
+      color: #d14;
+    }
+    .highlight .s2 {
+      color: #d14;
+    }
+    .highlight .se {
+      color: #d14;
+    }
+    .highlight .sh {
+      color: #d14;
+    }
+    .highlight .si {
+      color: #d14;
+    }
+    .highlight .sx {
+      color: #d14;
+    }
+    .highlight .sr {
+      color: #009926;
+    }
+    .highlight .s1 {
+      color: #d14;
+    }
+    .highlight .ss {
+      color: #990073;
+    }
+    .highlight .s {
+      color: #d14;
+    }
+    .highlight .na {
+      color: #008080;
+    }
+    .highlight .bp {
+      color: #999999;
+    }
+    .highlight .nb {
+      color: #0086B3;
+    }
+    .highlight .nc {
+      color: #445588;
+      font-weight: bold;
+    }
+    .highlight .no {
+      color: #008080;
+    }
+    .highlight .nd {
+      color: #3c5d5d;
+      font-weight: bold;
+    }
+    .highlight .ni {
+      color: #800080;
+    }
+    .highlight .ne {
+      color: #990000;
+      font-weight: bold;
+    }
+    .highlight .nf {
+      color: #990000;
+      font-weight: bold;
+    }
+    .highlight .nl {
+      color: #990000;
+      font-weight: bold;
+    }
+    .highlight .nn {
+      color: #555555;
+    }
+    .highlight .nt {
+      color: #000080;
+    }
+    .highlight .vc {
+      color: #008080;
+    }
+    .highlight .vg {
+      color: #008080;
+    }
+    .highlight .vi {
+      color: #008080;
+    }
+    .highlight .nv {
+      color: #008080;
+    }
+    .highlight .ow {
+      color: #000000;
+      font-weight: bold;
+    }
+    .highlight .o {
+      color: #000000;
+      font-weight: bold;
+    }
+    .highlight .w {
+      color: #bbbbbb;
+    }
+    .highlight {
+      background-color: #f8f8f8;
+    }
+  </style>
+  <style type="text/css">
+    @import url(http://fonts.googleapis.com/css?family=Inconsolata);
+    html {
+      -webkit-font-smoothing: antialiased;
+      font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+      font-size: 11pt; }
+    
+    main {
+      display: block;
+      width: 75em;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 2em;
+      margin-bottom: 2em; }
+    
+    h1.title {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 300;
+      font-size: 24pt; }
+    
+    h2 {
+      font-family: "Inconsolata", monospace;
+      font-size: 16pt;
+      font-weight: normal;
+      margin-bottom: 0.25em; }
+    
+    h3 {
+      font-size: 15pt;
+      font-weight: normal;
+      color: #444; }
+    
+    h4 {
+      font-size: 14pt;
+      font-weight: normal;
+      font-style: italic;
+      color: #444; }
+    
+    h5 {
+      font-size: 11pt;
+      font-style: italic;
+      color: #333;
+      margin-top: 1em;
+      margin-bottom: 1em; }
+    
+    h6 {
+      font-size: 11pt;
+      font-weight: normal;
+      text-decoration: underline;
+      margin-top: 1em;
+      margin-bottom: 1em; }
+    
+    .documentation {
+      margin-bottom: 3em; }
+    
+    .properties {
+      margin-bottom: 1.25em; }
+    
+    .property {
+      font-variant: small-caps;
+      font-size: 1.15em;
+      color: #252525;
+      margin-right: 0.3em; }
+    
+    .param {
+      margin-bottom: .75em; }
+    
+    .param_names {
+      margin-right: 1em; }
+    
+    .param_name {
+      font-family: "Inconsolata", monospace;
+      font-weight: bold;
+      color: #444; }
+    
+    .param_attrs {
+      color: #555;
+      font-style: italic; }
+    
+    .param_attr {
+      margin-right: 0.5em; }
+    
+    .param_attr:after {
+      content: ", "; }
+    
+    .param_attr:last-child:after {
+      content: ""; }
+    
+    .param_val {
+      color: #000; }
+    
+    .param_description {
+      margin-top: 0.5em;
+      margin-left: 1em;
+      color: #252525; }
+    
+    .method_description {
+      color: #252525; }
+    
+    .response_description {
+      color: #252525; }
+    
+    .url_param {
+      color: red; }
+    
+    main section > .collapse_content {
+      margin-left: 1em; }
+    
+    .subsection {
+      margin-left: 1em; }
+    
+    label {
+      cursor: pointer; }
+    
+    input[type=checkbox] {
+      display: none; }
+    
+    input[type=checkbox]:checked ~ div {
+      display: none; }
+    
+  </style>
+</head>
+<main>
+  <h1 class="title">
+    LabWhere 1.0
+  </h1>
+  <section>
+    <div class="properties">
+      <div>
+        <span class="property">base uri:</span> http://baseuri
+      </div>
+    </div>
+  </section><section>
+  <label for="collapse-1"><h2>/scans </h2></label><input aria-hidden="true" checked id="collapse-1" type="checkbox">
+  <div class="collapse_content">
+<div class="properties">
+</div><section>
+  <label for="collapse-2"><h3>post </h3></label><input aria-hidden="true" checked id="collapse-2" type="checkbox">
+  <div class="collapse_content">
+<div class="method_description">
+  <p>Scan Labware in or out of a Location</p>
+  
+</div><section>
+  <label for="collapse-3"><h4>Request </h4></label><input aria-hidden="true" checked id="collapse-3" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-4"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-4" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-5"><h5>Schema </h5></label><input aria-hidden="true" checked id="collapse-5" type="checkbox">
+  <div class="collapse_content"><pre><code class="schema"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"user_code"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The swipe card id or barcode of the user creating the scan"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="s2">"type"</span><span class="err">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"labwares"</span><span class="p">:{</span><span class="w"> 
+      </span><span class="nt">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"properties:"</span><span class="w"> </span><span class="err">[</span><span class="w">
+        </span><span class="err">{</span><span class="w">
+          </span><span class="nt">"barcode"</span><span class="p">:{</span><span class="w">
+            </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The labware barcode"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+            </span><span class="s2">"required"</span><span class="err">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nt">"coordinate"</span><span class="p">:{</span><span class="w">
+            </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The coordinate of the labware"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+            </span><span class="s2">"required"</span><span class="err">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="err">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"labware_barcodes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Any number of labware barcodes as a string separated by returns or carriage returns"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"example"</span><span class="p">:</span><span class="w"> </span><span class="s2">"barcode1\nbarcode2\nbarcode3\n"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="err">}</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-6"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-6" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-7"><h5>200 </h5></label><input aria-hidden="true" checked id="collapse-7" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-8"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-8" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-9"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-9" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100 Labwares scanned in to location 1"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thursday 4 June 08:54"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thursday 4 June 08:54"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-10"><h5>422 </h5></label><input aria-hidden="true" checked id="collapse-10" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-11"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-11" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-12"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-12" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"errors"</span><span class="p">:[</span><span class="w">
+    </span><span class="s2">"user does not exist"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user is not authorsed"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Location does not exist"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Location is not active"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Location is not a container"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Location does not have a parent"</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">      
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-13"><h2>/locations </h2></label><input aria-hidden="true" checked id="collapse-13" type="checkbox">
+  <div class="collapse_content">
+<div class="properties">
+</div><section>
+  <label for="collapse-14"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-14" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-15"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-15" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-16"><h5>200 </h5></label><input aria-hidden="true" checked id="collapse-16" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-17"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-17" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-18"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-18" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="s2">"name"</span><span class="err">:</span><span class="w"> </span><span class="s2">"Location 1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"barcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location1:1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"parent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Empty"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"container"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"location_type_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"labwares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location1:1/labwares"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"audits"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location1:1/audits"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"children"</span><span class="p">:</span><span class="w"> </span><span class="err">api/locations/location</span><span class="mi">1</span><span class="err">:</span><span class="mi">1</span><span class="err">/children</span><span class="w">
+
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+    </span><span class="s2">"name"</span><span class="err">:</span><span class="w"> </span><span class="s2">"Location 2"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"barcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location2:2"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"parent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location 1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"container"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"location_type_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"labwares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location2:2/labwares"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"audits"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location2:2/audits"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"children"</span><span class="p">:</span><span class="w"> </span><span class="err">api/locations/location</span><span class="mi">2</span><span class="err">:</span><span class="mi">2</span><span class="err">/children</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-19"><h3>post </h3></label><input aria-hidden="true" checked id="collapse-19" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-20"><h4>Request </h4></label><input aria-hidden="true" checked id="collapse-20" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-21"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-21" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-22"><h5>Schema </h5></label><input aria-hidden="true" checked id="collapse-22" type="checkbox">
+  <div class="collapse_content"><pre><code class="schema"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"user_code"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The swipe card id or barcode of the user creating the scan"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location name"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"container"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Can the location store stuff"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"boolean"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active or inactive"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+      </span><span class="s2">"type"</span><span class="err">:</span><span class="w"> </span><span class="s2">"boolean"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"parent_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"id of the parent location"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"location_type_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"id of the location type"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"parent_barcode"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"barcode of the parent location"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+    </span><span class="p">}</span><span class="w">     
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-23"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-23" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-24"><h5>200 </h5></label><input aria-hidden="true" checked id="collapse-24" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-25"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-25" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-26"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-26" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+  </span><span class="s2">"name"</span><span class="err">:</span><span class="w"> </span><span class="s2">"Location 1"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"barcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location1:1"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"parent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Empty"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"container"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"location_type_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"labwares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location1:1/labwares"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"audits"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location1:1/audits"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"children"</span><span class="p">:</span><span class="w"> </span><span class="err">api/locations/location</span><span class="mi">1</span><span class="err">:</span><span class="mi">1</span><span class="err">/children</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-27"><h5>422 </h5></label><input aria-hidden="true" checked id="collapse-27" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-28"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-28" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-29"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-29" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"errors"</span><span class="p">:[</span><span class="w">
+    </span><span class="s2">"user does not exist"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user is not authorsed"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"parent does not exist"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"location type does not exist"</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-30"><h2>/locations/<span class="url_param">{barcode}</span> </h2></label><input aria-hidden="true" checked id="collapse-30" type="checkbox">
+  <div class="collapse_content">
+    <div class="properties">
+    </div><section>
+      <label for="collapse-31"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-31" type="checkbox">
+      <div class="collapse_content">
+        <div class="method_description">
+          <p>Returns a location</p>
+          
+        </div>
+      </div>
+    </section><section>
+      <label for="collapse-32"><h3>patch </h3></label><input aria-hidden="true" checked id="collapse-32" type="checkbox">
+      <div class="collapse_content">
+        <div class="method_description">
+          <p>Updates a location</p>
+          
+        </div>
+      </div>
+    </section><section>
+      <label for="collapse-33"><h3>put </h3></label><input aria-hidden="true" checked id="collapse-33" type="checkbox">
+      <div class="collapse_content">
+        <div class="method_description">
+          <p>Updates a location</p>
+          
+        </div>
+      </div>
+    </section>
+  </div>
+</section><section>
+  <label for="collapse-34"><h2>/locations/<span class="url_param">{barcode}</span>/labwares </h2></label><input aria-hidden="true" checked id="collapse-34" type="checkbox">
+  <div class="collapse_content">
+<div class="properties">
+</div><section>
+  <label for="collapse-35"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-35" type="checkbox">
+  <div class="collapse_content">
+<div class="method_description">
+  <p>Returns labwares for a specified location</p>
+  
+</div><section>
+  <label for="collapse-36"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-36" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-37"><h5>200 </h5></label><input aria-hidden="true" checked id="collapse-37" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-38"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-38" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-39"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-39" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"barcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"labware1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"history"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/labwares/labware1/histories"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"barcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"labware2"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"history"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/labwares/labware2/histories"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-40"><h2>/locations/<span class="url_param">{barcode}</span>/children </h2></label><input aria-hidden="true" checked id="collapse-40" type="checkbox">
+  <div class="collapse_content">
+    <div class="properties">
+    </div><section>
+      <label for="collapse-41"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-41" type="checkbox">
+      <div class="collapse_content">
+        <div class="method_description">
+          <p>Returns locations nested within location</p>
+          
+        </div>
+      </div>
+    </section>
+  </div>
+</section><section>
+  <label for="collapse-42"><h2>/locations/<span class="url_param">{barcode}</span>/audits </h2></label><input aria-hidden="true" checked id="collapse-42" type="checkbox">
+  <div class="collapse_content">
+<div class="properties">
+</div><section>
+  <label for="collapse-43"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-43" type="checkbox">
+  <div class="collapse_content">
+<div class="method_description">
+  <p>Returns audits for a location</p>
+  
+</div><section>
+  <label for="collapse-44"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-44" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-45"><h5>200 </h5></label><input aria-hidden="true" checked id="collapse-45" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-46"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-46" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-47"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-47" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"create"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"auditable_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"record_data"</span><span class="p">:{</span><span class="w">
+
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="s2">"Friday 30 May 2015 10:16"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"Friday 30 May 2015 10:16"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user2"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"update"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"auditable_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"record_data"</span><span class="p">:{</span><span class="w">
+
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="s2">"Friday 05 May 2015 10:16"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"Friday 05 May 2015 10:16"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-48"><h2>/location_types </h2></label><input aria-hidden="true" checked id="collapse-48" type="checkbox">
+  <div class="collapse_content">
+<div class="properties">
+</div><section>
+  <label for="collapse-49"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-49" type="checkbox">
+  <div class="collapse_content">
+<div class="method_description">
+  <p>Returns all location types</p>
+  
+</div><section>
+  <label for="collapse-50"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-50" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-51"><h5>200 </h5></label><input aria-hidden="true" checked id="collapse-51" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-52"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-52" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-53"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-53" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location Type 1"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"locations"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/location_types/1/locations"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"audits"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/location_types/1/audits"</span><span class="p">,</span><span class="w">
+</span><span class="err">}</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-54"><h3>post </h3></label><input aria-hidden="true" checked id="collapse-54" type="checkbox">
+  <div class="collapse_content">
+<div class="method_description">
+  <p>Creates a location type</p>
+  
+</div><section>
+  <label for="collapse-55"><h4>Request </h4></label><input aria-hidden="true" checked id="collapse-55" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-56"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-56" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-57"><h5>Schema </h5></label><input aria-hidden="true" checked id="collapse-57" type="checkbox">
+  <div class="collapse_content"><pre><code class="schema"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"user_code"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The swipe card id or barcode of the user creating the scan"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location type name"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-58"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-58" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-59"><h5>200 </h5></label><input aria-hidden="true" checked id="collapse-59" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-60"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-60" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-61"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-61" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location Type 1"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"locations"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/location_types/1/locations"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"audits"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/location_types/1/audits"</span><span class="p">,</span><span class="w">
+</span><span class="err">}</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-62"><h5>422 </h5></label><input aria-hidden="true" checked id="collapse-62" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-63"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-63" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-64"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-64" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"errors"</span><span class="p">:[</span><span class="w">
+    </span><span class="s2">"user does not exist"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user is not authorsed"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Name has already been taken"</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-65"><h2>/location_types/<span class="url_param">{id}</span> </h2></label><input aria-hidden="true" checked id="collapse-65" type="checkbox">
+  <div class="collapse_content">
+    <div class="properties">
+    </div><section>
+      <label for="collapse-66"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-66" type="checkbox">
+      <div class="collapse_content">
+        <div class="method_description">
+          <p>Returns a location type</p>
+          
+        </div>
+      </div>
+    </section><section>
+      <label for="collapse-67"><h3>patch </h3></label><input aria-hidden="true" checked id="collapse-67" type="checkbox">
+      <div class="collapse_content">
+        <div class="method_description">
+          <p>Updates a location type</p>
+          
+        </div>
+      </div>
+    </section><section>
+      <label for="collapse-68"><h3>put </h3></label><input aria-hidden="true" checked id="collapse-68" type="checkbox">
+      <div class="collapse_content">
+        <div class="method_description">
+          <p>Updates a location type</p>
+          
+        </div>
+      </div>
+    </section>
+  </div>
+</section><section>
+  <label for="collapse-69"><h2>/location_types/<span class="url_param">{id}</span>/locations </h2></label><input aria-hidden="true" checked id="collapse-69" type="checkbox">
+  <div class="collapse_content">
+    <div class="properties">
+    </div><section>
+      <label for="collapse-70"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-70" type="checkbox">
+      <div class="collapse_content">
+        <div class="method_description">
+          <p>Returns all of the locations for a particular location type</p>
+          
+        </div>
+      </div>
+    </section>
+  </div>
+</section><section>
+  <label for="collapse-71"><h2>/location_types/<span class="url_param">{id}</span>/audits </h2></label><input aria-hidden="true" checked id="collapse-71" type="checkbox">
+  <div class="collapse_content">
+<div class="properties">
+</div><section>
+  <label for="collapse-72"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-72" type="checkbox">
+  <div class="collapse_content">
+<div class="method_description">
+  <p>Returns all of the audits for a particular location type</p>
+  
+</div><section>
+  <label for="collapse-73"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-73" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-74"><h5>200 </h5></label><input aria-hidden="true" checked id="collapse-74" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-75"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-75" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-76"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-76" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"create"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"auditable_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LocationType"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"record_data"</span><span class="p">:{</span><span class="w">
+
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="s2">"Friday 30 May 2015 10:16"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"Friday 30 May 2015 10:16"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user2"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"update"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"auditable_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LocationType"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"record_data"</span><span class="p">:{</span><span class="w">
+
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="s2">"Friday 05 May 2015 10:16"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"Friday 05 May 2015 10:16"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-77"><h2>/labwares/<span class="url_param">{barcode}</span> </h2></label><input aria-hidden="true" checked id="collapse-77" type="checkbox">
+  <div class="collapse_content">
+<div class="properties">
+</div><section>
+  <label for="collapse-78"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-78" type="checkbox">
+  <div class="collapse_content">
+<div class="method_description">
+  <p>Returns a labware</p>
+  
+</div><section>
+  <label for="collapse-79"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-79" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-80"><h5>200 </h5></label><input aria-hidden="true" checked id="collapse-80" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-81"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-81" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-82"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-82" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"barcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"labware1"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"history"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/labwares/labware1/histories"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"location"</span><span class="p">:{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="s2">"name"</span><span class="err">:</span><span class="w"> </span><span class="s2">"Location 1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"barcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location1:1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"parent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Empty"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"container"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"location_type_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"labwares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location1:1/labwares"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"audits"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location1:1/audits"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"children"</span><span class="p">:</span><span class="w"> </span><span class="err">api/locations/location</span><span class="mi">1</span><span class="err">:</span><span class="mi">1</span><span class="err">/children</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-83"><h2>/labwares/<span class="url_param">{barcode}</span>/histories </h2></label><input aria-hidden="true" checked id="collapse-83" type="checkbox">
+  <div class="collapse_content">
+<div class="properties">
+</div><section>
+  <label for="collapse-84"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-84" type="checkbox">
+  <div class="collapse_content">
+<div class="method_description">
+  <p>Returns all of the histories for a labware</p>
+  
+</div><section>
+  <label for="collapse-85"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-85" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-86"><h5>200 </h5></label><input aria-hidden="true" checked id="collapse-86" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-87"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-87" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-88"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-88" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Friday 05 June 08:54"</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="err">:</span><span class="w"> </span><span class="s2">"Friday 05 June 08:54"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user2"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location2"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Friday 30 May 08:54"</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="err">:</span><span class="w"> </span><span class="s2">"Friday 30 May 08:54"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-89"><h2>/searches </h2></label><input aria-hidden="true" checked id="collapse-89" type="checkbox">
+  <div class="collapse_content">
+<div class="properties">
+</div><section>
+  <label for="collapse-90"><h3>post </h3></label><input aria-hidden="true" checked id="collapse-90" type="checkbox">
+  <div class="collapse_content">
+<div class="method_description">
+  <p>Finds all of the locations, location types and labwares which match the search term</p>
+  
+</div><section>
+  <label for="collapse-91"><h4>Request </h4></label><input aria-hidden="true" checked id="collapse-91" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-92"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-92" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-93"><h5>Schema </h5></label><input aria-hidden="true" checked id="collapse-93" type="checkbox">
+  <div class="collapse_content"><pre><code class="schema"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"term"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Search term"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="s2">"type"</span><span class="err">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section><section>
+  <label for="collapse-94"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-94" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-95"><h5>200 </h5></label><input aria-hidden="true" checked id="collapse-95" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-96"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-96" type="checkbox">
+  <div class="collapse_content"><section>
+  <label for="collapse-97"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-97" type="checkbox">
+  <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"results"</span><span class="p">:{</span><span class="w">
+    </span><span class="nt">"locations"</span><span class="p">:[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location 1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"barcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location1:1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"parent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Empty"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"container"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"location_type_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"labwares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location1:1/labwares"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"audits"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location1:1/audits"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"children"</span><span class="p">:</span><span class="w"> </span><span class="err">api/locations/location</span><span class="mi">1</span><span class="err">:</span><span class="mi">1</span><span class="err">/children</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nt">"location_types"</span><span class="p">:[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location Type 1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"locations"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/location_types/1/locations"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"audits"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/location_types/1/audits"</span><span class="p">,</span><span class="w">
+      </span><span class="err">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nt">"labwares"</span><span class="p">:[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"barcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"labware1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"history"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/labwares/labware1/histories"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</code></pre>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section>
+  </div>
+</section></main>

@@ -45,6 +45,10 @@ group :deployment do
   gem 'therubyracer'
 end
 
+group :development do
+  gem 'raml_ruby', '~> 0.1.1'
+end
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
