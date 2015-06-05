@@ -1,3 +1,5 @@
+##
+# Every location must have a type.
 class LocationType < ActiveRecord::Base
 
   include Searchable::Client
@@ -12,12 +14,16 @@ class LocationType < ActiveRecord::Base
 
   searchable_by :name
 
+  ##
+  # A location type can only be destroyed if it has no locations
   def destroyable
     unless has_locations?
       yield if block_given?
     end
   end
 
+  ##
+  # Has the location type got any locations attached.
   def has_locations?
     locations.present?
   end

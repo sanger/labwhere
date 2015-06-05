@@ -1,3 +1,5 @@
+##
+# 
 class Labware < ActiveRecord::Base
 
   include SoftDeletable
@@ -39,6 +41,16 @@ class Labware < ActiveRecord::Base
 
   def self.find_by_code(code)
     find_by(barcode: code)
+  end
+
+  def coordinate
+    super || NullCoordinate.new
+  end
+
+  class NullCoordinate
+    def name
+      "null"
+    end
   end
 
 private

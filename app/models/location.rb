@@ -1,3 +1,5 @@
+##
+# A location can store locations or labware
 class Location < ActiveRecord::Base
 
   include Searchable::Client
@@ -24,6 +26,8 @@ class Location < ActiveRecord::Base
 
   searchable_by :name, :barcode
 
+  ##
+  # 
   def parent
     super || NullLocation.new
   end

@@ -1,3 +1,5 @@
+##
+# Teams which users belong to.
 class Team < ActiveRecord::Base
 
   include AddAudit

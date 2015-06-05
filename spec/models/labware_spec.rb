@@ -100,4 +100,9 @@ RSpec.describe Labware, type: :model do
     expect(Labware.find_by_code(labware.barcode)).to eq(labware)
   end
 
+  it "without co-ordinate should return empty coordinate" do
+    labware = create(:labware)
+    expect(labware.coordinate.name).to eq("null")
+  end
+
 end

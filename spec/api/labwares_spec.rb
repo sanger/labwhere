@@ -9,6 +9,7 @@ RSpec.describe Api::LabwaresController, type: :request do
 
  before(:each) do
   get api_labware_path(labware.barcode)
+  @json = ActiveSupport::JSON.decode(response.body)
  end
 
  it "should be a success" do
@@ -16,15 +17,19 @@ RSpec.describe Api::LabwaresController, type: :request do
  end
 
  it "should return labware barcode" do
-  expect(ActiveSupport::JSON.decode(response.body)["barcode"]).to eq(labware.barcode)
+  expect(@json["barcode"]).to eq(labware.barcode)
  end
 
  it "should return location object associated with labware" do
-  expect(ActiveSupport::JSON.decode(response.body)["location"]).to_not be_empty
+  expect(@json["location"]).to_not be_empty
  end
 
  it "should return link to labware history" do
-  expect(ActiveSupport::JSON.decode(response.body)["history"]).to eq(api_labware_histories_path(labware.barcode))
+  expect(@json["history"]).to eq(api_labware_histories_path(labware.barcode))
+ end
+
+ it "should return labware coordinate name" do
+  expect(@json["coordinate"]).to eq(labware.coordinate.name)
  end
 
  it "link to labware history should return history for labware" do

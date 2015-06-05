@@ -1,3 +1,6 @@
+##
+# Scanning labware in and out of a location
+# link between labware and locations and users.
 class Scan < ActiveRecord::Base
 
   include AssertLocation
@@ -12,6 +15,9 @@ class Scan < ActiveRecord::Base
   before_save :update_labware_locations, :set_status
   after_save :update_location_counts
 
+  ##
+  # text message saying how much labware was scanned in and out of
+  # a particular location.
   def message
     "#{labwares.count} labwares scanned #{self.status} " << if in?
       "to #{location.name}"

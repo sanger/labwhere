@@ -1,3 +1,6 @@
+##
+# Each search that is submitted will be stored along with its count.
+# Could be useful for checking what kind of searches are carried out and how often.
 class Search < ActiveRecord::Base
 
   validates :term, presence: true, uniqueness: {case_sensitive: false}
