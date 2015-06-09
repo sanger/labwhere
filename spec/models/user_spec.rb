@@ -10,6 +10,16 @@ RSpec.describe User, type: :model do
     expect(build(:user, swipe_card_id: nil)).to be_valid
   end
 
+  it "should allow blank or nil swipe card id" do
+    create(:user, swipe_card_id: nil)
+    expect(build(:user, swipe_card_id: nil)).to be_valid
+  end
+
+  it "should allow blank or nil barcode" do
+    create(:user, barcode: nil)
+    expect(build(:user, barcode: nil)).to be_valid
+  end
+
   it "should be valid without a barcode" do
     expect(build(:user, barcode: nil)).to be_valid
   end

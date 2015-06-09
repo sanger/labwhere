@@ -19,11 +19,6 @@ RSpec.describe Location, type: :model do
     expect(parent_location.children.first).to eq(child_location)
   end
 
-  it "should add a barcode after the location is created" do
-    location = create(:location)
-    expect(location.reload.barcode).to eq("#{location.name}:#{location.id}")
-  end
-
   it "#without_location should return a list of locations without a specified location" do
     locations = create_list(:location, 3)
     inactive_location = create(:location, status: Location.statuses[:inactive])
@@ -41,12 +36,6 @@ RSpec.describe Location, type: :model do
     expect(build(:location, name: "UNKNOWN", location_type: nil)).to be_valid
   end
 
-  it "#update_labware_count should update labware_count to number of labwares" do
-    location = create(:location_with_parent, labwares: create_list(:labware, 5))
-    location.update_labwares_count
-    expect(location.labwares_count).to eq(5)
-  end
-
   it "#name should produce a list of location names" do
     location1 = create(:location)
     location2 = create(:location)
@@ -57,6 +46,43 @@ RSpec.describe Location, type: :model do
     location1 = create(:location)
     location2 = create(:location)
     expect(Location.find_by_code(location1.barcode)).to eq(location1)
+  end
+
+  it "#reset_labwares_count should update labware counts for locations" do
+    location_1 = create(:location_with_parent, labwares: create_list(:labware, 5))
+    location_2 = create(:location_with_parent, labwares: create_list(:labware, 3))
+
+    Location.reset_labwares_count(Location.all)
+    expect(location_1.reload.labwares_count).to eq(5)
+    expect(location_2.reload.labwares_count).to eq(3)
+
+    location_1.labwares.delete_all
+    Location.reset_labwares_count(Location.all)
+    expect(location_1.labwares.count).to eq(0)
+
+  end
+
+  it "name should not be valid with characters that aren't words, numbers, hyphens or spaces" do
+    expect(build(:location, name: "location 1")).to be_valid
+    expect(build(:location, name: "location one")).to be_valid
+    expect(build(:location, name: "location-one")).to be_valid
+    expect(build(:location, name: "location-one one")).to be_valid
+    expect(build(:location, name: "A location +++")).to_not be_valid
+    expect(build(:location, name: "A/location")).to_not be_valid
+    expect(build(:location, name: "A location ~")).to_not be_valid
+  end
+
+  it "name should not be valid if it is more than 50 characters long" do
+    expect(build(:location, name: "l"*49)).to be_valid
+    expect(build(:location, name: "l"*50)).to be_valid
+    expect(build(:location, name: "l"*51)).to_not be_valid
+  end
+
+  it "barcode should be sanitised" do
+    location = create(:location, name: "location1")
+    expect(location.barcode).to eq("location1-#{location.id}")
+    location = create(:location, name: "location 1")
+    expect(location.barcode).to eq("location-1-#{location.id}")
   end
   
 end

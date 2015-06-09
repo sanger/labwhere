@@ -52,15 +52,6 @@ RSpec.describe Labware, type: :model do
     expect(Labware.previous_locations(Labware.all)).to eq([locations.first, locations.second])
   end
 
-  it "#update_previous_locations_counts should update the previous location counts" do
-    locations = create_list(:location_with_parent, 2)
-    labwares = create_list(:labware, 3, location: locations.first)
-    
-    labwares.last.update(location: locations.last)
-    Labware.update_previous_location_counts(Labware.all)
-    expect(locations.first.reload.labwares_count).to eq(2)
-  end
-
   it "#build_for should find or initialize labware for associated object for a string of labware barcodes" do
     existing_labwares = create_list(:labware, 2, location: create(:location_with_parent))
     new_labwares = build_list(:labware, 2)

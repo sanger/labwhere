@@ -123,7 +123,7 @@ RSpec.describe "Locations", type: :feature do
       check "Container"
       click_button "Create Location"
     }.to_not change(Location, :count)
-    expect(page.text).to match("error prohibited this record from being saved")
+    expect(page.text).to match("errors prohibited this record from being saved")
   end
 
   it "Allows a user to edit an existing location" do
@@ -147,7 +147,7 @@ RSpec.describe "Locations", type: :feature do
     location_child = create(:location)
     visit edit_location_path(location_child)
     fill_in "User swipe card id/barcode", with: user.swipe_card_id
-    select location_parent.name, from: "Parent"
+    select location_parent.barcode, from: "Parent"
     click_button "Update Location"
     expect(location_child.reload.parent).to eq(location_parent)
   end

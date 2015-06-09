@@ -26,10 +26,6 @@ class Labware < ActiveRecord::Base
     Location.find(labwares.pluck(:previous_location_id).compact.uniq)
   end
 
-  def self.update_previous_location_counts(labwares)
-    previous_locations(labwares).map(&:save)
-  end
-
   def self.build_for(object, labwares)
     case labwares
     when String

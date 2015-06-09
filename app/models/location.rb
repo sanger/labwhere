@@ -7,27 +7,23 @@ class Location < ActiveRecord::Base
   include AddAudit
 
   belongs_to :location_type, counter_cache: true
-
   belongs_to :parent, class_name: "Location"
   has_many :children, class_name: "Location", foreign_key: "parent_id"
   has_many :audits, as: :auditable
-
   has_many :labwares
 
   validates :name, presence: true
-
   validates :location_type, existence: true, unless: Proc.new { |l| l.unknown? }
-
-  after_create :generate_barcode
-  before_save :update_labwares_count
+  validates_format_of :name, with: /\A[\w\-\s]+\z/
+  validates_length_of :name, maximum: 50
 
   scope :without, ->(location) { active.where.not(id: location.id) }
   scope :without_unknown, ->{ where.not(id: Location.unknown.id) }
 
+  after_create :generate_barcode
+
   searchable_by :name, :barcode
 
-  ##
-  # 
   def parent
     super || NullLocation.new
   end
@@ -44,12 +40,14 @@ class Location < ActiveRecord::Base
     find_by(barcode: code)
   end
 
-  def unknown?
-    name == "UNKNOWN" 
+  def self.reset_labwares_count(locations)
+    locations.each do |location|
+      location.update_column(:labwares_count, location.labwares.count)
+    end
   end
 
-  def update_labwares_count
-    self.labwares_count = labwares.count
+  def unknown?
+    name == "UNKNOWN" 
   end
 
   class NullLocation
@@ -66,9 +64,9 @@ class Location < ActiveRecord::Base
   end
 
 private
-  
+
   def generate_barcode
-    update_attribute :barcode, "#{self.name}:#{self.id}"
+    update_column(:barcode, "#{self.name.gsub(' ','-')}-#{self.id}")
   end
 
 end

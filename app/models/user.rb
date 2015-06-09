@@ -10,11 +10,11 @@ class User < ActiveRecord::Base
   belongs_to :team
   has_many :audits, as: :auditable
 
-  validates_presence_of :login
-
-  validates_uniqueness_of :login, :swipe_card_id, :barcode
+  validates :login, presence: true, uniqueness: true
 
   validates :team, existence: true
+
+  validates_uniqueness_of :swipe_card_id, :barcode, allow_blank: true, allow_nil: true
 
   ##
   # A list of the different types of inherited user.

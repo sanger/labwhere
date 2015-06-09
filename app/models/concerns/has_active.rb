@@ -14,7 +14,7 @@ module HasActive
   end
 
   ##
-  # Update statuse to inactive
+  # Update status to inactive
   def deactivate
     update_attribute(:status, self.class.statuses[:inactive])
   end
