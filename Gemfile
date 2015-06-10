@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
 # Use sqlite3 as the database for Active Record
@@ -67,6 +66,14 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.1'
 
   gem 'with_model'
+
+  # Test your coffescript
+  gem 'teaspoon-jasmine'
+
+  # Headless browser testing
+  gem 'phantomjs'
+  gem 'poltergeist'
+
 end
 
 group :test do
@@ -77,7 +84,7 @@ group :test do
 
 end
 
-# For testin using minitest
+# For testing using minitest
 # group :test do
 #   gem 'minitest-rails-capybara'
 # end
