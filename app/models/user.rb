@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :swipe_card_id, :barcode, allow_blank: true, allow_nil: true
 
+  validates_with EitherOrValidator, fields: [:swipe_card_id, :barcode]
+
   ##
   # A list of the different types of inherited user.
   def self.types
@@ -38,6 +40,7 @@ class User < ActiveRecord::Base
   ##
   # Find a user by their swipe card id or barcode
   def self.find_by_code(code)
+    return Guest.new if code.blank?
     where("swipe_card_id = :code OR barcode = :code", { code: code}).take || Guest.new
   end
 

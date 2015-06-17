@@ -43,6 +43,13 @@ RSpec.describe User, type: :model do
     expect(build(:user, team: nil)).to_not be_valid
   end
 
+  it "should not be valid without a swipe card id or barcode" do
+    user = build(:user, swipe_card_id: nil, barcode: nil)
+    expect(user).to_not be_valid
+    expect(user.errors.full_messages).to include("Swipe card or Barcode must be completed")
+
+  end
+
   it "should be able to create an Admin user" do
     user = create(:user, type: "Admin")
     expect(Admin.all.count).to eq(1)
@@ -70,6 +77,12 @@ RSpec.describe User, type: :model do
     user = build(:user)
     expect(User.find_by_code(users.first.swipe_card_id)).to eq(users.first)
     expect(User.find_by_code(users.first.barcode)).to eq(users.first)
+    expect(User.find_by_code(user.swipe_card_id)).to be_guest
+  end
+
+  it "find_by_code should always return a guest user if code is empty" do
+    user = create(:user, swipe_card_id: "")
+    expect(User.find_by_code(nil)).to be_guest
     expect(User.find_by_code(user.swipe_card_id)).to be_guest
   end
 
