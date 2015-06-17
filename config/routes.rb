@@ -20,16 +20,22 @@ Rails.application.routes.draw do
   end
 
   resources :locations do 
-    resources :labwares, only: [:index]
+    
     resources :prints, only: [:new, :create]
 
     concerns :change_status
     concerns :auditable, parent: :locations
+    scope module: :locations do
+      resources :children, only: [:index]
+      resources :labwares, only: [:index]
+    end
 
   end
 
-  resources :labwares, only: [:index, :show] do
-    resources :histories, only: [:index]
+  resources :labwares, only: [:show] do
+    scope module: :labwares do
+      resources :histories, only: [:index]
+    end
   end
 
   resources :scans, only: [:new, :create]

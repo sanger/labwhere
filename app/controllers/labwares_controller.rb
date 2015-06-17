@@ -1,17 +1,13 @@
 class LabwaresController < ApplicationController
 
-  before_action :labwares, only: [:index]
-
-  def index
-
+  def show
+    @labware = current_resource
   end
 
-protected
+private
 
-  def labwares
-    @labwares ||= Location.find(params[:location_id]).labwares
+  def current_resource
+    @current_resource ||=Labware.find(params[:id]) if params[:id]
   end
-
-  helper_method :labwares
   
 end

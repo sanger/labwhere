@@ -1,4 +1,4 @@
-class HistoriesController < ApplicationController
+class Labwares::HistoriesController < ApplicationController
 
   before_action :histories, only: [:index]
 

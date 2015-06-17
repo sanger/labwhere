@@ -22,7 +22,7 @@ RSpec.describe "Searches", type: :feature do
     fill_in "Term", with: "A sunny location"
     click_button "Search"
     expect(page).to have_content("Your search returned 1 result")
-    expect(page).to have_content("#{location.id}. A sunny location - #{location.barcode}")
+    expect(page).to have_content(location.barcode)
   end
 
   it "with a term that finds a location type should output the result" do
@@ -115,6 +115,22 @@ RSpec.describe "Searches", type: :feature do
       end
        location.audits.each do |audit|
         expect(page).to have_content(audit.record_data)
+      end
+    end
+
+    it "with a location should allow viewing of associated locations and labwares" do
+      location = create(:location_with_labwares_and_children)
+      visit root_path
+      fill_in "Term", with: location.barcode
+      click_button "Search"
+      within("#location_#{location.id}") do
+        click_link "+"
+      end
+      location.children.each do |child|
+        expect(page).to have_content(child.barcode)
+      end
+      location.labwares.each do |labware|
+        expect(page).to have_content(labware.barcode)
       end
     end
 
