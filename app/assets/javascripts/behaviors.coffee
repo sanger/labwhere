@@ -18,3 +18,11 @@ class @Behavior
     @parentResource   = "#{@name}s"
     @id               = "#{@parentResource}-list"
     @childResources   = item.resources
+
+@resources = { 
+  location:[ { path: "children", behavior: "location" }, { path: "labwares", behavior: "labware" } ], 
+  labware: [ { path: "histories", behavior: "history" }],
+  history: []
+}
+
+window.behaviors = new Behaviors(this.resources)

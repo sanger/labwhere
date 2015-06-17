@@ -1,5 +1,5 @@
-<article id="<%= dom_id(history) %>">
-  <p><%= history.scan.user.login %></p>
-  <p><%= history.scan.location.name %></p>
-  <p><%= history.created_at.to_s(:uk) %></p>
+<article id="<%= dom_id(history) %>" class="drilldown">
+  <div><%= history.scan.user.login %></div>
+  <div><%= history.scan.location.name %></div>
+  <div><%= history.created_at.to_s(:uk) %></div>
 </article>

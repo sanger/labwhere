@@ -74,24 +74,6 @@ RSpec.describe "Searches", type: :feature do
       end
     end
 
-    it "with a location should allow viewing of associated labwares" do
-      labwares = create_list(:labware, 10)
-      location = create(:location_with_parent, labwares: labwares)
-      other_labwares = create_list(:labware, 10)
-      visit root_path
-      fill_in "Term", with: location.barcode
-      click_button "Search"
-      within("#location_#{location.id}") do
-        click_link "Labwares"
-      end
-      labwares.each do |labware|
-        expect(page).to have_content(labware.barcode)
-      end
-      other_labwares.each do |labware|
-        expect(page).to_not have_content(labware.barcode)
-      end
-    end
-
     it "with a location type should allow viewing of associated audits" do
       location_type = create(:location_type_with_audits)
       visit root_path

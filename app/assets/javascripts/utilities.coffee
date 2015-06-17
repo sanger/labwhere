@@ -19,10 +19,3 @@ $.fn.addDialog = (partial, title) ->
     open: -> $(this).html(partial)
     buttons:
       Cancel: -> $(this).dialog("close")
-
-@resources = { 
-  location:[ { path: "children", behavior: "location" }, { path: "labwares", behavior: "labware" } ], 
-  labware: [ { path: "histories", behavior: null }]
-}
-
-@behaviors = new Behaviors(this.resources)
