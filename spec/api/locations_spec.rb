@@ -61,9 +61,12 @@ RSpec.describe Api::LocationsController, type: :request do
   end
 
   it "should create a new location" do
-    post api_locations_path, location: attributes_for(:location).merge(user_code: user.swipe_card_id)
+    post api_locations_path, user_code: user.swipe_card_id, location: attributes_for(:location)
     expect(response).to be_success
-    expect(response.body).to eq(Location.first.to_json)
+    location = Location.first
+    json = ActiveSupport::JSON.decode(response.body)
+    expect(json["created_at"]).to eq(location.created_at.to_s(:uk))
+    expect(json["updated_at"]).to eq(location.updated_at.to_s(:uk))
   end
 
   it "should return an error if the location has invalid attributes" do

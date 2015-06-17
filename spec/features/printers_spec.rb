@@ -58,4 +58,20 @@ RSpec.describe "Printers", type: :feature do
     expect(page).to have_content("error prohibited this record from being saved")
   end
 
+   it "Prevents a user from editing an existing printer if they are not authorised" do
+    printer = create(:printer)
+    new_printer = build(:printer)
+    standard_user = create(:standard)
+    visit printers_path
+    expect {
+      within("#printer_#{printer.id}") do
+        click_link "Edit"
+      end
+      fill_in "User swipe card id/barcode", with: standard_user.barcode
+      fill_in "Name", with: new_printer.name
+      click_button "Update Printer"
+    }.to_not change(Printer, :count)
+    expect(page).to have_content("error prohibited this record from being saved")
+  end
+
 end

@@ -19,7 +19,7 @@ class PrintersController < ApplicationController
   end
 
   def edit
-    @printer = current_resource
+    @printer = PrinterForm.new(current_resource)
   end
 
   def update
@@ -38,10 +38,6 @@ class PrintersController < ApplicationController
   helper_method :printers
 
 private
-
-  def printer_params
-    params.require(:printer).permit(:name, :uuid)
-  end
 
   def current_resource
     @current_resource ||=Printer.find(params[:id]) if params[:id]

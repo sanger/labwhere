@@ -1,6 +1,7 @@
 module Auditor
   extend ActiveSupport::Concern
-  include ActiveModel::Model 
+  include ActiveModel::Model
+  include ActiveModel::Serialization
   
   module ClassMethods
 
@@ -34,7 +35,7 @@ module Auditor
     validate :check_user
     validate :before_destroy, if: Proc.new { |model| model.destroying? }
 
-    delegate :id, :to_json, to: :model
+    delegate :id, :created_at, :updated_at, :to_json, to: :model
 
   end
 
@@ -54,7 +55,7 @@ module Auditor
   def submit(params)
 
     set_instance_variables(params)
-    set_current_user
+    set_current_user(params)
     set_model_attributes(params)
     save_if_valid
     
@@ -65,7 +66,7 @@ module Auditor
   # Will create an audit record.
   def destroy(params)
     set_attributes(params)
-    set_current_user
+    set_current_user(params)
     destroy_if_valid
   end
 
@@ -114,8 +115,8 @@ private
     model.create_audit(current_user, action)
   end
 
-  def set_current_user
-    @current_user = User.find_by_code(user_code)
+  def set_current_user(params)
+    @current_user = User.find_by_code(user_code || params[:user_code])
   end
 
   def check_for_errors

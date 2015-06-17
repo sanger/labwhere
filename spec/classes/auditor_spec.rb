@@ -91,13 +91,19 @@ RSpec.describe Auditor, type: :model do
     expect(test_model_form.errors.full_messages).to include("User #{I18n.t("errors.messages.authorised")}")
   end
 
-    it "should reject modification of the record if the user is inactive" do
+  it "should reject modification of the record if the user is inactive" do
     test_model_form = TestModelAudit.new
     admin_user.deactivate
     expect{ 
       test_model_form.submit(params.merge(test_model: valid_params.merge(user_code: admin_user.swipe_card_id)))
     }.to_not change(TestModel, :count)
     expect(test_model_form.errors.full_messages).to include("User #{I18n.t("errors.messages.active")}")
+  end
+
+  it "should allow modification of the record if the user code is passed in the top level params" do
+    expect{ 
+      TestModelAudit.new.submit(params.merge(user_code: admin_user.swipe_card_id, test_model: valid_params))
+    }.to change(TestModel, :count).by(1)
   end
 
   it "should create an associated audit record" do

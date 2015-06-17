@@ -8,7 +8,7 @@ class UserForm
 
   def submit(params)
     set_instance_variables(params)
-    set_current_user
+    set_current_user(params)
     remove_password_fields(params)
     set_model_attributes(params)
     save_if_valid
