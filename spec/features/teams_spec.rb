@@ -21,9 +21,7 @@ RSpec.describe "Teams", type: :feature do
     team = create(:team)
     new_team = build(:team)
     visit teams_path
-    within("#team_#{team.id}") do
-      click_link "Edit"
-    end
+    find(:data_id, team.id).click_link "Edit"
     expect{
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: new_team.name
@@ -58,5 +56,18 @@ RSpec.describe "Teams", type: :feature do
       click_button "Create Team"
     }.to_not change(Team, :count)
     expect(page).to have_content("error prohibited this record from being saved")
+  end
+
+  describe "audits", js: true do
+
+    it "allows a user to view associated audits for a team" do
+      team = create(:team_with_audits)
+      visit teams_path
+      find(:data_id, team.id).find(:data_behavior, "drilldown").click
+      team.audits.each do |audit|
+        expect(page).to have_content(audit.record_data)
+      end
+    end
+
   end
 end

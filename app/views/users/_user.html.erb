@@ -1,14 +1,14 @@
-<article id="<%= dom_id(user) %>" class="user">
-  <p>
-    Id: <%= user.id %>
-  </p>
-  <p>
+<article id="<%= dom_id(user) %>" class="drilldown" data-behavior="user" data-id="<%= user.id %>">
+   <div>
+    <%= link_to "+", '#', data: { behavior: "drilldown"} %>
+  </div>
+  <div>
+    <%= user.id %>.
+  </div>
+  <div>
     Login: <%= user.login %>
-  </p>
-  <p>
+  </div>
+  <div>
     <%= link_to "Edit", edit_user_path(user) %>
-  </p>
-   <p>
-    <%= link_to_add_data "Audits", user_audits_path(user) %>: <%= user.audits_count %>
-  </p>
+  </div>
 </article>

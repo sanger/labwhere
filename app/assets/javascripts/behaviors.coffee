@@ -20,9 +20,14 @@ class @Behavior
     @childResources   = item.resources
 
 @resources = { 
+  location_type:[ {path: "locations", behavior: "location"}],
   location:[ { path: "children", behavior: "location" }, { path: "labwares", behavior: "labware" } ], 
   labware: [ { path: "histories", behavior: "history" }],
-  history: []
+  history: [],
+  audit: [],
+  user: [path: "audits", behavior: "audit"],
+  printer: [path: "audits", behavior: "audit"], 
+  team: [path: "audits", behavior: "audit"]
 }
 
 window.behaviors = new Behaviors(this.resources)

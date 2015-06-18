@@ -31,7 +31,7 @@ RSpec.describe "Searches", type: :feature do
     fill_in "Term", with: "Site"
     click_button "Search"
     expect(page).to have_content("Your search returned 1 result")
-    expect(page).to have_content("#{location_type.id}. A Site")
+    expect(page).to have_content("A Site")
   end
 
   it "with a term that finds labware should output the result" do
@@ -57,46 +57,17 @@ RSpec.describe "Searches", type: :feature do
   describe "drilling down", js: true do
 
     it "with a location type should allow viewing of associated locations" do
-      location_type = create(:location_type)
-      locations = create_list(:location, 10, location_type: location_type)
+      location_type = create(:location_type_with_locations)
       other_locations = create_list(:location, 10, location_type: create(:location_type))
       visit root_path
       fill_in "Term", with: location_type.name
       click_button "Search"
-      within("#location_type_#{location_type.id}") do
-        click_link "Locations"
-      end
-      locations.each do |location|
+      find(:data_id,location_type.id).find(:data_behavior, "drilldown").click
+      location_type.locations.each do |location|
         expect(page).to have_content(location.barcode)
       end
       other_locations.each do |location|
         expect(page).to_not have_content(location.barcode)
-      end
-    end
-
-    it "with a location type should allow viewing of associated audits" do
-      location_type = create(:location_type_with_audits)
-      visit root_path
-      fill_in "Term", with: location_type.name
-      click_button "Search"
-      within("#location_type_#{location_type.id}") do
-        click_link "Audits"
-      end
-       location_type.audits.each do |audit|
-        expect(page).to have_content(audit.record_data)
-      end
-    end
-
-    it "with a location should allow viewing of associated audits" do
-      location = create(:location_with_audits)
-      visit root_path
-      fill_in "Term", with: location.barcode
-      click_button "Search"
-      within("#location_#{location.id}") do
-        click_link "Audits"
-      end
-       location.audits.each do |audit|
-        expect(page).to have_content(audit.record_data)
       end
     end
 
@@ -105,9 +76,7 @@ RSpec.describe "Searches", type: :feature do
       visit root_path
       fill_in "Term", with: location.barcode
       click_button "Search"
-      within("#location_#{location.id}") do
-        click_link "+"
-      end
+      find(:data_id, location.id).find(:data_behavior, "drilldown").click
       location.children.each do |child|
         expect(page).to have_content(child.barcode)
       end
@@ -117,18 +86,14 @@ RSpec.describe "Searches", type: :feature do
     end
 
     it "with a labware should allow viewing of associated history" do
-      labware = create(:labware)
-      this_event = create(:history, scan: create(:scan), labware: labware)
-      that_event = create(:history, scan: create(:scan), labware: create(:labware))
+      labware = create(:labware_with_histories)
       visit root_path
       fill_in "Term", with: labware.barcode
       click_button "Search"
-      within("#labware_#{labware.id}") do
-        click_link "History"
-        expect(page).to have_selector("article", count: 1)
-        expect(page).to have_content(this_event.scan.user.login)
+      find(:data_id, labware.id).find(:data_behavior, "drilldown").click
+      labware.histories.each do |history|
+        expect(page).to have_content(history.scan.user.login)
       end
-      
     end
 
   end

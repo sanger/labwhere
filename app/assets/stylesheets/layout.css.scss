@@ -176,18 +176,22 @@ header{
 
 article{
   margin:{
-    top: 20px;
-    bottom: 20px;
+    top: 10px;
+    bottom: 10px;
   }
 }
 
 .drilldown{
 
-  clear: both;
+  a{
+    &:first-child{
+      text-decoration: none;
+    }
+  }
 
   div{
     font-size: 0.9em;
-    float: left;
+    display: inline;
     margin-right: 10px;
   }
 }

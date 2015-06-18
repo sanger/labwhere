@@ -5,7 +5,7 @@
   <div>
       <%= link_to "Add new location", new_location_path %>
   </div>
-  <div id="collection" data-behavior = "locations-list" >
+  <div class="collection" data-behavior = "locations-list" >
     <%= render partial: "application/location", collection: locations %>
   </div>
   <div id="print-form"></div>

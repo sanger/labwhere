@@ -3,7 +3,7 @@
     <%= link_to "+", '#', data: { behavior: "drilldown"} %>
   </div>
   <div>
-    <%= location.id %>.
+    <%= location.id %>
   </div>
   <div>
     Name: <%= location.name %>
@@ -30,6 +30,6 @@
     <%= link_to "Edit", edit_location_path(location) %>
   </div>
    <div>
-    <%= link_to_add_data "Audits", location_audits_path(location) %>: <%= location.audits_count %>
+    <%= link_to "+", '#', data: { behavior: "audits"} %>
   </div>
 </article>

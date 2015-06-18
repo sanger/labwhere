@@ -8,49 +8,57 @@ class @List
 class @ListItem
   
   constructor: (item, behavior) ->
-    @item             = $(item)
-    @behavior         = behavior
-    @id               = @item.data("id")
-    @clicker          = @item.find("[data-behavior~=drilldown]").first()
+    @item               = $(item)
+    @behavior           = behavior
+    @id                 = @item.data("id")
+    @drilldown          = @item.find("[data-behavior~=drilldown]").first()
+    @auditBehavior      = window.behaviors.find("audit")
+    @audits             = @item.find("[data-behavior~=audits]").first()
     @setEvents()
 
-  setEvents: ->
-    @clicker.on "click", @findData
+  setEvents: =>
+    @drilldown.on "click", @findData
+    @audits.on "click", @findAudits
 
   findData: (event) =>
     event.preventDefault()
     for resource in @behavior.childResources
-      list = @item.find("[data-behavior~=#{window.behaviors.find(resource.behavior).id}]")
-      if list.length
-        @toggleList list
-      else
-        @fireAjax(resource)
+      @toggleData resource.path, window.behaviors.find(resource.behavior), @drilldown
 
-  fireAjax: (resource) =>
+  findAudits: (event) =>
+    event.preventDefault()
+    @toggleData @auditBehavior.parentResource, @auditBehavior, @audits
+
+  toggleData: (path, behavior, link) =>
+    list = @item.find("[data-behavior~=#{behavior.id}]")
+    if list.length
+      @toggleList list, link
+    else
+      @fireAjax path, behavior, link
+
+  fireAjax: (path, behavior, link) =>
     $.ajax
-      url: "/#{@behavior.parentResource}/#{@id}/#{resource.path}"
-      async: false
+      url: "/#{@behavior.parentResource}/#{@id}/#{path}"
       method: "GET"
       dataType: "HTML"
       success: (data, textStatus, jqXHR) =>
-        @handleSuccess(data, resource)
+        @handleSuccess(data, behavior, link)
     
-  handleSuccess: (results, resource) =>
-    html = $(results).find("#collection")
-    @addBehavior(html, resource.behavior)
+  handleSuccess: (results, behavior, link) =>
+    html = $(results).find("[data-behavior~=#{behavior.id}]")
+    @addBehavior(html, behavior)
     html.appendTo(@item)
-    @clicker.html '-'
+    link.html '-'
 
-  addBehavior: (html, resource) =>
-    behavior = window.behaviors.find(resource)
+  addBehavior: (html, behavior) =>
     html.data("behavior", behavior.id)
     new List(html, behavior)
 
-  toggleList: (list) =>
+  toggleList: (list, link) =>
     if list.is(":visible")
       list.hide()
-      @clicker.html '+'
+      link.html '+'
     else
       if list.find("article").length
         list.show()
-        @clicker.html '-'
+        link.html '-'

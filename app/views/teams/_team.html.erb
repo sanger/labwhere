@@ -1,14 +1,17 @@
-<article id="<%= dom_id(team) %>" class="team">
-  <p>
+<article id="<%= dom_id(team) %>" class="drilldown" data-behavior="team" data-id="<%= team.id %>">
+  <div>
+    <%= link_to "+", '#', data: { behavior: "drilldown"} %>
+  </div>
+  <div>
     Id: <%= team.id %>
-  </p>
-  <p>
+  </div>
+  <div>
     Name: <%= team.name %>
-  </p>
-  <p>
+  </div>
+  <div>
     Number: <%= team.number %>
-  </p>
-  <p>
+  </div>
+  <div>
     <%= link_to "Edit", edit_team_path(team) %>
-  </p>
+  </div>
 </article>

@@ -47,9 +47,13 @@ Rails.application.routes.draw do
     concerns :change_status
   end
 
-  resources :teams
+  resources :teams do
+    concerns :auditable, parent: :teams
+  end
 
-  resources :printers
+  resources :printers do
+    concerns :auditable, parent: :printers
+  end
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
