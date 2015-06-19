@@ -1,0 +1,14 @@
+<article id="<%= dom_id(labware) %>" data-behavior="labware" class="drilldown" data-id="<%= labware.id %>" >
+  <div>
+    <%= link_to "+", '#', data: { behavior: "drilldown"} %>
+  </div>
+  <div>
+    <%= labware.id %>.
+  </div>
+  <div>
+    Barcode: <%= labware.barcode %>
+  </div>
+  <div>
+    Location: <%= labware.location.name %>
+  </div>
+</article>

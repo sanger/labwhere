@@ -1,11 +1,14 @@
-<article id="<%= dom_id(printer) %>" class="printer">
-  <p>
-    <%= printer.id %> <%= link_to "Edit", edit_printer_path(printer) %>
-  </p>
-  <p>
+<article id="<%= dom_id(printer) %>" class="drilldown" data-behavior="printer" data-id="<%= printer.id %>">
+  <div>
+    <%= link_to "+", '#', data: { behavior: "drilldown"} %>
+  </div>
+   <div>
     Name: <%= printer.name %>
-  </p>
-  <p>
+  </div>
+  <div>
     Uuid: <%= printer.uuid %>
-  </p>
+  </div>
+  <div>
+    <%= printer.id %> <%= link_to "Edit", edit_printer_path(printer) %>
+  </div>
 </article>

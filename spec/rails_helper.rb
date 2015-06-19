@@ -76,4 +76,12 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  Capybara.add_selector(:data_behavior) do
+    xpath { |name| XPath.css("[data-behavior='#{name}']") }
+  end
+
+  Capybara.add_selector(:data_id) do
+    xpath { |id| XPath.css("[data-id='#{id}']") }
+  end
+
 end

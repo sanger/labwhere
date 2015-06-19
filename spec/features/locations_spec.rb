@@ -31,9 +31,7 @@ RSpec.describe "Locations", type: :feature do
     location_type = create(:location_type)
     visit location_types_path
     expect {
-      within("#location_type_#{location_type.id}") do
-        click_link "Edit"
-      end
+      find(:data_id, location_type.id).click_link "Edit"
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: "Updated location type"
       click_button "Update Location type"
@@ -46,9 +44,7 @@ RSpec.describe "Locations", type: :feature do
     it "Allows a user to delete an existing location type" do
       location_type = create(:location_type)
       visit location_types_path
-      within("#location_type_#{location_type.id}") do
-        click_link "Delete"
-      end
+      find(:data_id, location_type.id).click_link "Delete"
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       click_button "Delete"
       expect(page).to have_content("Location type successfully deleted")
@@ -60,9 +56,7 @@ RSpec.describe "Locations", type: :feature do
       standard_user = create(:standard)
       visit location_types_path
       expect {
-        within("#location_type_#{location_type.id}") do
-          click_link "Delete"
-        end
+        find(:data_id, location_type.id).click_link "Delete"
         fill_in "User swipe card id/barcode", with: standard_user.swipe_card_id
         click_button "Delete"
       }.to_not change(LocationType, :count)
@@ -130,17 +124,13 @@ RSpec.describe "Locations", type: :feature do
     location = create(:location)
     visit locations_path
     expect {
-      within("#location_#{location.id}") do
-        click_link "Edit"
-      end
+      find(:data_id, location.id).click_link "Edit"
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: "An updated location name"
       click_button "Update Location"
     }.to change { location.reload.name }.to("An updated location name")
     expect(page).to have_content("Location successfully updated")
   end
-
-
 
   it "Allows a user to nest locations" do
     location_parent = create(:location)
@@ -173,9 +163,7 @@ RSpec.describe "Locations", type: :feature do
   it "Allows a user to deactivate a location" do
     location = create(:location)
     visit locations_path
-    within("#location_#{location.id}") do
-        click_link "Edit"
-      end
+    find(:data_id, location.id).click_link "Edit"
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       uncheck "Active"
@@ -188,9 +176,7 @@ RSpec.describe "Locations", type: :feature do
     location = create(:location)
     location.deactivate
     visit locations_path
-    within("#location_#{location.id}") do
-        click_link "Edit"
-      end
+    find(:data_id, location.id).click_link "Edit"
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       check "Active"
@@ -212,6 +198,27 @@ RSpec.describe "Locations", type: :feature do
       click_button "Create Location"
     }.to_not change(Location, :count)
     expect(page).to have_content("error prohibited this record from being saved")
+  end
+
+   describe "audits", js: true do
+
+    it "allows a user to view associated audits for a location type" do
+      location_type = create(:location_type_with_audits)
+      visit location_types_path
+      find(:data_id, location_type.id).find(:data_behavior, "audits").click
+      location_type.audits.each do |audit|
+        expect(page).to have_content(audit.record_data)
+      end
+    end
+
+    it "allows a user to view associated audits for a location" do
+      location = create(:location_with_audits)
+      visit locations_path
+      find(:data_id, location.id).find(:data_behavior, "audits").click
+      location.audits.each do |audit|
+        expect(page).to have_content(audit.record_data)
+      end
+    end
   end
 
 end

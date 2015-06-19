@@ -6,6 +6,8 @@
     <div>
       <%= link_to "Add new location type", new_location_type_path %>
     </div>
-    <%= render location_types %>
+    <div class="collection" data-behavior="location_types-list">
+      <%= render location_types %>
+    </div>
     <div id="delete-form"></div>
 </section>

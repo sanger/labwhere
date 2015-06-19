@@ -22,9 +22,7 @@ RSpec.describe "Printers", type: :feature do
     new_printer = build(:printer)
     visit printers_path
     expect {
-      within("#printer_#{printer.id}") do
-        click_link "Edit"
-      end
+      find(:data_id, printer.id).click_link "Edit"
       fill_in "User swipe card id/barcode", with: admin_user.barcode
       fill_in "Name", with: new_printer.name
       click_button "Update Printer"
@@ -59,19 +57,32 @@ RSpec.describe "Printers", type: :feature do
   end
 
    it "Prevents a user from editing an existing printer if they are not authorised" do
-    printer = create(:printer)
-    new_printer = build(:printer)
-    standard_user = create(:standard)
-    visit printers_path
-    expect {
-      within("#printer_#{printer.id}") do
-        click_link "Edit"
+      printer = create(:printer)
+      new_printer = build(:printer)
+      standard_user = create(:standard)
+      visit printers_path
+      expect {
+        within("#printer_#{printer.id}") do
+          click_link "Edit"
+        end
+        fill_in "User swipe card id/barcode", with: standard_user.barcode
+        fill_in "Name", with: new_printer.name
+        click_button "Update Printer"
+      }.to_not change(Printer, :count)
+      expect(page).to have_content("error prohibited this record from being saved")
+    end
+
+  describe "audits", js: true do
+
+    it "allows a user to view associated audits for a printer" do
+      printer = create(:printer_with_audits)
+      visit printers_path
+      find(:data_id, printer.id).find(:data_behavior, "drilldown").click
+      printer.audits.each do |audit|
+        expect(page).to have_content(audit.record_data)
       end
-      fill_in "User swipe card id/barcode", with: standard_user.barcode
-      fill_in "Name", with: new_printer.name
-      click_button "Update Printer"
-    }.to_not change(Printer, :count)
-    expect(page).to have_content("error prohibited this record from being saved")
+    end
+
   end
 
 end

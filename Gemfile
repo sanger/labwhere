@@ -67,12 +67,11 @@ group :development, :test do
 
   gem 'with_model'
 
-  # Test your coffescript
-  gem 'teaspoon-jasmine'
 
   # Headless browser testing
   gem 'phantomjs'
   gem 'poltergeist'
+  gem 'teaspoon-jasmine'
 
 end
 

@@ -5,7 +5,7 @@
   <div>
       <%= link_to "Add new user", new_user_path %>
   </div>
-   <div id="collection">
+   <div class="collection" data-behavior="users-list">
     <%= render partial: "user", collection: @users %>
   </div>
 </section>

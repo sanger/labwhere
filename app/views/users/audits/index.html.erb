@@ -1,8 +1,1 @@
-<section class="<%= header.to_css_class %>">
-   <h1>
-    <%= header.to_s %>
-  </h1>
-  <div id="collection">
-    <%= render audits %>
-  </div>
-</section>
+<%= render partial: "application/audits", object: audits %>

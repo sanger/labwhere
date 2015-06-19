@@ -3,4 +3,4 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 jQuery ->
-  new List $("[data-behavior~=printers-list]"), window.behaviors.find("printer")
+  new List $("[data-behavior~=labwares-list]"), window.behaviors.find("labware")

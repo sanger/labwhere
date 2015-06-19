@@ -54,9 +54,7 @@ RSpec.describe "Users", type: :feature do
   it "Allows a user to be deactivated" do
     user = create(:user)
     visit users_path
-    within("#user_#{user.id}") do
-      click_link "Edit"
-    end
+    find(:data_id, user.id).click_link "Edit"
     expect {
       fill_in "User swipe card id/barcode", with: admin_user.swipe_card_id
       uncheck "Active"
@@ -69,9 +67,7 @@ RSpec.describe "Users", type: :feature do
     user = create(:user)
     user.deactivate
     visit users_path
-     within("#user_#{user.id}") do
-      click_link "Edit"
-    end
+    find(:data_id, user.id).click_link "Edit"
     expect {
       fill_in "User swipe card id/barcode", with: admin_user.swipe_card_id
       check "Active"
@@ -98,9 +94,7 @@ RSpec.describe "Users", type: :feature do
     it "should allow viewing of associated audits" do
       user = create(:user_with_audits)
       visit users_path
-      within("#user_#{user.id}") do
-        click_link "Audits"
-      end
+      find(:data_id, user.id).find(:data_behavior, "drilldown").click
       user.audits.each do |audit|
         expect(page).to have_content(audit.record_data)
       end

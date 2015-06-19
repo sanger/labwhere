@@ -13,9 +13,7 @@ RSpec.describe LabelPrinter, type: :feature do
 
     it "should allow a user to reprint a barcode for a location" do
       visit locations_path(location)
-      within("#location_#{location.id}") do
-        click_link "Reprint barcode"
-      end
+      find(:data_id, location.id).click_link "Reprint barcode"
       select printer.name, from: "Printer"
       click_button "Print"
       expect(page).to have_content(I18n.t("printing.success"))

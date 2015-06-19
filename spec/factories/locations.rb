@@ -41,6 +41,19 @@ FactoryGirl.define do
       end
     end
 
+    factory :location_with_labwares_and_children do
+
+      parent { FactoryGirl.create(:location)}
+
+      after(:create) do |location, evaluator|
+        1.upto(5) do |n|
+          FactoryGirl.create(:location, parent: location)
+          FactoryGirl.create(:labware, location: location)
+        end
+      end
+
+    end
+
   end
 
 end
