@@ -1,3 +1,6 @@
-<article id="<%= dom_id(audit) %>" data-behavior="audit" data-id="<%= audit.id %>">
-  <p><%= audit.record_data %></p>
+<article id="<%= dom_id(audit) %>" class="drilldown" data-behavior="audit" data-id="<%= audit.id %>">
+  <div><%= audit.user.login %></div>
+  <div><%= audit.action %></div>
+  <%#= render partial: "application/audits/#{audit.auditable_type.downcase}", object: JSON.parse(audit.record_data) %>
+  <div><%= audit.record_data %></div>
 </article>
