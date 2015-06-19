@@ -64,7 +64,7 @@ RSpec.describe User, type: :model do
     expect(build(:user)).to_not be_guest
   end
 
-  it "Admin use should be allowed to do anything" do
+  it "Admin user should be allowed to do anything" do
     expect(build(:admin)).to allow_permission(:any, :thing)
   end
 
@@ -88,7 +88,6 @@ RSpec.describe User, type: :model do
 
   it "as_json should not include swipe_card_id or barcode" do
     user = create(:user)
-    p user.to_json
     expect(user.as_json["swipe_card_id"]).to be_nil
     expect(user.as_json["barcode"]).to be_nil
   end
