@@ -86,4 +86,11 @@ RSpec.describe User, type: :model do
     expect(User.find_by_code(user.swipe_card_id)).to be_guest
   end
 
+  it "as_json should not include swipe_card_id or barcode" do
+    user = create(:user)
+    p user.to_json
+    expect(user.as_json["swipe_card_id"]).to be_nil
+    expect(user.as_json["barcode"]).to be_nil
+  end
+
 end

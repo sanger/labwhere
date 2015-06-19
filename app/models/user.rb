@@ -44,4 +44,8 @@ class User < ActiveRecord::Base
     where("swipe_card_id = :code OR barcode = :code", { code: code}).take || Guest.new
   end
 
+  def as_json(options = {})
+    super({ except: [:swipe_card_id, :barcode] }.merge(options))
+  end
+
 end
