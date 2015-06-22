@@ -10,14 +10,14 @@ module AddAudit
   # Build an audit record but will not save it
   # An audit record will be added to the audit association.
   def build_audit(user, action)
-    audits << audits.build(user: user, action: action, record_data: self.to_json)
+    audits << audits.build(user: user, action: action, record_data: self)
   end
 
   ##
   # Build and save an associated audit record.
   # The record data will be a json representation of the saved object.
   def create_audit(user, action)
-    audits.create(user: user, action: action, record_data: self.to_json)
+    audits.create(user: user, action: action, record_data: self)
   end
   
 end
