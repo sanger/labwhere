@@ -8,5 +8,9 @@ module ApplicationHelper
     action = object.active? ? "Deactivate" : "Activate"
     link_to action, { controller: object.class.to_s.tableize, action: action.downcase, id: object }, method: :patch
   end
+
+  def behavior_link(behavior)
+    link_to "+", '#', data: { behavior: behavior}, class: "no-decoration"
+  end
  
 end

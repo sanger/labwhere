@@ -20,6 +20,7 @@ class Location < ActiveRecord::Base
   scope :without, ->(location) { active.where.not(id: location.id) }
   scope :without_unknown, ->{ where.not(id: Location.unknown.id) }
 
+  before_save :synchronise_status_of_children
   after_create :generate_barcode
 
   searchable_by :name, :barcode
@@ -63,10 +64,34 @@ class Location < ActiveRecord::Base
     
   end
 
+  def as_json(options = {})
+    super({ except: [:audits_count, :labwares_count]}.merge(options)).merge(uk_dates)
+  end
+
+  def synchronise_status_of_children
+    if status_changed?
+      inactive? ? deactivate_children : activate_children
+    end
+  end
+
+  def deactivate_children
+    children.each do |child|
+      child.deactivate 
+      child.deactivate_children
+    end
+  end
+
+  def activate_children
+    children.each do |child|
+      child.activate 
+      child.activate_children
+    end
+  end
+
 private
 
   def generate_barcode
-    update_column(:barcode, "#{self.name.gsub(' ','-')}-#{self.id}")
+    update_column(:barcode, "#{self.name.gsub(' ','-').downcase}-#{self.id}")
   end
 
 end

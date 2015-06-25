@@ -9,4 +9,8 @@ class Printer < ActiveRecord::Base
   has_many :audits, as: :auditable
 
   include AddAudit
+
+  def as_json(options = {})
+    super({ except: [:audits_count]}.merge(options)).merge(uk_dates)
+  end
 end

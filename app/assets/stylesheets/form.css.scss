@@ -1,29 +1,7 @@
 @import "shared";
 
 fieldset{
-
-  width: 60%;
-  margin: 0 auto;
-
   border: none;
-
-  legend{
-    font:{
-      size: 2em;
-      weight: bold;
-    }
-    margin-bottom: 20px;
-  }
-
-  label{
-    font-weight: bold;
-  }
-
-  input[type=text], input[type=submit], input[type=password], textarea {
-    border-style: solid;
-    border-width: 2px;
-    @include rounded-corners(5px);
-  }
 
   input[type=text], input[type=password], select, textarea{
     width: 100%;
@@ -31,106 +9,112 @@ fieldset{
     margin-top: 10px;
   }
 
-  input[type=checkbox]{
-    transform: scale(1.5);
-    -webkit-transform: scale(1.5);
-    width: 50px;
-    position: relative;
-    left: -10px;
+  label{
+    font:{
+      weight: bold;
+    }
   }
 
   textarea{
     height: 200px;
   }
 
-  input[type=submit]{
-    width: 102%;
-    height: 40px;
-    font-size: 1.2em;
-    margin-top: 20px;
+  input[type=text], input[type=submit], input[type=password], input[type=search], textarea {
+    @include rounded-corners(5px);
+    border-style: solid;
+    border-width: 1px;
+    border-color: LightGray;
   }
 
-  ul{
-    li{
-      margin-bottom: 10px;
-
-      div{
-        margin-bottom: 5px;
-      }
-    }
+  input[type=checkbox]{
+    width: 50px;
+    position: relative;
+    transform: scale(1.5);
   }
 
   fieldset{
-
     legend{
       display: block;
     }
-
   }
+
 }
 
 .search{
-  legend{
-    display: none;
-  }
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  width: 320px;
 
-  fieldset{ 
-    width: 300px;
-    position: absolute;
-    top: -10px;
-    right: 20px;
-  }
-
-  font-size: 0.9em;
-
-  label{
+  legend, label{
     display: none;
   }
 
   input[type=search]{
-    width: 150px;
     float: left;
-
-    font-weight: normal;
-    font-size: 0.7em;
-  }
-
-  input[type=search], input[type=submit]{
-    height: 30px;
-    box-sizing: border-box;
+    padding: 5px;
+    height: 20px;
   }
 
   input[type=submit]{
-    width: 100px;
-    position: relative;
-    top: -10px;
+    width: 80px;
+    height: 30px;
+    margin: 0 0 0 10px;
   }
 
 }
 
-.ui-dialog{
-
+.body{
   fieldset{
-    font-size: 0.8em;
-    width: 80%;
+    width: 60%;
+    margin: 0 auto;
 
     legend{
-      font-size: 1em;
-    }
-  }
-
-  .errors{
-    width: 80%;
-
-    h3{
-      font-size: 0.9em;
-    }
-
-    ul{
-      li{
-        font-size: 0.8em;
+      font:{
+        size: 2em;
+        weight: bold;
       }
+      margin-bottom: 20px;
     }
-    
+
+    input, select{
+      margin-bottom: 10px;
+    }
+
+    input[type=submit]{
+      width: 101%;
+      height: 40px;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+
   }
+
 }
+
+// .ui-dialog{
+
+//   fieldset{
+//     font-size: 0.8em;
+//     width: 80%;
+
+//     legend{
+//       font-size: 1em;
+//     }
+//   }
+
+//   .errors{
+//     width: 80%;
+
+//     h3{
+//       font-size: 0.9em;
+//     }
+
+//     ul{
+//       li{
+//         font-size: 0.8em;
+//       }
+//     }
+    
+//   }
+// }

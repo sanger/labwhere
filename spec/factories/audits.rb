@@ -5,7 +5,7 @@ FactoryGirl.define do
     end
     auditable_type { location.class }
     action "create"
-    record_data  { location.to_json }
+    record_data  { location }
     auditable_id { location.id }
     user
   end

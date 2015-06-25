@@ -2,7 +2,7 @@ class @List
 
   constructor: (item, behavior) ->
     @item       = $(item)
-    @list       = $.map @item.find("[data-behavior~=#{behavior.name}]"), (item, i) ->
+    @list       = $.map @item.children("[data-behavior~=#{behavior.name}]"), (item, i) ->
       new ListItem(item, behavior)
 
 class @ListItem
@@ -30,7 +30,7 @@ class @ListItem
     @toggleData @auditBehavior.parentResource, @auditBehavior, @audits
 
   toggleData: (path, behavior, link) =>
-    list = @item.find("[data-behavior~=#{behavior.id}]")
+    list = @item.children("[data-behavior~=#{behavior.id}]")
     if list.length
       @toggleList list, link
     else

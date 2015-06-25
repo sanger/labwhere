@@ -1,17 +1,17 @@
 <article id="<%= dom_id(user) %>" class="drilldown" data-behavior="user" data-id="<%= user.id %>">
-   <div>
-    <%= link_to "+", '#', data: { behavior: "drilldown"} %>
-  </div>
-  <div>
-    <%= user.id %>.
-  </div>
-  <div>
-    Login: <%= user.login %>
-  </div>
-  <div>
-    Type: <%= user.type %>
-  </div>
-  <div>
-    <%= link_to "Edit", edit_user_path(user) %>
-  </div>
+     <div>
+      <%= behavior_link "drilldown" %>
+    </div>
+    <div>
+      <%= user.id %>.
+    </div>
+    <div>
+      Login: <%= user.login %>
+    </div>
+    <div>
+      Type: <%= user.type %>
+    </div>
+    <div>
+      <%= link_to "Edit", edit_user_path(user) %>
+    </div>
 </article>

@@ -1,5 +1,7 @@
 <article id="<%= dom_id(audit) %>" class="drilldown" data-behavior="audit" data-id="<%= audit.id %>">
-  <div><%= audit.user.login %></div>
-  <div><%= audit.action %></div>
-  <div><%= audit.record_data %></div>
+  <div>user: <%= audit.user.login %></div>
+  <div>action: <%= audit.action %></div>
+  <% audit.record_data.each do |k,v| %>
+    <div><%= k %>: <%= v %></div>
+  <% end %>
 </article>

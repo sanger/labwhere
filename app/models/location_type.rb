@@ -28,4 +28,8 @@ class LocationType < ActiveRecord::Base
     locations.present?
   end
 
+  def as_json(options = {})
+    super({ except: [:audits_count, :locations_count]}.merge(options)).merge(uk_dates)
+  end
+
 end

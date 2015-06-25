@@ -206,18 +206,14 @@ RSpec.describe "Locations", type: :feature do
       location_type = create(:location_type_with_audits)
       visit location_types_path
       find(:data_id, location_type.id).find(:data_behavior, "audits").click
-      location_type.audits.each do |audit|
-        expect(page).to have_content(audit.record_data)
-      end
+      expect(find(:data_id, location_type.id)).to have_css("article", count: 5)
     end
 
     it "allows a user to view associated audits for a location" do
       location = create(:location_with_audits)
       visit locations_path
       find(:data_id, location.id).find(:data_behavior, "audits").click
-      location.audits.each do |audit|
-        expect(page).to have_content(audit.record_data)
-      end
+      expect(find(:data_id, location.id)).to have_css("article", count: 5)
     end
   end
 

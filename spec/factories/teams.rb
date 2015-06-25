@@ -11,7 +11,7 @@ FactoryGirl.define do
       after(:create) do |team, evaluator|
         1.upto(5) do |n|
           FactoryGirl.create(:audit, auditable_type: team.class, 
-            auditable_id: team.id, user: evaluator.user, record_data: team.to_json)
+            auditable_id: team.id, user: evaluator.user, record_data: team)
         end
       end
     end

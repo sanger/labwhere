@@ -1,35 +1,35 @@
 <article id="<%= dom_id(location) %>" class="drilldown" data-behavior="location" data-id="<%= location.id %>">
-  <div>
-    <%= link_to "+", '#', data: { behavior: "drilldown"} %>
-  </div>
-  <div>
-    <%= location.id %>
-  </div>
-  <div>
-    Name: <%= location.name %>
-  </div>
-  <div>
-    Barcode: <%= location.barcode %>
-  </div>
-  <div>
-    Location type: <%= location.location_type.name %>
-  </div>
-  <div>
-    Parent: <%= location.parent.name %>
-  </div>
-  <div>
-    Container: <%= location.container %>
-  </div>
-  <div>
-    Status: <%= location.status %>
-  </div>
-  <div>
-    <%= link_to "Reprint barcode", new_location_print_path(location), remote: true %>
-  </div>
-  <div>
-    <%= link_to "Edit", edit_location_path(location) %>
-  </div>
-   <div>
-    <%= link_to "+", '#', data: { behavior: "audits"} %>
-  </div>
+    <div>
+      <%= behavior_link "drilldown" %>
+    </div>
+    <div>
+      <%= location.id %>
+    </div>
+    <div>
+      Name: <%= location.name %>
+    </div>
+    <div>
+      Barcode: <%= location.barcode %>
+    </div>
+    <div>
+      Location type: <%= location.location_type.name %>
+    </div>
+    <div>
+      Parent: <%= location.parent.name %>
+    </div>
+    <div>
+      Container: <%= location.container %>
+    </div>
+    <div>
+      Status: <%= location.status %>
+    </div>
+    <div>
+      <%= link_to "Reprint barcode", new_location_print_path(location), remote: true %>
+    </div>
+    <div>
+      <%= link_to "Edit", edit_location_path(location) %>
+    </div>
+     <div>
+      <%= behavior_link "audits" %>
+    </div>
 </article>

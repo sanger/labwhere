@@ -24,4 +24,12 @@ RSpec.describe Team, type: :model do
     expect(build(:team, name: team.name)).to_not be_valid
   end
 
+  it "#as_json should return the correct attributes" do
+    team = create(:team)
+    json = team.as_json
+    expect(json["audits_count"]).to be_nil
+    expect(json["created_at"]).to eq(team.created_at.to_s(:uk))
+    expect(json["updated_at"]).to eq(team.updated_at.to_s(:uk))
+  end
+
 end

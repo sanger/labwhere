@@ -19,5 +19,9 @@ module AddAudit
   def create_audit(user, action)
     audits.create(user: user, action: action, record_data: self)
   end
+
+  def uk_dates
+    { "created_at" => created_at.to_s(:uk), "updated_at" => updated_at.to_s(:uk)}
+  end
   
 end

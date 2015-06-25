@@ -78,9 +78,7 @@ RSpec.describe "Printers", type: :feature do
       printer = create(:printer_with_audits)
       visit printers_path
       find(:data_id, printer.id).find(:data_behavior, "drilldown").click
-      printer.audits.each do |audit|
-        expect(page).to have_content(audit.record_data)
-      end
+      expect(find(:data_id, printer.id)).to have_css("article", count: 5)
     end
 
   end

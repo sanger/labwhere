@@ -1,4 +1,4 @@
-<section>
+<section class="list">
   <h3>Your search returned <%= pluralize(@search.results.count, 'result') %></h3>
   <% @search.results.each do |heading, records| %>
     <div data-behavior="<%= heading %>-list">

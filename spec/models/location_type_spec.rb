@@ -48,4 +48,14 @@ RSpec.describe LocationType, type: :model do
     expect(location_type.reload.locations_count).to eq(1)
   end
 
+  it "#as_json should have the correct attributes" do
+    location_type = create(:location_type)
+    json = location_type.as_json
+    expect(json["locations_count"]).to be_nil
+    expect(json["audits_count"]).to be_nil
+    expect(json["created_at"]).to eq(location_type.created_at.to_s(:uk))
+    expect(json["updated_at"]).to eq(location_type.updated_at.to_s(:uk))
+
+  end
+
 end

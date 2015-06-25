@@ -83,6 +83,45 @@ RSpec.describe Location, type: :model do
     expect(location.barcode).to eq("location1-#{location.id}")
     location = create(:location, name: "location 1")
     expect(location.barcode).to eq("location-1-#{location.id}")
+    location = create(:location, name: "Location1")
+    expect(location.barcode).to eq("location1-#{location.id}")
+  end
+
+  it "#as_json should return the correct attributes" do
+    location = create(:location)
+    json = location.as_json
+    expect(json["deactivated_at"]).to be_nil
+    expect(json["labwares_count"]).to be_nil
+    expect(json["audits_count"]).to be_nil
+    expect(json["created_at"]).to eq(location.created_at.to_s(:uk))
+    expect(json["updated_at"]).to eq(location.updated_at.to_s(:uk))
+  end
+
+  it "deactivating a location should deactivate the whole family" do
+    location_1 = create(:location)
+    location_2 = create(:location, parent: location_1)
+    location_3 = create(:location, parent: location_1)
+    location_4 = create(:location, parent: location_2)
+    location_5 = create(:location, parent: location_3)
+    location_1.deactivate
+    expect(location_2.reload).to be_inactive
+    expect(location_3.reload).to be_inactive
+    expect(location_4.reload).to be_inactive
+    expect(location_5.reload).to be_inactive
+  end
+
+  it "activating a location should activate the whole family" do
+    location_1 = create(:location)
+    location_2 = create(:location, parent: location_1)
+    location_3 = create(:location, parent: location_1)
+    location_4 = create(:location, parent: location_2)
+    location_5 = create(:location, parent: location_3)
+    location_1.deactivate
+    location_1.activate
+    expect(location_2.reload).to be_active
+    expect(location_3.reload).to be_active
+    expect(location_4.reload).to be_active
+    expect(location_5.reload).to be_active
   end
   
 end
