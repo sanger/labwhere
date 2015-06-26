@@ -96,4 +96,9 @@ RSpec.describe Labware, type: :model do
     expect(labware.coordinate.name).to eq("null")
   end
 
+  it "#by_barcode should return a list of labwares for the barcodes" do
+    create_list(:labware, 5)
+    expect(Labware.by_barcode(Labware.pluck(:barcode)).count).to eq(5)
+  end
+
 end

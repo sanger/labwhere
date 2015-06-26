@@ -2,7 +2,7 @@ class LocationSerializer < ActiveModel::Serializer
   
   self.root = false
 
-  attributes :id, :name, :parent, :container, :status, :location_type_id, :labwares, :audits, :barcode, :children
+  attributes :id, :name, :parent, :container, :status, :location_type_id, :labwares, :audits, :barcode, :children, :parentage
 
   include SerializerDates
 

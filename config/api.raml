@@ -78,29 +78,29 @@ version: 1.0
             example: |
               [
                 {
-                  "id": 1
+                  "id": 1,
                   "name": "Location 1",
-                  "barcode": "Location1:1",
-                  "parent": "Empty",
+                  "barcode": "location-1-1",
+                  "parent": "null",
                   "container": true,
                   "status": "active",
                   "location_type_id": 1,
-                  "labwares": "api/locations/location1:1/labwares",
-                  "audits": "api/locations/location1:1/audits",
-                  "children": api/locations/location1:1/children
+                  "labwares": "api/locations/location-1-1/labwares",
+                  "audits": "api/locations/location-1-1/audits",
+                  "children": "api/locations/location-1-1/children"
 
                 },
                 {
-                  "id": 2
+                  "id": 2,
                   "name": "Location 2",
-                  "barcode": "Location2:2",
-                  "parent": "Location 1",
+                  "barcode": "location-2-2",
+                  "parent": "api/locations/location-1-1",
                   "container": true,
                   "status": "active",
                   "location_type_id": 2,
-                  "labwares": "api/locations/location2:2/labwares",
-                  "audits": "api/locations/location2:2/audits",
-                  "children": api/locations/location2:2/children
+                  "labwares": "api/locations/location-2-2/labwares",
+                  "audits": "api/locations/location-2-2/audits",
+                  "children": "api/locations/location-2-2/children"
                 }
               ]
   post:
@@ -156,14 +156,14 @@ version: 1.0
               {
                 "id": 1
                 "name": "Location 1",
-                "barcode": "Location1:1",
+                "barcode": "location-1-1",
                 "parent": "Empty",
                 "container": true,
                 "status": "active",
                 "location_type_id": 1,
-                "labwares": "api/locations/location1:1/labwares",
-                "audits": "api/locations/location1:1/audits",
-                "children": api/locations/location1:1/children
+                "labwares": "api/locations/location-1-1/labwares",
+                "audits": "api/locations/location-1-1/audits",
+                "children": "api/locations/location-1-1/children"
               }
       422:
         body:
@@ -337,6 +337,66 @@ version: 1.0
                     }
                   ]
 /labwares:
+  /searches:
+      post:
+        description: Finds all of the labwares for the search term
+        body:
+          application/json:
+            schema: |
+              {
+                "type" : "object",
+                "required": true,
+                "properties": {
+                  "barcodes" : {
+                    "description" : "A list of barcodes",
+                    "required" : true,
+                    "type" : "array"
+                  }
+                }
+              }
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    [
+                      {
+                        "barcode": "labware1",
+                        "coordinate": "1",
+                        "history": "api/labwares/labware1/histories",
+                        "location":{
+                          "id": 1
+                          "name": "Location 1",
+                          "barcode": "location-1-1",
+                          "parent": "null",
+                          "container": true,
+                          "status": "active",
+                          "location_type_id": 1,
+                          "labwares": "api/locations/location-1-1/labwares",
+                          "audits": "api/locations/location-1-1/audits",
+                          "children": "api/locations/location-1-1/children"
+                        }
+                      },
+                      {
+                        "barcode": "labware2",
+                        "coordinate": "1",
+                        "history": "api/labwares/labware2/histories",
+                        "location":{
+                          "id": 1,
+                          "name": "Location 1",
+                          "barcode": "location-1-1",
+                          "parent": "null",
+                          "container": true,
+                          "status": "active",
+                          "location_type_id": 1,
+                          "labwares": "api/locations/location-1-1/labwares",
+                          "audits": "api/locations/location-1-1/audits",
+                          "children": "api/locations/location-1-1/children"
+                        }
+                      }
+                    ]
+                  }
   /{barcode}:
     get:
       description: Returns a labware
@@ -352,14 +412,14 @@ version: 1.0
                   "location":{
                     "id": 1
                     "name": "Location 1",
-                    "barcode": "Location1:1",
-                    "parent": "Empty",
+                    "barcode": "location-1-1",
+                    "parent": "null",
                     "container": true,
                     "status": "active",
                     "location_type_id": 1,
-                    "labwares": "api/locations/location1:1/labwares",
-                    "audits": "api/locations/location1:1/audits",
-                    "children": api/locations/location1:1/children
+                    "labwares": "api/locations/location-1-1/labwares",
+                    "audits": "api/locations/location-1-1/audits",
+                    "children": api/locations/location-1-1/children
                   }
                 }
     /histories:
@@ -384,6 +444,7 @@ version: 1.0
                       "updated_at": "Friday 30 May 08:54"
                     }
                   ]
+    
 /searches:
   post:
     description: Finds all of the locations, location types and labwares which match the search term
@@ -411,14 +472,14 @@ version: 1.0
                   "locations":[
                     {
                       "name": "Location 1",
-                      "barcode": "Location1:1",
+                      "barcode": "location-1-1",
                       "parent": "Empty",
                       "container": true,
                       "status": "active",
                       "location_type_id": 1,
-                      "labwares": "api/locations/location1:1/labwares",
-                      "audits": "api/locations/location1:1/audits",
-                      "children": api/locations/location1:1/children
+                      "labwares": "api/locations/location-1-1/labwares",
+                      "audits": "api/locations/location-1-1/audits",
+                      "children": api/locations/location-1-1/children
                     }
                   ],
                   "location_types":[

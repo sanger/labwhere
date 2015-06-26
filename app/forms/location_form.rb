@@ -7,7 +7,7 @@ class LocationForm
   attr_accessor :parent_barcode
 
   validate :check_parent_location
-  delegate :parent, :barcode, to: :location
+  delegate :parent, :barcode, :parentage, to: :location
 
   def submit(params)
     set_instance_variables(params)

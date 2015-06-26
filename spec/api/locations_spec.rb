@@ -37,6 +37,7 @@ RSpec.describe Api::LocationsController, type: :request do
     expect(json["barcode"]).to eq(location.barcode)
     expect(json["children"]).to eq(api_location_children_path(location.barcode))
     expect(json["id"]).to eq(location.id)
+    expect(json["parentage"]).to eq(location.parentage)
   end
 
   it "should return null for parent if location does not have a parent" do

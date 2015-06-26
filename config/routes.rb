@@ -93,6 +93,7 @@ Rails.application.routes.draw do
   end
 
   get 'api/docs', to: 'api/docs#index'
+  post 'api/labwares/searches', to: 'api/labwares/searches#create'
 
 
   # Example of regular route:

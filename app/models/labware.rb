@@ -21,6 +21,8 @@ class Labware < ActiveRecord::Base
 
   before_save :update_previous_location
 
+  scope :by_barcode, lambda{|barcodes| includes(:location).where(barcode: barcodes)}
+
   #TODO: abstract previous location behaviour into appropriate place
   def self.previous_locations(labwares)
     Location.find(labwares.pluck(:previous_location_id).compact.uniq)
