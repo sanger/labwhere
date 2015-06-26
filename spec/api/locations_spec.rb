@@ -26,7 +26,7 @@ RSpec.describe Api::LocationsController, type: :request do
     expect(response).to be_success
     json = ActiveSupport::JSON.decode(response.body)
     expect(json["name"]).to eq(location.name)
-    expect(json["parent"]).to eq(location.parent.name)
+    expect(json["parent"]).to eq(api_location_path(location.parent.barcode))
     expect(json["container"]).to eq(location.container)
     expect(json["status"]).to eq(location.status)
     expect(json["location_type_id"]).to eq(location.location_type_id)
@@ -37,6 +37,14 @@ RSpec.describe Api::LocationsController, type: :request do
     expect(json["barcode"]).to eq(location.barcode)
     expect(json["children"]).to eq(api_location_children_path(location.barcode))
     expect(json["id"]).to eq(location.id)
+  end
+
+  it "should return null for parent if location does not have a parent" do
+    location = create(:location)
+    get api_location_path(location.barcode)
+    expect(response).to be_success
+    json = ActiveSupport::JSON.decode(response.body)
+    expect(json["parent"]).to eq("null")
   end
 
   it "should retrieve information about a locations labwares get api/locations/<barcode>/labwares" do

@@ -21,7 +21,9 @@ class Location < ActiveRecord::Base
   scope :without_unknown, ->{ where.not(id: Location.unknown.id) }
 
   before_save :synchronise_status_of_children
+  before_save :set_parentage
   after_create :generate_barcode
+  after_update :cascade_parentage
 
   searchable_by :name, :barcode
 
@@ -49,6 +51,10 @@ class Location < ActiveRecord::Base
 
   def unknown?
     name == "UNKNOWN" 
+  end
+
+  def empty?
+    false
   end
 
   class NullLocation
@@ -85,6 +91,23 @@ class Location < ActiveRecord::Base
     children.each do |child|
       child.activate 
       child.activate_children
+    end
+  end
+
+  def set_parentage
+    current = parent
+    [].tap do |p|
+      until current.empty?
+        p.unshift(current.name)
+        current = current.parent
+      end
+      self.parentage = p.join(" / ")
+    end
+  end
+
+  def cascade_parentage
+    children.each do |child|
+      child.update_attribute(:parentage, child.set_parentage)
     end
   end
 

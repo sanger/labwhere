@@ -123,5 +123,29 @@ RSpec.describe Location, type: :model do
     expect(location_4.reload).to be_active
     expect(location_5.reload).to be_active
   end
+
+  it "should add the parentage when a location is created" do
+    location_1 = create(:location)
+    expect(location_1.parentage).to be_blank
+
+    location_2 = create(:location, parent: location_1)
+    location_3 = create(:location, parent: location_2)
+    expect(location_3.parentage).to eq("#{location_1.name} / #{location_2.name}")
+  end
+
+  it "should update the parentage when a parent is updated" do
+    location_1 = create(:location)
+    location_2 = create(:location)
+
+    location_3 = create(:location, parent: location_1)
+    location_4 = create(:location, parent: location_3)
+    location_5 = create(:location, parent: location_4)
+
+    location_3.update_attribute(:parent, location_2)
+    expect(location_3.reload.parentage).to eq(location_2.name)
+    expect(location_4.reload.parentage).to eq("#{location_2.name} / #{location_3.name}")
+    expect(location_5.reload.parentage).to eq("#{location_2.name} / #{location_3.name} / #{location_4.name}")
+
+  end
   
 end

@@ -7,7 +7,11 @@ class LocationSerializer < ActiveModel::Serializer
   include SerializerDates
 
   def parent
-    object.parent.name
+    unless object.parent.empty?
+      api_location_path(object.parent.barcode)
+    else
+      "null"
+    end
   end
 
   def labwares
