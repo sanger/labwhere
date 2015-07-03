@@ -1,7 +1,7 @@
 <%
 imgs = {}
 Dir.chdir(File.join(Rails.root,"app/assets/images")) do
-  imgs = Dir["**"].inject({}) {|h,f| h.merge! f => image_path(f)}
+  imgs = Dir["**"].sort.inject({}) {|h,f| h.merge! f => image_path(f)}
 end
 %>
 
