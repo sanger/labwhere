@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    super({ except: [:swipe_card_id, :barcode, :audits_count]}.merge(options)).merge(uk_dates)
+    super({ except: [:swipe_card_id, :barcode, :audits_count, :deactivated_at]}.merge(options)).merge(uk_dates)
   end
 
 end

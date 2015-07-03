@@ -9,27 +9,38 @@ fieldset{
     margin-top: 10px;
   }
 
-  label{
-    font:{
-      weight: bold;
-    }
+  select {
+    width: 102%;
   }
 
   textarea{
     height: 200px;
   }
 
-  input[type=text], input[type=submit], input[type=password], input[type=search], textarea {
+  input[type=text], input[type=submit], input[type=password], textarea, input[type=search], select {
     @include rounded-corners(5px);
+  }
+
+  input[type=text], input[type=password], textarea, select {
     border-style: solid;
     border-width: 1px;
-    border-color: LightGray;
+    border-color: $green-mid;
+  }
+
+  input[type=search]{
+    border: none;
   }
 
   input[type=checkbox]{
     width: 50px;
     position: relative;
     transform: scale(1.5);
+  }
+
+  input[type=submit]{
+    color: white;
+    border: none;
+    @include gradient($green-mid, $green-dark)
   }
 
   fieldset{
@@ -43,8 +54,8 @@ fieldset{
 .search{
   position: absolute;
   top: 10px;
-  right: 20px;
-  width: 320px;
+  right: 0px;
+  width: 300px;
 
   legend, label{
     display: none;
@@ -54,17 +65,30 @@ fieldset{
     float: left;
     padding: 5px;
     height: 20px;
+    @include rounded-corners-split(5px, 0px, 5px, 0px);
   }
 
-  input[type=submit]{
-    width: 80px;
+  button{
+    width: 40px;
     height: 30px;
     margin: 0 0 0 10px;
+    @include rounded-corners-split(0px, 5px, 0px, 5px);
+    position: relative;
+    right: 10px;
+    color: transparent;
+    color: white;
+    border: none;
+    @include gradient($green-mid, $green-dark)
+  }
+
+  img{
+    padding-top: 2px;
+    padding-left: 5px;
   }
 
 }
 
-.body{
+.body, .ui-dialog{
   fieldset{
     width: 60%;
     margin: 0 auto;
@@ -91,30 +115,3 @@ fieldset{
   }
 
 }
-
-// .ui-dialog{
-
-//   fieldset{
-//     font-size: 0.8em;
-//     width: 80%;
-
-//     legend{
-//       font-size: 1em;
-//     }
-//   }
-
-//   .errors{
-//     width: 80%;
-
-//     h3{
-//       font-size: 0.9em;
-//     }
-
-//     ul{
-//       li{
-//         font-size: 0.8em;
-//       }
-//     }
-    
-//   }
-// }

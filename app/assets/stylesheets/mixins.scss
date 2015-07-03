@@ -4,9 +4,78 @@
   -webkit-border-radius: $width;
 }
 
+@mixin rounded-corners-split($top-left, $top-right, $bottom-left, $bottom-right){
+    -webkit-border-top-left-radius: $top-left;
+    -webkit-border-top-right-radius: $top-right;
+    -webkit-border-bottom-left-radius: $bottom-left;
+    -webkit-border-bottom-right-radius: $bottom-right;
+    -moz-border-radius-topleft: $top-left;
+    -moz-border-radius-topright: $top-right;
+    -moz-border-radius-bottomleft: $bottom-left;
+    -moz-border-radius-bottomright: 0px;
+    border-top-left-radius: $top-left;
+    border-top-right-radius: $top-right;
+    border-bottom-left-radius: $bottom-left;
+    border-bottom-right-radius: $bottom-right;
+}
+
 @mixin drop-shadow($width, $colour){
   -moz-box-shadow: $width $width $width $colour;
   -webkit-box-shadow: $width $width $width $colour;
   -o-box-shadow: $width $width $width $colour;
   box-shadow: $width $width $width $colour;
+}
+
+@mixin gradient($top, $bottom){
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, $top), color-stop(1, $bottom));
+  background-image: -o-linear-gradient(bottom, $top, $bottom);
+  background-image: -moz-linear-gradient(bottom, $top, $bottom);
+  background-image: -webkit-linear-gradient(bottom, $top, $bottom);
+  background-image: -ms-linear-gradient(bottom, $top, $bottom);
+  background-image: linear-gradient(to bottom, $top,$bottom);
+}
+
+@mixin flash($colour, $image){
+  border: 1px solid $colour;
+  border-top: 3px solid $colour;
+  
+
+  height: 40px;
+
+  p{
+    text-align: left;
+    margin-top: 10px;
+    padding-left: 50px;
+    width: auto;
+    color: $colour;
+  }
+
+  @include drop_shadow(3px, $grey-light);
+  @include rounded_corners(2px);
+
+  background:{
+    image: image-url($image);
+    repeat: no-repeat;
+    position: 10px 10px;
+  };
+}
+
+@mixin transition ($time: .5s, $range: all, $ease: ease-out) {
+  -moz-transition: $range $time $ease;
+  -webkit-transition:  $range $time $ease;
+  -o-transition:  $range $time $ease;
+  transition:  $range $time $ease;
+}
+
+@mixin transition-delay ($time: .4s) {
+  -webkit-transition-delay: $time;  
+  -moz-transition-delay: $time;  
+  -o-transition-delay: $time;  
+  transition-delay: $time; 
+}
+
+@mixin inset($dims:1px 1px 1px, $color:#fff) {
+    box-shadow: $dims $color; 
+    -moz-box-shadow:$dims $color; 
+    -webkit-box-shadow:$dims $color; 
 }

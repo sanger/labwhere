@@ -1,0 +1,66 @@
+<%
+imgs = {}
+Dir.chdir(File.join(Rails.root,"app/assets/images")) do
+  imgs = Dir["**"].inject({}) {|h,f| h.merge! f => image_path(f)}
+end
+%>
+
+window.image_path = (name) ->
+  <%= imgs.to_json %>[name]
+
+class @ImageTag
+  constructor: (item) ->
+    @name           = item.name
+    @filenameOn     = "#{item.on}.png"
+    @filenameOff    = "#{item.off}.png"
+    @alt            = item.help
+    @title          = item.help
+    @htmlOn         = @setHtml(@filenameOn)
+    @htmlOff        = @setHtml(@filenameOff)
+
+  setHtml: (filename) ->
+    "<img src='#{image_path(filename)}' alt='#{@alt}' title='#{@title}' />"
+
+@tags = {  
+  drilldown: { name: "drilldown", on: "plus", off: "minus", help: "Drilldown" }, 
+  audit: { name: "audit", on: "audit-on", off: "audit-off", help: "Audit history" } 
+}
+
+@drilldown = new ImageTag(this.tags.drilldown)
+@audit = new ImageTag(this.tags.audit)
+
+class @Behaviors
+
+  constructor: (items) ->
+    @items = {}
+    @createBehaviors(items)
+
+  createBehaviors: (items) ->
+    for k,v of items
+      @items[k] = new Behavior($.extend({}, {name: k}, v))
+
+  find: (key) ->
+    @items[key]
+
+class @Behavior
+
+  constructor: (item) ->
+    @name             = item.name
+    @parentResource   = "#{@name}s"
+    @id               = "#{@parentResource}-list"
+    @childResources   = item.resources
+    @imageTag         = item.imageTag
+    @info             = item.info
+
+@resources = { 
+  location_type:{resources: [ {path: "locations", behavior: "location"}], imageTag: this.drilldown},
+  location:{resources: [ { path: "children", behavior: "location"}, { path: "labwares", behavior: "labware"} ], imageTag: this.drilldown, info: true}, 
+  labware: {resources: [ { path: "histories", behavior: "history"}], imageTag: this.drilldown, info: true },
+  history: {resources:[], imageTag: this.drilldown },
+  audit: {resources: [], imageTag: this.audit, info: true },
+  user: {resources: [path: "audits", behavior: "audit"], imageTag: this.drilldown},
+  printer: {resources: [path: "audits", behavior: "audit"], imageTag: this.drilldown}, 
+  team: {resources: [path: "audits", behavior: "audit"], imageTag: this.drilldown}
+}
+
+window.behaviors = new Behaviors(this.resources)

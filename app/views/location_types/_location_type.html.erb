@@ -1,22 +1,22 @@
 <article id="<%= dom_id(location_type) %>" class="drilldown" data-behavior="location_type" data-id="<%= location_type.id %>">
     <div>
-      <%= behavior_link "drilldown" %>
+      <%= drilldown_link %>
+    </div>
+    <div class="id">
+      <%= location_type.id %>.
+    </div>
+    <div class="name">
+      <%= location_type.name %>
     </div>
     <div>
-      <%= location_type.id %>
-    </div>
-    <div>
-      Name: <%= location_type.name %>
-    </div>
-    <div>
-      <%= link_to "Edit", edit_location_type_path(location_type) %> 
+      <%= link_to image_tag("edit.png", alt: "Edit", title: "Edit"), edit_location_type_path(location_type) %> 
     </div>
     <div>
       <% location_type.destroyable do %>
-        <%= link_to "Delete", [:delete, location_type], remote: true %>
+        <%= link_to image_tag("delete.png", alt: "Delete", title: "Delete"), [:delete, location_type], remote: true %>
       <% end %>
     </div>
     <div>
-      <%= behavior_link "audits" %>
+      <%= audits_link %>
     </div>
 </article>

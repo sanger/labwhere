@@ -5,4 +5,8 @@
 class History < ActiveRecord::Base
   belongs_to :scan
   belongs_to :labware, counter_cache: true
+
+  def summary
+    "Scanned in to #{scan.location.name} by #{scan.user.login} on #{created_at.to_s(:uk)}"
+  end
 end

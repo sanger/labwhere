@@ -8,7 +8,9 @@
         <div><%= f.search_field :term %></div>
       </li>
       <li>
-        <%= f.submit "Search" %>
+        <%= f.button( type: :submit, name: "commit", value: "Search") do %>
+          <%= image_tag("search.png") %>
+        <% end %>
       </li>
     </ul>
   </fieldset>

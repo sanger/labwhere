@@ -1,7 +1,14 @@
 <article id="<%= dom_id(audit) %>" class="drilldown" data-behavior="audit" data-id="<%= audit.id %>">
-  <div>user: <%= audit.user.login %></div>
-  <div>action: <%= audit.action %></div>
-  <% audit.record_data.each do |k,v| %>
-    <div><%= k %>: <%= v %></div>
-  <% end %>
+  <div class="description"><%= audit.summary %></div>
+  <div>
+    <%= info_link %>
+  </div>
+  <div class="info" data-behavior="info-text" style="display:none;">
+    <%= link_to 'X', "#", data: { behavior: "close"}, title: "Close", class: "close" %>
+    <div>
+      <% audit.record_data.each do |k,v| %>
+        <p><%= k %>: <%= v %></p>
+      <% end %>
+    </div>
+  </div>
 </article>

@@ -71,7 +71,7 @@ class Location < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    super({ except: [:audits_count, :labwares_count]}.merge(options)).merge(uk_dates)
+    super({ except: [:audits_count, :labwares_count, :deactivated_at]}.merge(options)).merge(uk_dates)
   end
 
   def synchronise_status_of_children

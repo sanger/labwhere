@@ -1,5 +1,7 @@
 <header class="header">
-  <div class="heading"><%= link_to "LabWhere", root_path %></div>
+  <div class="heading">
+    <%= link_to image_tag("logo.png", alt:  "LabWhere", title: "LabWhere"), root_path %>
+  </div>
   <%= render "nav" %>
   <%= render "search" %>
 </header>

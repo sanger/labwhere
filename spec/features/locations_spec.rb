@@ -200,7 +200,7 @@ RSpec.describe "Locations", type: :feature do
     expect(page).to have_content("error prohibited this record from being saved")
   end
 
-   describe "audits", js: true do
+  describe "audits", js: true do
 
     it "allows a user to view associated audits for a location type" do
       location_type = create(:location_type_with_audits)
@@ -215,6 +215,27 @@ RSpec.describe "Locations", type: :feature do
       find(:data_id, location.id).find(:data_behavior, "audits").click
       expect(find(:data_id, location.id)).to have_css("article", count: 5)
     end
+
+    it "allows a user to view further information for each associated audit" do
+      location = create(:location_with_audits)
+      visit locations_path
+      find(:data_id, location.id).find(:data_behavior, "audits").click
+      within("#audit_#{location.audits.first.id}") do
+        find(:data_behavior, "info").click
+        expect(page).to have_content(location.audits.first.record_data["created_at"])
+      end
+    end
+  end
+
+  describe "info", js: true do
+
+    it "allows a user to view further information for a location" do
+      location = create(:location)
+      visit locations_path
+      find(:data_id, location.id).click_link "Further information"
+      expect(find(:data_id, location.id).find(:data_behavior, "info-text")).to have_content(location.location_type.name)
+    end
+
   end
 
 end

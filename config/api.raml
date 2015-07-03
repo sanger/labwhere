@@ -16,7 +16,7 @@ version: 1.0
             "properties": {
               "user_code": {
                 "description": "The swipe card id or barcode of the user creating the scan",
-                "required": true
+                "required": true,
                 "type": "string"
               },
               "labwares":{ 
@@ -26,12 +26,12 @@ version: 1.0
                   {
                     "barcode":{
                       "description": "The labware barcode",
-                      "type": "string"
+                      "type": "string",
                       "required": false
                     },
                     "coordinate":{
                       "description": "The coordinate of the labware",
-                      "type": "string"
+                      "type": "string",
                       "required": false
                     }
                   }
@@ -128,7 +128,7 @@ version: 1.0
               },
               "status": {
                 "description": "active or inactive",
-                "required": false
+                "required": false,
                 "type": "boolean"
               },
               "parent_id": {

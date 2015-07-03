@@ -1,9 +1,12 @@
+
 class @List
 
   constructor: (item, behavior) ->
     @item       = $(item)
     @list       = $.map @item.children("[data-behavior~=#{behavior.name}]"), (item, i) ->
       new ListItem(item, behavior)
+      if behavior.info
+        new InfoLink(item)
 
 class @ListItem
   
@@ -32,7 +35,7 @@ class @ListItem
   toggleData: (path, behavior, link) =>
     list = @item.children("[data-behavior~=#{behavior.id}]")
     if list.length
-      @toggleList list, link
+      @toggleList list, link, behavior
     else
       @fireAjax path, behavior, link
 
@@ -48,17 +51,17 @@ class @ListItem
     html = $(results).find("[data-behavior~=#{behavior.id}]")
     @addBehavior(html, behavior)
     html.appendTo(@item)
-    link.html '-'
+    link.html behavior.imageTag.htmlOff
 
   addBehavior: (html, behavior) =>
     html.data("behavior", behavior.id)
     new List(html, behavior)
 
-  toggleList: (list, link) =>
+  toggleList: (list, link, behavior) =>
     if list.is(":visible")
       list.hide()
-      link.html '+'
+      link.html behavior.imageTag.htmlOn
     else
       if list.find("article").length
         list.show()
-        link.html '-'
+        link.html behavior.imageTag.htmlOff

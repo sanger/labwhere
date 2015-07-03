@@ -9,8 +9,20 @@ module ApplicationHelper
     link_to action, { controller: object.class.to_s.tableize, action: action.downcase, id: object }, method: :patch
   end
 
-  def behavior_link(behavior)
-    link_to "+", '#', data: { behavior: behavior}, class: "no-decoration"
+  def behavior_link(behavior, image, help)
+    link_to image_tag(image, alt: help, title: help), '#', data: { behavior: behavior}, class: "no-decoration"
+  end
+
+  def drilldown_link
+    behavior_link "drilldown", "plus.png", "drilldown"
+  end
+
+  def audits_link
+    behavior_link "audits", "audit-on.png", "Audit history"
+  end
+
+  def info_link
+    behavior_link "info", "info.png", "Further information"
   end
  
 end

@@ -82,6 +82,24 @@ RSpec.describe "Searches", type: :feature do
       end
       location.labwares.each do |labware|
         expect(page).to have_content(labware.barcode)
+        within("#labware_#{labware.id}") do
+          click_link("Further information")
+          expect(page).to have_content(labware.location.barcode)
+        end
+      end
+    end
+
+     it "with a location should allow viewing of associated location further information" do
+      location = create(:location_with_labwares_and_children)
+      visit root_path
+      fill_in "Term", with: location.barcode
+      click_button "Search"
+      within("#location_#{location.id}") do
+        find(:data_behavior, "drilldown").click
+        within("#location_#{location.children.first.id}") do
+          click_link("Further information")
+          expect(page).to have_content(location.children.first.location_type.name)
+        end
       end
     end
 
@@ -92,7 +110,7 @@ RSpec.describe "Searches", type: :feature do
       click_button "Search"
       find(:data_id, labware.id).find(:data_behavior, "drilldown").click
       labware.histories.each do |history|
-        expect(page).to have_content(history.scan.user.login)
+        expect(page).to have_content(history.summary)
       end
     end
 

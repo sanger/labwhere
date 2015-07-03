@@ -19,4 +19,8 @@ class Audit < ActiveRecord::Base
 
   belongs_to :auditable, polymorphic: true, counter_cache: true
 
+  def summary
+    "#{action.capitalize}d by #{user.login} on #{created_at.to_s(:uk)}"
+  end
+
 end

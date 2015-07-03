@@ -3,6 +3,7 @@
 *{
   padding: 0;
   margin: 0;
+  color: $red-very-dark
 }
 
 a{
@@ -37,6 +38,7 @@ html, body{
   padding-top: 50px;
   margin: 0 auto;
   width: 100%;
+  min-height: 400px;
 }
 
 header, footer{
@@ -47,18 +49,15 @@ header, footer{
 header{
   border-bottom: 1px dotted gray;
   padding-bottom: 10px;
-  height: 50px;
+  height: 40px;
+  @include gradient($red-mid, $red-dark);
 
   a{
     text-decoration: none;
   }
 
   .heading{
-    font:{
-      size: 2em;
-      weight: bold;
-    }
-
+    margin-top: 5px;
     padding: 5px;
   }
     
@@ -66,8 +65,8 @@ header{
 
 nav{
   position: absolute;
-  top: 40px;
-  right: 350px;
+  top: 30px;
+  right: 300px;
   width: 150px;
 
   a{
@@ -77,10 +76,13 @@ nav{
   }
 
   .root{
-     background:{    
-      image: image-url("arrow-down.png");
-      position: right 30px top -6px;
+    color: white;
+    background:{    
+      image: image-url("down-arrow.png");
+      position: right 40px top 3px;
       repeat: no-repeat;
+      padding: 5px;
+
     }
   }
 
@@ -122,37 +124,61 @@ nav{
 
 footer{
   min-height: 50px;
+  border-top: 1px dotted $red-dark;
+
+  p{
+    padding: 10px;
+    font:{
+      size: 0.9em;
+      color: $red-dark;
+    }
+  }
 }
 
 .flash .notice, .flash .alert, .errors{
   width: 60%;
   margin: 0 auto;
-  border: 1px solid black;
   padding: 10px;
   margin-bottom: 20px;
 }
 
 .flash{
-  p{
-    text-align: left;
-    margin-top: 5px;
-    padding-left: 40px;
-    width: auto;
 
+  .notice{
+    @include flash($green-flash,"notice.png");
+  }
+
+  .alert{
+    @include flash($red-errors,"alert.png");
   }
 }
 
 .errors{
 
+  
+  border: 1px solid $red-errors;
+  border-top: 3px solid $red-errors;
+  margin:{
+    top: 20px;
+    bottom: 20px;
+  }
+  padding-left: 20px;
+
   h3{
-    font-size: 1.4em;
-    padding-bottom: 10px;
+    font:{
+      size: 1.4em;
+      padding-bottom: 10px;
+    };
+
+    color: $red-errors;
   }
 
   ul{
     margin-left: 20px;
+
     li{
       list-style-type: disc;
+      color: $red-errors;
     }
   }
 }
@@ -172,18 +198,79 @@ article{
 
 .drilldown{
 
+  img{
+    position: relative;
+    top: 2px;
+  }
+
+
   .no-decoration{
     text-decoration: none;
   }
 
-  div{
+  .id, .description, .name{
+    display: inline-block;
+  }
 
+  .id{
+    width: 30px;
+  }
+
+  .description{
+    width: 400px;
+  }
+
+  .name{
+    width: 200px;
+  }
+
+  div{
     font-size: 0.9em;
     display: inline;
     margin-right: 10px;
+
   }
 
   article{
     margin-left: 20px;
+  }
+}
+
+.info{
+  position: fixed;
+  display: block;
+  @include transition(2s);
+  @include transition-delay(.2s);
+  @include rounded-corners(10px);
+  @include drop-shadow(2px, $green-dark);
+
+  background: $green-white-light;
+  z-index: 99999;
+  padding: 5px 10px 0px 10px;
+  width: auto;
+
+ 
+  p{
+    &:first-child{
+      margin-top: 10px;
+    }
+    font-size: 0.8em;
+    padding: 2px;
+  }
+
+  .close {
+    background: $red-dark;
+    color: white;
+    text-decoration: none;
+    line-height: 20px;
+    position: absolute;
+    right: -7px;
+    text-align: center;
+    top: -5px;
+    width: 20px;
+    @include rounded-corners(12px);
+    @include transition;
+    @include transition-delay(.2s);
+    &:hover { @include transition; }
   }
 }

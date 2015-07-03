@@ -1,14 +1,25 @@
 <article id="<%= dom_id(labware) %>" data-behavior="labware" class="drilldown" data-id="<%= labware.id %>" >
     <div>
-      <%= behavior_link "drilldown" %>
+      <%= drilldown_link %>
     </div>
-    <div>
+    <div class="id">
       <%= labware.id %>.
     </div>
-    <div>
-      Barcode: <%= labware.barcode %>
+    <div class="name">
+      <%= labware.barcode %>
     </div>
     <div>
-      Location: <%= labware.location.name %>
+      <%= info_link %>
+    </div>
+    <div class="info" data-behavior="info-text" style="display:none;">
+      <%= link_to 'X', "#", data: { behavior: "close"}, title: "Close", class: "close" %>
+      <div>
+        <p>
+          Location name: <%= labware.location.name %>
+        </p>
+        <p>
+          Location barcode: <%= labware.location.barcode %>
+        </p>
+      </div>
     </div>
 </article>

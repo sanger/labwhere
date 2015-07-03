@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
     @header ||= Header.new(params)
   end
 
+  def current_year
+    @current_year ||= Date.today.year
+  end
+
   ##
   # Useful for Ajax calls.
   # This will keep any messages across a request.
@@ -17,6 +21,6 @@ class ApplicationController < ActionController::Base
     flash.keep(:notice)
   end
 
-  helper_method :header
+  helper_method :header, :current_year
 
 end
