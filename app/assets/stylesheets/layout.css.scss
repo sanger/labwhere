@@ -9,8 +9,8 @@
 a{
   color: black;
   
-  &:visited{
-    color: black;
+  &:hover, &:visited{
+    color: $red-dark;
   }
 }
 
@@ -69,6 +69,7 @@ nav{
   right: 300px;
   width: 150px;
 
+
   a{
     display: block;
     width: 120px;
@@ -93,6 +94,8 @@ nav{
         
         @include rounded-corners(5px);
         @include drop-shadow(2px, gray);
+        opacity: 0.9;
+        @include gradient(#fff, #ccc);
 
         width: 120px;
         border: 1px solid gray;
@@ -107,13 +110,19 @@ nav{
           font-size: 0.9em;
 
           &:hover{
-            background:#E6E6E6;
+            color: white;
+            background:$red-dark;
           }
 
           a{
             display:block;
             padding-top:5px;
             color:#444;
+
+            &:hover{
+              color: white;
+
+            }
           }
 
         }
@@ -242,9 +251,11 @@ article{
   @include transition(2s);
   @include transition-delay(.2s);
   @include rounded-corners(10px);
-  @include drop-shadow(2px, $green-dark);
+  @include drop-shadow(2px, gray);
+  @include gradient(#fff, #ccc);
+  border: 1px solid #160003;
+  opacity: 0.9;
 
-  background: $green-white-light;
   z-index: 99999;
   padding: 5px 10px 0px 10px;
   width: auto;
@@ -259,7 +270,7 @@ article{
   }
 
   .close {
-    background: $red-dark;
+    background: $green-dark;
     color: white;
     text-decoration: none;
     line-height: 20px;
@@ -268,9 +279,12 @@ article{
     text-align: center;
     top: -5px;
     width: 20px;
+    border: 1px solid #160003;
     @include rounded-corners(12px);
     @include transition;
     @include transition-delay(.2s);
+    @include drop-shadow(1px, gray);
     &:hover { @include transition; }
+
   }
 }
