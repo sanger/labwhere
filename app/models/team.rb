@@ -9,6 +9,8 @@ class Team < ActiveRecord::Base
 
   has_many :audits, as: :auditable
 
+  ##
+  # Needed for the audit record.
   def as_json(options = {})
     super({ except: [:audits_count]}.merge(options)).merge(uk_dates)
   end

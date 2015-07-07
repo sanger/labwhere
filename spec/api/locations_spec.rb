@@ -45,7 +45,7 @@ RSpec.describe Api::LocationsController, type: :request do
     get api_location_path(location.barcode)
     expect(response).to be_success
     json = ActiveSupport::JSON.decode(response.body)
-    expect(json["parent"]).to eq("null")
+    expect(json["parent"]).to eq("Empty")
   end
 
   it "should retrieve information about a locations labwares get api/locations/<barcode>/labwares" do

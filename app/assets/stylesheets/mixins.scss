@@ -74,8 +74,9 @@
   transition-delay: $time; 
 }
 
-@mixin inset($dims:1px 1px 1px, $color:#fff) {
-    box-shadow: $dims $color; 
-    -moz-box-shadow:$dims $color; 
-    -webkit-box-shadow:$dims $color; 
+@mixin highlight($horiz, $vert, $blur, $colour){
+  -moz-box-shadow: inset $horiz $vert $blur $colour;
+  -webkit-box-shadow: inset $horiz $vert $blur $colour;
+  -o-box-shadow: inset $horiz $vert $blur $colour;
+  box-shadow: inset $horiz $vert $blur $colour;
 }

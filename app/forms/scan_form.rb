@@ -1,7 +1,6 @@
 ##
 # This will create a persisted scan.
 # It can be used from a view or elsewhere.
-# 
 class ScanForm
 
   include ActiveModel::Model
@@ -14,6 +13,8 @@ class ScanForm
 
   validate :check_for_errors, :check_user
 
+  ##
+  # A scan will never be edited.
   def persisted?
     false
   end
@@ -25,6 +26,11 @@ class ScanForm
   def initialize
   end
 
+  ##
+  # When a scan form is submitted the user and location are added
+  # from the passed attributes.
+  # If they are valid then the labwares are added to the scan and it
+  # is saved.
   def submit(params)
     set_params_attributes(:scan, params)
     @current_user = User.find_by_code(user_code)

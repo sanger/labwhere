@@ -20,6 +20,8 @@ module AddAudit
     audits.create(user: user, action: action, record_data: self)
   end
 
+  ##
+  # Convert the dates to human readable uk format for the audit record.
   def uk_dates
     { "created_at" => created_at.to_s(:uk), "updated_at" => updated_at.to_s(:uk)}
   end

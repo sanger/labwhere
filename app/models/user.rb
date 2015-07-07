@@ -44,6 +44,8 @@ class User < ActiveRecord::Base
     where("swipe_card_id = :code OR barcode = :code", { code: code}).take || Guest.new
   end
 
+  ##
+  # Make sure that the swipe card id and barcode are not added to the audit record for security reasons.
   def as_json(options = {})
     super({ except: [:swipe_card_id, :barcode, :audits_count, :deactivated_at]}.merge(options)).merge(uk_dates)
   end

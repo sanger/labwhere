@@ -1,3 +1,5 @@
+##
+# Form object for a Location
 class LocationForm
 
   include Auditor
@@ -9,6 +11,11 @@ class LocationForm
   validate :check_parent_location
   delegate :parent, :barcode, :parentage, to: :location
 
+  ##
+  # A locations parent can be provided via a select or a barcode.
+  # If the barcode is present we need to check whether it is a valid location.
+  # The location barcode will always take precedence.
+  # If the barcode is present and it is valid the parent will be added to the location.
   def submit(params)
     set_instance_variables(params)
     set_current_user(params)

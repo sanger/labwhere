@@ -1,3 +1,5 @@
+##
+# Form object for creating or updating a User
 class UserForm
 
   include Auditor
@@ -6,6 +8,11 @@ class UserForm
 
   delegate :becomes, to: :user
 
+  ##
+  # Because the swipe card id and barcode are password fields
+  # we need to ensure that these are not wiped if they are not updated.
+  # When the user is updated and these are nil then they are
+  # removed from the parameters.
   def submit(params)
     set_instance_variables(params)
     set_current_user(params)

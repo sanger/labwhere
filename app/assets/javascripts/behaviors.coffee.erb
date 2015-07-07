@@ -1,3 +1,4 @@
+# Create a hash of all the images in the images folder with their paths.
 <%
 imgs = {}
 Dir.chdir(File.join(Rails.root,"app/assets/images")) do
@@ -5,10 +6,20 @@ Dir.chdir(File.join(Rails.root,"app/assets/images")) do
 end
 %>
 
+# Method to return the path for an image name.
 window.image_path = (name) ->
   <%= imgs.to_json %>[name]
 
+# An object to store details for a particular image for use in creating a tag.
 class @ImageTag
+
+  # Attributes:
+  #  @name:         The name of the image.
+  #  @filenameOn:   The image that will be used to signify it can be clicked.
+  #  @filenameOff:  The image that will be used to signify it has been clicked.
+  #  @alt:          The alt tag for the image tag
+  #  @htmlOn:       The html for the image tag to signify it can be clicked.
+  #  @htmlOff:      The html for the image tag after it has been clicked.
   constructor: (item) ->
     @name           = item.name
     @filenameOn     = "#{item.on}.png"
@@ -18,9 +29,12 @@ class @ImageTag
     @htmlOn         = @setHtml(@filenameOn)
     @htmlOff        = @setHtml(@filenameOff)
 
+  # Create the html for the image tag.
   setHtml: (filename) ->
     "<img src='#{image_path(filename)}' alt='#{@alt}' title='#{@title}' />"
 
+
+# Create the known image tags
 @tags = {  
   drilldown: { name: "drilldown", on: "plus", off: "minus", help: "Drilldown" }, 
   audit: { name: "audit", on: "audit-on", off: "audit-off", help: "Audit history" } 
@@ -29,6 +43,8 @@ class @ImageTag
 @drilldown = new ImageTag(this.tags.drilldown)
 @audit = new ImageTag(this.tags.audit)
 
+# An object to create all of the known behaviors.
+# It takes a collection of objects and creates a behavior for each one.
 class @Behaviors
 
   constructor: (items) ->
@@ -39,11 +55,22 @@ class @Behaviors
     for k,v of items
       @items[k] = new Behavior($.extend({}, {name: k}, v))
 
+  # Find a behavior for a particular key.
   find: (key) ->
     @items[key]
 
+# A behavior is a behavior to be added to a resource which signifies what data will be added when a link is clicked.
+# For example for a location when the drilldown is clicked its children and labwares will be retrieved and shown.
+# It contains information for paths, images and whether an info box is needed.
 class @Behavior
 
+  # Attributes:
+  #  @name:           Name of behavior e.g. location
+  #  @parentResource: Resource for behavior e.g. locations
+  #  @id:             Data behavior tag for collection of behaviors e.g. locations-list
+  #  @childResources: Array of child behaviors e.g for locations would be children and labwares
+  #  @imageTag:       The image which will be added to the link.
+  #  @info:           Does the behavior require an info box.
   constructor: (item) ->
     @name             = item.name
     @parentResource   = "#{@name}s"
@@ -52,6 +79,7 @@ class @Behavior
     @imageTag         = item.imageTag
     @info             = item.info
 
+# Create all of the known behaviors
 @resources = { 
   location_type:{resources: [ {path: "locations", behavior: "location"}], imageTag: this.drilldown},
   location:{resources: [ { path: "children", behavior: "location"}, { path: "labwares", behavior: "labware"} ], imageTag: this.drilldown, info: true}, 

@@ -1,3 +1,5 @@
+##
+# Base form to check that the user is valid and add an audit record.
 module Auditor
   extend ActiveSupport::Concern
   include ActiveModel::Model

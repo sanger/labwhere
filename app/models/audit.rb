@@ -19,6 +19,9 @@ class Audit < ActiveRecord::Base
 
   belongs_to :auditable, polymorphic: true, counter_cache: true
 
+  ##
+  # A summary message for the audit record
+  # For example created by Wonder Woman on 29 January 1943 at 6:40am
   def summary
     "#{action.capitalize}d by #{user.login} on #{created_at.to_s(:uk)}"
   end

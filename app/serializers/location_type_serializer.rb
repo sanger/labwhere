@@ -1,3 +1,5 @@
+# Serializer for Location Type
+# includes created_at and updated_at
 class LocationTypeSerializer < ActiveModel::Serializer
 
   self.root = false
@@ -6,10 +8,14 @@ class LocationTypeSerializer < ActiveModel::Serializer
 
   include SerializerDates
 
+  ##
+  # Link to locations for current location type
   def locations
     api_location_type_locations_path(object)
   end
 
+  ##
+  # Link to audits for current location type
   def audits
     api_location_type_audits_path(object)
 

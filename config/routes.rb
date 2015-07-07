@@ -95,6 +95,7 @@ Rails.application.routes.draw do
   get 'api/docs', to: 'api/docs#index'
   post 'api/labwares/searches', to: 'api/labwares/searches#create'
 
+  match '(errors)/:status', to: 'errors#show', constraints: {status: /\d{3}/}, via: :all
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

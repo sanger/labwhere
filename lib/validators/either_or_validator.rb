@@ -1,3 +1,6 @@
+##
+# For two fields will check whether either one is completed
+# These fields are signified by the options[:fields] attribute
 class EitherOrValidator < ActiveModel::Validator
   def validate(record)
     fields = options[:fields]

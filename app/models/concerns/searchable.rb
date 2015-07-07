@@ -4,7 +4,6 @@
 # The Searchable module allows you to do a multi-model search across various attributes.
 #
 # It consists of a Client and an Orchestrator.
-# You can have as many clients as you want must inherit from ActiveRecord. The Orchestrator will carry out the search.
 # Example implementation:
 #
 #  class Model1
@@ -33,6 +32,7 @@
 #
 module Searchable
 
+  # You can have as many clients as you want but must inherit from ActiveRecord.
   module Client
 
     extend ActiveSupport::Concern
@@ -42,6 +42,11 @@ module Searchable
 
     module ClassMethods
 
+      ##
+      # Create a search method signified by the attributes.
+      # For each attribute search the table for the term.
+      # and strip out any duplicate records.
+      # TODO: is there a  more efficient way to do this?
       def searchable_by(*attributes)
         define_singleton_method :search do |term|
           attributes.inject([]) do |result, attribute|
@@ -53,6 +58,7 @@ module Searchable
 
   end
 
+  # The Orchestrator will carry out the search.
   module Orchestrator
 
     extend ActiveSupport::Concern
@@ -62,6 +68,8 @@ module Searchable
 
     module ClassMethods
 
+      ##
+      # Define which models the Orchestrator will search through.
       def searches_in(*models)
         define_singleton_method :searchable_models do
           Hash[models.collect { |model| [model, model.to_s.classify.constantize] }]
@@ -70,6 +78,9 @@ module Searchable
 
     end
 
+    ##
+    # Create a results object.
+    # For each model which has a result add a key, value pair.
     def results
       @results ||= SearchResult.new.tap do |result|
         self.class.searchable_models.each do |k, v|

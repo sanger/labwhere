@@ -19,12 +19,19 @@ fieldset{
 
   input[type=text], input[type=submit], input[type=password], textarea, input[type=search], select {
     @include rounded-corners(5px);
+
+
   }
 
   input[type=text], input[type=password], textarea, select {
     border-style: solid;
     border-width: 1px;
     border-color: $green-mid;
+
+    &:focus{
+      border-color: $green-light;
+      @include highlight(0px,0px,3px,$green-light);
+    }
   }
 
   input[type=search]{
