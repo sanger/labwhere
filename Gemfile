@@ -39,6 +39,9 @@ gem 'active_model_serializers'
 # Use Puma as the app server
 gem 'puma'
 
+# Exception Notification to send exception emails
+gem 'exception_notification'
+
 group :deployment do
   gem 'mysql2'
   gem 'therubyracer'

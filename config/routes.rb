@@ -97,6 +97,8 @@ Rails.application.routes.draw do
 
   match '(errors)/:status', to: 'errors#show', constraints: {status: /\d{3}/}, via: :all
 
+  match 'test_exception_notifier', controller: 'application', action: 'test_exception_notifier', via: :get
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

@@ -25,4 +25,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :header, :current_year
 
+  def test_exception_notifier
+    raise 'This is a test. This is only a test.'
+  end
+
 end
