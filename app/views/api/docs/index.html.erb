@@ -366,8 +366,14 @@
   </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="nt">"user_code"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
       </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The swipe card id or barcode of the user creating the scan"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-      </span><span class="s2">"type"</span><span class="err">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"location_barcode"</span><span class="p">:{</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The barcode of the location for the labware to be scanned in to. For scanning out leave location barcode blank."</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="err">.</span><span class="w">
+
     </span><span class="p">},</span><span class="w">
     </span><span class="nt">"labwares"</span><span class="p">:{</span><span class="w"> 
       </span><span class="nt">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
@@ -376,13 +382,13 @@
         </span><span class="err">{</span><span class="w">
           </span><span class="nt">"barcode"</span><span class="p">:{</span><span class="w">
             </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The labware barcode"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
-            </span><span class="s2">"required"</span><span class="err">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
           </span><span class="p">},</span><span class="w">
           </span><span class="nt">"coordinate"</span><span class="p">:{</span><span class="w">
             </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The coordinate of the labware"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
-            </span><span class="s2">"required"</span><span class="err">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
           </span><span class="p">}</span><span class="w">
         </span><span class="p">}</span><span class="w">
       </span><span class="err">]</span><span class="w">
@@ -532,8 +538,8 @@
     </span><span class="p">},</span><span class="w">
     </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
       </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active or inactive"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-      </span><span class="s2">"type"</span><span class="err">:</span><span class="w"> </span><span class="s2">"boolean"</span><span class="w">
+      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"boolean"</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="nt">"parent_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
       </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"id of the parent location"</span><span class="p">,</span><span class="w">
