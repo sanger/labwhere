@@ -17,7 +17,7 @@ class Audit < ActiveRecord::Base
 
   serialize :record_data, JSON
 
-  belongs_to :auditable, polymorphic: true, counter_cache: true
+  belongs_to :auditable, polymorphic: true
 
   ##
   # A summary message for the audit record

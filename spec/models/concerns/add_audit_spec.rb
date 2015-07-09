@@ -33,7 +33,7 @@ RSpec.describe AddAudit, type: :model do
     audit = my_model.audits.first
     expect(audit.user).to eq(user)
     expect(audit.record_data.except("created_at", "updated_at")).to eq(my_model.as_json.except("created_at", "updated_at"))
-    expect(my_model.reload.audits_count).to eq(1)
+    expect(my_model.reload.audits.count).to eq(1)
   end
 
   it "should add a method for converting dates to uk" do

@@ -17,7 +17,6 @@ RSpec.describe Printer, type: :model do
   it "#as_json should return the correct attributes" do
     printer = create(:printer)
     json = printer.as_json
-    expect(json["audits_count"]).to be_nil
     expect(json["created_at"]).to eq(printer.created_at.to_s(:uk))
     expect(json["updated_at"]).to eq(printer.updated_at.to_s(:uk))
   end

@@ -13,7 +13,6 @@ class Scan < ActiveRecord::Base
   has_many :labwares, through: :histories
 
   before_save :update_labware_locations, :set_status
-  after_save :reset_location_labwares_counts
 
   ##
   # text message saying how much labware was scanned in and out of
@@ -31,10 +30,6 @@ private
   #TODO: abstract labware and location behaviour into appropriate place.
   def update_labware_locations
     labwares.each {|labware| labware.update(location: self.location)}
-  end
-
-  def reset_location_labwares_counts
-    Location.reset_labwares_count(Labware.previous_locations(labwares).push(self.location))
   end
 
   def set_status

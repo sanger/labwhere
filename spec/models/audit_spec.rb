@@ -23,7 +23,6 @@ RSpec.describe Audit, type: :model do
     expect(audit.user).to eq(user)
     expect(audit.record_data["barcode"]).to eq(location.barcode)
     expect(audit.record_data["name"]).to eq(location.name)
-    expect(location.audits_count).to eq(1)
   end
 
   it "summary should be correct" do

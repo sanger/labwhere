@@ -13,24 +13,24 @@ RSpec.describe Scan, type: :model do
     expect(scan.out?).to be_truthy
   end
 
-  it "should correctly update the labware count when new labwares are added to a location" do
+  it "should correctly update the labwares new labwares are added to a location" do
     create(:scan, location: location, labwares: new_labwares)
-    expect(location.reload.labwares_count).to eq(4)
+    expect(location.reload.labwares.count).to eq(4)
   end
 
-  it "should correctly update the labware count when labwares are removed from a location" do
+  it "should correctly update the labwares when labwares are removed from a location" do
     create(:scan, location: location, labwares: new_labwares)
     create(:scan, location: nil, labwares: new_labwares)
-    expect(location.reload.labwares_count).to eq(0)
-    expect(Location.unknown.labwares_count).to eq(4)
+    expect(location.reload.labwares.count).to eq(0)
+    expect(Location.unknown.labwares.count).to eq(4)
   end
 
-  it "should correctly update the labware count when labwares are moved to another location" do
+  it "should correctly update the labwares when labwares are moved to another location" do
     create(:scan, location: other_location, labwares: new_labwares)
-    expect(other_location.reload.labwares_count).to eq(4)
+    expect(other_location.reload.labwares.count).to eq(4)
     create(:scan, location: location, labwares: new_labwares)
-    expect(other_location.reload.labwares_count).to eq(0)
-    expect(location.reload.labwares_count).to eq(4)
+    expect(other_location.reload.labwares.count).to eq(0)
+    expect(location.reload.labwares.count).to eq(4)
   end
 
   it "should provide a message to indicate the nature of the scan" do

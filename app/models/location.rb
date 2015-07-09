@@ -6,7 +6,7 @@ class Location < ActiveRecord::Base
   include HasActive
   include AddAudit
 
-  belongs_to :location_type, counter_cache: true
+  belongs_to :location_type
   belongs_to :parent, class_name: "Location"
   has_many :children, class_name: "Location", foreign_key: "parent_id"
   has_many :audits, as: :auditable
@@ -55,14 +55,6 @@ class Location < ActiveRecord::Base
   end
 
   ##
-  # For a given set of locations reset the number of labwares.
-  def self.reset_labwares_count(locations)
-    locations.each do |location|
-      location.update_column(:labwares_count, location.labwares.count)
-    end
-  end
-
-  ##
   # Check if the location is unknown.
   def unknown?
     name == "UNKNOWN" 
@@ -92,7 +84,7 @@ class Location < ActiveRecord::Base
   ##
   # Useful for creating audit records. There are certain attributes which are not needed.
   def as_json(options = {})
-    super({ except: [:audits_count, :labwares_count, :deactivated_at]}.merge(options)).merge(uk_dates)
+    super({ except: [:deactivated_at]}.merge(options)).merge(uk_dates)
   end
 
   ##

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150626081430) do
+ActiveRecord::Schema.define(version: 20150709071918) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id"
@@ -46,11 +46,10 @@ ActiveRecord::Schema.define(version: 20150626081430) do
   create_table "labwares", force: :cascade do |t|
     t.string   "barcode"
     t.datetime "deleted_at"
-    t.integer  "histories_count",      default: 0
     t.integer  "location_id"
     t.integer  "previous_location_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
     t.integer  "coordinate_id"
   end
 
@@ -60,10 +59,8 @@ ActiveRecord::Schema.define(version: 20150626081430) do
 
   create_table "location_types", force: :cascade do |t|
     t.string   "name"
-    t.integer  "locations_count", default: 0
-    t.integer  "audits_count",    default: 0
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "locations", force: :cascade do |t|
@@ -73,8 +70,6 @@ ActiveRecord::Schema.define(version: 20150626081430) do
     t.boolean  "container",        default: true
     t.integer  "status",           default: 0
     t.datetime "deactivated_at"
-    t.integer  "labwares_count",   default: 0
-    t.integer  "audits_count",     default: 0
     t.integer  "location_type_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
@@ -86,9 +81,8 @@ ActiveRecord::Schema.define(version: 20150626081430) do
   create_table "printers", force: :cascade do |t|
     t.string   "name"
     t.string   "uuid"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.integer  "audits_count", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "scans", force: :cascade do |t|
@@ -112,9 +106,8 @@ ActiveRecord::Schema.define(version: 20150626081430) do
   create_table "teams", force: :cascade do |t|
     t.string   "name"
     t.integer  "number"
-    t.integer  "audits_count", default: 0
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -123,7 +116,6 @@ ActiveRecord::Schema.define(version: 20150626081430) do
     t.string   "barcode"
     t.string   "type"
     t.integer  "status",         default: 0
-    t.integer  "audits_count",   default: 0
     t.datetime "deactivated_at"
     t.integer  "team_id"
     t.datetime "created_at",                 null: false

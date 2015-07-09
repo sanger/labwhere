@@ -93,7 +93,6 @@ RSpec.describe User, type: :model do
     expect(json["barcode"]).to be_nil
     expect(json["created_at"]).to eq(user.created_at.to_s(:uk))
     expect(json["updated_at"]).to eq(user.updated_at.to_s(:uk))
-    expect(json["audits_count"]).to be_nil
   end
 
 end

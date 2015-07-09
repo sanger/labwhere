@@ -12,7 +12,7 @@ class Team < ActiveRecord::Base
   ##
   # Needed for the audit record.
   def as_json(options = {})
-    super({ except: [:audits_count]}.merge(options)).merge(uk_dates)
+    super(options).merge(uk_dates)
   end
   
 end

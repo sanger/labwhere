@@ -48,20 +48,6 @@ RSpec.describe Location, type: :model do
     expect(Location.find_by_code(location1.barcode)).to eq(location1)
   end
 
-  it "#reset_labwares_count should update labware counts for locations" do
-    location_1 = create(:location_with_parent, labwares: create_list(:labware, 5))
-    location_2 = create(:location_with_parent, labwares: create_list(:labware, 3))
-
-    Location.reset_labwares_count(Location.all)
-    expect(location_1.reload.labwares_count).to eq(5)
-    expect(location_2.reload.labwares_count).to eq(3)
-
-    location_1.labwares.delete_all
-    Location.reset_labwares_count(Location.all)
-    expect(location_1.labwares.count).to eq(0)
-
-  end
-
   it "name should not be valid with characters that aren't words, numbers, hyphens or spaces" do
     expect(build(:location, name: "location 1")).to be_valid
     expect(build(:location, name: "location one")).to be_valid
@@ -91,8 +77,6 @@ RSpec.describe Location, type: :model do
     location = create(:location)
     json = location.as_json
     expect(json["deactivated_at"]).to be_nil
-    expect(json["labwares_count"]).to be_nil
-    expect(json["audits_count"]).to be_nil
     expect(json["created_at"]).to eq(location.created_at.to_s(:uk))
     expect(json["updated_at"]).to eq(location.updated_at.to_s(:uk))
   end
