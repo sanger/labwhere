@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.1'
+gem 'rails', '4.2.3'
 # Use sqlite3 as the database for Active Record
 group :development, :test do
   gem 'sqlite3'
@@ -85,8 +85,3 @@ group :test do
   gem 'database_cleaner'
 
 end
-
-# For testing using minitest
-# group :test do
-#   gem 'minitest-rails-capybara'
-# end
