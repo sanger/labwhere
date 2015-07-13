@@ -3,7 +3,6 @@ require 'erb'
 namespace :error_pages do
   desc "copy the error pages from the views to the public folder"
   task :copy do |t|
-    dest = File.join(Rails.root, "public")
     template = create_erb File.join(Rails.root, "app", "views", "layouts", "public_errors.html.erb")
     files = Dir[File.join(Rails.root, "app", "views", "errors", "*.html.erb")]
     files.each do |filename|
