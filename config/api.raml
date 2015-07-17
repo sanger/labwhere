@@ -35,9 +35,19 @@ version: 1.0
                       "type": "string",
                       "required": false
                     },
-                    "coordinate":{
-                      "description": "The coordinate of the labware",
-                      "type": "string",
+                    "position":{
+                      "description": "The coordinate position to put the labware barcode into",
+                      "type": "integer",
+                      "required": false
+                    },
+                     "row":{
+                      "description": "The row put the labware barcode into",
+                      "type": "integer",
+                      "required": false
+                    },
+                     "column":{
+                      "description": "The column put the labware barcode into",
+                      "type": "integer",
                       "required": false
                     }
                   }

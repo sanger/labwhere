@@ -47,6 +47,14 @@ RSpec.describe Api::LocationsController, type: :request do
     expect(json["columns"]).to eq(location.columns)
   end
 
+  it "ordered location should store information about coordinates" do
+    location = create(:ordered_location_with_parent)
+    get api_location_path(location.barcode)
+    expect(response).to be_success
+    json = ActiveSupport::JSON.decode(response.body)
+    expect(json["coordinates"].length).to eq(location.coordinates.count)
+  end
+
   it "should retrieve information about a locations audits get api/locations/<barcode>/audits" do
     location = create(:location_with_audits)
     get api_location_audits_path(location.barcode)
