@@ -49,7 +49,11 @@ class Location < ActiveRecord::Base
   ##
   # Find a location by its barcode.
   def self.find_by_code(code)
-    find_by(barcode: code)
+    if code.present?
+      find_by(barcode: code)
+    else
+      unknown
+    end
   end
 
   ##
@@ -116,6 +120,21 @@ class Location < ActiveRecord::Base
         current = current.parent
       end
       self.parentage = p.join(" / ")
+    end
+  end
+
+  def add_labware(barcode)
+    labware = Labware.find_or_initialize_by(barcode: barcode)
+    labwares << labware
+    labware
+  end
+
+  def add_labwares(barcodes)
+    return [] unless barcodes.instance_of?(String)
+    [].tap do |l|
+      barcodes.split("\n").each do |barcode| 
+        l << add_labware(barcode.remove_control_chars)
+      end
     end
   end
 

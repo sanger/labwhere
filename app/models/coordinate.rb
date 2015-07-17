@@ -11,11 +11,15 @@ class Coordinate < ActiveRecord::Base
   end
 
   def filled?
-    labware
+    !labware.empty?
   end
 
   def empty?
     false
+  end
+
+  def labware
+    super || NullLabware.new
   end
 
   #??? why does it not set the labware_id

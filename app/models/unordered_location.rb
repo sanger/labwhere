@@ -33,21 +33,6 @@ class UnorderedLocation < Location
     end
   end
 
-  def add_labware(barcode)
-    labware = Labware.find_or_initialize_by(barcode: barcode)
-    labwares << labware
-    labware
-  end
-
-  def add_labwares(barcodes)
-    return [] unless barcodes.instance_of?(String)
-    [].tap do |l|
-      barcodes.split("\n").each do |barcode| 
-        l << add_labware(barcode.remove_control_chars)
-      end
-    end
-  end
-
    ##
   # Ensure that the parentage attribute stays current.
   # If the parent changes then we need to ensure that all of its childrens parentage is updated.

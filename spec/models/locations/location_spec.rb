@@ -116,5 +116,20 @@ RSpec.describe Location, type: :model do
     location_2 = location_2.transform
     expect(location_2).to be_ordered
   end
+
+  it "unknown location should just create labwares and location should be unknown" do
+    location = Location.unknown
+    labwares = create_list(:labware, 3)
+    expect(location.add_labwares(labwares.join_barcodes).count).to eq(3)
+    expect(location.labwares.count).to eq(3)
+  end
+
+  it "#add_labwares should remove any dodgy control character from barcodes" do
+    location = create(:location_with_parent)
+    labwares = create_list(:labware, 3)
+    expect(location.add_labwares(labwares.join_barcodes("\r\n"))).to eq(labwares)
+    expect(location.labwares.count).to eq(3)
+    expect(location.labwares.all? {|labware| !labware.barcode.include?("\r") }).to be_truthy
+  end
   
 end

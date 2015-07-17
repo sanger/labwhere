@@ -4,41 +4,23 @@ RSpec.describe Scan, type: :model do
 
   let!(:location)             { create(:location_with_parent)}
   let!(:other_location)     { create(:location_with_parent)}
-  let(:new_labwares)         { build_list(:labware, 4)}
+  let!(:labwares)         { create_list(:labware, 4, previous_location: other_location, location: location)}
 
   it "should correctly set the type based on the nature of the scan" do
-    scan = create(:scan, location: location, labwares: new_labwares)
+    scan = create(:scan, location: location)
     expect(scan.in?).to be_truthy
-    scan = create(:scan, location: nil, labwares: new_labwares)
+    scan = create(:scan, location: nil)
     expect(scan.out?).to be_truthy
   end
 
-  it "should correctly update the labwares new labwares are added to a location" do
-    create(:scan, location: location, labwares: new_labwares)
-    expect(location.reload.labwares.count).to eq(4)
-  end
-
-  it "should correctly update the labwares when labwares are removed from a location" do
-    create(:scan, location: location, labwares: new_labwares)
-    create(:scan, location: nil, labwares: new_labwares)
-    expect(location.reload.labwares.count).to eq(0)
-    expect(Location.unknown.labwares.count).to eq(4)
-  end
-
-  it "should correctly update the labwares when labwares are moved to another location" do
-    create(:scan, location: other_location, labwares: new_labwares)
-    expect(other_location.reload.labwares.count).to eq(4)
-    create(:scan, location: location, labwares: new_labwares)
-    expect(other_location.reload.labwares.count).to eq(0)
-    expect(location.reload.labwares.count).to eq(4)
-  end
-
   it "should provide a message to indicate the nature of the scan" do
-    scan_1 = create(:scan, location: location, labwares: new_labwares)
-    expect(scan_1.message).to eq("#{scan_1.labwares.count} labwares scanned in to #{scan_1.location.name}")
-    labwares = scan_1.labwares
-    scan_2 = create(:scan, location: nil, labwares: labwares)
-    expect(scan_2.message).to eq("#{scan_2.labwares.count} labwares scanned out from #{scan_1.location.name}")
+    scan_1 = create(:scan, location: location)
+    scan_1.create_message(labwares)
+    expect(scan_1.message).to eq("#{labwares.count} labwares scanned in to #{scan_1.location.name}")
+
+    scan_2 = create(:scan, location: nil)
+    scan_2.create_message(labwares)
+    expect(scan_2.message).to eq("#{labwares.count} labwares scanned out from #{other_location.name}")
   end
 
 end

@@ -5,7 +5,7 @@ class OrderedLocation < Location
   before_create :populate_coordinates
 
   def add_labware(attributes)
-    return unless attributes.instance_of?(Hash)
+    return unless attributes.is_a?(Hash)
     if coordinate = coordinates.find_by_position(attributes.slice(:position, :row, :column))
       coordinate.fill(Labware.find_or_initialize_by(attributes.slice(:barcode)))
     end

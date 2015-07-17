@@ -9,36 +9,20 @@ class Scan < ActiveRecord::Base
 
   belongs_to :location
   belongs_to :user
-  has_many :histories
-  has_many :labwares, through: :histories
 
-  before_save :update_labware_locations, :set_status
+  # before_save :update_labware_locations, :set_status
+  before_save :set_status
 
-  ##
-  # text message saying how much labware was scanned in and out of
-  # a particular location.
-  def message
-    @message ||= "#{labwares.count} labwares scanned #{self.status} " << if in?
-      "to #{location.name}"
-    else
-      "from #{Labware.previous_locations(labwares).map(&:name).join(" ")}"
-    end
-  end
-
+  #TODO: previous location is a problem but seems to be the only way to create a decent message.
   def create_message(labwares)
     self.message = "#{labwares.count} labwares scanned #{self.status} " << if in?
       "to #{location.name}"
     else
-      "from #{Labware.previous_locations(labwares).map(&:name).join(" ")}"
+      "from #{labwares.map(&:previous_location).compact.uniq.map(&:name).join(" ")}"
     end
   end
 
 private
-  
-  #TODO: abstract labware and location behaviour into appropriate place.
-  def update_labware_locations
-    labwares.each {|labware| labware.update(location: self.location)}
-  end
 
   def set_status
     self.status = Scan.statuses[:out] if self.location.unknown?

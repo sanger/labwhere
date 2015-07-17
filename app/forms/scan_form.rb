@@ -37,7 +37,9 @@ class ScanForm
     scan.location = Location.find_by_code(location_barcode)
     scan.user = current_user
     if valid?
-      Labware.build_for(scan, labwares || labware_barcodes)
+      location_labwares = scan.location.add_labwares(permitted_labwares(labwares) || labware_barcodes)
+      scan.create_message(location_labwares)
+      create_audits(location_labwares)
       scan.save
     else
       false
@@ -50,6 +52,10 @@ class ScanForm
 
 private
 
+  def create_audits(labwares)
+    labwares.each { |labware| labware.create_audit(scan.user, "scan")}
+  end
+
   def check_for_errors
     LocationValidator.new.validate(self)
   end
@@ -57,5 +63,12 @@ private
   def check_user
     UserValidator.new.validate(self)
   end
-  
+
+  def permitted_labwares(labwares)
+    return unless labwares
+    labwares.collect do |labware|
+      labware.permit(:position, :row, :column, :barcode)
+    end
+  end
+
 end

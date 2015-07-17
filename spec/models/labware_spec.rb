@@ -40,43 +40,6 @@ RSpec.describe Labware, type: :model do
     expect(labware.previous_location).to eq(location_1)
   end
 
-  it "#previous_locations should return a unique list of the previous locations for some Labware" do
-    locations = create_list(:location_with_parent, 3)
-    labwares_1 = create_list(:labware, 2, location: locations.first)
-    labwares_2 = create_list(:labware, 2, location: locations.second)
-
-    labwares_1.first.update(location: locations.second)
-    labwares_1.last.update(location: locations.second)
-    labwares_2.first.update(location: locations.last)
-
-    expect(Labware.previous_locations(Labware.all)).to eq([locations.first, locations.second])
-  end
-
-  it "#build_for should find or initialize labware for associated object for a string of labware barcodes" do
-    existing_labwares = create_list(:labware, 2, location: create(:location_with_parent))
-    new_labwares = build_list(:labware, 2)
-    scan = build(:scan)
-    Labware.build_for(scan, existing_labwares.join_barcodes+"\n"+new_labwares.join_barcodes)
-    expect(scan.labwares.length).to eq(4)
-  end
-
-  it "#build_for should find or initialize labware for associated object for a hash of labwares" do
-    existing_labware_1 = create(:labware, location: create(:location_with_parent))
-    existing_labware_2 = create(:labware, location: create(:location_with_parent))
-    new_labware_1 = attributes_for(:labware)
-    new_labware_2 = attributes_for(:labware)
-
-    labwares = [  {barcode: existing_labware_1.barcode},
-                  {barcode: existing_labware_2.barcode},
-                  new_labware_1, 
-                  new_labware_2]
-
-    scan = build(:scan)
-    Labware.build_for(scan, labwares)
-    expect(scan.labwares.length).to eq(4)
-    expect(scan.labwares.all? { |labware| labware.new_record?}).to be_falsey
-  end
-
   it "#find_by_code should find labware by barcode" do
     labware = create(:labware)
     expect(Labware.find_by_code(labware.barcode)).to eq(labware)
@@ -96,6 +59,19 @@ RSpec.describe Labware, type: :model do
     expect(labware_2.location).to eq(coordinate.location)
     labware_3 = create(:labware)
     expect(labware_3.location).to be_unknown
+  end
+
+   it "#as_json should have the correct attributes" do
+    labware = create(:labware)
+    json = labware.as_json
+    expect(json["created_at"]).to eq(labware.created_at.to_s(:uk))
+    expect(json["updated_at"]).to eq(labware.updated_at.to_s(:uk))
+    expect(json["location"]).to eq(labware.location.barcode)
+    expect(json["location_id"]).to be_nil
+    expect(json["coordinate_id"]).to be_nil
+    expect(json["deleted_at"]).to be_nil
+    expect(json["previous_location_id"]).to be_nil
+
   end
 
 end

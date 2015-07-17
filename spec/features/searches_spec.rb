@@ -103,15 +103,13 @@ RSpec.describe "Searches", type: :feature do
       end
     end
 
-    it "with a labware should allow viewing of associated history" do
-      labware = create(:labware_with_histories)
+    it "with a labware should allow viewing of associated audits" do
+      labware = create(:labware_with_audits)
       visit root_path
       fill_in "Term", with: labware.barcode
       click_button "Search"
       find(:data_id, labware.id).find(:data_behavior, "drilldown").click
-      labware.histories.each do |history|
-        expect(page).to have_content(history.summary)
-      end
+      expect(find(:data_id, labware.id)).to have_css("article", count: 5)
     end
 
   end
