@@ -8,8 +8,8 @@ class Labware < ActiveRecord::Base
   include AssertLocation
 
   belongs_to :location
-  belongs_to :previous_location, class_name: "Location"
   belongs_to :coordinate
+  belongs_to :previous_location, class_name: "Location"
   has_many :histories
   has_many :scans, through: :histories
 
@@ -51,20 +51,12 @@ class Labware < ActiveRecord::Base
     find_by(barcode: code)
   end
 
-  ##
-  # Ensure that nil coordinate is never returned.
-  # Return a Null Object if no coordinate exists
-  def coordinate
-    super || NullCoordinate.new
+  def location
+    super || coordinate.location
   end
 
-  ##
-  # This class is useful for preventing nil method errors.
-  # If a piece of Labware has no coordinate return null
-  class NullCoordinate
-    def name
-      "null"
-    end
+  def coordinate
+    super || NullCoordinate.new
   end
 
 private
@@ -90,17 +82,8 @@ private
   # For each one if it exists find it otherwise build it.
   def self.build_by_attributes(object, labwares)
     labwares.each do |labware|
-      object.labwares << find_or_new_by_barcode_with_coordinates(labware)
+      object.labwares << find_or_initialize_by(barcode: labware[:barcode])
     end
-  end
-
-  ##
-  # Find or initialize a Labware by its barcode.
-  # If the coordinate exists return the object otherwise create it.
-  def self.find_or_new_by_barcode_with_coordinates(attributes)
-    labware = find_or_initialize_by(barcode: attributes[:barcode])
-    labware.coordinate = Coordinate.find_or_create_by_name(attributes[:coordinate])
-    labware
   end
 
 end

@@ -2,12 +2,10 @@
 # Teams which users belong to.
 class Team < ActiveRecord::Base
 
-  include AddAudit
+  include Auditable
 
   validates :number, presence: true, uniqueness: true, numericality: true
   validates :name, presence: true, uniqueness: {case_sensitive: false}
-
-  has_many :audits, as: :auditable
 
   ##
   # Needed for the audit record.

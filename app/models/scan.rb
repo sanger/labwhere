@@ -25,6 +25,14 @@ class Scan < ActiveRecord::Base
     end
   end
 
+  def create_message(labwares)
+    self.message = "#{labwares.count} labwares scanned #{self.status} " << if in?
+      "to #{location.name}"
+    else
+      "from #{Labware.previous_locations(labwares).map(&:name).join(" ")}"
+    end
+  end
+
 private
   
   #TODO: abstract labware and location behaviour into appropriate place.

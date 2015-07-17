@@ -3,10 +3,9 @@
 class LocationType < ActiveRecord::Base
 
   include Searchable::Client
-  include AddAudit
+  include Auditable
 
   has_many :locations
-  has_many :audits, as: :auditable
 
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 

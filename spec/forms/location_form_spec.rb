@@ -2,11 +2,13 @@ require "rails_helper"
 
 RSpec.describe LocationTypeForm, type: :model do 
 
-  let(:controller_params)       { { controller: "location", action: "create"} }
-  let(:params)                  { ActionController::Parameters.new(controller_params) }
-  let!(:admin_user)             { create(:admin) }
-  let(:location_params)         { attributes_for(:location).merge(user_code: admin_user.barcode)}
-  let!(:parent_locations)        { create_list(:location, 2)}
+  let(:controller_params)           { { controller: "location", action: "create"} }
+  let(:params)                      { ActionController::Parameters.new(controller_params) }
+  let!(:admin_user)                 { create(:admin) }
+  let(:location_params)             { attributes_for(:location).merge(user_code: admin_user.barcode)}
+  let(:unordered_location_params)   { attributes_for(:unordered_location).merge(user_code: admin_user.barcode)}
+  let(:ordered_location_params)     { attributes_for(:ordered_location).merge(user_code: admin_user.barcode)}
+  let!(:parent_locations)           { create_list(:location, 2)}
 
   it "should be able to add a parent location using a barcode" do
     location_form = LocationForm.new
@@ -27,5 +29,15 @@ RSpec.describe LocationTypeForm, type: :model do
     expect(location_form.parent).to eq(parent_locations.first)
   end
 
+  it "should create the correct type of location dependent on the attributes" do
+    location_form = LocationForm.new
+    location_form.submit(params.merge(location: unordered_location_params))
+    expect(location_form.location).to be_unordered
+    expect(location_form.location.coordinates).to be_empty
+
+    location_form.submit(params.merge(location: ordered_location_params))
+    expect(location_form.location).to be_ordered
+    expect(location_form.location.coordinates.count).to eq(create(:ordered_location).coordinates.count)
+  end
 
 end

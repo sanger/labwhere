@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe AddAudit, type: :model do
+RSpec.describe Auditable, type: :model do
 
   with_model :my_model do
     table do |t|
@@ -10,9 +10,8 @@ RSpec.describe AddAudit, type: :model do
     end
 
     model do
-      has_many :audits, as: :auditable
 
-      include AddAudit
+      include Auditable
 
     end
   end

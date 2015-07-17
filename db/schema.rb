@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150709071918) do
+ActiveRecord::Schema.define(version: 20150717071459) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id"
@@ -28,10 +28,17 @@ ActiveRecord::Schema.define(version: 20150709071918) do
   add_index "audits", ["user_id"], name: "index_audits_on_user_id"
 
   create_table "coordinates", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "location_id"
+    t.integer  "labware_id"
+    t.integer  "position"
+    t.integer  "row"
+    t.integer  "column"
   end
+
+  add_index "coordinates", ["labware_id"], name: "index_coordinates_on_labware_id"
+  add_index "coordinates", ["location_id"], name: "index_coordinates_on_location_id"
 
   create_table "histories", force: :cascade do |t|
     t.integer  "scan_id"
@@ -74,6 +81,9 @@ ActiveRecord::Schema.define(version: 20150709071918) do
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.string   "parentage"
+    t.string   "type"
+    t.integer  "rows",             default: 0
+    t.integer  "columns",          default: 0
   end
 
   add_index "locations", ["location_type_id"], name: "index_locations_on_location_type_id"
@@ -91,6 +101,7 @@ ActiveRecord::Schema.define(version: 20150709071918) do
     t.integer  "user_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.string   "message"
   end
 
   add_index "scans", ["location_id"], name: "index_scans_on_location_id"

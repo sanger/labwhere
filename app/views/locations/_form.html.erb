@@ -22,6 +22,14 @@
         <%= f.select :parent_id, options_from_collection_for_select(Location.without_unknown.without(@location), :id, :barcode, @location.parent_id), {include_blank: true} %>
       </li>
       <li>
+        <%= f.label :rows %>
+        <%= f.text_field :rows %>
+      </li>
+       <li>
+        <%= f.label :columns %>
+        <%= f.text_field :columns %>
+      </li>
+      <li>
         <%= f.check_box :container, checked: false %>
         <%= f.label :container %>
       </li>

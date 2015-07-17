@@ -28,10 +28,6 @@ RSpec.describe Api::LabwaresController, type: :request do
   expect(@json["history"]).to eq(api_labware_histories_path(labware.barcode))
  end
 
- it "should return labware coordinate name" do
-  expect(@json["coordinate"]).to eq(labware.coordinate.name)
- end
-
  it "link to labware history should return history for labware" do
   get ActiveSupport::JSON.decode(response.body)["history"]
   expect(response).to be_success

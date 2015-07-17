@@ -72,7 +72,7 @@ RSpec.describe "Searches", type: :feature do
     end
 
     it "with a location should allow viewing of associated locations and labwares" do
-      location = create(:location_with_labwares_and_children)
+      location = create(:unordered_location_with_labwares_and_children)
       visit root_path
       fill_in "Term", with: location.barcode
       click_button "Search"
@@ -90,7 +90,7 @@ RSpec.describe "Searches", type: :feature do
     end
 
      it "with a location should allow viewing of associated location further information" do
-      location = create(:location_with_labwares_and_children)
+      location = create(:unordered_location_with_labwares_and_children)
       visit root_path
       fill_in "Term", with: location.barcode
       click_button "Search"

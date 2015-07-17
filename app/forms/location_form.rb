@@ -4,12 +4,12 @@ class LocationForm
 
   include Auditor
 
-  set_attributes :name, :location_type_id, :parent_id, :container, :status
+  set_attributes :name, :location_type_id, :parent_id, :container, :status, :rows, :columns
 
   attr_accessor :parent_barcode
 
   validate :check_parent_location
-  delegate :parent, :barcode, :parentage, to: :location
+  delegate :parent, :barcode, :parentage, :type, to: :location
 
   ##
   # A locations parent can be provided via a select or a barcode.
@@ -20,6 +20,7 @@ class LocationForm
     set_instance_variables(params)
     set_current_user(params)
     set_model_attributes(params)
+    transform_location
     add_parent_location
     save_if_valid
   end
@@ -35,6 +36,10 @@ private
     return unless parent_barcode.present?
     return if parent_id.present? && parent.nil?
     location.parent = Location.find_by_code(parent_barcode)
+  end
+
+  def transform_location
+    @model = location.transform if creating?
   end
 
 end

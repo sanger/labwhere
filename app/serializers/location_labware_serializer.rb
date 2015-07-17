@@ -5,7 +5,7 @@ class LocationLabwareSerializer < ActiveModel::Serializer
 
   self.root = false
 
-  attributes :barcode, :history, :coordinate
+  attributes :barcode, :history
 
   include SerializerDates
 
@@ -15,9 +15,4 @@ class LocationLabwareSerializer < ActiveModel::Serializer
     api_labware_histories_path(object.barcode)
   end
 
-  ##
-  # Coordinate name for the current labware
-  def coordinate
-    object.coordinate.name
-  end
 end

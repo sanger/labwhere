@@ -5,10 +5,9 @@
 class User < ActiveRecord::Base
 
   include HasActive
-  include AddAudit
+  include Auditable
 
   belongs_to :team
-  has_many :audits, as: :auditable
 
   validates :login, presence: true, uniqueness: true
 
@@ -47,7 +46,7 @@ class User < ActiveRecord::Base
   ##
   # Make sure that the swipe card id and barcode are not added to the audit record for security reasons.
   def as_json(options = {})
-    super({ except: [:swipe_card_id, :barcode, :deactivated_at]}.merge(options)).merge(uk_dates)
+    super({ except: [:swipe_card_id, :barcode, :deactivated_at, :team_id]}.merge(options)).merge(uk_dates).merge("team" => team.name)
   end
 
 end
