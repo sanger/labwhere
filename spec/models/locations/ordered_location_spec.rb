@@ -33,7 +33,7 @@ RSpec.describe OrderedLocation, type: :model do
   it "#add_labware should fail silently if somebody is a bit free and easy with their arguments" do
     location = create(:ordered_location_with_parent, rows: 3, columns: 4)
     labware_1 = create(:labware)
-    expect(location.add_labware(labware_1.barcode)).to be_nil
+    expect(location.add_labware(labware_1.barcode).compact).to be_empty
     expect(labware_1.coordinate).to be_empty
   end
 
@@ -55,8 +55,7 @@ RSpec.describe OrderedLocation, type: :model do
                   {barcode: build(:labware).barcode, position: 2},
                   {barcode: build(:labware).barcode, position: 4},
                   {barcode: build(:labware).barcode, position: 999} ]
-    labwares = location.add_labwares(attributes)
-    expect(labwares).to eq(location.labwares)
+    location.add_labwares(attributes)
     expect(location.labwares.count).to eq(3)
     expect(location.coordinates.find_by_position(position: 1)).to be_filled
     expect(location.coordinates.find_by_position(position: 2)).to be_filled
@@ -67,7 +66,7 @@ RSpec.describe OrderedLocation, type: :model do
   it "#add_labwares should fail silently if somebody is a bit free and easy with their arguments" do
     location = create(:ordered_location_with_parent, rows: 5, columns: 5)
     labwares = create_list(:labware, 3)
-    expect(location.add_labwares(labwares.join_barcodes)).to be_empty
+    location.add_labwares(labwares.join_barcodes)
     expect(location.labwares).to be_empty
   end
   

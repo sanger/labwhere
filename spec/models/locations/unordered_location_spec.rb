@@ -40,15 +40,13 @@ RSpec.describe UnorderedLocation, type: :model do
 
   it "#add_labwares should add multiple labwares" do
     location = create(:unordered_location_with_parent)
-    labwares = create_list(:labware, 3)
-    expect(location.add_labwares(labwares.join_barcodes)).to eq(labwares)
+    location.add_labwares(create_list(:labware, 3).join_barcodes)
     expect(location.labwares.count).to eq(3)
   end
 
   it "#add_labwares should fail silently if somebody is a bit free and easy with their arguments" do
     location = create(:unordered_location_with_parent)
-    labwares = create_list(:labware, 3)
-    expect(location.add_labwares(labwares)).to be_empty
+    location.add_labwares(create_list(:labware, 3))
     expect(location.labwares).to be_empty
   end
 

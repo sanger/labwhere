@@ -54,14 +54,5 @@ RSpec.describe Coordinate, type: :model do
     coordinate.fill(create(:labware))
     expect(coordinate).to be_filled
   end
-
-  it "#fill should update all of the associated attributes" do
-    coordinate = create(:coordinate)
-    labware = build(:labware)
-    coordinate.fill(labware)
-    created_labware = Labware.find_by_code(labware.barcode)
-    expect(coordinate.reload.labware_id).to eq(created_labware.id)
-    expect(created_labware.coordinate_id).to eq(coordinate.reload.id)
-  end
  
 end

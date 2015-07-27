@@ -22,10 +22,8 @@ class Coordinate < ActiveRecord::Base
     super || NullLabware.new
   end
 
-  #??? why does it not set the labware_id
   def fill(l)
     update_attribute(:labware, l)
-    update_attribute(:labware_id, l.id)
     l
   end
 end

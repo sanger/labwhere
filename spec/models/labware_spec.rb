@@ -31,15 +31,6 @@ RSpec.describe Labware, type: :model do
     expect(labware.location.unknown?).to be_truthy
   end
 
-  it "when the location is updated should update the previous_location" do
-    location_1 = create(:location_with_parent)
-    location_2 = create(:location_with_parent)
-    labware = create(:labware, location: location_1)
-    expect(labware.previous_location).to be_nil
-    labware.update(location: location_2)
-    expect(labware.previous_location).to eq(location_1)
-  end
-
   it "#find_by_code should find labware by barcode" do
     labware = create(:labware)
     expect(Labware.find_by_code(labware.barcode)).to eq(labware)

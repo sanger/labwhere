@@ -5,17 +5,23 @@ class OrderedLocation < Location
   before_create :populate_coordinates
 
   def add_labware(attributes)
-    return unless attributes.is_a?(Hash)
+    return [nil, nil] unless attributes.is_a?(Hash)
     if coordinate = coordinates.find_by_position(attributes.slice(:position, :row, :column))
-      coordinate.fill(Labware.find_or_initialize_by(attributes.slice(:barcode)))
+      labware = Labware.find_or_initialize_by(attributes.slice(:barcode))
+      labware_dup = labware.dup
+      coordinate.fill(labware)
     end
+    [labware, labware_dup]
   end
 
   def add_labwares(labwares)
-    return [] unless labwares.instance_of?(Array)
-    [].tap do |l|
-      labwares.each { |labware| l << add_labware(labware) }
-    end.compact
+    return unless labwares.instance_of?(Array)
+    labwares.each do |labware|
+      after, before = add_labware(labware)
+      if after
+        yield(after, before) if block_given?
+      end
+    end
   end
 
 private

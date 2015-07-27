@@ -37,9 +37,12 @@ class ScanForm
     scan.location = Location.find_by_code(location_barcode)
     scan.user = current_user
     if valid?
-      location_labwares = scan.location.add_labwares(permitted_labwares(labwares) || labware_barcodes)
-      scan.create_message(location_labwares)
-      create_audits(location_labwares)
+      ActiveRecord::Base.transaction do
+        scan.location.add_labwares(permitted_labwares(labwares) || labware_barcodes) do |after, before|
+          scan.add_labware(before)
+          after.create_audit(scan.user, "scan")
+        end
+      end
       scan.save
     else
       false
@@ -51,10 +54,6 @@ class ScanForm
   end
 
 private
-
-  def create_audits(labwares)
-    labwares.each { |labware| labware.create_audit(scan.user, "scan")}
-  end
 
   def check_for_errors
     LocationValidator.new.validate(self)

@@ -127,7 +127,7 @@ RSpec.describe Location, type: :model do
   it "#add_labwares should remove any dodgy control character from barcodes" do
     location = create(:location_with_parent)
     labwares = create_list(:labware, 3)
-    expect(location.add_labwares(labwares.join_barcodes("\r\n"))).to eq(labwares)
+    location.add_labwares(labwares.join_barcodes("\n\r"))
     expect(location.labwares.count).to eq(3)
     expect(location.labwares.all? {|labware| !labware.barcode.include?("\r") }).to be_truthy
   end

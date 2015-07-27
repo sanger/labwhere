@@ -125,16 +125,16 @@ class Location < ActiveRecord::Base
 
   def add_labware(barcode)
     labware = Labware.find_or_initialize_by(barcode: barcode)
+    labware_dup = labware.dup
     labwares << labware
-    labware
+    [labware, labware_dup]
   end
 
   def add_labwares(barcodes)
-    return [] unless barcodes.instance_of?(String)
-    [].tap do |l|
-      barcodes.split("\n").each do |barcode| 
-        l << add_labware(barcode.remove_control_chars)
-      end
+    return unless barcodes.instance_of?(String)
+    barcodes.split("\n").each do |barcode| 
+      after, before = add_labware(barcode.remove_control_chars)
+      yield(after, before) if block_given?
     end
   end
 

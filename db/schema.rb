@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150717141301) do
+ActiveRecord::Schema.define(version: 20150727101943) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id"
@@ -31,28 +31,24 @@ ActiveRecord::Schema.define(version: 20150717141301) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "location_id"
-    t.integer  "labware_id"
     t.integer  "position"
     t.integer  "row"
     t.integer  "column"
   end
 
-  add_index "coordinates", ["labware_id"], name: "index_coordinates_on_labware_id"
   add_index "coordinates", ["location_id"], name: "index_coordinates_on_location_id"
 
   create_table "labwares", force: :cascade do |t|
     t.string   "barcode"
     t.datetime "deleted_at"
     t.integer  "location_id"
-    t.integer  "previous_location_id"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.integer  "coordinate_id"
   end
 
   add_index "labwares", ["coordinate_id"], name: "index_labwares_on_coordinate_id"
   add_index "labwares", ["location_id"], name: "index_labwares_on_location_id"
-  add_index "labwares", ["previous_location_id"], name: "index_labwares_on_previous_location_id"
 
   create_table "location_types", force: :cascade do |t|
     t.string   "name"
