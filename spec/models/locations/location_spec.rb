@@ -12,8 +12,6 @@ RSpec.describe Location, type: :model do
     expect(build(:location, location_type: nil)).to_not be_valid
   end
 
- 
-
   it "#without_location should return a list of locations without a specified location" do
     locations = create_list(:location, 3)
     inactive_location = create(:location, status: Location.statuses[:inactive])
@@ -22,19 +20,14 @@ RSpec.describe Location, type: :model do
     expect(Location.without(locations.last)).to_not include(inactive_location)
   end
 
-  it "#unknown should return a location with name UNKNOWN" do
+  it "#unknown should return a location with name UNKNOWN and location type UNKNOWN" do
     expect(Location.unknown.name).to eq("UNKNOWN")
-    expect(Location.unknown.unknown?).to be_truthy
+    expect(Location.unknown).to be_unknown
+    expect(Location.unknown.location_type.name).to eq("UNKNOWN")
   end
 
   it "location should be valid without a location type if location is UNKNOWN" do
     expect(build(:location, name: "UNKNOWN", location_type: nil)).to be_valid
-  end
-
-  it "#name should produce a list of location names" do
-    location1 = create(:location)
-    location2 = create(:location)
-    expect(Location.names([location1, location2])).to eq("#{location1.name} #{location2.name}")
   end
 
   it "#find_by_code should find a location by it's barcode" do

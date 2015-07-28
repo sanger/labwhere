@@ -10,8 +10,6 @@ class Location < ActiveRecord::Base
   belongs_to :parent, class_name: "Location"
   has_many :labwares
 
-  attr_readonly :rows, :columns
-
   validates :name, presence: true
   validates :location_type, existence: true, unless: Proc.new { |l| l.unknown? }
   validates_format_of :name, with: /\A[\w\-\s]+\z/
@@ -32,18 +30,20 @@ class Location < ActiveRecord::Base
     super || NullLocation.new
   end
 
+  def location_type
+    if new_record?
+      super
+    else
+      super || NullLocationType.new
+    end
+  end
+
   ##
   # When a labware is scanned out the location is unknown.
   # If a labware does not have a location it will be set to unknown.
   # This location is created when it is first queried.
   def self.unknown
     find_by(name: "UNKNOWN") || create(name: "UNKNOWN")
-  end
-
-  ##
-  # Return a list of location names separated by a delimiter
-  def self.names(locations, spacer = " ")
-    locations.map(&:name).join(spacer)
   end
 
   ##

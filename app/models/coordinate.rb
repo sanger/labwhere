@@ -11,11 +11,11 @@ class Coordinate < ActiveRecord::Base
   end
 
   def filled?
-    !labware.empty?
+    !empty?
   end
 
   def empty?
-    false
+    labware.empty?
   end
 
   def labware
@@ -26,4 +26,5 @@ class Coordinate < ActiveRecord::Base
     update_attribute(:labware, l)
     l
   end
+
 end
