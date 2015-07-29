@@ -94,6 +94,7 @@ RSpec.describe Api::LocationsController, type: :request do
     expect(coordinates.first["row"]).to eq(location.coordinates.first.row)
     expect(coordinates.first["column"]).to eq(location.coordinates.first.column)
     expect(coordinates.first["labware"]).to eq(location.coordinates.first.labware.barcode)
+    expect(coordinates.first["location"]).to eq(location.coordinates.first.location.barcode)
   end
 
   it "should create a new location" do
@@ -131,6 +132,24 @@ RSpec.describe Api::LocationsController, type: :request do
     patch api_location_path(location.barcode), location: { user_code: user.swipe_card_id, name: nil }
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
+  end
+
+  it "should return information about free coordinates within a location" do
+    location = create(:unordered_location)
+    child_location = create(:ordered_location, parent: location)
+    get api_location_coordinate_path(location.barcode, 10)
+    expect(response).to be_success
+    json = ActiveSupport::JSON.decode(response.body)
+    expect(json.length).to eq(10)
+    expect(json.first["position"]).to eq(child_location.coordinates.first.position)
+    expect(json.first["location"]).to eq(child_location.barcode)
+
+    location_2 = create(:unordered_location)
+    child_location_2 = create(:ordered_location_with_labwares, parent: location_2)
+    get api_location_coordinate_path(location_2.barcode, 10)
+    expect(response).to be_success
+    json = ActiveSupport::JSON.decode(response.body)
+    expect(json).to be_empty
   end
   
 end

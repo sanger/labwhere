@@ -54,5 +54,14 @@ RSpec.describe Coordinate, type: :model do
     coordinate.fill(create(:labware))
     expect(coordinate).to be_filled
   end
+
+  it "#ordered should order coordinates by position" do
+    create(:coordinate, position: 4)
+    create(:coordinate, position: 1)
+    create(:coordinate, position: 3)
+    create(:coordinate, position: 2)
+    expect(Coordinate.ordered.first.position).to eq(1)
+    expect(Coordinate.ordered.last.position).to eq(4)
+  end
  
 end

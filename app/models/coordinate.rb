@@ -6,6 +6,8 @@ class Coordinate < ActiveRecord::Base
   validates :location, existence: true
   validates :location, nested: true, unless: Proc.new { |l| l.location.nil? || l.location.unknown? }
 
+  scope :ordered, -> { order(position: :asc) }
+
   def self.find_by_position(attributes)
     find_by(attributes)
   end

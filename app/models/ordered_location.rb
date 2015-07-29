@@ -1,5 +1,5 @@
 class OrderedLocation < Location
-  has_many :coordinates, -> { order(position: :asc) }, foreign_key: "location_id"
+  has_many :coordinates, foreign_key: "location_id"
   has_many :labwares, through: :coordinates
 
   before_create :populate_coordinates

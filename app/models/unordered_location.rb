@@ -7,7 +7,7 @@ class UnorderedLocation < Location
   after_update :cascade_parentage
 
   ##
-  # If the status of a location changes we need to ensure that all of its children are synchonised.
+  # If the status of a location changes we need to ensure that all of its children are synchronised.
   # For example if a location is deactivated then all of its children need to be.
   def synchronise_status_of_children
     if status_changed?

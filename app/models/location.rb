@@ -17,6 +17,7 @@ class Location < ActiveRecord::Base
 
   scope :without, ->(location) { active.where.not(id: location.id) }
   scope :without_unknown, ->{ where.not(id: Location.unknown.id) }
+  scope :ordered, -> { where(type: "OrderedLocation")}
 
   before_save :set_parentage
   after_create :generate_barcode
@@ -136,6 +137,15 @@ class Location < ActiveRecord::Base
       after, before = add_labware(barcode.remove_control_chars)
       yield(after, before) if block_given?
     end
+  end
+
+  def available_coordinates(n)
+    return AvailableCoordinates.new(self.coordinates, n).result if ordered?
+    children.each do |child|
+      coordinates = child.available_coordinates(n)
+      return coordinates unless coordinates.empty?
+    end
+    Coordinate.none
   end
 
 private

@@ -1,4 +1,5 @@
 class Hash
+  
   def self.grid(rows, columns)
     position = 1
     {}.tap do |hsh|
