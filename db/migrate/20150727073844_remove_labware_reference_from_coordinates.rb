@@ -1,5 +1,5 @@
 class RemoveLabwareReferenceFromCoordinates < ActiveRecord::Migration
   def change
-    remove_reference :coordinates, :labware
+    remove_column :coordinates, :labware_id, :integer
   end
 end
