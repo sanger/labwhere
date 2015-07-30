@@ -7,9 +7,13 @@ class @List
 
   constructor: (item, behavior) ->
     @item       = $(item)
-    @list       = $.map @item.children("[data-behavior~=#{behavior.name}]"), (item, i) ->
-      new ListItem(item, behavior)
-      if behavior.info
+    @behavior   = behavior
+    @addBehavior()
+
+  addBehavior: =>
+    $.each @item.children("[data-behavior~=#{@behavior.name}]"), (i, item) =>
+      new ListItem(item, @behavior)
+      if @behavior.info
         new InfoLink(item)
 
 # When the use clicks on the link there will be an Ajax call to retrieve all of the data and this will be output
@@ -70,7 +74,7 @@ class @ListItem
   
   # If the data retrieval is successful pull out the relevant data and add it to the html.
   handleSuccess: (results, behavior, link) =>
-    html = $(results).find("[data-behavior~=#{behavior.id}]")
+    html = $(results).find("[data-behavior~=#{behavior.id}]") 
     @addBehavior(html, behavior)
     html.appendTo(@item)
     link.html behavior.imageTag.htmlOff
