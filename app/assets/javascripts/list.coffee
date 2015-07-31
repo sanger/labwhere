@@ -69,7 +69,7 @@ class @List
     event.data.link.html behavior.imageTag.htmlOff
     html.appendTo(event.data.item)
     @addBehavior(html, behavior)
-
+    
   addBehavior: (html, behavior) =>
     html.data("behavior", behavior.id)
     new List(html, behavior)
