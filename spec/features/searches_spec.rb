@@ -80,13 +80,6 @@ RSpec.describe "Searches", type: :feature do
       location.children.each do |child|
         expect(page).to have_content(child.barcode)
       end
-      location.labwares.each do |labware|
-        expect(page).to have_content(labware.barcode)
-        within("#labware_#{labware.id}") do
-          click_link("Further information")
-          expect(page).to have_content(labware.location.barcode)
-        end
-      end
     end
 
      it "with a location should allow viewing of associated location further information" do

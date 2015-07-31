@@ -6,85 +6,47 @@
 class @List
 
   constructor: (item, behavior) ->
-    @item       = $(item)
-    @behavior   = behavior
-    @addBehavior()
+    @item           = $(item)
+    @behavior       = behavior
+    @auditBehavior  = window.behaviors.find("audit")
+    @addBehaviors()
 
-  addBehavior: =>
-    $.each @item.children("[data-behavior~=#{@behavior.name}]"), (i, item) =>
-      new ListItem(item, @behavior)
-      if @behavior.info
-        new InfoLink(item)
+  addBehaviors: =>
+    for item in @item.children("[data-behavior~=#{@behavior.name}]")
+      @setEvents($(item))
 
-# When the use clicks on the link there will be an Ajax call to retrieve all of the data and this will be output
-# below the current link. A new image will be added signifying that the data can be hidden.
-# If the user requests for the data to be hidden it will just be hidden so if the user decides they want to see
-# it again it does not need to be retrieved again.
-class @ListItem
-  
-  # Attributes:
-  #  @item:           The actual html element.
-  #  @behavior:       The behavior which was retrieved.
-  #  @id:             The data id. Used to retrieve records.
-  #  @drilldown:      The element with drilldown behavior attached. A click event will be added.
-  #  @auditBehavior:  The audits beavhior retrieved from the window object.
-  #  @audits:         The element with audits behavior attached. A click event will be added.
-  constructor: (item, behavior) ->
-    @item               = $(item)
-    @behavior           = behavior
-    @id                 = @item.data("id")
-    @drilldown          = @item.find("[data-behavior~=drilldown]").first()
-    @auditBehavior      = window.behaviors.find("audit")
-    @audits             = @item.find("[data-behavior~=audits]").first()
-    @setEvents()
+  setEvents: (item) =>
+    drilldown = item.find("[data-behavior~=drilldown]").first()
+    drilldown.on("click", {id: item.data("id"), link: drilldown, item: item}, @findData)
+    if @behavior.audits
+      audits = item.find("[data-behavior~=audits]").first()
+      audits.on("click", {id: item.data("id"), link: audits, item: item}, @findAudits)
+    if @behavior.info
+      @addInfo(item)
 
-  # Add click events for the drilldown and audits elements.
-  setEvents: =>
-    @drilldown.on "click", @findData
-    @audits.on "click", @findAudits
-
-  # For each child resource add the data.
   findData: (event) =>
     event.preventDefault()
     for resource in @behavior.childResources
-      @toggleData resource.path, window.behaviors.find(resource.behavior), @drilldown
+      @toggleData resource.path, window.behaviors.find(resource.behavior), event
 
-  # Find audit records for resource.
   findAudits: (event) =>
     event.preventDefault()
-    @toggleData @auditBehavior.parentResource, @auditBehavior, @audits
+    @toggleData @auditBehavior.parentResource, @auditBehavior, event
 
-  # Find out if the data has already been added if so show it otherwise find it.
-  toggleData: (path, behavior, link) =>
-    list = @item.children("[data-behavior~=#{behavior.id}]")
+  addInfo: (item) =>
+    box = item.find("[data-behavior~=info-text]")
+    info = item.find("[data-behavior~=info]")
+    info.on("click", {info: info, box: box}, @toggleInfo)
+    close = item.find("[data-behavior~=close]")
+    close.on("click", {info: close, box: box}, @toggleInfo)
+
+  toggleData: (path, behavior, event) =>
+    list = event.data.item.children("[data-behavior~=#{behavior.id}]")
     if list.length
-      @toggleList list, link, behavior
+      @toggleList list, event.data.link, behavior
     else
-      @fireAjax path, behavior, link
+      @fireAjax path, behavior, event
 
-  # Fire an Ajax call to retrieve the data using the parent resource, 
-  # the data id and the child resource path.
-  fireAjax: (path, behavior, link) =>
-    $.ajax
-      url: "/#{@behavior.parentResource}/#{@id}/#{path}"
-      method: "GET"
-      dataType: "HTML"
-      success: (data, textStatus, jqXHR) =>
-        @handleSuccess(data, behavior, link)
-  
-  # If the data retrieval is successful pull out the relevant data and add it to the html.
-  handleSuccess: (results, behavior, link) =>
-    html = $(results).find("[data-behavior~=#{behavior.id}]") 
-    @addBehavior(html, behavior)
-    html.appendTo(@item)
-    link.html behavior.imageTag.htmlOff
-
-  # Add behavior dynamically to ensure that any data can be added recursively.
-  addBehavior: (html, behavior) =>
-    html.data("behavior", behavior.id)
-    new List(html, behavior)
-
-  # If the data is visible hide it otherwise show it and change the image link accordingly.
   toggleList: (list, link, behavior) =>
     if list.is(":visible")
       list.hide()
@@ -93,3 +55,28 @@ class @ListItem
       if list.find("article").length
         list.show()
         link.html behavior.imageTag.htmlOff
+
+  fireAjax: (path, behavior, event) =>
+    $.ajax
+      url: "/#{@behavior.parentResource}/#{event.data.id}/#{path}"
+      method: "GET"
+      dataType: "HTML"
+      success: (data, textStatus, jqXHR) =>
+        @handleSuccess(data, behavior, event)
+
+  handleSuccess: (results, behavior, event) =>
+    html = $(results).find("[data-behavior~=#{behavior.id}]")
+    event.data.link.html behavior.imageTag.htmlOff
+    html.appendTo(event.data.item)
+    @addBehavior(html, behavior)
+
+  addBehavior: (html, behavior) =>
+    html.data("behavior", behavior.id)
+    new List(html, behavior)
+
+  toggleInfo: (event) =>
+    event.preventDefault()
+    rect   = event.data.info.position()
+    event.data.box.css({top: rect.top - $(window).scrollTop(), left: rect.left+30})
+    event.data.box.toggle()
+

@@ -78,16 +78,17 @@ class @Behavior
     @childResources   = item.resources
     @imageTag         = item.imageTag
     @info             = item.info
+    @audits           = item.audits
 
 # Create all of the known behaviors
 @resources = { 
-  location_type:{resources: [ {path: "locations", behavior: "location"}], imageTag: this.drilldown},
-  location:{resources: [ { path: "children", behavior: "location"}, { path: "labwares", behavior: "labware"} ], imageTag: this.drilldown, info: true}, 
+  location_type:{resources: [ {path: "locations", behavior: "location"}], audits: true, imageTag: this.drilldown},
+  location:{resources: [ { path: "children", behavior: "location"}, { path: "labwares", behavior: "labware"} ], audits: true, imageTag: this.drilldown, info: true}, 
   labware: {resources: [path: "audits", behavior: "audit"], imageTag: this.drilldown, info: true },
-  audit: {resources: [], imageTag: this.audit, info: true },
-  user: {resources: [path: "audits", behavior: "audit"], imageTag: this.drilldown},
-  printer: {resources: [path: "audits", behavior: "audit"], imageTag: this.drilldown}, 
-  team: {resources: [path: "audits", behavior: "audit"], imageTag: this.drilldown}
+  audit: {resources: [], imageTag: this.audit },
+  user: {resources: [path: "audits", behavior: "audit"], audits: true, imageTag: this.drilldown},
+  printer: {resources: [path: "audits", behavior: "audit"], audits: true, imageTag: this.drilldown}, 
+  team: {resources: [path: "audits", behavior: "audit"], audits: true, imageTag: this.drilldown}
 }
 
 window.behaviors = new Behaviors(this.resources)
