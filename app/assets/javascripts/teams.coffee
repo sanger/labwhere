@@ -2,5 +2,5 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-jQuery ->
-  new List $("[data-behavior~=teams-list]"), window.behaviors.find("team")
+# jQuery ->
+#   new List $("[data-behavior~=teams-list]"), window.behaviors.find("team") if $("[data-behavior~=teams-list]").length

@@ -84,4 +84,8 @@ RSpec.configure do |config|
     xpath { |id| XPath.css("[data-id='#{id}']") }
   end
 
+  Capybara.add_selector(:data_output) do
+    xpath { |id| XPath.css("[data-output='#{id}']") }
+  end
+
 end

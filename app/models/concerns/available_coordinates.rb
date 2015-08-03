@@ -11,10 +11,10 @@ class AvailableCoordinates
     coordinates.each do |coordinate|
       if coordinate.empty?
         line = line(coordinate.position, coordinate.position+(n-1))
-        return line if available?(line) && line.length == n
+        return coordinate.location if available?(line) && line.length == n
       end
     end
-    Coordinate.none
+    nil
   end
 
 private

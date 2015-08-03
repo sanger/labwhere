@@ -140,9 +140,8 @@ RSpec.describe Api::LocationsController, type: :request do
     get api_location_coordinate_path(location.barcode, 10)
     expect(response).to be_success
     json = ActiveSupport::JSON.decode(response.body)
-    expect(json.length).to eq(10)
-    expect(json.first["position"]).to eq(child_location.coordinates.first.position)
-    expect(json.first["location"]).to eq(child_location.barcode)
+    expect(json.length).to eq(1)
+    expect(json.first["barcode"]).to eq(child_location.barcode)
 
     location_2 = create(:unordered_location)
     child_location_2 = create(:ordered_location_with_labwares, parent: location_2)

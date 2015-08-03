@@ -251,7 +251,7 @@ RSpec.describe "Locations", type: :feature do
       location = create(:location)
       visit locations_path
       find(:data_id, location.id).click_link "Further information"
-      expect(find(:data_id, location.id).find(:data_behavior, "info-text")).to have_content(location.location_type.name)
+      expect(find(:data_id, location.id).find(:data_output, "info-text")).to have_content(location.location_type.name)
     end
 
   end

@@ -5,78 +5,77 @@
 # for each child element with data-behavior location.
 class @List
 
-  constructor: (item, behavior) ->
-    @item           = $(item)
-    @behavior       = behavior
-    @auditBehavior  = window.behaviors.find("audit")
-    @addBehaviors()
+  constructor: (item) ->
+    @item             = $(item)
+    @behaviors        = window.behaviors
+    @auditsImage      = window.audit
+    @drilldownImage   = window.drilldown
+    @addListeners()
 
-  addBehaviors: =>
-    for item in @item.children("[data-behavior~=#{@behavior.name}]")
-      @setEvents($(item))
+  addListeners: =>
+    self = @
+    @item.on "click", "[data-behavior~=drilldown],[data-behavior~=audits],[data-behavior~=info]", (event) ->
+      self.triggerEvent($(this), event)
 
-  setEvents: (item) =>
-    drilldown = item.find("[data-behavior~=drilldown]").first()
-    drilldown.on("click", {id: item.data("id"), link: drilldown, item: item}, @findData)
-    if @behavior.audits
-      audits = item.find("[data-behavior~=audits]").first()
-      audits.on("click", {id: item.data("id"), link: audits, item: item}, @findAudits)
-    if @behavior.info
-      @addInfo(item)
-
-  findData: (event) =>
+  triggerEvent: (link, event) =>
     event.preventDefault()
-    for resource in @behavior.childResources
-      @toggleData resource.path, window.behaviors.find(resource.behavior), event
+    parent = link.closest("[data-behavior~=list]")
+    switch link.data("behavior")
+      when 'drilldown' then @findData(link, parent)
+      when 'audits' then @findAudits(link, parent)
+      when 'info' then @toggleInfo(link, parent)
 
-  findAudits: (event) =>
-    event.preventDefault()
-    @toggleData @auditBehavior.parentResource, @auditBehavior, event
+  findData: (link, item) =>
+    behavior = @behaviors.find(item.data("type"))
+    for resource in behavior.childResources
+      @toggleData link, behavior.parentResource, resource, item
 
-  addInfo: (item) =>
-    box = item.find("[data-behavior~=info-text]")
-    info = item.find("[data-behavior~=info]")
-    info.on("click", {info: info, box: box}, @toggleInfo)
-    close = item.find("[data-behavior~=close]")
-    close.on("click", {info: close, box: box}, @toggleInfo)
+  findAudits: (link, item) ->
+    behavior = @behaviors.find(item.data("type"))
+    @toggleData link, behavior.parentResource, {path: "audits", behavior: "audit"}, item
 
-  toggleData: (path, behavior, event) =>
-    list = event.data.item.children("[data-behavior~=#{behavior.id}]")
+  toggleData: (link, path, resource, item) ->
+    behavior = @behaviors.find(resource.behavior)
+    list = item.children("[data-behavior~=#{behavior.id}]")
     if list.length
-      @toggleList list, event.data.link, behavior
+      @toggleList list, link, behavior
     else
-      @fireAjax path, behavior, event
+      @fireAjax link, path, resource, item
 
-  toggleList: (list, link, behavior) =>
+  toggleList: (list, link, behavior) ->
+    image = @findImage(link)
     if list.is(":visible")
       list.hide()
-      link.html behavior.imageTag.htmlOn
+      link.html image.htmlOn
     else
       if list.find("article").length
         list.show()
-        link.html behavior.imageTag.htmlOff
+        link.html image.htmlOff
 
-  fireAjax: (path, behavior, event) =>
+  fireAjax: (link, path, resource, item) ->
     $.ajax
-      url: "/#{@behavior.parentResource}/#{event.data.id}/#{path}"
+      url: "/#{path}/#{item.data("id")}/#{resource.path}"
       method: "GET"
       dataType: "HTML"
       success: (data, textStatus, jqXHR) =>
-        @handleSuccess(data, behavior, event)
+        @handleSuccess(link, data, resource, item)
 
-  handleSuccess: (results, behavior, event) =>
+  handleSuccess: (link, results, resource, item) ->
+    behavior = @behaviors.find(resource.behavior)
     html = $(results).find("[data-behavior~=#{behavior.id}]")
-    event.data.link.html behavior.imageTag.htmlOff
-    html.appendTo(event.data.item)
-    @addBehavior(html, behavior)
-    
-  addBehavior: (html, behavior) =>
-    html.data("behavior", behavior.id)
-    new List(html, behavior)
+    link.html @findImage(link).htmlOff
+    html.appendTo(item)
 
-  toggleInfo: (event) =>
-    event.preventDefault()
-    rect   = event.data.info.position()
-    event.data.box.css({top: rect.top - $(window).scrollTop(), left: rect.left+30})
-    event.data.box.toggle()
+  toggleInfo: (link, parent) ->
+    box = parent.find("[data-output~=info-text]")
+    rect   = link.position()
+    box.css({top: rect.top - $(window).scrollTop(), left: rect.left+30})
+    box.toggle()
+    box.find("[data-behavior~=close]").on "click", -> box.hide()
 
+  findImage: (link) ->
+    if link.data("behavior") is "audits" then @auditsImage else @drilldownImage
+
+jQuery ->
+  for list in $("[data-behavior$=-list]")
+    new List list

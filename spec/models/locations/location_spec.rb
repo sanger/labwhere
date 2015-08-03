@@ -137,59 +137,56 @@ RSpec.describe Location, type: :model do
 
   context "available coordinates" do
 
-    it "if location is ordered should return available coordinates for that location" do
+    it "if location is ordered should return location if location is available" do
       location = create(:ordered_location_with_parent)
-      coordinates = location.available_coordinates(10)
-      expect(coordinates).to_not be_empty
-      expect(coordinates.length).to eq(10)
-      expect(coordinates.first.location).to eq(location)
+      locations = location.available_coordinates(10)
+      expect(locations.length).to eq(1)
+      expect(locations).to include(location)
 
       location = create(:ordered_location_with_labwares)
       expect(location.available_coordinates(10)).to be_empty
     end
 
-    it "if location is unordered should return available coordinates for the children of that location" do
+    it "if location is unordered should return available locations for the children of that location" do
       location = create(:unordered_location)
       child_location = create(:ordered_location, parent: location)
-      coordinates = location.available_coordinates(10)
-      expect(coordinates).to_not be_empty
-      expect(coordinates.length).to eq(10)
-      expect(coordinates.first.location).to eq(child_location)
+      locations = location.available_coordinates(10)
+      expect(locations.length).to eq(1)
+      expect(locations).to include(child_location)
 
       location_2 = create(:unordered_location)
       child_location_2 = create(:ordered_location_with_labwares, parent: location_2)
       expect(location_2.available_coordinates(10)).to be_empty
     end
 
-    it "should return the coordinates of the first child which are free" do
+    it "should return the location of the first child which are free" do
       location = create(:unordered_location)
       child_location_1 = create(:ordered_location_with_labwares, parent: location)
       child_location_2 = create(:ordered_location, parent: location)
-      coordinates = location.available_coordinates(10)
-      expect(coordinates).to_not be_empty
-      expect(coordinates.length).to eq(10)
-      expect(coordinates.first.location).to eq(child_location_2)
+      locations = location.available_coordinates(10)
+      expect(locations.length).to eq(1)
+      expect(locations).to include(child_location_2)
     end
 
-    it "should return the coordinates anywhere in the location tree" do
+    it "should return the locations anywhere in the location tree" do
       location = create(:unordered_location)
       child_location_1 = create(:unordered_location, parent: location)
       child_location_2 = create(:ordered_location, parent: location)
       child_location_3 = create(:ordered_location, parent: child_location_1)
 
-      coordinates = location.available_coordinates(10)
-      expect(coordinates).to_not be_empty
-      expect(coordinates.length).to eq(10)
-      expect(coordinates.first.location).to eq(child_location_3)
+      locations = location.available_coordinates(10)
+      expect(locations.length).to eq(2)
+      expect(locations).to include(child_location_2)
+      expect(locations).to include(child_location_3)
 
       location_2 = create(:unordered_location)
       child_location_4 = create(:unordered_location, parent: location_2)
       child_location_5 = create(:ordered_location, parent: location_2)
       child_location_6 = create(:ordered_location_with_labwares, parent: child_location_1)
 
-      coordinates = location_2.available_coordinates(10)
-      expect(coordinates).to_not be_empty
-      expect(coordinates.first.location).to eq(child_location_5)
+      locations = location_2.available_coordinates(10)
+      expect(locations.length).to eq(1)
+      expect(locations).to include(child_location_5)
     end
   end
   

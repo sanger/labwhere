@@ -140,12 +140,16 @@ class Location < ActiveRecord::Base
   end
 
   def available_coordinates(n)
-    return AvailableCoordinates.new(self.coordinates, n).result if ordered?
-    children.each do |child|
-      coordinates = child.available_coordinates(n)
-      return coordinates unless coordinates.empty?
-    end
-    Coordinate.none
+    [].tap do |result|
+      if ordered?
+        result << AvailableCoordinates.new(self.coordinates, n).result
+      else
+        children.each do |child|
+          locations = child.available_coordinates(n)
+          result << locations unless locations.empty?
+        end
+      end
+    end.flatten.compact
   end
 
 private
