@@ -240,7 +240,7 @@ RSpec.describe "Locations", type: :feature do
       find(:data_id, location.id).find(:data_behavior, "audits").click
       within("#audit_#{location.audits.first.id}") do
         find(:data_behavior, "info").click
-        expect(page).to have_content(location.audits.first.record_data["created_at"])
+        expect(page).to have_content("barcode: #{location.barcode}")
       end
     end
   end
