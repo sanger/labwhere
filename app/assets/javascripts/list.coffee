@@ -71,7 +71,9 @@ class @List
     rect   = link.position()
     box.css({top: rect.top - $(window).scrollTop(), left: rect.left+30})
     box.toggle()
-    box.find("[data-behavior~=close]").on "click", -> box.hide()
+    box.find("[data-behavior~=close]").on "click", (event) ->
+      event.preventDefault()
+      box.hide()
 
   findImage: (link) ->
     if link.data("behavior") is "audits" then @auditsImage else @drilldownImage
