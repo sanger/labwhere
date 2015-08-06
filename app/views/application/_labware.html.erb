@@ -1,4 +1,4 @@
-<article id="<%= dom_id(labware) %>" data-behavior="labware" class="drilldown" data-id="<%= labware.id %>" >
+<article id="<%= dom_id(labware) %>" data-behavior="list" data-type="labware" class="drilldown" data-id="<%= labware.id %>" >
     <div>
       <%= drilldown_link %>
     </div>
@@ -9,17 +9,6 @@
       <%= labware.barcode %>
     </div>
     <div>
-      <%= info_link %>
-    </div>
-    <div class="info" data-behavior="info-text" style="display:none;">
-      <%= link_to 'X', "#", data: { behavior: "close"}, title: "Close", class: "close" %>
-      <div>
-        <p>
-          Location name: <%= labware.location.name %>
-        </p>
-        <p>
-          Location barcode: <%= labware.location.barcode %>
-        </p>
-      </div>
+      (<%= labware.location.name %>: <%= labware.location.barcode %>)
     </div>
 </article>

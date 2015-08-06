@@ -4,7 +4,7 @@ class LocationSerializer < ActiveModel::Serializer
   
   self.root = false
 
-  attributes :id, :name, :parent, :container, :status, :location_type_id, :labwares, :audits, :barcode, :children, :parentage
+  attributes :id, :name, :parent, :container, :status, :location_type_id, :audits, :barcode, :rows, :columns, :parentage
 
   include SerializerDates
 
@@ -20,21 +20,9 @@ class LocationSerializer < ActiveModel::Serializer
   end
 
   ##
-  # Link to the labwares for the location
-  def labwares
-    api_location_labwares_path(object.barcode)
-  end
-
-  ##
   # Link to the audits for the location
   def audits
     api_location_audits_path(object.barcode)
-  end
-
-  ##
-  # Link to the children for the location
-  def children
-    api_location_children_path(object.barcode)
   end
 
 end

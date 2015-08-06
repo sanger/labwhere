@@ -35,9 +35,19 @@ version: 1.0
                       "type": "string",
                       "required": false
                     },
-                    "coordinate":{
-                      "description": "The coordinate of the labware",
-                      "type": "string",
+                    "position":{
+                      "description": "The coordinate position to put the labware barcode into",
+                      "type": "integer",
+                      "required": false
+                    },
+                     "row":{
+                      "description": "The row put the labware barcode into",
+                      "type": "integer",
+                      "required": false
+                    },
+                     "column":{
+                      "description": "The column put the labware barcode into",
+                      "type": "integer",
                       "required": false
                     }
                   }
@@ -104,9 +114,16 @@ version: 1.0
                   "container": true,
                   "status": "active",
                   "location_type_id": 2,
-                  "labwares": "api/locations/location-2-2/labwares",
                   "audits": "api/locations/location-2-2/audits",
-                  "children": "api/locations/location-2-2/children"
+                  "coordinates" : [
+                    {
+                      "position" : "1",
+                      "row" : "1",
+                      "column" : "1",
+                      "labware" : "Empty",
+                      "location" : "location-2-2"
+                    }
+                  ]
                 }
               ]
   post:
@@ -151,7 +168,17 @@ version: 1.0
                 "description": "barcode of the parent location",
                 "required": false,
                 "type": "string"
-              }     
+              },
+              "rows": {
+                "description": "Number of rows in the location",
+                "required": false,
+                "type": "integer"
+              },
+              "columns": {
+                "description": "Number of columns in the location",
+                "required": false,
+                "type": "integer"
+              }          
             }
           }
     responses:
@@ -201,13 +228,11 @@ version: 1.0
                   [
                     {
                       "barcode": "labware1",
-                      "coordinate": "1",
-                      "history": "api/labwares/labware1/histories"
+                      "audits": "api/labwares/labware1/audits"
                     },
                     {
                       "barcode": "labware2",
-                      "coordinate": "1"
-                      "history": "api/labwares/labware2/histories"
+                      "audits": "api/labwares/labware2/audits"
                     }
 
                   ]
@@ -215,6 +240,10 @@ version: 1.0
     /children:
       get:
         description: Returns locations nested within location
+    /coordinates:
+      /{available}:
+        get:
+          description: Returns any locations which have enough free space signified by available, which represents the number of empty coordinates that are needed. This is a recursive action. It will search through all of the children for that location plus all of its children's children. If there are not enough free spaces anywhere then an empty json object is returned.
     /audits:
       get:
         description: Returns audits for a location

@@ -39,7 +39,7 @@ RSpec.describe Searchable, type: :model do
     model do
       include Searchable::Orchestrator
 
-      searches_in :label, :barcode_label
+      searches_in :label, :barcode_label, limit: 200
     end
   end
 
@@ -91,6 +91,13 @@ RSpec.describe Searchable, type: :model do
       expect(Search.create(term: "name").results.count).to eq(2)
       expect(Search.create(term: "Gobbledey").results.count).to eq(1)
 
+    end
+
+    it "limit should limit the number of results returned by the search" do
+      (1...101).each { |i| Label.create(name: "A name")}
+      (1...106).each { |i| BarcodeLabel.create(name: "A name")}
+      expect(Search.create(term: "name").results.count).to eq(205)
+      expect(Search.create(term: "name").results.adjusted_count).to eq(200)
     end
   end
 

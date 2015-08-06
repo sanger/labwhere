@@ -12,8 +12,7 @@ RSpec.describe Auditor, type: :model do
 
     model do
       validates_presence_of :name
-      has_many :audits, as: :auditable
-      include AddAudit
+      include Auditable
 
     end
     
@@ -28,8 +27,7 @@ RSpec.describe Auditor, type: :model do
     end
 
     model do
-      has_many :audits, as: :auditable
-      include AddAudit
+      include Auditable
     end
   end
 

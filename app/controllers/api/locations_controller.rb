@@ -26,7 +26,7 @@ private
 
   def process_location
     if @location.submit(params)
-      render json: @location, serializer: LocationSerializer
+      render json: @location, serializer: "#{@location.type}Serializer".constantize
     else
       render json: { errors: @location.errors.full_messages}, status: :unprocessable_entity
     end

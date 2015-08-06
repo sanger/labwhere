@@ -3,7 +3,7 @@
   <div>
     <%= info_link %>
   </div>
-  <div class="info" data-behavior="info-text" style="display:none;">
+  <div class="info" data-output="info-text" style="display:none;">
     <%= link_to 'X', "#", data: { behavior: "close"}, title: "Close", class: "close" %>
     <div>
       <% audit.record_data.each do |k,v| %>

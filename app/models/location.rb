@@ -4,12 +4,10 @@ class Location < ActiveRecord::Base
 
   include Searchable::Client
   include HasActive
-  include AddAudit
+  include Auditable
 
   belongs_to :location_type
   belongs_to :parent, class_name: "Location"
-  has_many :children, class_name: "Location", foreign_key: "parent_id"
-  has_many :audits, as: :auditable
   has_many :labwares
 
   validates :name, presence: true
@@ -19,11 +17,10 @@ class Location < ActiveRecord::Base
 
   scope :without, ->(location) { active.where.not(id: location.id) }
   scope :without_unknown, ->{ where.not(id: Location.unknown.id) }
+  scope :ordered, -> { where(type: "OrderedLocation")}
 
-  before_save :synchronise_status_of_children
   before_save :set_parentage
   after_create :generate_barcode
-  after_update :cascade_parentage
 
   searchable_by :name, :barcode
 
@@ -32,6 +29,14 @@ class Location < ActiveRecord::Base
   # This will ensure we don't get a no method error.
   def parent
     super || NullLocation.new
+  end
+
+  def location_type
+    if new_record?
+      super
+    else
+      super || NullLocationType.new
+    end
   end
 
   ##
@@ -43,15 +48,13 @@ class Location < ActiveRecord::Base
   end
 
   ##
-  # Return a list of location names separated by a delimiter
-  def self.names(locations, spacer = " ")
-    locations.map(&:name).join(spacer)
-  end
-
-  ##
   # Find a location by its barcode.
   def self.find_by_code(code)
-    find_by(barcode: code)
+    if code.present?
+      find_by(barcode: code)
+    else
+      unknown
+    end
   end
 
   ##
@@ -66,52 +69,44 @@ class Location < ActiveRecord::Base
     false
   end
 
-  ##
-  # Follows the null object pattern.
-  class NullLocation
-    def name; "Empty" end
+  def coordinateable?
+    rows > 0 && columns > 0
+  end
 
-    def barcode; "Empty" end
+  def unordered?
+    type ==  "UnorderedLocation"
+  end
 
-    def parent; nil end
+  def ordered?
+    type == "OrderedLocation"
+  end
 
-    def valid?; false end
+  def transform
+    if coordinateable?
+      self.type = "OrderedLocation"
+      self.becomes(OrderedLocation)
+    else
+      self.type = "UnorderedLocation"
+      self.becomes(UnorderedLocation)
+    end
+  end
 
-    def empty?; true end
-    
+  def type
+    super || "Location"
   end
 
   ##
   # Useful for creating audit records. There are certain attributes which are not needed.
   def as_json(options = {})
-    super({ except: [:deactivated_at]}.merge(options)).merge(uk_dates)
+    super({ except: [:deactivated_at, :location_type_id]}.merge(options)).merge(uk_dates).merge("location_type" => location_type.name)
   end
 
-  ##
-  # If the status of a location changes we need to ensure that all of its children are synchonised.
-  # For example if a location is deactivated then all of its children need to be.
-  def synchronise_status_of_children
-    if status_changed?
-      inactive? ? deactivate_children : activate_children
-    end
+  def children
+    []
   end
 
-  ##
-  # Deactivate the child location as well of all of its childrens' children
-  def deactivate_children
-    children.each do |child|
-      child.deactivate 
-      child.deactivate_children
-    end
-  end
-
-  ##
-  # Activate the child location as well of all of its childrens' children
-  def activate_children
-    children.each do |child|
-      child.activate 
-      child.activate_children
-    end
+  def coordinates
+    []
   end
 
   ##
@@ -129,13 +124,32 @@ class Location < ActiveRecord::Base
     end
   end
 
-  ##
-  # Ensure that the parentage attribute stays current.
-  # If the parent changes then we need to ensure that all of its childrens parentage is updated.
-  def cascade_parentage
-    children.each do |child|
-      child.update_attribute(:parentage, child.set_parentage)
+  def add_labware(barcode)
+    labware = Labware.find_or_initialize_by(barcode: barcode)
+    labware_dup = labware.dup
+    labwares << labware
+    [labware, labware_dup]
+  end
+
+  def add_labwares(barcodes)
+    return unless barcodes.instance_of?(String)
+    barcodes.split("\n").each do |barcode| 
+      after, before = add_labware(barcode.remove_control_chars)
+      yield(after, before) if block_given?
     end
+  end
+
+  def available_coordinates(n)
+    [].tap do |result|
+      if ordered?
+        result << AvailableCoordinates.new(self.coordinates, n).result
+      else
+        children.each do |child|
+          locations = child.available_coordinates(n)
+          result << locations unless locations.empty?
+        end
+      end
+    end.flatten.compact
   end
 
 private

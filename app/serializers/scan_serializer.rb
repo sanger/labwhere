@@ -6,6 +6,8 @@ class ScanSerializer < ActiveModel::Serializer
   
   attributes :message
 
+  has_one :location
+
   include SerializerDates
   
 end

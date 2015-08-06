@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe Api::LabwaresController, type: :request do 
 
  let!(:location)  { create(:location_with_parent)}
- let!(:labware)   { create(:labware_with_histories, location: location)}
+ let!(:labware)   { create(:labware_with_audits, location: location)}
 
  before(:each) do
   get api_labware_path(labware.barcode)
@@ -24,22 +24,17 @@ RSpec.describe Api::LabwaresController, type: :request do
   expect(@json["location"]).to_not be_empty
  end
 
- it "should return link to labware history" do
-  expect(@json["history"]).to eq(api_labware_histories_path(labware.barcode))
+ it "should return link to labware audits" do
+  expect(@json["audits"]).to eq(api_labware_audits_path(labware.barcode))
  end
 
- it "should return labware coordinate name" do
-  expect(@json["coordinate"]).to eq(labware.coordinate.name)
- end
-
- it "link to labware history should return history for labware" do
-  get ActiveSupport::JSON.decode(response.body)["history"]
+ it "link to labware audits should return audits for labware" do
+  get @json["audits"]
   expect(response).to be_success
   json = ActiveSupport::JSON.decode(response.body).first
-  history = labware.histories.first
-  expect(json["user"]).to eq(history.scan.user.login)
-  expect(json["location"]).to eq(history.scan.location.name)
-  expect(json["created_at"]).to eq(history.created_at.to_s(:uk))
+  audit = labware.audits.first
+  expect(json["user"]).to eq(audit.user.login)
+  expect(json["created_at"]).to eq(audit.created_at.to_s(:uk))
  end
 
 end

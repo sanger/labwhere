@@ -72,7 +72,7 @@ RSpec.describe "Searches", type: :feature do
     end
 
     it "with a location should allow viewing of associated locations and labwares" do
-      location = create(:location_with_labwares_and_children)
+      location = create(:unordered_location_with_labwares_and_children)
       visit root_path
       fill_in "Term", with: location.barcode
       click_button "Search"
@@ -80,17 +80,10 @@ RSpec.describe "Searches", type: :feature do
       location.children.each do |child|
         expect(page).to have_content(child.barcode)
       end
-      location.labwares.each do |labware|
-        expect(page).to have_content(labware.barcode)
-        within("#labware_#{labware.id}") do
-          click_link("Further information")
-          expect(page).to have_content(labware.location.barcode)
-        end
-      end
     end
 
      it "with a location should allow viewing of associated location further information" do
-      location = create(:location_with_labwares_and_children)
+      location = create(:unordered_location_with_labwares_and_children)
       visit root_path
       fill_in "Term", with: location.barcode
       click_button "Search"
@@ -103,15 +96,13 @@ RSpec.describe "Searches", type: :feature do
       end
     end
 
-    it "with a labware should allow viewing of associated history" do
-      labware = create(:labware_with_histories)
+    it "with a labware should allow viewing of associated audits" do
+      labware = create(:labware_with_audits)
       visit root_path
       fill_in "Term", with: labware.barcode
       click_button "Search"
       find(:data_id, labware.id).find(:data_behavior, "drilldown").click
-      labware.histories.each do |history|
-        expect(page).to have_content(history.summary)
-      end
+      expect(find(:data_id, labware.id)).to have_css("article", count: 5)
     end
 
   end

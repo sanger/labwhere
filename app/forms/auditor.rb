@@ -85,6 +85,10 @@ module Auditor
     action == "destroy"
   end
 
+  def creating?
+    action == "create"
+  end
+
 private
 
   def set_instance_variables(params)

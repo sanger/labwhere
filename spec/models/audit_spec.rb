@@ -26,11 +26,17 @@ RSpec.describe Audit, type: :model do
   end
 
   it "summary should be correct" do
-    location = create(:location)
     user = create(:user)
+
+    location = create(:location)
     location.audits.create(action: "create", user: user, record_data: location)
     audit = location.audits.first
     expect(audit.summary).to eq("#{audit.action.capitalize}d by #{user.login} on #{audit.created_at.to_s(:uk)}")
+
+    labware = create(:labware)
+    labware.audits.create(action: "scan", user: user, record_data: location)
+    audit = labware.audits.first
+    expect(audit.summary).to eq("Scanned by #{user.login} on #{audit.created_at.to_s(:uk)}")
   end
 
 end

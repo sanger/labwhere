@@ -33,9 +33,7 @@ Rails.application.routes.draw do
   end
 
   resources :labwares, only: [:show] do
-    scope module: :labwares do
-      resources :histories, only: [:index]
-    end
+    concerns :auditable, parent: :labwares
   end
 
   resources :scans, only: [:new, :create]
@@ -67,6 +65,7 @@ Rails.application.routes.draw do
       scope module: :locations do
         resources :labwares, only: [:index]
         resources :children, only: [:index]
+        resources :coordinates, only: [:show], param: :available
       end
 
       concerns :auditable, parent: :locations
@@ -85,7 +84,7 @@ Rails.application.routes.draw do
     resources :scans, only: [:create]
 
     resources :labwares, param: :barcode, only: [:show] do
-      resources :histories, param: :barcode, only: [:index]
+      concerns :auditable, parent: :labwares
     end
 
     resources :searches, only: [:create]

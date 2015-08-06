@@ -40,8 +40,8 @@ class @ImageTag
   audit: { name: "audit", on: "audit-on", off: "audit-off", help: "Audit history" } 
 }
 
-@drilldown = new ImageTag(this.tags.drilldown)
-@audit = new ImageTag(this.tags.audit)
+window.drilldown = new ImageTag(this.tags.drilldown)
+window.audit = new ImageTag(this.tags.audit)
 
 # An object to create all of the known behaviors.
 # It takes a collection of objects and creates a behavior for each one.
@@ -76,19 +76,16 @@ class @Behavior
     @parentResource   = "#{@name}s"
     @id               = "#{@parentResource}-list"
     @childResources   = item.resources
-    @imageTag         = item.imageTag
-    @info             = item.info
 
 # Create all of the known behaviors
 @resources = { 
-  location_type:{resources: [ {path: "locations", behavior: "location"}], imageTag: this.drilldown},
-  location:{resources: [ { path: "children", behavior: "location"}, { path: "labwares", behavior: "labware"} ], imageTag: this.drilldown, info: true}, 
-  labware: {resources: [ { path: "histories", behavior: "history"}], imageTag: this.drilldown, info: true },
-  history: {resources:[], imageTag: this.drilldown },
-  audit: {resources: [], imageTag: this.audit, info: true },
-  user: {resources: [path: "audits", behavior: "audit"], imageTag: this.drilldown},
-  printer: {resources: [path: "audits", behavior: "audit"], imageTag: this.drilldown}, 
-  team: {resources: [path: "audits", behavior: "audit"], imageTag: this.drilldown}
+  location_type:{resources: [ {path: "locations", behavior: "location"}]},
+  location:{resources: [ { path: "children", behavior: "location"}, { path: "labwares", behavior: "labware"} ]}, 
+  labware: {resources: [path: "audits", behavior: "audit"]},
+  audit: {resources: []},
+  user: {resources: [path: "audits", behavior: "audit"]},
+  printer: {resources: [path: "audits", behavior: "audit"]}, 
+  team: {resources: [path: "audits", behavior: "audit"]}
 }
 
 window.behaviors = new Behaviors(this.resources)

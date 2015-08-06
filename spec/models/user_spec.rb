@@ -87,10 +87,13 @@ RSpec.describe User, type: :model do
   end
 
   it "as_json should include correct attributes" do
-    user = create(:user)
+    team = create(:team)
+    user = create(:user, team: team)
     json = user.as_json
     expect(json["swipe_card_id"]).to be_nil
     expect(json["barcode"]).to be_nil
+    expect(json["team_id"]).to be_nil
+    expect(json["team"]).to eq(team.name)
     expect(json["created_at"]).to eq(user.created_at.to_s(:uk))
     expect(json["updated_at"]).to eq(user.updated_at.to_s(:uk))
   end

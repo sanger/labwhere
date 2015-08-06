@@ -2,9 +2,13 @@
 # This will add two methods in any class which includes it
 # to build or create an associated audit record.
 # Any class using this must belong to user and have many audits as auditable.
-module AddAudit
+module Auditable
 
   extend ActiveSupport::Concern
+
+  included do
+    has_many :audits, as: :auditable
+  end
 
   ##
   # Build an audit record but will not save it
