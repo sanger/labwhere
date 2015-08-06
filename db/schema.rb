@@ -31,11 +31,13 @@ ActiveRecord::Schema.define(version: 20150727101943) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "location_id"
+    t.integer  "labware_id"
     t.integer  "position"
     t.integer  "row"
     t.integer  "column"
   end
 
+  add_index "coordinates", ["labware_id"], name: "index_coordinates_on_labware_id"
   add_index "coordinates", ["location_id"], name: "index_coordinates_on_location_id"
 
   create_table "labwares", force: :cascade do |t|
