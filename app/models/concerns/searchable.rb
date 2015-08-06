@@ -63,7 +63,8 @@ module Searchable
 
     extend ActiveSupport::Concern
 
-    included do 
+    included do
+      delegate :message, to: :results
     end
 
     module ClassMethods
@@ -71,9 +72,16 @@ module Searchable
       ##
       # Define which models the Orchestrator will search through.
       def searches_in(*models)
+        options = models.extract_options!
+
+        define_singleton_method :limit do
+          options[:limit] ||= 1000
+        end
+
         define_singleton_method :searchable_models do
           Hash[models.collect { |model| [model, model.to_s.classify.constantize] }]
         end
+
       end
 
     end
@@ -82,10 +90,18 @@ module Searchable
     # Create a results object.
     # For each model which has a result add a key, value pair.
     def results
-      @results ||= SearchResult.new.tap do |result|
+
+      count = 0
+
+      @results ||= SearchResult.new do |result|
+        result.limit = self.class.limit
         self.class.searchable_models.each do |k, v|
-          result.add k.pluralize, v.search(self.term)
+          search_result = v.search(self.term)
+          result.add k.pluralize, search_result
+          count += search_result.count
         end
+
+        result.count = count
       end
     end
 

@@ -55,12 +55,14 @@ RSpec.describe Search, type: :model do
       expect(search.results[:location_types]).to include(location_type_freezer)
       expect(search.results[:locations]).to include(location_freezer_1)
       expect(search.results[:locations]).to include(location_freezer_2)
+      expect(search.message).to eq("Your search returned 3 results.")
     end
 
     it "should return a result if the barcode matches the term" do
       search = Search.create(term: location_shelf_123.barcode)
       expect(search.results.count).to eq(1)
       expect(search.results[:locations]).to include(location_shelf_123)
+      expect(search.message).to eq("Your search returned 1 result.")
     end
 
   end
