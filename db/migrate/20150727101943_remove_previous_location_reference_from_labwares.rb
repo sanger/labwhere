@@ -1,5 +1,5 @@
 class RemovePreviousLocationReferenceFromLabwares < ActiveRecord::Migration
   def change
-    remove_column :labwares, :previous_location_id, :integer
+    remove_reference :labwares, :previous_location, index: true, foreign_key: true
   end
 end
