@@ -22,7 +22,7 @@ RSpec.describe "Searches", type: :feature do
     fill_in "Term", with: "A sunny location"
     click_button "Search"
     expect(page).to have_content("Your search returned 1 result")
-    expect(page).to have_content(location.barcode)
+    expect(page).to have_content(location.name)
   end
 
   it "with a term that finds a location type should output the result" do
@@ -51,7 +51,6 @@ RSpec.describe "Searches", type: :feature do
     click_button "Search"
     expect(page).to have_content("Your search returned 2 results")
     expect(page).to have_content(location.name)
-    expect(page).to have_content(labware.barcode)
   end
 
   describe "drilling down", js: true do
@@ -64,10 +63,10 @@ RSpec.describe "Searches", type: :feature do
       click_button "Search"
       find(:data_id,location_type.id).find(:data_behavior, "drilldown").click
       location_type.locations.each do |location|
-        expect(page).to have_content(location.barcode)
+        expect(page).to have_content(location.name)
       end
       other_locations.each do |location|
-        expect(page).to_not have_content(location.barcode)
+        expect(page).to_not have_content(location.name)
       end
     end
 
@@ -78,7 +77,7 @@ RSpec.describe "Searches", type: :feature do
       click_button "Search"
       find(:data_id, location.id).find(:data_behavior, "drilldown").click
       location.children.each do |child|
-        expect(page).to have_content(child.barcode)
+        expect(page).to have_content(child.name)
       end
     end
 
