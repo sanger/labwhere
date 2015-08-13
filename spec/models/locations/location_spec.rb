@@ -54,11 +54,11 @@ RSpec.describe Location, type: :model do
 
   it "barcode should be sanitised" do
     location = create(:location, name: "location1")
-    expect(location.barcode).to eq("location1-#{location.id}")
+    expect(location.barcode).to eq("lw-location1-#{location.id}")
     location = create(:location, name: "location 1")
-    expect(location.barcode).to eq("location-1-#{location.id}")
+    expect(location.barcode).to eq("lw-location-1-#{location.id}")
     location = create(:location, name: "Location1")
-    expect(location.barcode).to eq("location1-#{location.id}")
+    expect(location.barcode).to eq("lw-location1-#{location.id}")
   end
 
   it "#as_json should return the correct attributes" do

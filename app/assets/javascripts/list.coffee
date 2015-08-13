@@ -23,7 +23,7 @@ class @List
     switch link.data("behavior")
       when 'drilldown' then @findData(link, parent)
       when 'audits' then @findAudits(link, parent)
-      when 'info' then @toggleInfo(link, parent)
+      when 'info' then @toggleInfo(link)
 
   findData: (link, item) =>
     behavior = @behaviors.find(item.data("type"))
@@ -66,8 +66,9 @@ class @List
     link.html @findImage(link).htmlOff
     html.appendTo(item)
 
-  toggleInfo: (link, parent) ->
-    box = parent.find("[data-output~=info-text]")
+  toggleInfo: (link) ->
+    parent = link.closest("[data-info~=true]")
+    box = parent.find("[data-output~=info-text]").first()
     rect   = link.position()
     box.css({top: rect.top - $(window).scrollTop(), left: rect.left+30})
     box.toggle()
