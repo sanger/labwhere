@@ -1,0 +1,23 @@
+1:
+  name: Site
+
+2:
+  name: Building
+
+3:
+  name: Room
+
+4:
+  name: Freezer -80C
+
+5:
+  name: Incubator 37C
+
+6:
+  name: Shelf
+
+7:
+  name: Box
+
+8:
+  name: Bin

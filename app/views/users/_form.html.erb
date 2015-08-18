@@ -1,0 +1,35 @@
+<%= form_for @user.becomes(User) do |f| %>
+  <fieldset>
+    <legend><%= header.to_s %></legend>
+    <ul>
+      <li>
+        <%= render "user_code", object: f %>
+      </li>
+      <li>
+        <%= f.label :login %>
+        <%= f.text_field :login %>
+      </li>
+      <li>
+        <%= f.label :swipe_card_id %>
+        <%= f.password_field :swipe_card_id %>
+      </li>
+       <li>
+        <%= f.label :barcode %>
+        <%= f.password_field :barcode %>
+      </li>
+      <li>
+        <%= f.label :team_id, "Team" %>
+        <%= f.select :team_id, options_from_collection_for_select(Team.all, :id, :name) %>
+      </li>
+      <li>
+        <%= f.label :type %>
+        <%= f.select :type, options_for_select(User.types, @user.type) %>
+      </li>
+        <li>
+        <%= f.label :status, "Active" %>
+        <%= f.check_box :status, {}, User.statuses.keys.first, User.statuses.keys.last %>
+      </li>
+    </ul>
+    <%= f.submit %>
+  </fieldset>
+<% end %>

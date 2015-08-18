@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+    body {
+      background-color: #EFEFEF;
+      color: #310006;
+      text-align: center;
+      font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+      margin: 0;
+    }
+
+    .body{
+      margin-top: 20px;
+    }
+
+    .errors{
+      width: 50%;
+      border: 1px solid #A5191E;
+      border-top: 3px solid #A5191E;
+      margin: 0 auto;
+    }
+
+    .errors h3{
+      font-size: 1.3em;
+      padding-bottom: 10px;
+      color: #A5191E;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="body">
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+</html>

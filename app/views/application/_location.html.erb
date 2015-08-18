@@ -1,0 +1,40 @@
+<article id="<%= dom_id(location) %>" class="drilldown" data-behavior="list" data-info="true" data-type="location" data-id="<%= location.id %>">
+    <div>
+      <%= drilldown_link %>
+    </div>
+    <div class="id">
+      <%= location.id %>.
+    </div>
+    <div class="description">
+      <%= location.name %>
+    </div>
+    <div>
+      <%= info_link %>
+    </div>
+    <div class="info" data-output="info-text" style="display:none;">
+      <%= link_to 'X', "#", data: { behavior: "close"}, title: "Close", class: "close" %>
+      <div>
+        <p>
+          Location type: <%= location.location_type.name %>
+        </p>
+        <p>
+          Parent: <%= location.parent.name %>
+        </p>
+        <p>
+          Container: <%= location.container %>
+        </p>
+        <p>
+          Status: <%= location.status %>
+        </p>
+      </div>
+    </div>
+    <div>
+      <%= link_to image_tag("print.png", alt: "Print Barcode", title: "Print Barcode"), new_location_print_path(location), remote: true %>
+    </div>
+    <div>
+      <%= link_to image_tag("edit.png", alt: "Edit", title: "Edit"), edit_location_path(location) %>
+    </div>
+     <div>
+      <%= audits_link %>
+    </div>
+</article>

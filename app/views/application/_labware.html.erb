@@ -1,0 +1,14 @@
+<article id="<%= dom_id(labware) %>" data-behavior="list" data-type="labware" class="drilldown" data-id="<%= labware.id %>" >
+    <div>
+      <%= drilldown_link %>
+    </div>
+    <div class="id">
+      <%= labware.id %>.
+    </div>
+    <div class="name">
+      <%= labware.barcode %>
+    </div>
+    <div>
+      (<%= labware.location.name %>: <%= labware.location.barcode %>)
+    </div>
+</article>

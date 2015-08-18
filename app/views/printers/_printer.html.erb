@@ -1,0 +1,14 @@
+<article id="<%= dom_id(printer) %>" class="drilldown" data-behavior="list" data-type="printer" data-id="<%= printer.id %>">
+    <div>
+      <%= drilldown_link %>
+    </div>
+     <div>
+      Name: <%= printer.name %>
+    </div>
+    <div>
+      Uuid: <%= printer.uuid %>
+    </div>
+     <div>
+      <%= link_to image_tag("edit.png", alt: "Edit", title: "Edit"), edit_printer_path(printer) %>
+    </div>
+</article>

@@ -1,0 +1,23 @@
+table{
+
+  width: 100%;
+  margin: 10px auto 0 auto;
+
+  caption{
+    display: none;
+  }
+
+  th{
+    text-align: left;
+  }
+
+  td{
+    padding: 5px;
+  }
+
+  tr{
+    &:first-child{
+      border-bottom: 1px dotted gray;
+    }
+  }
+}

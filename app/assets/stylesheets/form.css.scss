@@ -1,0 +1,124 @@
+@import "shared";
+
+fieldset{
+  border: none;
+
+  input[type=text], input[type=password], select, textarea{
+    width: 100%;
+    padding: 5px;
+    margin-top: 10px;
+  }
+
+  select {
+    width: 102%;
+  }
+
+  textarea{
+    height: 200px;
+  }
+
+  input[type=text], input[type=submit], input[type=password], textarea, input[type=search], select {
+    @include rounded-corners(5px);
+
+
+  }
+
+  input[type=text], input[type=password], textarea, select {
+    border-style: solid;
+    border-width: 1px;
+    border-color: $green-mid;
+
+    &:focus{
+      border-color: $green-light;
+      @include highlight(0px,0px,3px,$green-light);
+    }
+  }
+
+  input[type=search]{
+    border: none;
+  }
+
+  input[type=checkbox]{
+    width: 50px;
+    position: relative;
+    transform: scale(1.5);
+  }
+
+  input[type=submit]{
+    color: white;
+    border: none;
+    @include gradient($green-mid, $green-dark)
+  }
+
+  fieldset{
+    legend{
+      display: block;
+    }
+  }
+
+}
+
+.search{
+  position: absolute;
+  top: 10px;
+  right: 0px;
+  width: 300px;
+
+  legend, label{
+    display: none;
+  }
+
+  input[type=search]{
+    float: left;
+    padding: 5px;
+    height: 20px;
+    @include rounded-corners-split(5px, 0px, 5px, 0px);
+  }
+
+  button{
+    width: 40px;
+    height: 30px;
+    margin: 0 0 0 10px;
+    @include rounded-corners-split(0px, 5px, 0px, 5px);
+    position: relative;
+    right: 10px;
+    color: transparent;
+    color: white;
+    border: none;
+    @include gradient($green-mid, $green-dark)
+  }
+
+  img{
+    padding-top: 2px;
+    padding-left: 5px;
+  }
+
+}
+
+.body, .ui-dialog{
+  fieldset{
+    width: 60%;
+    margin: 0 auto;
+
+    legend{
+      font:{
+        size: 2em;
+        weight: bold;
+      }
+      margin-bottom: 20px;
+    }
+
+    input, select{
+      margin-bottom: 10px;
+    }
+
+    input[type=submit]{
+      width: 101%;
+      height: 40px;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+
+  }
+
+}

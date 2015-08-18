@@ -1,0 +1,12 @@
+<%= render "error_messages", target: @location %>
+<%= form_tag location_prints_path(@location), remote: true do %>
+  <fieldset>
+    <ul>
+      <li>
+        <%= label_tag :printer_id %>
+        <%= select_tag :printer_id, options_from_collection_for_select(Printer.all, :id, :name) %>
+      </li>
+    </ul>
+    <%= submit_tag "Print" %>
+  </fieldset>
+<% end %>

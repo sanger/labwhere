@@ -1,0 +1,15 @@
+<%= form_for @location_type do |f| %>
+  <fieldset>
+    <legend><%= header.to_s %></legend>
+    <ul>
+      <li>
+        <%= render "user_code", object: f %>
+      </li>
+      <li>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </li>
+    </ul>
+    <%= f.submit %>
+  </fieldset>
+<% end %>

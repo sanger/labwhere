@@ -1,0 +1,12 @@
+<%= form_tag request.url, method: :delete, remote: :true do %>
+  <fieldset>
+    <legend>Are you sure you want to delete this record?</legend>
+    <ul>
+      <li>
+        <%= label_tag :user_code, "User swipe card id/barcode" %> 
+        <%= password_field_tag :user_code %>
+      </li>
+    </ul>
+    <%= submit_tag "Delete" %>
+  </fieldset>
+<% end %>

@@ -1,0 +1,13 @@
+<section class="list">
+  <h3><%= @search.message %></h3>
+  <% @search.results.each do |heading, records| %>
+    <div data-behavior="<%= heading %>-list">
+      <h4><%= heading.to_s.titleize %></h4>
+      <% records.each do |record| %>
+        <%= render record.morph %>
+      <% end %>
+    </div>
+  <% end %>
+  <div id="delete-form"></div>
+  <div id="print-form"></div>
+</section>

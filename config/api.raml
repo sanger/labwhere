@@ -1,0 +1,535 @@
+#%RAML 0.8
+---
+title: LabWhere
+baseUri: http://localhost
+version: 1.0
+
+/scans:
+  post:
+    description: Scan Labware in or out of a Location
+    body:
+      application/json:
+        schema: |
+          {
+            "type" : "object",
+            "required": true,
+            "properties": {
+              "user_code": {
+                "description": "The swipe card id or barcode of the user creating the scan",
+                "required": true,
+                "type": "string"
+              },
+              "location_barcode":{
+                "description": "The barcode of the location for the labware to be scanned in to. For scanning out leave location barcode blank.",
+                "type": "string",
+                "required": false.
+
+              },
+              "labwares":{ 
+                "type" : "object",
+                "required": false,
+                "properties:" [
+                  {
+                    "barcode":{
+                      "description": "The labware barcode",
+                      "type": "string",
+                      "required": false
+                    },
+                    "position":{
+                      "description": "The coordinate position to put the labware barcode into",
+                      "type": "integer",
+                      "required": false
+                    },
+                     "row":{
+                      "description": "The row put the labware barcode into",
+                      "type": "integer",
+                      "required": false
+                    },
+                     "column":{
+                      "description": "The column put the labware barcode into",
+                      "type": "integer",
+                      "required": false
+                    }
+                  }
+                ]
+              },
+              "labware_barcodes": {
+                "description": "Any number of labware barcodes as a string separated by returns or carriage returns",
+                "type": "string",
+                "required": false,
+                "example": "barcode1\nbarcode2\nbarcode3\n"
+              }
+            }
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "message": "100 Labwares scanned in to location 1",
+                "created_at": "Thursday 4 June 08:54",
+                "updated_at": "Thursday 4 June 08:54"
+              }
+      422:
+        body:
+          application/json:
+            example: |
+              {
+                "errors":[
+                  "user does not exist",
+                  "user is not authorsed",
+                  "Location does not exist",
+                  "Location is not active",
+                  "Location is not a container",
+                  "Location does not have a parent"
+                ]
+              }      
+/locations:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "id": 1,
+                  "name": "Location 1",
+                  "barcode": "location-1-1",
+                  "parent": "null",
+                  "container": true,
+                  "status": "active",
+                  "location_type_id": 1,
+                  "labwares": "api/locations/location-1-1/labwares",
+                  "audits": "api/locations/location-1-1/audits",
+                  "children": "api/locations/location-1-1/children"
+
+                },
+                {
+                  "id": 2,
+                  "name": "Location 2",
+                  "barcode": "location-2-2",
+                  "parent": "api/locations/location-1-1",
+                  "container": true,
+                  "status": "active",
+                  "location_type_id": 2,
+                  "audits": "api/locations/location-2-2/audits",
+                  "coordinates" : [
+                    {
+                      "position" : "1",
+                      "row" : "1",
+                      "column" : "1",
+                      "labware" : "Empty",
+                      "location" : "location-2-2"
+                    }
+                  ]
+                }
+              ]
+  post:
+    body:
+      application/json:
+        schema: |
+          {
+            "type" : "object",
+            "required": true,
+            "properties": {
+              "user_code": {
+                "description": "The swipe card id or barcode of the user creating the scan",
+                "required": true,
+                "type": "string"
+              },
+              "name": {
+                "description": "Location name",
+                "required": true,
+                "type": "string"
+              },
+              "container": {
+                "description": "Can the location store stuff",
+                "required": false,
+                "type": "boolean"
+              },
+              "status": {
+                "description": "active or inactive",
+                "required": false,
+                "type": "boolean"
+              },
+              "parent_id": {
+                "description": "id of the parent location",
+                "required": false,
+                "type": "integer"
+              },
+              "location_type_id": {
+                "description": "id of the location type",
+                "required": true,
+                "type": "integer"
+              },
+              "parent_barcode": {
+                "description": "barcode of the parent location",
+                "required": false,
+                "type": "string"
+              },
+              "rows": {
+                "description": "Number of rows in the location",
+                "required": false,
+                "type": "integer"
+              },
+              "columns": {
+                "description": "Number of columns in the location",
+                "required": false,
+                "type": "integer"
+              }          
+            }
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 1
+                "name": "Location 1",
+                "barcode": "location-1-1",
+                "parent": "Empty",
+                "container": true,
+                "status": "active",
+                "location_type_id": 1,
+                "labwares": "api/locations/location-1-1/labwares",
+                "audits": "api/locations/location-1-1/audits",
+                "children": "api/locations/location-1-1/children"
+              }
+      422:
+        body:
+          application/json:
+            example: |
+              {
+                "errors":[
+                  "user does not exist",
+                  "user is not authorsed",
+                  "parent does not exist",
+                  "location type does not exist"
+                ]
+              }
+  /{barcode}:
+    get:
+      description: Returns a location
+    patch:
+      description: Updates a location
+    put:
+      description: Updates a location
+    /labwares:
+      get:
+        description: Returns labwares for a specified location
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                    {
+                      "barcode": "labware1",
+                      "audits": "api/labwares/labware1/audits"
+                    },
+                    {
+                      "barcode": "labware2",
+                      "audits": "api/labwares/labware2/audits"
+                    }
+
+                  ]
+                 
+    /children:
+      get:
+        description: Returns locations nested within location
+    /coordinates:
+      /{available}:
+        get:
+          description: Returns any locations which have enough free space signified by available, which represents the number of empty coordinates that are needed. This is a recursive action. It will search through all of the children for that location plus all of its children's children. If there are not enough free spaces anywhere then an empty json object is returned.
+    /audits:
+      get:
+        description: Returns audits for a location
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                    {
+                      "user": "user1",
+                      "action": "create",
+                      "auditable_type": "Location",
+                      "record_data":{
+
+                      },
+                      "created_at":"Friday 30 May 2015 10:16",
+                      "updated_at":"Friday 30 May 2015 10:16"
+                    },
+                    {
+                      "user": "user2",
+                      "action": "update",
+                      "auditable_type": "Location",
+                      "record_data":{
+
+                      },
+                      "created_at":"Friday 05 May 2015 10:16",
+                      "updated_at":"Friday 05 May 2015 10:16"
+                    }
+                  ]
+/location_types:
+  get:
+    description: Returns all location types
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 1,
+                "name": "Location Type 1",
+                "locations": "api/location_types/1/locations",
+                "audits": "api/location_types/1/audits",
+              }
+  post:
+    description: Creates a location type
+    body:
+      application/json:
+        schema: |
+          {
+            "type" : "object",
+            "required": true,
+            "properties": {
+              "user_code": {
+                "description": "The swipe card id or barcode of the user creating the scan",
+                "required": true,
+                "type": "string"
+              },
+              "name": {
+                "description": "location type name",
+                "required": true,
+                "type": "string"
+              }
+            }
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 1,
+                "name": "Location Type 1",
+                "locations": "api/location_types/1/locations",
+                "audits": "api/location_types/1/audits",
+              }
+      422:
+        body:
+          application/json:
+            example: |
+              {
+                "errors":[
+                  "user does not exist",
+                  "user is not authorsed",
+                  "Name has already been taken"
+                ]
+              }
+  /{id}:
+    get:
+      description: Returns a location type
+    patch:
+      description: Updates a location type
+    put:
+      description: Updates a location type
+    /locations:
+      get:
+        description: Returns all of the locations for a particular location type
+    /audits:
+      get:
+        description: Returns all of the audits for a particular location type
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                    {
+                      "user": "user1",
+                      "action": "create",
+                      "auditable_type": "LocationType",
+                      "record_data":{
+
+                      },
+                      "created_at":"Friday 30 May 2015 10:16",
+                      "updated_at":"Friday 30 May 2015 10:16"
+                    },
+                    {
+                      "user": "user2",
+                      "action": "update",
+                      "auditable_type": "LocationType",
+                      "record_data":{
+
+                      },
+                      "created_at":"Friday 05 May 2015 10:16",
+                      "updated_at":"Friday 05 May 2015 10:16"
+                    }
+                  ]
+/labwares:
+  /searches:
+      post:
+        description: Finds all of the labwares for the search term
+        body:
+          application/json:
+            schema: |
+              {
+                "type" : "object",
+                "required": true,
+                "properties": {
+                  "barcodes" : {
+                    "description" : "A list of barcodes",
+                    "required" : true,
+                    "type" : "array"
+                  }
+                }
+              }
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    [
+                      {
+                        "barcode": "labware1",
+                        "coordinate": "1",
+                        "history": "api/labwares/labware1/histories",
+                        "location":{
+                          "id": 1
+                          "name": "Location 1",
+                          "barcode": "location-1-1",
+                          "parent": "null",
+                          "container": true,
+                          "status": "active",
+                          "location_type_id": 1,
+                          "labwares": "api/locations/location-1-1/labwares",
+                          "audits": "api/locations/location-1-1/audits",
+                          "children": "api/locations/location-1-1/children"
+                        }
+                      },
+                      {
+                        "barcode": "labware2",
+                        "coordinate": "1",
+                        "history": "api/labwares/labware2/histories",
+                        "location":{
+                          "id": 1,
+                          "name": "Location 1",
+                          "barcode": "location-1-1",
+                          "parent": "null",
+                          "container": true,
+                          "status": "active",
+                          "location_type_id": 1,
+                          "labwares": "api/locations/location-1-1/labwares",
+                          "audits": "api/locations/location-1-1/audits",
+                          "children": "api/locations/location-1-1/children"
+                        }
+                      }
+                    ]
+                  }
+  /{barcode}:
+    get:
+      description: Returns a labware
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "barcode": "labware1",
+                  "coordinate": "1",
+                  "history": "api/labwares/labware1/histories",
+                  "location":{
+                    "id": 1
+                    "name": "Location 1",
+                    "barcode": "location-1-1",
+                    "parent": "null",
+                    "container": true,
+                    "status": "active",
+                    "location_type_id": 1,
+                    "labwares": "api/locations/location-1-1/labwares",
+                    "audits": "api/locations/location-1-1/audits",
+                    "children": api/locations/location-1-1/children
+                  }
+                }
+    /histories:
+      get:
+        description: Returns all of the histories for a labware
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                    {
+                      "user": "user1",
+                      "location": "location1",
+                      "created_at": "Friday 05 June 08:54"
+                      "updated_at": "Friday 05 June 08:54"
+                    },
+                    {
+                      "user": "user2",
+                      "location": "location2",
+                      "created_at": "Friday 30 May 08:54"
+                      "updated_at": "Friday 30 May 08:54"
+                    }
+                  ]
+    
+/searches:
+  post:
+    description: Finds all of the locations, location types and labwares which match the search term
+    body:
+      application/json:
+        schema: |
+          {
+            "type" : "object",
+            "required": true,
+            "properties": {
+              "term": {
+                "description": "Search term",
+                "required": true
+                "type": "string"
+              }
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "count": 3,
+                "results":{
+                  "locations":[
+                    {
+                      "name": "Location 1",
+                      "barcode": "location-1-1",
+                      "parent": "Empty",
+                      "container": true,
+                      "status": "active",
+                      "location_type_id": 1,
+                      "labwares": "api/locations/location-1-1/labwares",
+                      "audits": "api/locations/location-1-1/audits",
+                      "children": api/locations/location-1-1/children
+                    }
+                  ],
+                  "location_types":[
+                    {
+                      "id": 1,
+                      "name": "Location Type 1",
+                      "locations": "api/location_types/1/locations",
+                      "audits": "api/location_types/1/audits",
+                    }
+                  ],
+                  "labwares":[
+                    {
+                      "barcode": "labware1",
+                      "history": "api/labwares/labware1/histories"
+                    }
+                  ]
+                }
+              }

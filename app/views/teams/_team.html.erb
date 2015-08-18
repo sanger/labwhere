@@ -1,0 +1,14 @@
+<article id="<%= dom_id(team) %>" class="drilldown" data-behavior="list" data-type="team" data-id="<%= team.id %>">
+    <div>
+      <%= drilldown_link %>
+    </div>
+    <div>
+      <%= team.number %>.
+    </div>
+    <div>
+      <%= team.name %>
+    </div>
+     <div>
+      <%= link_to image_tag("edit.png", alt: "Edit", title: "Edit"), edit_team_path(team) %>
+    </div>
+</article>

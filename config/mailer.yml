@@ -1,0 +1,7 @@
+test:
+    smtp:
+        address: smtp.tools.example.com
+        port: 587
+        domain: test.labwhere
+        sender: notifier@example.com
+        recipient: exceptions@example.com

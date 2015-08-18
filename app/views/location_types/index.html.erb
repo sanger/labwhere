@@ -1,0 +1,13 @@
+
+<section class="<%= header.to_css_class %> list">
+    <h1>
+      <%= header.to_s %>
+    </h1>
+    <div>
+      <%= link_to "Add new location type", new_location_type_path %>
+    </div>
+    <div class="collection" data-behavior="location_types-list">
+      <%= render location_types %>
+    </div>
+    <div id="delete-form"></div>
+</section>
