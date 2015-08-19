@@ -1,13 +1,18 @@
+ # Null object for a coordinate
  class NullCoordinate
-    def name
-      "null"
-    end
 
-    def location
-      Location.unknown
-    end
-
-    def empty?
-      true
-    end
+  # Always set the name to null
+  def name
+    "null"
   end
+
+  # Set the location to location unknown
+  def location
+    Location.unknown
+  end
+
+  # A null location will always be empty
+  def empty?
+    true
+  end
+end

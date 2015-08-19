@@ -33,7 +33,7 @@ class UnorderedLocation < Location
     end
   end
 
-   ##
+  ##
   # Ensure that the parentage attribute stays current.
   # If the parent changes then we need to ensure that all of its childrens parentage is updated.
   def cascade_parentage

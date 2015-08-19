@@ -11,24 +11,24 @@ RSpec.describe AvailableCoordinates, type: :model do
   end
 
   it "should return the location if enough coordinates are available" do
-    expect(AvailableCoordinates.new(Coordinate.all, 10).result).to eq(location)
+    expect(AvailableCoordinates.new(Coordinate.all, 10).find).to eq(location)
   end
 
   it "should return the location if some coordinates are available anywhere" do
     Coordinate.find_by_position(position: 2).fill(create(:labware))
-    expect(AvailableCoordinates.new(Coordinate.all, 10).result).to eq(location)
+    expect(AvailableCoordinates.new(Coordinate.all, 10).find).to eq(location)
   
   end
 
   it "should still return the location whatever length required" do
     Coordinate.find_by_position(position: 2).fill(create(:labware))
     Coordinate.find_by_position(position: 8).fill(create(:labware))
-    expect(AvailableCoordinates.new(Coordinate.all, 8).result).to eq(location)
+    expect(AvailableCoordinates.find(Coordinate.all, 8)).to eq(location)
   end
 
   it "should return an empty object if there aren't enough free spaces availables" do
     Coordinate.find_by_position(position: 2).fill(create(:labware))
     Coordinate.find_by_position(position: 8).fill(create(:labware))
-    expect(AvailableCoordinates.new(Coordinate.all, 10).result).to be_nil
+    expect(AvailableCoordinates.find(Coordinate.all, 10)).to be_nil
   end
 end

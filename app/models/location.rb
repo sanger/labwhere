@@ -18,6 +18,7 @@ class Location < ActiveRecord::Base
   scope :without, ->(location) { active.where.not(id: location.id) }
   scope :without_unknown, ->{ where.not(id: Location.unknown.id) }
   scope :ordered, -> { where(type: "OrderedLocation")}
+  scope :unordered, -> { where(type: "UnorderedLocation")}
 
   before_save :set_parentage
   after_create :generate_barcode
@@ -142,11 +143,10 @@ class Location < ActiveRecord::Base
   def available_coordinates(n)
     [].tap do |result|
       if ordered?
-        result << AvailableCoordinates.new(self.coordinates, n).result
+        result << AvailableCoordinates.find(self.coordinates, n)
       else
-        children.each do |child|
-          locations = child.available_coordinates(n)
-          result << locations unless locations.empty?
+        children.each do |child| 
+          result << child.available_coordinates(n)
         end
       end
     end.flatten.compact

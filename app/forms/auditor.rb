@@ -85,6 +85,7 @@ module Auditor
     action == "destroy"
   end
 
+  # Checks whether this is passed from the create action.
   def creating?
     action == "create"
   end

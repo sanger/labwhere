@@ -1,3 +1,6 @@
+#
+# A coordinate is a defined position in a location which can hold a piece of labware.
+# A location will usually have a fixed set of coordinates.
 class Coordinate < ActiveRecord::Base
   belongs_to :location
   has_one :labware, autosave: true
@@ -12,18 +15,22 @@ class Coordinate < ActiveRecord::Base
     find_by(attributes)
   end
 
+  # Check if the coordinate has a piece of labware
   def filled?
     !empty?
   end
 
+  # Check if the coordinate can be filled with a peice of labware
   def empty?
     labware.empty?
   end
 
+  # If the labware is empty return a null labware object
   def labware
     super || NullLabware.new
   end
 
+  # Fill the coordinate with a piece of labware
   def fill(l)
     update_attribute(:labware, l)
     l

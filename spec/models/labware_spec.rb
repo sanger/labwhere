@@ -52,7 +52,7 @@ RSpec.describe Labware, type: :model do
     expect(labware_3.location).to be_unknown
   end
 
-   it "#as_json should have the correct attributes" do
+  it "#as_json should have the correct attributes" do
     labware = create(:labware)
     json = labware.as_json
     expect(json["created_at"]).to eq(labware.created_at.to_s(:uk))
