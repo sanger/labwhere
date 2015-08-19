@@ -70,18 +70,23 @@ class Location < ActiveRecord::Base
     false
   end
 
+  # A location will only need coordinates if it has rows and columns
   def coordinateable?
     rows > 0 && columns > 0
   end
 
+  # Is it an unordered location?
   def unordered?
     type ==  "UnorderedLocation"
   end
 
+  # Is it an ordered location?
   def ordered?
     type == "OrderedLocation"
   end
 
+  # This will transform the location into the correct type of location based on whether it
+  # has coordinates.
   def transform
     if coordinateable?
       self.type = "OrderedLocation"
@@ -125,6 +130,9 @@ class Location < ActiveRecord::Base
     end
   end
 
+  # Add a piece of Labware to the location.
+  # Find or initialize it first.
+  # Returns the labware and a copy of it before the location is updated
   def add_labware(barcode)
     labware = Labware.find_or_initialize_by(barcode: barcode)
     labware_dup = labware.dup
@@ -132,6 +140,10 @@ class Location < ActiveRecord::Base
     [labware, labware_dup]
   end
 
+  # Add several pieces of Labware only if the barcodes passed are a string
+  # Split the barcodes by returns and add each one.
+  # In some cases we need to do stuff with each labware before and after it has changed.
+  # in which case we allow a block to be executed on each piece of labware that is added.
   def add_labwares(barcodes)
     return unless barcodes.instance_of?(String)
     barcodes.split("\n").each do |barcode| 
@@ -140,6 +152,8 @@ class Location < ActiveRecord::Base
     end
   end
 
+  # Find any locations within the location which have enough contiguous available coordinates
+  # signified by n.
   def available_coordinates(n)
     [].tap do |result|
       if ordered?
