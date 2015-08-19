@@ -188,6 +188,14 @@ RSpec.describe Location, type: :model do
       expect(locations.length).to eq(1)
       expect(locations).to include(child_location_5)
     end
+
+  end
+
+   it "#unordered should return all of the unordered locations" do
+    locations = create_list(:location, 3)
+    ordered_locations = create_list(:ordered_location, 3)
+    unordered_locations = create_list(:unordered_location, 3)
+    expect(Location.unordered.count).to eq(3)
   end
   
 end

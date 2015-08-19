@@ -1,3 +1,5 @@
+##
+# An unorderd location is one which can contain locations or labware e.g. shelf
 class UnorderedLocation < Location
 
   has_many :children, class_name: "Location", foreign_key: "parent_id"
@@ -33,7 +35,7 @@ class UnorderedLocation < Location
     end
   end
 
-   ##
+  ##
   # Ensure that the parentage attribute stays current.
   # If the parent changes then we need to ensure that all of its childrens parentage is updated.
   def cascade_parentage

@@ -151,7 +151,7 @@ RSpec.describe "Locations", type: :feature do
   end
 
   it "Allows a user to nest locations" do
-    location_parent = create(:location)
+    location_parent = create(:unordered_location)
     location_child = create(:location)
     visit edit_location_path(location_child)
     fill_in "User swipe card id/barcode", with: user.swipe_card_id

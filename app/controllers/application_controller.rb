@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :header, :current_year
 
+  # Ensure that the exception notifier is working. It will send an email to the standard email address.
   def test_exception_notifier
     raise 'This is a test. This is only a test.'
   end

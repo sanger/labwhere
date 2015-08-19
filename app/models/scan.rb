@@ -1,6 +1,11 @@
 ##
 # Scanning labware in and out of a location
-# link between labware and locations and users.
+# A scan is a throwaway object i.e. it has no use once it has been done.
+# A scan will have any number of Labwares attached but these are not permanently linked.
+# We know we are scanning in or out be whether there is a location.
+# We need to show a message to the user showing how many pieces of labwares were scanned in or out
+# of the location. For this purpose we create a temporary list of all the labwares
+# so we can determine which locations they have come from and how many there are.
 class Scan < ActiveRecord::Base
 
   include AssertLocation
@@ -12,10 +17,13 @@ class Scan < ActiveRecord::Base
 
   before_save :set_status, :create_message
 
+  # Add a labware to a temporary object
   def add_labware(labware)
     labwares.add(labware) if labware
   end
 
+  # If we are scanning in tell the user how many labwares have been scanned in to the scan location.
+  # If we are scanning out tell the user how many labwares have been scanned out of their previous locations.
   def create_message
     self.message = "#{labwares.count} labwares scanned #{self.status} " << if in?
       "to #{location.name}"

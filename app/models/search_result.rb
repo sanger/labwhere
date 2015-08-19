@@ -10,18 +10,23 @@ class SearchResult
   ##
   # An array of all of the objects that are returned by the search.
   attr_reader :results
+
+  # enforces the limit. If the adjusted count is the same as limit no more results will be output.
   attr_reader :adjusted_count
 
   ##
   # The number of results returned by the search
   attr_accessor :count
+
+  # The number of results the search is limited to
   attr_accessor :limit
 
   delegate [], :empty?, to: :results
 
   ##
   # If the results are passed will add them to SearchResult otherwise create an empty result.
-  # Reset the count
+  # Reset the count.
+  # Yields self with a block to allow stuff to be added in the initializer.
   def initialize(count: 0, limit: 0)
     @adjusted_count = 0
     @results = {}
@@ -57,6 +62,9 @@ class SearchResult
     end
   end
 
+  ##
+  # If the number of results is under the limit then output the number of results.
+  # If the number of results exceeds the limit state the limit and the actual number of results.
   def message
     return "Your search returned #{pluralize(count, "result")}." if count <= limit
     "Your search returned #{pluralize(count, "result")}. It has been limited to #{pluralize(limit, "result")}. Please refine your search."

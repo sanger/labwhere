@@ -71,6 +71,8 @@ module Searchable
 
       ##
       # Define which models the Orchestrator will search through.
+      # Also allows for a limit option to limit the search to a number of results.
+      # The default for this is 1000.
       def searches_in(*models)
         options = models.extract_options!
 
@@ -89,6 +91,8 @@ module Searchable
     ##
     # Create a results object.
     # For each model which has a result add a key, value pair.
+    # Set the limit as defined by searches_in.
+    # Will also add the true count of the results by adding the results of each search.
     def results
 
       count = 0
