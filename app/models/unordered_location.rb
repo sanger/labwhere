@@ -35,6 +35,13 @@ class UnorderedLocation < Location
     end
   end
 
+  def available_coordinates(n)
+    children.inject([]) do |result, child|
+      result << child.available_coordinates(n)
+      result
+    end.flatten.compact
+  end
+
   ##
   # Ensure that the parentage attribute stays current.
   # If the parent changes then we need to ensure that all of its childrens parentage is updated.

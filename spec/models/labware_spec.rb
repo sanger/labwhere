@@ -65,4 +65,14 @@ RSpec.describe Labware, type: :model do
 
   end
 
+  it "#flush_coordinate should remove coordinate" do
+    coordinate = create(:coordinate)
+    labware = create(:labware)
+    coordinate.fill(labware)
+    labware.flush_coordinate
+    labware.save
+    expect(labware.coordinate).to be_empty
+    expect(coordinate.reload).to be_empty
+  end
+
 end

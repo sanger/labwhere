@@ -38,6 +38,10 @@ class Labware < ActiveRecord::Base
     false
   end
 
+  def flush_coordinate
+    assign_attributes(coordinate: nil)
+  end
+
   ##
   # Useful for creating audit records. There are certain attributes which are not needed.
   def as_json(options = {})

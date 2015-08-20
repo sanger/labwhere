@@ -110,19 +110,32 @@ RSpec.describe Location, type: :model do
     expect(location_2).to be_ordered
   end
 
-  it "unknown location should just create labwares and location should be unknown" do
-    location = Location.unknown
-    labwares = create_list(:labware, 3)
-    expect(location.add_labwares(labwares.join_barcodes).count).to eq(3)
-    expect(location.labwares.count).to eq(3)
-  end
+  context "#add_labwares" do
 
-  it "#add_labwares should remove any dodgy control character from barcodes" do
-    location = create(:location_with_parent)
-    labwares = create_list(:labware, 3)
-    location.add_labwares(labwares.join_barcodes("\n\r"))
-    expect(location.labwares.count).to eq(3)
-    expect(location.labwares.all? {|labware| !labware.barcode.include?("\r") }).to be_truthy
+    let!(:labwares) { create_list(:labware, 3) }
+
+    it "should just create labwares and location should be unknown" do
+      location = Location.unknown
+      expect(location.add_labwares(labwares.join_barcodes).count).to eq(3)
+      expect(location.labwares.count).to eq(3)
+    end
+
+    it "should remove any dodgy control character from barcodes" do
+      location = create(:location_with_parent)
+      location.add_labwares(labwares.join_barcodes("\n\r"))
+      expect(location.labwares.count).to eq(3)
+      expect(location.labwares.all? {|labware| !labware.barcode.include?("\r") }).to be_truthy
+    end
+
+    it "should remove labwares from any existing coordinates" do
+      location = Location.unknown
+      coordinate = create(:coordinate)
+      coordinate.fill(labwares.first)
+      location.add_labwares(labwares.join_barcodes)
+      expect(location.labwares.count).to eq(3)
+      expect(coordinate.reload).to be_empty
+    end
+
   end
 
   it "#ordered should return a list of locations which are ordered" do
@@ -135,63 +148,12 @@ RSpec.describe Location, type: :model do
     expect(location.children.ordered.count).to eq(3)
   end
 
-  context "available coordinates" do
-
-    it "if location is ordered should return location if location is available" do
-      location = create(:ordered_location_with_parent)
-      locations = location.available_coordinates(10)
-      expect(locations.length).to eq(1)
-      expect(locations).to include(location)
-
-      location = create(:ordered_location_with_labwares)
-      expect(location.available_coordinates(10)).to be_empty
-    end
-
-    it "if location is unordered should return available locations for the children of that location" do
-      location = create(:unordered_location)
-      child_location = create(:ordered_location, parent: location)
-      locations = location.available_coordinates(10)
-      expect(locations.length).to eq(1)
-      expect(locations).to include(child_location)
-
-      location_2 = create(:unordered_location)
-      child_location_2 = create(:ordered_location_with_labwares, parent: location_2)
-      expect(location_2.available_coordinates(10)).to be_empty
-    end
-
-    it "should return the location of the first child which are free" do
-      location = create(:unordered_location)
-      child_location_1 = create(:ordered_location_with_labwares, parent: location)
-      child_location_2 = create(:ordered_location, parent: location)
-      locations = location.available_coordinates(10)
-      expect(locations.length).to eq(1)
-      expect(locations).to include(child_location_2)
-    end
-
-    it "should return the locations anywhere in the location tree" do
-      location = create(:unordered_location)
-      child_location_1 = create(:unordered_location, parent: location)
-      child_location_2 = create(:ordered_location, parent: location)
-      child_location_3 = create(:ordered_location, parent: child_location_1)
-
-      locations = location.available_coordinates(10)
-      expect(locations.length).to eq(2)
-      expect(locations).to include(child_location_2)
-      expect(locations).to include(child_location_3)
-
-      location_2 = create(:unordered_location)
-      child_location_4 = create(:unordered_location, parent: location_2)
-      child_location_5 = create(:ordered_location, parent: location_2)
-      child_location_6 = create(:ordered_location_with_labwares, parent: child_location_1)
-
-      locations = location_2.available_coordinates(10)
-      expect(locations.length).to eq(1)
-      expect(locations).to include(child_location_5)
-    end
-
+  it "#available_coordinates should be emtpy" do
+    location = create(:location)
+    expect(location.available_coordinates(10)).to be_empty
   end
 
-   it "#unordered should return all of the unordered locations" do
+  it "#unordered should return all of the unordered locations" do
     locations = create_list(:location, 3)
     ordered_locations = create_list(:ordered_location, 3)
     unordered_locations = create_list(:unordered_location, 3)

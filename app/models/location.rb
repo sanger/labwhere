@@ -32,6 +32,10 @@ class Location < ActiveRecord::Base
     super || NullLocation.new
   end
 
+  ##
+  # Follows the Null object pattern.
+  # We only want to add a Null Location Type if the record is persisted
+  # otherwise we get ActiveRecord errors and it will bypass validation.
   def location_type
     if new_record?
       super
@@ -136,6 +140,7 @@ class Location < ActiveRecord::Base
   def add_labware(barcode)
     labware = Labware.find_or_initialize_by(barcode: barcode)
     labware_dup = labware.dup
+    labware.flush_coordinate
     labwares << labware
     [labware, labware_dup]
   end
@@ -155,15 +160,7 @@ class Location < ActiveRecord::Base
   # Find any locations within the location which have enough contiguous available coordinates
   # signified by n.
   def available_coordinates(n)
-    [].tap do |result|
-      if ordered?
-        result << AvailableCoordinates.find(self.coordinates, n)
-      else
-        children.each do |child| 
-          result << child.available_coordinates(n)
-        end
-      end
-    end.flatten.compact
+    []
   end
 
 private

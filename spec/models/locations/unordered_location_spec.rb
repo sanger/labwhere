@@ -38,23 +38,72 @@ RSpec.describe UnorderedLocation, type: :model do
     expect(location.labwares.last).to_not be_new_record
   end
 
-  it "#add_labwares should add multiple labwares" do
-    location = create(:unordered_location_with_parent)
-    location.add_labwares(create_list(:labware, 3).join_barcodes)
-    expect(location.labwares.count).to eq(3)
+  context "#add_labwares" do
+
+    let!(:location) { create(:unordered_location_with_parent) }
+
+    it "should add multiple labwares" do
+      location.add_labwares(create_list(:labware, 3).join_barcodes)
+      expect(location.labwares.count).to eq(3)
+    end
+
+    it "should fail silently if somebody is a bit free and easy with their arguments" do
+      location.add_labwares(create_list(:labware, 3))
+      expect(location.labwares).to be_empty
+    end
+    
   end
 
-  it "#add_labwares should fail silently if somebody is a bit free and easy with their arguments" do
-    location = create(:unordered_location_with_parent)
-    location.add_labwares(create_list(:labware, 3))
-    expect(location.labwares).to be_empty
-  end
-
-   it "allows nesting of locations" do
+  it "allows nesting of locations" do
     parent_location = create(:unordered_location, name: "A parent location")
     child_location = create(:unordered_location, name: "A child location", parent: parent_location)
     expect(child_location.parent).to eq(parent_location)
     expect(parent_location.children.first).to eq(child_location)
+  end
+
+  context "#available_coordinates" do
+
+    it "should return available locations for the children of that location" do
+      location = create(:unordered_location)
+      child_location = create(:ordered_location, parent: location)
+      locations = location.available_coordinates(10)
+      expect(locations.length).to eq(1)
+      expect(locations).to include(child_location)
+
+      location_2 = create(:unordered_location)
+      child_location_2 = create(:ordered_location_with_labwares, parent: location_2)
+      expect(location_2.available_coordinates(10)).to be_empty
+    end
+
+    it "should return the location of the first child which are free" do
+      location = create(:unordered_location)
+      child_location_1 = create(:ordered_location_with_labwares, parent: location)
+      child_location_2 = create(:ordered_location, parent: location)
+      locations = location.available_coordinates(10)
+      expect(locations.length).to eq(1)
+      expect(locations).to include(child_location_2)
+    end
+
+    it "should return the locations anywhere in the location tree" do
+      location = create(:unordered_location)
+      child_location_1 = create(:unordered_location, parent: location)
+      child_location_2 = create(:ordered_location, parent: location)
+      child_location_3 = create(:ordered_location, parent: child_location_1)
+
+      locations = location.available_coordinates(10)
+      expect(locations.length).to eq(2)
+      expect(locations).to include(child_location_2)
+      expect(locations).to include(child_location_3)
+
+      location_2 = create(:unordered_location)
+      child_location_4 = create(:unordered_location, parent: location_2)
+      child_location_5 = create(:ordered_location, parent: location_2)
+      child_location_6 = create(:ordered_location_with_labwares, parent: child_location_1)
+
+      locations = location_2.available_coordinates(10)
+      expect(locations.length).to eq(1)
+      expect(locations).to include(child_location_5)
+    end
   end
 
 end

@@ -15,4 +15,7 @@
   def empty?
     true
   end
+
+  def flush
+  end
 end
