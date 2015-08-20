@@ -23,12 +23,12 @@ RSpec.describe Labware, type: :model do
     labware = create(:labware, location: create(:location_with_parent))
     labware.destroy
     expect(Labware.deleted.count).to eq(1)
-    expect(labware.reload.location.unknown?).to be_truthy
+    expect(labware.reload.location).to be_empty
   end
 
-  it "is created with no location should set location to be unknown" do
+  it "is created with no location should set location to be empty" do
     labware = create(:labware)
-    expect(labware.location.unknown?).to be_truthy
+    expect(labware.location).to be_empty
   end
 
   it "#find_by_code should find labware by barcode" do
@@ -49,7 +49,7 @@ RSpec.describe Labware, type: :model do
     labware_2 = create(:labware, coordinate: coordinate)
     expect(labware_2.location).to eq(coordinate.location)
     labware_3 = create(:labware)
-    expect(labware_3.location).to be_unknown
+    expect(labware_3.location).to be_empty
   end
 
   it "#as_json should have the correct attributes" do
@@ -75,4 +75,18 @@ RSpec.describe Labware, type: :model do
     expect(coordinate.reload).to be_empty
   end
 
+  it "#flush_location should remove location" do
+    labware = create(:labware, location: create(:location_with_parent))
+    labware.flush_location
+    labware.save
+    expect(labware.location).to be_empty
+  end
+
+  it "#flush should remove location and coordinate" do
+    labware = create(:labware, location: create(:location_with_parent), coordinate: create(:coordinate))
+    labware.flush
+    labware.save
+    expect(labware.location).to be_empty
+    expect(labware.coordinate).to be_empty
+  end
 end

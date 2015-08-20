@@ -18,6 +18,7 @@ class OrderedLocation < Location
     if coordinate = coordinates.find_by_position(attributes.slice(:position, :row, :column))
       labware = Labware.find_or_initialize_by(attributes.slice(:barcode))
       labware_dup = labware.dup
+      labware.flush
       coordinate.fill(labware)
     end
     [labware, labware_dup]

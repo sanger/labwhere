@@ -8,7 +8,7 @@
 
   # Set the location to location unknown
   def location
-    Location.unknown
+    NullLocation.new
   end
 
   # A null location will always be empty

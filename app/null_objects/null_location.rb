@@ -15,4 +15,6 @@ class NullLocation
 
   # will always be empty
   def empty?; true end
+
+  def unknown?; false end
 end

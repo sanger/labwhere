@@ -52,6 +52,13 @@ RSpec.describe OrderedLocation, type: :model do
       location.add_labware(barcode: labware_1.barcode, row: 1, column: 1)
       expect(coordinate.reload).to be_empty
     end
+
+    it "should flush out any existing locations" do
+      labware = create(:labware, location: create(:location_with_parent))
+      location.add_labware(barcode: labware.barcode, row: 1, column: 1)
+      expect(labware.reload.location).to eq(location)
+    end
+
   end
 
   context "#add_labwares" do
