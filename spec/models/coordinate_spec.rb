@@ -63,5 +63,5 @@ RSpec.describe Coordinate, type: :model do
     expect(Coordinate.ordered.first.position).to eq(1)
     expect(Coordinate.ordered.last.position).to eq(4)
   end
- 
+
 end

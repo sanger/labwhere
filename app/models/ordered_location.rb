@@ -1,6 +1,7 @@
 ##
 # An Ordered Location is one which has a number of coordinates which can contain pieces of labware
 # at defined positions e.g. box.
+# Logically it can't have locations as children.
 class OrderedLocation < Location
   has_many :coordinates, foreign_key: "location_id"
   has_many :labwares, through: :coordinates
@@ -17,6 +18,7 @@ class OrderedLocation < Location
     if coordinate = coordinates.find_by_position(attributes.slice(:position, :row, :column))
       labware = Labware.find_or_initialize_by(attributes.slice(:barcode))
       labware_dup = labware.dup
+      labware.flush
       coordinate.fill(labware)
     end
     [labware, labware_dup]
@@ -32,6 +34,10 @@ class OrderedLocation < Location
         yield(after, before) if block_given?
       end
     end
+  end
+
+  def available_coordinates(n)
+    [AvailableCoordinates.find(self.coordinates, n)].compact
   end
 
 private

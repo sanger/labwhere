@@ -5,14 +5,13 @@ class Labware < ActiveRecord::Base
 
   include SoftDeletable
   include Searchable::Client
-  include AssertLocation
   include Auditable
 
   belongs_to :location
   belongs_to :coordinate
 
   validates :barcode, presence: true, uniqueness: true
-  validates :location, nested: true, unless: Proc.new { |l| l.location.nil? || l.location.unknown? }
+  validates :location, nested: true, unless: Proc.new { |l| l.location.nil? || l.location.unknown? || l.location.empty? }
 
   removable_associations :location
 
@@ -36,6 +35,19 @@ class Labware < ActiveRecord::Base
 
   def empty?
     false
+  end
+
+  def flush_coordinate
+    assign_attributes(coordinate: nil)
+  end
+
+  def flush_location
+    assign_attributes(location: nil)
+  end
+
+  def flush
+    flush_coordinate
+    flush_location
   end
 
   ##
