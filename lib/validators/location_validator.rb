@@ -6,7 +6,7 @@
 # * If the location is present and it does not have a parent then it is not valid.
 class LocationValidator < ActiveModel::Validator
   def validate(record)
-    unless record.location.nil? || record.location.unknown?
+    unless record.location.nil? || record.location.unspecified?
       record.errors.add(:location, I18n.t("errors.messages.container")) unless record.location.container?
       record.errors.add(:location, I18n.t("errors.messages.active")) unless record.location.active?
       NestedValidator.new({attributes: :location}).validate_each(record, :location, record.location)

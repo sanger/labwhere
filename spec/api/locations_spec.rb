@@ -4,9 +4,10 @@ require "rails_helper"
 
 RSpec.describe Api::LocationsController, type: :request do
 
-  let!(:user) { create(:admin) }
+  let!(:user) { create(:administrator) }
 
   it "should retrieve information about locations get /api/locations" do
+
     locations = create_list(:location, 5)
     get api_locations_path
     expect(response).to be_success
@@ -15,7 +16,7 @@ RSpec.describe Api::LocationsController, type: :request do
 
   it "locations should not include location unknown" do
     locations = create_list(:location, 5)
-    location_unknown = Location.unknown
+    location_unknown = UnknownLocation.get
     get api_locations_path
     expect(response.body).to_not include(location_unknown.name)
   end

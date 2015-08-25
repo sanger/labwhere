@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "Printers", type: :feature do
 
-  let!(:admin_user) { create(:admin) }
+  let!(:administrator) { create(:administrator) }
+  let!(:scientist) { create(:scientist) }
 
   it "Should allow a user to create a new printer" do 
     printer = build(:printer)
@@ -11,7 +12,7 @@ RSpec.describe "Printers", type: :feature do
     expect {
       fill_in "Name", with: printer.name
       fill_in "Uuid", with: printer.uuid
-      fill_in "User swipe card id/barcode", with: admin_user.barcode
+      fill_in "User swipe card id/barcode", with: administrator.barcode
       click_button "Create Printer"
     }.to change(Printer, :count).by(1)
     expect(page).to have_content("Printer successfully created")
@@ -23,7 +24,7 @@ RSpec.describe "Printers", type: :feature do
     visit printers_path
     expect {
       find(:data_id, printer.id).click_link "Edit"
-      fill_in "User swipe card id/barcode", with: admin_user.barcode
+      fill_in "User swipe card id/barcode", with: administrator.barcode
       fill_in "Name", with: new_printer.name
       click_button "Update Printer"
     }.to change { printer.reload.name }.to(new_printer.name)
@@ -35,7 +36,7 @@ RSpec.describe "Printers", type: :feature do
     visit printers_path
     click_link "Add new printer"
     expect {
-      fill_in "User swipe card id/barcode", with: admin_user.barcode
+      fill_in "User swipe card id/barcode", with: administrator.barcode
       fill_in "Name", with: printer.name
       click_button "Create Printer"
     }.to_not change(Printer, :count)
@@ -43,12 +44,11 @@ RSpec.describe "Printers", type: :feature do
   end
 
   it "Prevents a user from adding a printer if they are not authorised" do
-    standard_user = create(:standard)
     printer = build(:printer)
     visit printers_path
     click_link "Add new printer"
     expect {
-      fill_in "User swipe card id/barcode", with: standard_user.barcode
+      fill_in "User swipe card id/barcode", with: scientist.barcode
       fill_in "Name", with: printer.name
       fill_in "Uuid", with: printer.uuid
       click_button "Create Printer"
@@ -59,13 +59,12 @@ RSpec.describe "Printers", type: :feature do
    it "Prevents a user from editing an existing printer if they are not authorised" do
       printer = create(:printer)
       new_printer = build(:printer)
-      standard_user = create(:standard)
       visit printers_path
       expect {
         within("#printer_#{printer.id}") do
           click_link "Edit"
         end
-        fill_in "User swipe card id/barcode", with: standard_user.barcode
+        fill_in "User swipe card id/barcode", with: scientist.barcode
         fill_in "Name", with: new_printer.name
         click_button "Update Printer"
       }.to_not change(Printer, :count)

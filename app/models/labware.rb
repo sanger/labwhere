@@ -11,7 +11,10 @@ class Labware < ActiveRecord::Base
   belongs_to :coordinate
 
   validates :barcode, presence: true, uniqueness: true
-  validates :location, nested: true, unless: Proc.new { |l| l.location.nil? || l.location.unknown? || l.location.empty? }
+
+  with_options unless: -> { location.nil? || location.unspecified? } do
+    validates :location, nested: true
+  end
 
   removable_associations :location
 

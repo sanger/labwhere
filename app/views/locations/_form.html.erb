@@ -19,7 +19,7 @@
       </li>
       <li>
         <%= f.label :parent_id %>
-        <%= f.select :parent_id, options_from_collection_for_select(Location.unordered.without(@location), :id, :barcode, @location.parent_id), {include_blank: true} %>
+        <%= f.select :parent_id, options_from_collection_for_select(UnorderedLocation.without(@location), :id, :barcode, @location.parent_id), {include_blank: true} %>
       </li>
       <li>
         <%= f.label :rows %>

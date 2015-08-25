@@ -2,34 +2,45 @@
 # A location can store locations or labware
 class Location < ActiveRecord::Base
 
+  UNKNOWN = "UNKNOWN"
+
   include Searchable::Client
   include HasActive
   include Auditable
+  include SubclassChecker
 
   belongs_to :location_type
   belongs_to :parent, class_name: "Location"
   has_many :labwares
 
   validates :name, presence: true
-  validates :location_type, existence: true, unless: Proc.new { |l| l.unknown? }
+ 
   validates_format_of :name, with: /\A[\w\-\s]+\z/
   validates_length_of :name, maximum: 50
 
+  with_options unless: :unknown? do
+    validates :location_type, existence: true
+    validates_format_of :name, without: /UNKNOWN/i
+  end
+
   scope :without, ->(location) { active.where.not(id: location.id) }
-  scope :without_unknown, ->{ where.not(id: Location.unknown.id) }
-  scope :ordered, -> { where(type: "OrderedLocation")}
-  scope :unordered, -> { where(type: "UnorderedLocation")}
+  scope :without_unknown, ->{ where.not(name: UNKNOWN) }
 
   before_save :set_parentage
   after_create :generate_barcode
 
   searchable_by :name, :barcode
+  subclasses :ordered, :unordered, :unknown, suffix: true
 
   ##
   # It is possible for the parent to be nil
   # This will ensure we don't get a no method error.
   def parent
     super || NullLocation.new
+  end
+
+  def unspecified?
+    unknown?
   end
 
   ##
@@ -45,27 +56,13 @@ class Location < ActiveRecord::Base
   end
 
   ##
-  # When a labware is scanned out the location is unknown.
-  # If a labware does not have a location it will be set to unknown.
-  # This location is created when it is first queried.
-  def self.unknown
-    find_by(name: "UNKNOWN") || create(name: "UNKNOWN")
-  end
-
-  ##
   # Find a location by its barcode.
   def self.find_by_code(code)
     if code.present?
       find_by(barcode: code)
     else
-      unknown
+      UnknownLocation.get
     end
-  end
-
-  ##
-  # Check if the location is unknown.
-  def unknown?
-    name == "UNKNOWN" 
   end
 
   ##
@@ -77,16 +74,6 @@ class Location < ActiveRecord::Base
   # A location will only need coordinates if it has rows and columns
   def coordinateable?
     rows > 0 && columns > 0
-  end
-
-  # Is it an unordered location?
-  def unordered?
-    type ==  "UnorderedLocation"
-  end
-
-  # Is it an ordered location?
-  def ordered?
-    type == "OrderedLocation"
   end
 
   # This will transform the location into the correct type of location based on whether it

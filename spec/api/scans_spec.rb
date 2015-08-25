@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe Api::ScansController, type: :request do 
 
   let(:new_labware)         { build_list(:labware, 4)}
-  let!(:user)               { create(:standard)}
+  let!(:user)               { create(:scientist)}
   let!(:existing_labware)   { create(:labware, location: create(:location_with_parent))}
 
   it "should be able to scan some labware in using barcodes via post api/scans" do

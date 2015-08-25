@@ -17,4 +17,6 @@ class NullLocation
   def empty?; true end
 
   def unknown?; false end
+
+  def unspecified?; true end 
 end

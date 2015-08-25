@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe "Scans", type: :feature do
 
-  let!(:user) { create(:standard)}
+  let!(:user) { create(:scientist)}
 
   it "allows a user to scan in some labware with a location" do
     location = create(:location_with_parent)

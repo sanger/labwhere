@@ -17,6 +17,6 @@ namespace :db do
       LocationType.create(v)
     end
     team = Team.create(name: "Team1", number: 1)
-    Admin.create(login: "admin", swipe_card_id: "1234", barcode: "admin-1", team: team)
+    Administrator.create(login: "admin", swipe_card_id: "1234", barcode: "admin-1", team: team)
   end
 end

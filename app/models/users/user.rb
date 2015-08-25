@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
 
   include HasActive
   include Auditable
+  include SubclassChecker
 
   belongs_to :team
 
@@ -17,17 +18,19 @@ class User < ActiveRecord::Base
 
   validates_with EitherOrValidator, fields: [:swipe_card_id, :barcode]
 
+  subclasses :administrator, :scientist, :guest
+
   ##
   # A list of the different types of inherited user.
   def self.types
-    %w(Standard Admin)
+    %w(Scientist Administrator)
   end
 
   ##
   # Is the user a guest i.e. a user that doesn't exist.
-  def guest?
-    type == "Guest"
-  end
+  # def guest?
+  #   type == "Guest"
+  # end
 
   ##
   # Is the user allowed to perform this action.

@@ -32,6 +32,8 @@ module Labwhere
 
     config.autoload_paths += %W(#{config.root}/lib/utils #{config.root}/lib/validators)
 
+    config.autoload_paths += %W(#{config.root}/app/models/users #{config.root}/app/models/locations)
+
     config.mailer = YAML.load_file("#{Rails.root}/config/mailer.yml")[Rails.env]
 
     # replace fixtures with factory girl
