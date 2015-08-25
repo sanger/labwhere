@@ -16,7 +16,7 @@ RSpec.describe Labware, type: :model do
   end
 
   it "can be added to a location that is unknown" do
-    expect(build(:labware, location: Location.unknown)).to be_valid
+    expect(build(:labware, location: UnknownLocation.get)).to be_valid
   end
 
   it "is destroyed it will be soft deleted with all associations removed" do

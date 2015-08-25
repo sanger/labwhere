@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Teams", type: :feature do
 
-  let!(:user) { create(:admin)}
+  let!(:user) { create(:administrator)}
 
   it "Allows a user to create a new team" do
     team = build(:team)
@@ -45,12 +45,12 @@ RSpec.describe "Teams", type: :feature do
   end
 
   it "Does not allow an unauthorised user to modify teams" do
-    standard_user = create(:standard)
+    scientist = create(:scientist)
     team = build(:team)
     visit teams_path
     click_link "Add new team"
     expect{
-      fill_in "User swipe card id/barcode", with: standard_user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
       fill_in "Name", with: team.name
       fill_in "Number", with: team.number
       click_button "Create Team"

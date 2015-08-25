@@ -4,10 +4,10 @@ RSpec.describe LocationTypeForm, type: :model do
 
   let(:controller_params)           { { controller: "location", action: "create"} }
   let(:params)                      { ActionController::Parameters.new(controller_params) }
-  let!(:admin_user)                 { create(:admin) }
-  let(:location_params)             { attributes_for(:location).merge(user_code: admin_user.barcode)}
-  let(:unordered_location_params)   { attributes_for(:unordered_location).merge(user_code: admin_user.barcode)}
-  let(:ordered_location_params)     { attributes_for(:ordered_location).merge(user_code: admin_user.barcode)}
+  let!(:administrator)              { create(:administrator) }
+  let(:location_params)             { attributes_for(:location).merge(user_code: administrator.barcode)}
+  let(:unordered_location_params)   { attributes_for(:unordered_location).merge(user_code: administrator.barcode)}
+  let(:ordered_location_params)     { attributes_for(:ordered_location).merge(user_code: administrator.barcode)}
   let!(:parent_locations)           { create_list(:location, 2)}
 
   it "should be able to add a parent location using a barcode" do

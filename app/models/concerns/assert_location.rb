@@ -12,6 +12,6 @@ module AssertLocation
   ##
   # If the location is nil add the unknown location.
   def assert_location
-    self.location = Location.unknown if location.nil?
+    self.location = UnknownLocation.get if location.nil?
   end
 end

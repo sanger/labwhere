@@ -5,10 +5,10 @@ FactoryGirl.define do
     barcode { "Barcode:#{login}" }
     team
 
-    factory :admin, class: "Admin" do
+    factory :administrator, class: "Administrator" do
     end
 
-    factory :standard, class: "Standard" do
+    factory :scientist, class: "Scientist" do
     end
 
     factory :user_with_audits do

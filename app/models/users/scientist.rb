@@ -1,7 +1,7 @@
 ##
 # Standard user
 # Access to create scans.
-class Standard < User
+class Scientist < User
 
   include Permissions
   

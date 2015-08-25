@@ -1,8 +1,8 @@
 require "rails_helper"
 
-RSpec.describe Permissions::AdminPermission, type: :model do
+RSpec.describe Permissions::AdministratorPermission, type: :model do
 
-  let(:permissions) { Permissions.permission_for(build(:admin)) }
+  let(:permissions) { Permissions.permission_for(build(:administrator)) }
 
   it "should allow access to anything" do
     expect(permissions).to allow_permission(:any, :thing)

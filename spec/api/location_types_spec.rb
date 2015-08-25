@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe Api::LocationTypesController, type: :request do
 
-  let!(:user) { create(:admin) }
+  let!(:user) { create(:administrator) }
 
   it "should retrieve information about location types get /api/location_types" do
     location_types = create_list(:location_type, 5)

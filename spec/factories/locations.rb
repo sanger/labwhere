@@ -82,6 +82,10 @@ FactoryGirl.define do
       end
     end
 
+    factory :unknown_location, class: "UnknownLocation" do
+      
+    end
+
   end
 
 end

@@ -50,26 +50,26 @@ RSpec.describe User, type: :model do
 
   end
 
-  it "should be able to create an Admin user" do
-    user = create(:user, type: "Admin")
-    expect(Admin.all.count).to eq(1)
+  it "should be able to create an Administrator" do
+    user = create(:user, type: "Administrator")
+    expect(Administrator.all.count).to eq(1)
   end
 
-  it "should be able to create an Standard user" do
-    user = create(:user, type: "Standard")
-    expect(Standard.all.count).to eq(1)
+  it "should be able to create a Scientist" do
+    user = create(:user, type: "Scientist")
+    expect(Scientist.all.count).to eq(1)
   end
 
   it "should not be a guest" do
     expect(build(:user)).to_not be_guest
   end
 
-  it "Admin user should be allowed to do anything" do
-    expect(build(:admin)).to allow_permission(:any, :thing)
+  it "Administrator should be allowed to do anything" do
+    expect(build(:administrator)).to allow_permission(:any, :thing)
   end
 
-  it "Standard user should be allowed to create a scan" do
-    expect(build(:standard)).to allow_permission(:scans, :create)
+  it "Scientist user should be allowed to create a scan" do
+    expect(build(:scientist)).to allow_permission(:scans, :create)
   end
 
   it "#find_by_code should be able to find user by swipe card id or barcode" do

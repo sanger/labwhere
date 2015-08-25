@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe "Locations", type: :feature do
 
-  let!(:user) { create(:admin)}
+  let!(:user) { create(:administrator)}
+  let!(:scientist) { create(:scientist)}
 
   it "Allows a user to add a new location type" do
     location_type = build(:location_type)
@@ -53,11 +54,10 @@ RSpec.describe "Locations", type: :feature do
 
     it "Prevents a user from deleting an existing location type if they are not authorised" do
       location_type = create(:location_type)
-      standard_user = create(:standard)
       visit location_types_path
       expect {
         find(:data_id, location_type.id).click_link "Delete"
-        fill_in "User swipe card id/barcode", with: standard_user.swipe_card_id
+        fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
         click_button "Delete"
       }.to_not change(LocationType, :count)
       expect(page).to have_content("error prohibited this record from being saved")
@@ -205,11 +205,10 @@ RSpec.describe "Locations", type: :feature do
 
   it "Does not allow an unauthorised user to modify locations" do
     location = build(:location)
-    standard_user = create(:standard)
     visit locations_path
     click_link "Add new location"
     expect {
-      fill_in "User swipe card id/barcode", with: standard_user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
       fill_in "Name", with: location.name
       select location_types.first.name, from: "Location type"
       check "Container"

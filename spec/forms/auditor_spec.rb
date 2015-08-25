@@ -6,7 +6,6 @@ RSpec.describe Auditor, type: :model do
     table do |t|
       t.string :name
       t.string :data
-      t.integer :audits_count
       t.timestamps null: false
     end
 
@@ -22,7 +21,6 @@ RSpec.describe Auditor, type: :model do
     table do |t|
       t.string :name
       t.string :data
-      t.integer :audits_count
       t.timestamps null: false
     end
 
@@ -48,19 +46,19 @@ RSpec.describe Auditor, type: :model do
   let(:controller_params)       { { controller: "test_model", action: "create"} }
   let(:valid_params)            { {name: "A name", data: "Some data"}}
   let(:params)                  { ActionController::Parameters.new(controller_params) }
-  let!(:admin_user)             { create(:admin) }
-  let!(:standard_user)          { create(:standard) }
+  let!(:administrator)          { create(:administrator) }
+  let!(:scientist)              { create(:scientist) }
 
   it "allows creation of new record with valid attributes" do
     expect{ 
-      TestModelAudit.new.submit(params.merge(test_model: valid_params.merge(user_code: admin_user.swipe_card_id)))
+      TestModelAudit.new.submit(params.merge(test_model: valid_params.merge(user_code: administrator.swipe_card_id)))
     }.to change(TestModel, :count).by(1)
   end
 
   it "prevents creation of new record with invalid attributes" do
     test_model_form = TestModelAudit.new
     expect{ 
-      test_model_form.submit(params.merge(test_model: valid_params.merge(name: nil, user_code: admin_user.swipe_card_id)))
+      test_model_form.submit(params.merge(test_model: valid_params.merge(name: nil, user_code: administrator.swipe_card_id)))
     }.to_not change(TestModel, :count)
     expect(test_model_form.errors.count).to eq(1)
   end
@@ -69,7 +67,7 @@ RSpec.describe Auditor, type: :model do
     test_model_1 = TestModel.create(valid_params)
     test_model_form = TestModelAudit.new(test_model_1)
     expect{
-      test_model_form.submit(params.merge(test_model: valid_params.merge(name: "Another name", user_code: admin_user.barcode)))
+      test_model_form.submit(params.merge(test_model: valid_params.merge(name: "Another name", user_code: administrator.barcode)))
     }.to change { test_model_1.reload.name }.to("Another name")
   end
 
@@ -84,47 +82,47 @@ RSpec.describe Auditor, type: :model do
   it "should reject modification of the record if the user does not have authorisation" do
     test_model_form = TestModelAudit.new
     expect{ 
-      test_model_form.submit(params.merge(test_model: valid_params.merge(user_code: standard_user.swipe_card_id)))
+      test_model_form.submit(params.merge(test_model: valid_params.merge(user_code: scientist.swipe_card_id)))
     }.to_not change(TestModel, :count)
     expect(test_model_form.errors.full_messages).to include("User #{I18n.t("errors.messages.authorised")}")
   end
 
   it "should reject modification of the record if the user is inactive" do
     test_model_form = TestModelAudit.new
-    admin_user.deactivate
+    administrator.deactivate
     expect{ 
-      test_model_form.submit(params.merge(test_model: valid_params.merge(user_code: admin_user.swipe_card_id)))
+      test_model_form.submit(params.merge(test_model: valid_params.merge(user_code: administrator.swipe_card_id)))
     }.to_not change(TestModel, :count)
     expect(test_model_form.errors.full_messages).to include("User #{I18n.t("errors.messages.active")}")
   end
 
   it "should allow modification of the record if the user code is passed in the top level params" do
     expect{ 
-      TestModelAudit.new.submit(params.merge(user_code: admin_user.swipe_card_id, test_model: valid_params))
+      TestModelAudit.new.submit(params.merge(user_code: administrator.swipe_card_id, test_model: valid_params))
     }.to change(TestModel, :count).by(1)
   end
 
   it "should create an associated audit record" do
-    TestModelAudit.new.submit(params.merge(test_model: valid_params.merge(user_code: admin_user.swipe_card_id)))
+    TestModelAudit.new.submit(params.merge(test_model: valid_params.merge(user_code: administrator.swipe_card_id)))
     test_model = TestModel.first
     audit = Audit.find_by(auditable_id: test_model.id)
     expect(audit).to_not be_nil
     expect(audit.action).to eq("create")
-    expect(audit.user).to eq(admin_user)
+    expect(audit.user).to eq(administrator)
   end
 
    it "should destroy the record if it meets all of the requirements" do
     test_model = TestModel.create(valid_params)
-    TestModelAudit.new(test_model).destroy(params.merge(action: "destroy", user_code: admin_user.barcode))
+    TestModelAudit.new(test_model).destroy(params.merge(action: "destroy", user_code: administrator.barcode))
      audit = Audit.find_by(auditable_id: test_model.id)
     expect(audit).to_not be_nil
     expect(audit.action).to eq("destroy")
-    expect(audit.user).to eq(admin_user)
+    expect(audit.user).to eq(administrator)
   end
 
   it "should add an audit record if the record is destroyed" do
     test_model = TestModel.create(valid_params)
-    TestModelAudit.new(test_model).destroy(params.merge(user_code: admin_user.barcode))
+    TestModelAudit.new(test_model).destroy(params.merge(user_code: administrator.barcode))
     expect(test_model).to be_destroyed
   end
 
@@ -139,7 +137,7 @@ RSpec.describe Auditor, type: :model do
   it "should not destroy the record if the user is not authorised" do 
     test_model = TestModel.create(valid_params)
     test_model_form = TestModelAudit.new(test_model)
-    test_model_form.destroy(params.merge(user_code: standard_user.barcode))
+    test_model_form.destroy(params.merge(user_code: scientist.barcode))
     expect(test_model).to_not be_destroyed
     expect(test_model_form.errors.full_messages).to include("User #{I18n.t("errors.messages.authorised")}")
   end
@@ -147,7 +145,7 @@ RSpec.describe Auditor, type: :model do
   it "should not destroy the record if the record is not destroyable" do 
     test_model = TestModel.create(valid_params.merge(name: "Please dont delete me"))
     test_model_form = TestModelAudit.new(test_model)
-    test_model_form.destroy(params.merge(action: "destroy", user_code: admin_user.barcode))
+    test_model_form.destroy(params.merge(action: "destroy", user_code: administrator.barcode))
     expect(test_model).to_not be_destroyed
     expect(test_model_form.errors.full_messages).to include("Can't delete record")
   end

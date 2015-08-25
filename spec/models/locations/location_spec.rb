@@ -12,6 +12,11 @@ RSpec.describe Location, type: :model do
     expect(build(:location, location_type: nil)).to_not be_valid
   end
 
+  it "is invalid if name is UNKNOWN" do
+    expect(build(:location, name: "UNKNOWN")).to_not be_valid
+    expect(build(:location, name: "unknown")).to_not be_valid
+  end
+
   it "#without_location should return a list of locations without a specified location" do
     locations = create_list(:location, 3)
     inactive_location = create(:location, status: Location.statuses[:inactive])
@@ -20,14 +25,11 @@ RSpec.describe Location, type: :model do
     expect(Location.without(locations.last)).to_not include(inactive_location)
   end
 
-  it "#unknown should return a location with name UNKNOWN and location type UNKNOWN" do
-    expect(Location.unknown.name).to eq("UNKNOWN")
-    expect(Location.unknown).to be_unknown
-    expect(Location.unknown.location_type.name).to eq("UNKNOWN")
-  end
-
-  it "location should be valid without a location type if location is UNKNOWN" do
-    expect(build(:location, name: "UNKNOWN", location_type: nil)).to be_valid
+  it "#without_unknown should return all locations without UnknownLocation" do
+    create_list(:location, 5)
+    unknown_location = UnknownLocation.get
+    expect(Location.without_unknown.count).to eq(5)
+    expect(Location.without_unknown).to_not include(unknown_location)
   end
 
   it "#find_by_code should find a location by it's barcode" do
@@ -115,7 +117,7 @@ RSpec.describe Location, type: :model do
     let!(:labwares) { create_list(:labware, 3) }
 
     it "should just create labwares and location should be unknown" do
-      location = Location.unknown
+      location = UnknownLocation.get
       expect(location.add_labwares(labwares.join_barcodes).count).to eq(3)
       expect(location.labwares.count).to eq(3)
     end
@@ -128,7 +130,7 @@ RSpec.describe Location, type: :model do
     end
 
     it "should remove labwares from any existing coordinates" do
-      location = Location.unknown
+      location = UnknownLocation.get
       coordinate = create(:coordinate)
       coordinate.fill(labwares.first)
       location.add_labwares(labwares.join_barcodes)
@@ -138,26 +140,10 @@ RSpec.describe Location, type: :model do
 
   end
 
-  it "#ordered should return a list of locations which are ordered" do
-    create_list(:ordered_location, 4)
-    expect(Location.ordered.count).to eq(4)
-
-    location = create(:unordered_location)
-    create_list(:ordered_location, 3, parent: location)
-    create_list(:unordered_location, 2, parent: location)
-    expect(location.children.ordered.count).to eq(3)
-  end
-
   it "#available_coordinates should be emtpy" do
     location = create(:location)
     expect(location.available_coordinates(10)).to be_empty
   end
 
-  it "#unordered should return all of the unordered locations" do
-    locations = create_list(:location, 3)
-    ordered_locations = create_list(:ordered_location, 3)
-    unordered_locations = create_list(:unordered_location, 3)
-    expect(Location.unordered.count).to eq(3)
-  end
   
 end
