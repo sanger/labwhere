@@ -1,0 +1,91 @@
+Shelf 1
+Shelf 2
+Shelf 3
+Shelf 4
+Rack (large) 1
+Box A
+Box B
+Box C
+Box D
+Box E
+Box F
+Box G
+Box H
+Box I
+Box J
+Box K
+Box L
+Box M
+Rack (large) 2
+Rack (large) 3
+Rack (large) 4
+Rack (large) 5
+Rack (large) 6
+Rack (large) 7
+Rack (large) 8
+Rack (large) 9
+Rack (large) 10
+Rack (large) 11
+Rack (large) 12
+Rack (large) 13
+Rack (large) 14
+Rack (small) 15
+Rack (small) 16
+Rack (small) 17
+Rack (small) 18
+Rack (large) 15
+Rack (large) 16
+Rack (large) 17
+Rack (large) 18
+Rack (large) 19
+Rack (large) 20
+Rack (large) 21
+Rack (large) 22
+Rack (large) 23
+Rack (large) 24
+Rack (large) 25
+Rack (large) 26
+Rack (large) 27
+Rack (large) 28
+Rack (large) 29
+Rack (large) 30
+Rack (small) 31
+Rack (small) 32
+Rack (small) 33
+Rack (small) 34
+Rack (small) 35
+Rack (small) 36
+Rack (small) 37
+Rack (small) 38
+Drawer 1
+Drawer 2
+Drawer 3
+Reception box
+Shelf 5
+Row 1
+Slot 1
+Slot 2
+Slot 3
+Slot 4
+Slot 5
+Slot 6
+Row 2
+Row 3
+Row 4
+Drawer 4
+Drawer 5
+Drawer 6
+Drawer 7
+Drawer 8
+Floor
+Platform
+Stack 1
+Stack 2
+Stack 3
+Stack 4
+Stack 5
+Stack 6
+Stack 7
+Stack 8
+Stack 9
+Stack 10
