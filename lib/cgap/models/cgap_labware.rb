@@ -1,3 +1,3 @@
 class CgapLabware < Cgap
-  belongs_to :cgap_sub_location
+  belongs_to :cgap_location
 end

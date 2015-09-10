@@ -40,12 +40,10 @@ class OrderedLocation < Location
     [AvailableCoordinates.find(self.coordinates, n)].compact
   end
 
-private
-
   def populate_coordinates
     Hash.grid(self.rows, self.columns) do |position, row, column|
       coordinates.build(position: position, row: row, column: column)
     end
   end
-  
+
 end

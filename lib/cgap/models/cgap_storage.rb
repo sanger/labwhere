@@ -1,0 +1,3 @@
+class CgapStorage < Cgap
+  
+end

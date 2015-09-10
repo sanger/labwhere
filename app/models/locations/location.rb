@@ -15,8 +15,8 @@ class Location < ActiveRecord::Base
 
   validates :name, presence: true
  
-  validates_format_of :name, with: /\A[\w\-\s]+\z/
-  validates_length_of :name, maximum: 50
+  validates_format_of :name, with: /\A[\w\-\s\(\)]+\z/
+  validates_length_of :name, maximum: 60
 
   with_options unless: :unknown? do
     validates :location_type, existence: true

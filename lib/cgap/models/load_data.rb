@@ -1,18 +1,19 @@
 class LoadData
 
-  PATH = File.join(Rails.root, "lib","cgap","data")
   TAB = "\t"
   SPLIT = "\r\n"
 
-  attr_reader :filename, :model
+  attr_reader :filename, :model, :path, :split
 
-  def initialize(filename)
+  def initialize(filename, path = "lib/cgap/data", split="\r\n")
+    @split = split
+    @path = File.join(Rails.root, path)
     @filename = filename
     @model = set_model(filename)
   end
 
   def file
-    @file ||= File.open(File.join(PATH, "#{filename}.txt")).read.split(SPLIT)
+    @file ||= File.open(File.join(path, "#{filename}.txt")).read.split(split)
   end
 
   def load!
@@ -36,7 +37,7 @@ private
   end
 
   def set_model(filename)
-    "Cgap#{filename.classify}".constantize
+    "Cgap#{filename.split("_").first.classify}".constantize
   end
   
 end
