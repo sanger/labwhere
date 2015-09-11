@@ -39,3 +39,6 @@ bower.json
 
 #ignore docs
 /doc/app
+
+#ignore cgap data
+/lib/cgap/data

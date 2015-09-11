@@ -48,10 +48,14 @@ RSpec.describe Location, type: :model do
     expect(build(:location, name: "A location ~")).to_not be_valid
   end
 
-  it "name should not be valid if it is more than 50 characters long" do
-    expect(build(:location, name: "l"*49)).to be_valid
-    expect(build(:location, name: "l"*50)).to be_valid
-    expect(build(:location, name: "l"*51)).to_not be_valid
+  it "name should not be valid if it is more than 60 characters long" do
+    expect(build(:location, name: "l"*59)).to be_valid
+    expect(build(:location, name: "l"*60)).to be_valid
+    expect(build(:location, name: "l"*61)).to_not be_valid
+  end
+
+  it "should be valid with brackets" do
+    expect(build(:location, name: "(A location)")).to be_valid
   end
 
   it "barcode should be sanitised" do
