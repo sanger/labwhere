@@ -30,7 +30,7 @@ class Location < ActiveRecord::Base
   after_create :generate_barcode
 
   searchable_by :name, :barcode
-  subclasses :ordered, :unordered, :unknown, suffix: true
+  has_subclasses :ordered, :unordered, :unknown, suffix: true
 
   ##
   # It is possible for the parent to be nil

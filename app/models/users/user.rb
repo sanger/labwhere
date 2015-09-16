@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 
   validates_with EitherOrValidator, fields: [:swipe_card_id, :barcode]
 
-  subclasses :administrator, :scientist, :guest
+  has_subclasses :administrator, :scientist, :guest
 
   ##
   # A list of the different types of inherited user.
