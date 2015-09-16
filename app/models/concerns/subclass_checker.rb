@@ -8,7 +8,7 @@ module SubclassChecker
 
   module ClassMethods
 
-    def subclasses(*classes)
+    def has_subclasses(*classes)
       options = classes.extract_options!
       classes.each do |klass|
         object_type = if options[:suffix]

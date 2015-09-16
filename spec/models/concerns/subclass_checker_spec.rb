@@ -5,7 +5,7 @@ RSpec.describe SubclassChecker, type: :model do
   class Potato
 
     include SubclassChecker
-    subclasses :baked, :roast, suffix: true
+    has_subclasses :baked, :roast, suffix: true
     def type
       self.class.to_s
     end
@@ -19,7 +19,7 @@ RSpec.describe SubclassChecker, type: :model do
 
   class Person
     include SubclassChecker
-    subclasses :child, :parent
+    has_subclasses :child, :parent
     def type
       self.class.to_s
     end
