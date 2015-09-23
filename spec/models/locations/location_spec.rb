@@ -149,5 +149,19 @@ RSpec.describe Location, type: :model do
     expect(location.available_coordinates(10)).to be_empty
   end
 
+  it "#by_building should return locations which have a location type of building" do
+
+    site = create(:location_type, name: "Site")
+    building = create(:location_type, name: "Building")
+    room = create(:location_type, name: "Room")
+
+    locations_1 = create_list(:location, 3, location_type: site)
+    locations_2 = create_list(:location, 3, location_type: building)
+    locations_3 = create_list(:location, 3, location_type: room)
+
+    expect(Location.by_building.count).to eq(3)
+    expect(Location.by_building.first).to eq(locations_2.first)
+  end
+
   
 end

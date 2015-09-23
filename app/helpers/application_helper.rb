@@ -32,5 +32,9 @@ module ApplicationHelper
   def info_link
     behavior_link "info", "info.png", "Further information"
   end
+
+  def print_link
+    behavior_link "print", "print.png", "Print Barcode"
+  end
  
 end

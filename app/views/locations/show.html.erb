@@ -1,1 +1,5 @@
-<%= render @location %>
+<section class="list">
+    <div data-behavior="location-list">
+      <%= render @location.becomes(Location) %>
+    </div>
+</section>

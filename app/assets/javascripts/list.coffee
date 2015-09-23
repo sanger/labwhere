@@ -14,7 +14,7 @@ class @List
 
   addListeners: =>
     self = @
-    @item.on "click", "[data-behavior~=drilldown],[data-behavior~=audits],[data-behavior~=info]", (event) ->
+    @item.on "click", "[data-behavior~=drilldown],[data-behavior~=audits],[data-behavior~=info],[data-behavior~=print]", (event) ->
       self.triggerEvent($(this), event)
 
   triggerEvent: (link, event) =>
@@ -24,6 +24,7 @@ class @List
       when 'drilldown' then @findData(link, parent)
       when 'audits' then @findAudits(link, parent)
       when 'info' then @toggleInfo(link)
+      when 'print' then @printBarcode(link, parent)
 
   findData: (link, item) =>
     behavior = @behaviors.find(item.data("type"))
@@ -78,6 +79,25 @@ class @List
 
   findImage: (link) ->
     if link.data("behavior") is "audits" then @auditsImage else @drilldownImage
+
+  printBarcode: (link, item) ->
+    behavior = @behaviors.find(item.data("type"))
+    $.ajax
+      url: "/#{behavior.parentResource}/#{item.data("id")}/prints/new"
+      method: "GET"
+      dataType: "HTML"
+      success: (data, textStatus, jqXHR) =>
+        @addDialog(data, "Print Barcode")
+
+  addDialog: (partial, title) ->
+    $("<div></div>").dialog
+      autoOpen: true
+      height: 400
+      width: 600
+      title: title
+      open: -> $(this).html(partial)
+      buttons:
+        Cancel: -> $(this).dialog("close")
 
 jQuery ->
   for list in $("[data-behavior$=-list]")
