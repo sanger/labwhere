@@ -80,14 +80,7 @@ class Location < ActiveRecord::Base
   # This will transform the location into the correct type of location based on whether it
   # has coordinates.
   def transform
-    if coordinateable?
-      self.type = "OrderedLocation"
-      self.becomes(OrderedLocation)
-    else
-      self.type = "UnorderedLocation"
-      self.becomes(UnorderedLocation)
-    end
-    #self.becomes! ( coordinateable? ? OrderedLocation : UnorderedLocation)
+    self.becomes! ( coordinateable? ? OrderedLocation : UnorderedLocation)
   end
 
   def type
