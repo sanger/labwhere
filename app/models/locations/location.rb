@@ -25,6 +25,7 @@ class Location < ActiveRecord::Base
 
   scope :without, ->(location) { active.where.not(id: location.id) }
   scope :without_unknown, ->{ where.not(name: UNKNOWN) }
+  scope :by_building, -> { without_unknown.where(location_type_id: LocationType.find_by(name: "Building"))}
 
   before_save :set_parentage
   after_create :generate_barcode
@@ -79,13 +80,7 @@ class Location < ActiveRecord::Base
   # This will transform the location into the correct type of location based on whether it
   # has coordinates.
   def transform
-    if coordinateable?
-      self.type = "OrderedLocation"
-      self.becomes(OrderedLocation)
-    else
-      self.type = "UnorderedLocation"
-      self.becomes(UnorderedLocation)
-    end
+    self.becomes! ( coordinateable? ? OrderedLocation : UnorderedLocation)
   end
 
   def type

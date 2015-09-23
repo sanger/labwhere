@@ -47,7 +47,7 @@ class LocationsController < ApplicationController
 protected
 
   def locations
-    @locations = Location.without_unknown
+    @locations = Location.by_building
   end
 
   helper_method :locations

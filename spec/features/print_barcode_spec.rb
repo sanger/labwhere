@@ -12,7 +12,7 @@ RSpec.describe LabelPrinter, type: :feature do
   describe "printing", js: true do
 
     it "should allow a user to reprint a barcode for a location" do
-      visit locations_path(location)
+      visit location_path(location)
       find(:data_id, location.id).click_link "Print Barcode"
       select printer.name, from: "Printer"
       click_button "Print"

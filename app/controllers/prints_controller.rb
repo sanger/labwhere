@@ -1,19 +1,15 @@
 class PrintsController < ApplicationController
 
+  layout false
+
   def new
     @location = current_resource
-    respond_to do |format|
-      format.js
-    end
   end
 
   def create
     @print_barcode = LabelPrinter.new(params[:printer_id], params[:location_id])
     @print_barcode.post
-    respond_to do |format|
-      flash_keep @print_barcode.message
-      format.js { render js: "window.location.pathname='#{locations_path}'" }
-    end
+    redirect_to locations_path, notice: @print_barcode.message
   end
 
 private
