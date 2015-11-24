@@ -89,4 +89,11 @@ RSpec.describe Labware, type: :model do
     expect(labware.location).to be_empty
     expect(labware.coordinate).to be_empty
   end
+
+  it "#find_or_initialize_by_barcode should create or find a labware" do
+    labware = create(:labware)
+    expect(Labware.find_or_initialize_by_barcode(labware.barcode)).to eq(labware)
+    expect(Labware.find_or_initialize_by_barcode(barcode: labware.barcode)).to eq(labware)
+    expect(Labware.find_or_initialize_by_barcode("999")).to be_new_record
+  end
 end

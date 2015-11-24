@@ -16,6 +16,10 @@ FactoryGirl.define do
       end
     end
 
+    factory :labware_with_location do
+      location { FactoryGirl.create(:location_with_parent)}
+    end
+
   end
 
 end

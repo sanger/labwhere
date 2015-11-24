@@ -111,15 +111,15 @@ private
 
   def destroy_if_valid
     if valid?
-      create_audit
       model.destroy
+      create_audit
     else
       false
     end
   end
 
   def create_audit
-    model.create_audit(current_user, action)
+    model.create_audit(current_user)
   end
 
   def set_current_user(params)

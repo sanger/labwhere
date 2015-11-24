@@ -50,26 +50,32 @@ RSpec.describe User, type: :model do
 
   end
 
-  it "should be able to create an Administrator" do
-    user = create(:user, type: "Administrator")
-    expect(Administrator.all.count).to eq(1)
+  describe "User Types" do
+    it "should be able to create an Administrator" do
+      user = create(:user, type: "Administrator")
+      expect(Administrator.all.count).to eq(1)
+    end
+
+    it "should be able to create a Scientist" do
+      user = create(:user, type: "Scientist")
+      expect(Scientist.all.count).to eq(1)
+    end
+
+    it "should be able to create a Guest" do
+      user = create(:user, type: "Guest")
+      expect(Guest.all.count).to eq(1)
+    end
   end
 
-  it "should be able to create a Scientist" do
-    user = create(:user, type: "Scientist")
-    expect(Scientist.all.count).to eq(1)
-  end
+  describe 'Permissions' do
+    it "Administrator should be allowed to do anything" do
+      expect(build(:administrator)).to allow_permission(:any, :thing)
+    end
 
-  it "should not be a guest" do
-    expect(build(:user)).to_not be_guest
-  end
+    it "Scientist user should be allowed to create a scan" do
+      expect(build(:scientist)).to allow_permission(:scans, :create)
+    end
 
-  it "Administrator should be allowed to do anything" do
-    expect(build(:administrator)).to allow_permission(:any, :thing)
-  end
-
-  it "Scientist user should be allowed to create a scan" do
-    expect(build(:scientist)).to allow_permission(:scans, :create)
   end
 
   it "#find_by_code should be able to find user by swipe card id or barcode" do
@@ -96,6 +102,13 @@ RSpec.describe User, type: :model do
     expect(json["team"]).to eq(team.name)
     expect(json["created_at"]).to eq(user.created_at.to_s(:uk))
     expect(json["updated_at"]).to eq(user.updated_at.to_s(:uk))
+  end
+
+  it "should not update swipe_card_id and barcode if they are blank" do
+    user = create(:user)
+    user.update_attributes(swipe_card_id: nil, barcode: nil)
+    expect(user.reload.swipe_card_id).to be_present
+    expect(user.barcode).to be_present
   end
 
 end
