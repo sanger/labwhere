@@ -7,9 +7,9 @@ class ScanForm
   include ActiveModel::Serialization
   include HashAttributes
 
-  attr_reader :scan, :controller, :action, :current_user, :labwares
+  attr_reader :scan, :controller, :action, :current_user, :labwares, :location
   attr_accessor :location_barcode, :labware_barcodes, :user_code
-  delegate :location, :message, :created_at, :updated_at, to: :scan
+  delegate :message, :created_at, :updated_at, to: :scan
 
   validate :check_for_errors, :check_user
 
@@ -34,15 +34,9 @@ class ScanForm
   def submit(params)
     set_params_attributes(:scan, params)
     @current_user = User.find_by_code(user_code)
-    scan.location = Location.find_by_code(location_barcode)
-    scan.user = current_user
+    @location = Location.find_by_code(location_barcode)
     if valid?
-      ActiveRecord::Base.transaction do
-        scan.location.add_labwares(permitted_labwares(labwares) || labware_barcodes) do |after, before|
-          scan.add_labware(before)
-          after.create_audit(scan.user, "scan")
-        end
-      end
+      scan.add_attributes_from_collection(LabwareCollection.new(location, current_user, labwares || labware_barcodes).push)
       scan.save
     else
       false
@@ -61,13 +55,6 @@ private
 
   def check_user
     UserValidator.new.validate(self)
-  end
-
-  def permitted_labwares(labwares)
-    return unless labwares
-    labwares.collect do |labware|
-      labware.permit(:position, :row, :column, :barcode)
-    end
   end
 
 end

@@ -10,54 +10,55 @@ version: 1.0
     body:
       application/json:
         schema: |
-          {
-            "type" : "object",
-            "required": true,
-            "properties": {
-              "user_code": {
-                "description": "The swipe card id or barcode of the user creating the scan",
-                "required": true,
-                "type": "string"
-              },
-              "location_barcode":{
-                "description": "The barcode of the location for the labware to be scanned in to. For scanning out leave location barcode blank.",
-                "type": "string",
-                "required": false.
-
-              },
-              "labwares":{ 
-                "type" : "object",
-                "required": false,
-                "properties:" [
-                  {
-                    "barcode":{
-                      "description": "The labware barcode",
-                      "type": "string",
-                      "required": false
-                    },
-                    "position":{
-                      "description": "The coordinate position to put the labware barcode into",
-                      "type": "integer",
-                      "required": false
-                    },
-                     "row":{
-                      "description": "The row put the labware barcode into",
-                      "type": "integer",
-                      "required": false
-                    },
-                     "column":{
-                      "description": "The column put the labware barcode into",
-                      "type": "integer",
-                      "required": false
+          { 
+            "scan":
+            {
+              "type" : "object",
+              "required": true,
+              "properties": {
+                "user_code": {
+                  "description": "The swipe card id or barcode of the user creating the scan",
+                  "required": true,
+                  "type": "string"
+                },
+                "location_barcode":{
+                  "description": "The barcode of the location for the labware to be scanned in to. For scanning out leave location barcode blank.",
+                  "type": "string",
+                  "required": false
+                },
+                "labwares":{ 
+                  "type" : "object",
+                  "required": false,
+                  "properties": [
+                    {
+                      "barcode":{
+                        "description": "The labware barcode",
+                        "type": "string",
+                        "required": false
+                      },
+                      "position":{
+                        "description": "The location coordinate position to put the labware into",
+                        "type": "integer",
+                        "required": false
+                      },
+                       "row":{
+                        "description": "The row of the location coordinate to put the labware into",
+                        "type": "integer",
+                        "required": false
+                      },
+                       "column":{
+                        "description": "The column of the location coordinate to put the labware into",
+                        "type": "integer",
+                        "required": false
+                      }
                     }
-                  }
-                ]
-              },
-              "labware_barcodes": {
-                "description": "Any number of labware barcodes as a string separated by returns or carriage returns",
-                "type": "string",
-                "required": false,
-                "example": "barcode1\nbarcode2\nbarcode3\n"
+                  ],
+                "labware_barcodes": {
+                  "description": "Any number of labware barcodes as a string separated by returns or carriage returns",
+                  "type": "string",
+                  "required": false,
+                  "example": "barcode1\nbarcode2\nbarcode3\n"
+                }
               }
             }
           }
@@ -69,7 +70,20 @@ version: 1.0
               {
                 "message": "100 Labwares scanned in to location 1",
                 "created_at": "Thursday 4 June 08:54",
-                "updated_at": "Thursday 4 June 08:54"
+                "updated_at": "Thursday 4 June 08:54",
+                "location":  {
+                  "id": 1,
+                  "name": "Location 1",
+                  "barcode": "location-1-1",
+                  "parent": "null",
+                  "container": true,
+                  "status": "active",
+                  "location_type_id": 1,
+                  "labwares": "api/locations/location-1-1/labwares",
+                  "audits": "api/locations/location-1-1/audits",
+                  "children": "api/locations/location-1-1/children"
+
+                }
               }
       422:
         body:
@@ -457,9 +471,9 @@ version: 1.0
                     "children": api/locations/location-1-1/children
                   }
                 }
-    /histories:
+    /audits:
       get:
-        description: Returns all of the histories for a labware
+        description: Returns all of the audits for a labware
         responses:
           200:
             body:
@@ -467,16 +481,19 @@ version: 1.0
                 example: |
                   [
                     {
-                      "user": "user1",
-                      "location": "location1",
-                      "created_at": "Friday 05 June 08:54"
-                      "updated_at": "Friday 05 June 08:54"
-                    },
-                    {
-                      "user": "user2",
-                      "location": "location2",
-                      "created_at": "Friday 30 May 08:54"
-                      "updated_at": "Friday 30 May 08:54"
+                      "user":"admin",
+                      "record_data":
+                      {
+                        "id":30525,
+                        "barcode":"SAMEA3451112",
+                        "created_at":"Thursday September 10 2015 14:42",
+                        "updated_at":"Thursday November 12 2015 10:16",
+                        "location":"lw-cytomatic-incubator-2192"},
+                        "action":"scan",
+                        "auditable_type":"Labware",
+                        "created_at":"Thursday November 12 2015 10:16",
+                        "updated_at":"Thursday November 12 2015 10:16"
+                      }
                     }
                   ]
     

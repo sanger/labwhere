@@ -2,7 +2,7 @@
 # Form object for creating a printer
 class PrinterForm
 
-  include Auditor
+  include AuthenticationForm
 
   set_attributes :name, :uuid
   

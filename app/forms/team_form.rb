@@ -2,7 +2,7 @@
 # Form object for creating or updating a Team
 class TeamForm
 
-  include Auditor
+  include AuthenticationForm
 
   set_attributes :name, :number
 

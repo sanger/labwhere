@@ -11,23 +11,25 @@ module Auditable
   end
 
   ##
-  # Build an audit record but will not save it
-  # An audit record will be added to the audit association.
-  def build_audit(user, action)
-    audits << audits.build(user: user, action: action, record_data: self)
-  end
-
-  ##
   # Build and save an associated audit record.
   # The record data will be a json representation of the saved object.
-  def create_audit(user, action)
-    audits.create(user: user, action: action, record_data: self)
+  def create_audit(user, action = nil)
+    Audit.create(user: user, action: create_action(action), record_data: self, auditable_type: self.class, auditable_id: self.id)
   end
 
   ##
   # Convert the dates to human readable uk format for the audit record.
   def uk_dates
     { "created_at" => created_at.to_s(:uk), "updated_at" => updated_at.to_s(:uk)}
+  end
+
+private
+
+  def create_action(action)
+    return action if action.present?
+    return "destroy" if self.destroyed?
+    return "create" if self.audits.empty?
+    "update"
   end
   
 end

@@ -116,29 +116,6 @@ class Location < ActiveRecord::Base
     end
   end
 
-  # Add a piece of Labware to the location.
-  # Find or initialize it first.
-  # Returns the labware and a copy of it before the location is updated
-  def add_labware(barcode)
-    labware = Labware.find_or_initialize_by(barcode: barcode)
-    labware_dup = labware.dup
-    labware.flush_coordinate
-    labwares << labware
-    [labware, labware_dup]
-  end
-
-  # Add several pieces of Labware only if the barcodes passed are a string
-  # Split the barcodes by returns and add each one.
-  # In some cases we need to do stuff with each labware before and after it has changed.
-  # in which case we allow a block to be executed on each piece of labware that is added.
-  def add_labwares(barcodes)
-    return unless barcodes.instance_of?(String)
-    barcodes.split("\n").each do |barcode| 
-      after, before = add_labware(barcode.remove_control_chars)
-      yield(after, before) if block_given?
-    end
-  end
-
   # Find any locations within the location which have enough contiguous available coordinates
   # signified by n.
   def available_coordinates(n)
