@@ -8,6 +8,7 @@ module AuthenticationForm
     set_form_variables current_user: :find_current_user
 
     validate :check_user
+
   end
 
 private

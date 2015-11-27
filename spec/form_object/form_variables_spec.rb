@@ -14,6 +14,7 @@ RSpec.describe FormObject::FormVariables, type: :model do |variable|
   end
 
   let(:form_variables)  { FormObject::FormVariables.new(:little_model, :params, :attr_d, :attr_e) }
+
   let(:params)          { { attr_d: "d", attr_e: "e", little_model: {attr_a: "a", attr_c: "c", attr_b: "b"} } }
   let(:unnested_params) { { attr_a: "a", attr_c: "c", attr_b: "b"} }
   let(:model)           { ALovelyLittleModel.new }

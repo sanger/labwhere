@@ -181,5 +181,4 @@ RSpec.describe FormObject, type: :model do |variable|
     expect(ShesAModelAndShesLookingGood.count).to eq(1)
   end
 
-
 end
