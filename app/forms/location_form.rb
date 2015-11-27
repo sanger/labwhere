@@ -3,6 +3,7 @@
 class LocationForm
 
   include AuthenticationForm
+  include AddAudit
 
   set_attributes :name, :location_type_id, :parent_id, :container, :status, :rows, :columns
 

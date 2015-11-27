@@ -14,7 +14,8 @@ RSpec.describe FormObject::FormVariables, type: :model do |variable|
   end
 
   let(:form_variables)  { FormObject::FormVariables.new(:little_model, :params, :attr_d, :attr_e) }
-  let(:params)          { { attr_d: "d", attr_e: "e", little_model: {attr_a: "a", attr_b: "b", attr_c: "c"} } }
+  let(:params)          { { attr_d: "d", attr_e: "e", little_model: {attr_a: "a", attr_c: "c", attr_b: "b"} } }
+  let(:unnested_params) { { attr_a: "a", attr_c: "c", attr_b: "b"} }
   let(:model)           { ALovelyLittleModel.new }
 
   before(:each) do
@@ -53,6 +54,13 @@ RSpec.describe FormObject::FormVariables, type: :model do |variable|
     expect(model.attr_d).to eq("d")
     expect(model.attr_e).to eq("e")
     expect(model.params).to eq(params)
+  end
+
+   it "assign should assign all of the attributes if they are not nested" do
+    form_variables.assign_top_level(model, unnested_params)
+    expect(model.attr_a).to eq("a")
+    expect(model.attr_b).to eq("b")
+    expect(model.attr_c).to eq("ac")
   end
 
 end

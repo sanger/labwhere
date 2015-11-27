@@ -33,6 +33,16 @@ RSpec.describe FormObject, type: :model do |variable|
     end
   end
 
+  with_model :ShesAModelAndShesLookingGood do
+    table do |t|
+      t.string :name
+      t.timestamps null: false
+    end
+
+    model do
+    end
+  end
+
   class ModelAForm
     include FormObject
 
@@ -81,6 +91,14 @@ RSpec.describe FormObject, type: :model do |variable|
     def duck_quacks
       errors.add(:base, "Your duck is not quacking") unless duck
     end
+  end
+
+  class ShesAModelAndShesLookingGoodForm
+
+    include FormObject
+
+    set_form_variables :attr_a
+
   end
 
   it "should assign the params attributes" do
@@ -154,6 +172,13 @@ RSpec.describe FormObject, type: :model do |variable|
     model_b_form.submit(ActionController::Parameters.new(model_b: {name: "A name"}))
     expect(model_b_form.shout).to eq("hallelujah!")
     expect(ModelB.count).to eq(1)
+  end
+
+  it "should be able to submit without attributes" do
+    shes_a_model_form = ShesAModelAndShesLookingGoodForm.new
+    shes_a_model_form.submit(ActionController::Parameters.new(shes_a_model_and_shes_looking_good: {attr_a: "Blinding"}))
+    expect(shes_a_model_form.attr_a).to eq("Blinding")
+    expect(ShesAModelAndShesLookingGood.count).to eq(1)
   end
 
 

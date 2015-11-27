@@ -47,6 +47,12 @@ module FormObject
       end
     end
 
+    def assign_top_level(object, params)
+      model_variables.each do |k, v|
+        object.instance_variable_set v.instance, v.assign(object, params[k])
+      end
+    end
+
     class FormVariable
 
       attr_reader :name

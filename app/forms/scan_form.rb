@@ -13,6 +13,20 @@ class ScanForm
 
   validate :check_for_errors, :check_user
 
+  # include FormObject
+  # include AuthenticationForm
+
+  # set_form_variables :labwares, :labware_barcodes, location: :find_location
+
+  # after_validate do 
+  #   scan.add_attributes_from_collection(LabwareCollection.new(location, current_user, labwares || labware_barcodes).push)
+  #   scan.save
+  # end
+
+  # validate :check_location
+
+  # delegate :message, :created_at, :updated_at, to: :scan
+
   ##
   # A scan will never be edited.
   def persisted?
@@ -48,6 +62,14 @@ class ScanForm
   end
 
 private
+
+  # def find_location(location)
+  #   Location.find_by_code(location)
+  # end
+
+  # def check_location
+  #   LocationValidator.new.validate(self)
+  # end
 
   def check_for_errors
     LocationValidator.new.validate(self)

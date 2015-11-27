@@ -57,10 +57,4 @@ RSpec.describe AuthenticationForm, type: :model do |variable|
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t("errors.messages.active")}")
   end
 
-  it "should create an audit record" do
-    user = create(:administrator)
-    model_c_form = ModelCForm.new
-    model_c_form.submit(params.merge(model_c: { name: "name", current_user: user.swipe_card_id }))
-    expect(model_c_form.model_c.audits.count).to eq(1)
-  end
 end

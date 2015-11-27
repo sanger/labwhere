@@ -8,7 +8,6 @@ module AuthenticationForm
     set_form_variables current_user: :find_current_user
 
     validate :check_user
-    after_submit :create_audit
   end
 
 private
@@ -19,10 +18,6 @@ private
 
   def check_user
     UserValidator.new.validate(self)
-  end
-
-  def create_audit
-    model.create_audit(current_user)
   end
 
 end

@@ -129,8 +129,10 @@ module FormObject
   def submit(params)
     run_callbacks :submit do
       self.form_variables.assign_all(self, params)
-      run_callbacks :assigning_model_variables do
-        model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
+      if self.respond_to?(:model_attributes)
+        run_callbacks :assigning_model_variables do
+          model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
+        end
       end
       save_if_valid
     end
@@ -153,10 +155,12 @@ module FormObject
 private
 
   def check_for_errors
-    unless model.valid?
-      model.errors.each do |key, value|
-        errors.add key, value
-      end
+    add_errors unless model.valid?
+  end
+
+  def add_errors
+    model.errors.each do |key, value|
+      errors.add key, value
     end
   end
 

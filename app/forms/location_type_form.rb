@@ -1,14 +1,18 @@
 ##
 # Form object for the Location Type
 class LocationTypeForm
-  include Auditor
+  include AuthenticationForm
+  include AddAudit
 
   set_attributes :name
 
-  ##
-  # We should only be able to destroy a location type if it has no locations.
-  def before_destroy
-    errors.add(:base, I18n.t("errors.messages.location_type_in_use")) if location_type.has_locations?
+  def destroy(params)
+    self.form_variables.assign_top_level(self, params)
+    return false unless valid?
+    location_type.destroy
+    return true if location_type.destroyed?
+    add_errors
+    false
   end
   
 end
