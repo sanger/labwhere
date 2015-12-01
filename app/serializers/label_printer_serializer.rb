@@ -23,6 +23,7 @@ class LabelPrinterSerializer < ActiveModel::Serializer
   # The printing service requires a root key
   self.root = true
   attributes :labels, :header_text, :footer_text
+  has_many :labels,serializer: LabelSerializer
 
   # The printing service requires a header and a footer.
   # This is static.
@@ -36,23 +37,23 @@ class LabelPrinterSerializer < ActiveModel::Serializer
 
   #
   # Use the labwhere template.
-  def labels
-    [
-      {
-        template: "labwhere",
-        plate: plate
-      }
-    ]
-  end
+  # def labels
+  #   [
+  #     {
+  #       template: "labwhere",
+  #       plate: plate
+  #     }
+  #   ]
+  # end
 
-  # location barcode as code 128
-  # location name and location parent name will be printed as text.
-  def plate
-    {
-      barcode: object.location.barcode,
-      location: object.location.name,
-      parent_location: object.location.parent.name
-    }
-  end
+  # # location barcode as code 128
+  # # location name and location parent name will be printed as text.
+  # def plate
+  #   {
+  #     barcode: object.location.barcode,
+  #     location: object.location.name,
+  #     parent_location: object.location.parent.name
+  #   }
+  # end
 
 end

@@ -4,6 +4,7 @@ RSpec.describe LabelPrinter, type: :model do
 
   let!(:location)     { create(:location)}
   let!(:printer)      { create(:printer)}
+  let!(:locations)    { create_list(:location, 5)}
 
   it "should add the uuid of the printer to the request_uri" do
     label_printer = LabelPrinter.new(printer.id, location.id)
@@ -30,38 +31,9 @@ RSpec.describe LabelPrinter, type: :model do
     expect(label_printer.message).to eq(I18n.t("printing.failure"))
   end
 
-  context "to_json" do
-
-    subject(:label_printer) { LabelPrinter.new(printer.id, location.id).as_json}
-
-    it "should produced a root node" do
-      expect(label_printer.keys).to include("label_printer")
-    end
-
-    it "should include a header" do
-      header = label_printer["label_printer"][:header_text]
-      expect(header).to_not be_nil
-      expect(header.keys).to include(:header_text1)
-      expect(header.keys).to include(:header_text2)
-    end
-
-    it "should include a footer" do
-      footer = label_printer["label_printer"][:footer_text]
-      expect(footer).to_not be_nil
-      expect(footer.keys).to include(:footer_text1)
-      expect(footer.keys).to include(:footer_text2)
-    end
-
-    it "should include a template" do
-      expect(label_printer["label_printer"][:labels].first[:template]).to eq("labwhere")
-    end
-
-    it "should include a plate with the barcode, location and parent location" do
-      plate = label_printer["label_printer"][:labels].first[:plate]
-      expect(plate[:barcode]).to eq(location.barcode)
-      expect(plate[:location]).to eq(location.name)
-      expect(plate[:parent_location]).to eq(location.parent.name)
-    end
+  it "should print multiple labels" do
+    label_printer = LabelPrinter.new(printer.id, locations.map(&:id))
+    expect(label_printer.as_json["label_printer"][:labels].length).to eq(5)
   end
 
 end
