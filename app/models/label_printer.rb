@@ -4,6 +4,8 @@
 # The body of the json request is created through a serializer.
 class LabelPrinter
 
+  include ActiveModel::Serialization
+
   # Site which hosts barcode printing service
   class_attribute :site
   self.site = "http://psd2g.internal.sanger.ac.uk:8000/lims-support"
@@ -12,17 +14,19 @@ class LabelPrinter
   class_attribute :headers
   self.headers = {'Content-Type' => "application/json", 'Accept' => "application/json"}
 
-  attr_reader :request, :uri, :body, :location
+  attr_reader :request, :uri, :body, :locations
 
   delegate :as_json, :to_json, to: :serializer
+
+  alias_attribute :labels, :locations
   
   ##
   # For a given printer and location create a json request.
   # The url is based on the site and the uuid of the printer.
   # The body of the request will contain a header and footer and info about the location.
-  def initialize(printer_id, location_id)
+  def initialize(printer_id, location_ids)
     @printer = Printer.find(printer_id)
-    @location = Location.find(location_id)
+    @locations = Location.find(Array(location_ids))
 
     @uri = URI.parse("#{self.site}/#{printer.uuid}")
     @http = Net::HTTP.new(uri.host, uri.port)
