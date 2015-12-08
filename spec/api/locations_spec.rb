@@ -99,7 +99,7 @@ RSpec.describe Api::LocationsController, type: :request do
   end
 
   it "should create a new location" do
-    post api_locations_path, location: attributes_for(:location).merge(current_user: user.swipe_card_id)
+    post api_locations_path, location: attributes_for(:location).merge(user_code: user.swipe_card_id)
     expect(response).to be_success
     location = Location.first
     json = ActiveSupport::JSON.decode(response.body)
@@ -108,7 +108,7 @@ RSpec.describe Api::LocationsController, type: :request do
   end
 
   it "should return an error if the location has invalid attributes" do
-    post api_locations_path, location: attributes_for(:location).except(:name).merge(current_user: user.swipe_card_id)
+    post api_locations_path, location: attributes_for(:location).except(:name).merge(user_code: user.swipe_card_id)
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end
@@ -122,7 +122,7 @@ RSpec.describe Api::LocationsController, type: :request do
   it "should update an existing location" do
     location = create(:location_with_parent)
     location_parent = create(:location)
-    patch api_location_path(location.barcode), location: { current_user: user.swipe_card_id, parent_barcode: location_parent.barcode }
+    patch api_location_path(location.barcode), location: { user_code: user.swipe_card_id, parent_barcode: location_parent.barcode }
     expect(response).to be_success
     expect(location.reload.parent).to eq(location_parent)
   end
@@ -130,7 +130,7 @@ RSpec.describe Api::LocationsController, type: :request do
   it "should return an error if the updated location has invalid attributes" do
     location = create(:location_with_parent)
     location_parent = create(:location)
-    patch api_location_path(location.barcode), location: { current_user: user.swipe_card_id, name: nil }
+    patch api_location_path(location.barcode), location: { user_code: user.swipe_card_id, name: nil }
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end

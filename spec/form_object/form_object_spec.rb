@@ -42,72 +42,73 @@ RSpec.describe FormObject, type: :model do |variable|
     model do
     end
   end
+  before(:all) do
+    class ModelAForm
+      include FormObject
 
-  class ModelAForm
-    include FormObject
+      set_attributes :name
+      set_form_variables :attr_a, attr_b: :modify_a
+      after_submit :set_last
+      attr_reader :last
 
-    set_attributes :name
-    set_form_variables :attr_a, attr_b: :modify_b
-    after_submit :set_last
-    attr_reader :last
+      def modify_a
+        "modified " + attr_a.to_s
+      end
 
-    def modify_b(b)
-      "modified " + b.to_s
+      def set_last
+        @last = "boom"
+      end
     end
 
-    def set_last
-      @last = "boom"
+    class ModelBForm
+      include FormObject
+
+      attr_reader :shout
+
+      set_attributes :name
+
+      after_validate do
+        model.save
+        @shout = "hallelujah!"
+      end
+
+    end
+
+    class ModelDuckForm
+      include FormObject
+
+      set_attributes :name
+
+      attr_reader :duck
+      validate :duck_quacks
+
+      after_assigning_model_variables :set_duck
+
+      def set_duck
+        @duck = "quack"
+      end
+
+      def duck_quacks
+        errors.add(:base, "Your duck is not quacking") unless duck
+      end
+    end
+
+    class ShesAModelAndShesLookingGoodForm
+
+      include FormObject
+
+      set_form_variables :attr_a
+
     end
   end
-
-  class ModelBForm
-    include FormObject
-
-    attr_reader :shout
-
-    set_attributes :name
-
-    after_validate do
-      model.save
-      @shout = "hallelujah!"
-    end
-
-  end
-
-  class ModelDuckForm
-    include FormObject
-
-    set_attributes :name
-
-    attr_reader :duck
-    validate :duck_quacks
-
-    after_assigning_model_variables :set_duck
-
-    def set_duck
-      @duck = "quack"
-    end
-
-    def duck_quacks
-      errors.add(:base, "Your duck is not quacking") unless duck
-    end
-  end
-
-  class ShesAModelAndShesLookingGoodForm
-
-    include FormObject
-
-    set_form_variables :attr_a
-
-  end
-
-  it "should assign the params attributes" do
-    params = ActionController::Parameters.new(controller: 'my_controller', action: 'create', model_a: {})
+  
+  it "should assign the top level attributes attributes" do
+    params = ActionController::Parameters.new(controller: "controller", action: "action", model_a: {})
     model_a_form = ModelAForm.new
     model_a_form.submit(params)
-    expect(model_a_form.controller).to eq('my_controller')
-    expect(model_a_form.action).to eq('create')
     expect(model_a_form.params).to eq(params)
+    expect(model_a_form.controller).to eq("controller")
+    expect(model_a_form.action).to eq("action")
   end
 
   it "should assign the form instance variables" do
@@ -118,10 +119,10 @@ RSpec.describe FormObject, type: :model do |variable|
   end
 
   it "should assign form instance variables by method" do
-    params = ActionController::Parameters.new(model_a: {attr_b: "attr_b"})
+    params = ActionController::Parameters.new(model_a: {attr_a: "attr_a"})
     model_a_form = ModelAForm.new
     model_a_form.submit(params)
-    expect(model_a_form.attr_b).to eq('modified attr_b')
+    expect(model_a_form.attr_b).to eq('modified attr_a')
   end
 
   it "should run the callbacks" do

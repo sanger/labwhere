@@ -5,7 +5,7 @@ module AuthenticationForm
   included do
     include FormObject
 
-    set_form_variables current_user: :find_current_user
+    set_form_variables :user_code, current_user: :find_current_user
 
     validate :check_user
 
@@ -13,8 +13,8 @@ module AuthenticationForm
 
 private
 
-  def find_current_user(current_user)
-    User.find_by_code(current_user)
+  def find_current_user
+    User.find_by_code(user_code)
   end
 
   def check_user

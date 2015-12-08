@@ -3,7 +3,7 @@
 class TeamForm
 
   include AuthenticationForm
-  include AddAudit
+  include Auditor
 
   set_attributes :name, :number
 

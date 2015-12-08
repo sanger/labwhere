@@ -69,10 +69,8 @@ module FormObject
     _model = self.to_s.gsub("Form","")
 
     class_attribute :form_variables
-    self.form_variables = FormObject::FormVariables.new(_model.underscore.to_sym, :params, :controller, :action)
-
-    attr_reader *self.form_variables.controller
-
+    self.form_variables = FormObject::FormVariables.new(self, _model.underscore.to_sym, [:controller, :action])
+  
     validate :check_for_errors
 
     define_singleton_method :model_name do
@@ -106,7 +104,6 @@ module FormObject
     # Set the list of form variables which will be assigned on submit.
     def set_form_variables(*variables)
       self.form_variables.add(*variables)
-      attr_accessor *self.form_variables.model
     end
 
     # modify the actions which will be carried out after a successful validation.
@@ -128,7 +125,7 @@ module FormObject
   # and run any callbacks.
   def submit(params)
     run_callbacks :submit do
-      self.form_variables.assign_all(self, params)
+      self.form_variables.assign(self, params)
       if self.respond_to?(:model_attributes)
         run_callbacks :assigning_model_variables do
           model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!

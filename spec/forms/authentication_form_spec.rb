@@ -14,26 +14,28 @@ RSpec.describe AuthenticationForm, type: :model do |variable|
     end
   end
 
-  class ModelCForm
-    include AuthenticationForm
+  before(:all) do
+    class ModelCForm
+      include AuthenticationForm
 
-    set_attributes :name
+      set_attributes :name
+    end
   end
-
-  let(:params) { ActionController::Parameters.new(controller: "authentication", action: "create")}
+  
+  let(:params) { ActionController::Parameters.new(controller: "controller", action: "action") }
 
   it "should create the record if the user is valid" do
     user = create(:administrator)
     model_c_form = ModelCForm.new
     expect{
-      model_c_form.submit(params.merge(model_c: { name: "name", current_user: user.swipe_card_id }))
+      model_c_form.submit(params.merge(model_c: { name: "name", user_code: user.swipe_card_id }))
     }.to change(ModelC, :count).by(1)
   end
 
   it "should not create the record if the user does not exist" do
     model_c_form = ModelCForm.new
     expect{ 
-      model_c_form.submit(params.merge(model_c: { name: "name", current_user: "1111" }))
+      model_c_form.submit(params.merge(model_c: { name: "name", user_code: "1111" }))
     }.to_not change(ModelC, :count)
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t("errors.messages.existence")}")
   end
@@ -42,7 +44,7 @@ RSpec.describe AuthenticationForm, type: :model do |variable|
     user = create(:scientist)
     model_c_form = ModelCForm.new
     expect{ 
-      model_c_form.submit(params.merge(model_c: { name: "name", current_user: user.swipe_card_id }))
+      model_c_form.submit(params.merge(model_c: { name: "name", user_code: user.swipe_card_id }))
     }.to_not change(ModelC, :count)
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t("errors.messages.authorised")}")
   end
@@ -52,7 +54,7 @@ RSpec.describe AuthenticationForm, type: :model do |variable|
     user.deactivate
     model_c_form = ModelCForm.new
     expect{ 
-      model_c_form.submit(params.merge(model_c: { name: "name", current_user: user.swipe_card_id }))
+      model_c_form.submit(params.merge(model_c: { name: "name", user_code: user.swipe_card_id }))
     }.to_not change(ModelC, :count)
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t("errors.messages.active")}")
   end

@@ -3,7 +3,7 @@
 class PrinterForm
 
   include AuthenticationForm
-  include AddAudit
+  include Auditor
 
   set_attributes :name, :uuid
   

@@ -3,7 +3,7 @@
 class UserForm
 
   include AuthenticationForm
-  include AddAudit
+  include Auditor
 
   set_attributes :login, :swipe_card_id, :barcode, :type, :status, :team_id
 

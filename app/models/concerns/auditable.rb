@@ -28,7 +28,7 @@ private
   def create_action(action)
     return action if action.present?
     return "destroy" if self.destroyed?
-    return "create" if self.audits.empty?
+    return "create" if self.created_at == self.updated_at
     "update"
   end
   

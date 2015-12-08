@@ -41,7 +41,7 @@ RSpec.describe Api::LocationTypesController, type: :request do
   end
 
   it "should create a new location type" do
-    post api_location_types_path, location_type: attributes_for(:location_type).merge(current_user: user.swipe_card_id)
+    post api_location_types_path, location_type: attributes_for(:location_type).merge(user_code: user.swipe_card_id)
     location_type = LocationType.first
     expect(response).to be_success
     json = ActiveSupport::JSON.decode(response.body)
@@ -52,7 +52,7 @@ RSpec.describe Api::LocationTypesController, type: :request do
   end
 
   it "should return an error if the location type has invalid attributes" do
-    post api_location_types_path, location_type: attributes_for(:location_type).except(:name).merge(current_user: user.swipe_card_id)
+    post api_location_types_path, location_type: attributes_for(:location_type).except(:name).merge(user_code: user.swipe_card_id)
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end
@@ -66,7 +66,7 @@ RSpec.describe Api::LocationTypesController, type: :request do
   it "should update an existing location type" do
     location_type = create(:location_type)
     location_type_new = build(:location_type)
-    patch api_location_type_path(location_type), location_type: { current_user: user.swipe_card_id, name: location_type_new.name }
+    patch api_location_type_path(location_type), location_type: { user_code: user.swipe_card_id, name: location_type_new.name }
     expect(response).to be_success
     expect(location_type.reload.name).to eq(location_type_new.name)
   end
@@ -74,7 +74,7 @@ RSpec.describe Api::LocationTypesController, type: :request do
   it "should return an error if the updated location type has invalid attributes" do
     location_type_1 = create(:location_type)
     location_type_2 = create(:location_type)
-    patch api_location_type_path(location_type_1), location_type: { current_user: user.swipe_card_id, name: location_type_2.name }
+    patch api_location_type_path(location_type_1), location_type: { user_code: user.swipe_card_id, name: location_type_2.name }
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end

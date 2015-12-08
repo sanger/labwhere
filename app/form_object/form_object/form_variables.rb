@@ -6,92 +6,66 @@ module FormObject
 
   class FormVariables
 
-    attr_reader :model_key
+    attr_reader :model_key, :readers, :writers, :variables, :derived
 
-    def initialize(*args)
-      @model_key = args.shift
-      @controller_variables = {}
-      _add controller_variables, args
-      @model_variables = {}
-    end
-
-    # Returns the keys for all of the controller variables
-    def controller
-      controller_variables.keys
-    end
-
-    # Returns the keys for all the model variables
-    def model
-      model_variables.keys
+    def initialize(model, model_key = nil, readers = [])
+      @model = model
+      @model_key = model_key || model.to_s.underscore.to_sym
+      @variables, @readers, @writers, @derived = {}, {}, {}, {}
+      @variables[:params] = ReaderVariable.new(model, :params)
+      readers.each do |var|
+        _add(ReaderVariable, @readers, var)
+      end
     end
 
     # Add the provided variable to the model variables
     def add(*vars)
-      _add model_variables, vars
+      vars.each do |var|
+        if var.is_a? Hash
+          _add(DerivedVariable, @derived, var)
+        else
+          _add(WriterVariable, @writers, var)
+        end
+      end
     end
 
-    # Find the associated variable name in the controller or model variables.
     def find(name)
-      controller_variables[name] || model_variables[name]
+      @variables[name]
     end
 
     # Set up instance variables for controller and model.
     #
-    def assign_all(object, params)
-      controller_variables.each do |k, v|
-        object.instance_variable_set v.instance, v.assign(object, k == :params ? params : params[k])
+    def assign(object, params)
+
+      variables[:params].assign(object, params)
+      assign_by_type(readers, object, params)
+      if params.has_key?(model_key)
+        assign_writers_and_derived(object, params[model_key])
+      else
+        assign_writers_and_derived(object, params)
       end
-
-      model_variables.each do |k, v|
-        object.instance_variable_set v.instance, v.assign(object, params[model_key][k])
-      end
-    end
-
-    def assign_top_level(object, params)
-      model_variables.each do |k, v|
-        object.instance_variable_set v.instance, v.assign(object, params[k])
-      end
-    end
-
-    class FormVariable
-
-      attr_reader :name
-
-      def initialize(variable)
-        if variable.is_a? Hash
-          @name, @call = variable.to_a.flatten
-        else
-          @name = variable
-        end
-      end
-
-      def assign(object, value)
-        if call
-          object.send(call, value)
-        else
-          value
-        end
-      end
-
-      def instance
-        "@#{name}"
-      end
-
-    private
-
-      attr_reader :call
-      
     end
 
   private
 
-    attr_reader :controller_variables, :model_variables
+    attr_reader :model
 
-    def _add(hsh, vars)
-      vars.each do |variable|
-        _variable = FormVariable.new(variable)
-        hsh[_variable.name] = _variable
+    def assign_writers_and_derived(object, params)
+      assign_by_type(writers, object, params)
+      assign_by_type(derived, object, params)
+    end
+
+    def assign_by_type(hsh, object, params)
+      hsh.each do |k, v|
+        v.assign(object, params[k])
       end
     end
+
+    def _add(type, instance, var)
+      variable = type.new(model, var)
+      instance[variable.name] = variable
+      @variables[variable.name] = variable
+    end
+
   end
 end

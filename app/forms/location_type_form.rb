@@ -2,17 +2,20 @@
 # Form object for the Location Type
 class LocationTypeForm
   include AuthenticationForm
-  include AddAudit
+  include Auditor
 
   set_attributes :name
 
   def destroy(params)
-    self.form_variables.assign_top_level(self, params)
+    self.form_variables.assign(self, params)
     return false unless valid?
     location_type.destroy
-    return true if location_type.destroyed?
-    add_errors
-    false
+    if location_type.destroyed?
+      true
+    else
+      add_errors
+      false
+    end
   end
   
 end

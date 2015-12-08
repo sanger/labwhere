@@ -10,12 +10,12 @@ RSpec.describe LocationTypeForm, type: :model do
     location_type = create(:location_type)
     create(:location, location_type: location_type)
     location_type_form = LocationTypeForm.new(location_type)
-    expect(location_type_form.destroy(params.merge(current_user: administrator.barcode))).to be_falsey
+    expect(location_type_form.destroy(params.merge(user_code: administrator.barcode))).to be_falsey
     expect(location_type_form.errors.full_messages).to include(I18n.t("errors.messages.location_type_in_use"))
 
     location_type = create(:location_type)
     location_type_form = LocationTypeForm.new(location_type)
-    expect(location_type_form.destroy(params.merge(current_user: administrator.barcode))).to be_truthy
+    expect(location_type_form.destroy(params.merge(user_code: administrator.barcode))).to be_truthy
 
   end
 end

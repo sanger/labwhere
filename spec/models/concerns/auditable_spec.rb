@@ -5,7 +5,6 @@ RSpec.describe Auditable, type: :model do
   with_model :my_model do
     table do |t|
       t.string :name
-      t.integer :audits_count
       t.timestamps null: false
     end
 
@@ -37,6 +36,7 @@ RSpec.describe Auditable, type: :model do
     my_model = MyModel.create(name: "My Model")
     my_model.create_audit(user)
     expect(my_model.audits.last.action).to eq("create")
+    my_model.update_attributes(name: "New Name")
     my_model.create_audit(user)
     expect(my_model.audits.last.action).to eq("update")
     my_model.destroy

@@ -31,6 +31,20 @@ RSpec.describe SubclassChecker, type: :model do
   class Parent < Person
   end
 
+  class XmasSongs
+    include SubclassChecker
+    has_subclasses :jingle_bells, :xmas_tree
+    def type
+      self.class.to_s
+    end
+  end
+
+  class JingleBells < XmasSongs
+  end
+
+  class XmasTree < XmasSongs
+  end
+
   context "Potato - with a suffix" do
 
     it "Potato should not be Baked or Roasted" do
@@ -66,5 +80,27 @@ RSpec.describe SubclassChecker, type: :model do
       expect(Parent.new).to be_parent
     end
   end
+
+  context "Xmas Songs - underscored" do
+
+    it "XmasSongs should not be JingleBells or XmasTree" do
+      expect(XmasSongs.new).to_not be_jingle
+      expect(XmasSongs.new).to_not be_xmas
+    end
+
+    it "JingleBells should be JingleBells not XmasTree" do
+      expect(JingleBells.new).to be_jingle
+      expect(JingleBells.new).to_not be_xmas
+    end
+
+    it "XmasTree should be XmasTree not JingleBells" do
+      expect(XmasTree.new).to_not be_jingle
+      expect(XmasTree.new).to be_xmas
+    end
+  
+  end
+
+
+
 
 end
