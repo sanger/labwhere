@@ -13,6 +13,8 @@ class LocationType < ActiveRecord::Base
 
   searchable_by :name
 
+  before_destroy :check_locations
+
   ##
   # A location type can only be destroyed if it has no locations
   def destroyable
@@ -31,6 +33,15 @@ class LocationType < ActiveRecord::Base
   # We dont need the count for the audit record.
   def as_json(options = {})
     super(options).merge(uk_dates)
+  end
+
+private
+
+  def check_locations
+    if has_locations?
+      errors.add(:base, I18n.t("errors.messages.location_type_in_use"))
+      false
+    end
   end
 
 end

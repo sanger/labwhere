@@ -360,57 +360,58 @@
   <label for="collapse-4"><h5>application/json </h5></label><input aria-hidden="true" checked id="collapse-4" type="checkbox">
   <div class="collapse_content"><section>
   <label for="collapse-5"><h5>Schema </h5></label><input aria-hidden="true" checked id="collapse-5" type="checkbox">
-  <div class="collapse_content"><pre><code class="schema"><pre class="highlight"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"user_code"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The swipe card id or barcode of the user creating the scan"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="nt">"location_barcode"</span><span class="p">:{</span><span class="w">
-      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The barcode of the location for the labware to be scanned in to. For scanning out leave location barcode blank."</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="err">.</span><span class="w">
-
-    </span><span class="p">},</span><span class="w">
-    </span><span class="nt">"labwares"</span><span class="p">:{</span><span class="w"> 
-      </span><span class="nt">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"properties:"</span><span class="w"> </span><span class="err">[</span><span class="w">
-        </span><span class="err">{</span><span class="w">
-          </span><span class="nt">"barcode"</span><span class="p">:{</span><span class="w">
-            </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The labware barcode"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-          </span><span class="p">},</span><span class="w">
-          </span><span class="nt">"position"</span><span class="p">:{</span><span class="w">
-            </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The coordinate position to put the labware barcode into"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-          </span><span class="p">},</span><span class="w">
-           </span><span class="nt">"row"</span><span class="p">:{</span><span class="w">
-            </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The row put the labware barcode into"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-          </span><span class="p">},</span><span class="w">
-           </span><span class="nt">"column"</span><span class="p">:{</span><span class="w">
-            </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The column put the labware barcode into"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+  <div class="collapse_content"><pre><code class="schema"><pre class="highlight"><code><span class="p">{</span><span class="w"> 
+  </span><span class="nt">"scan"</span><span class="p">:</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"user_code"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The swipe card id or barcode of the user creating the scan"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"location_barcode"</span><span class="p">:{</span><span class="w">
+        </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The barcode of the location for the labware to be scanned in to. For scanning out leave location barcode blank."</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"labwares"</span><span class="p">:{</span><span class="w"> 
+        </span><span class="nt">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"barcode"</span><span class="p">:{</span><span class="w">
+              </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The labware barcode"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"position"</span><span class="p">:{</span><span class="w">
+              </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The location coordinate position to put the labware into"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+             </span><span class="nt">"row"</span><span class="p">:{</span><span class="w">
+              </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The row of the location coordinate to put the labware into"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+             </span><span class="nt">"column"</span><span class="p">:{</span><span class="w">
+              </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The column of the location coordinate to put the labware into"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+            </span><span class="p">}</span><span class="w">
           </span><span class="p">}</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-      </span><span class="err">]</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="nt">"labware_barcodes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Any number of labware barcodes as a string separated by returns or carriage returns"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"example"</span><span class="p">:</span><span class="w"> </span><span class="s2">"barcode1\nbarcode2\nbarcode3\n"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+      </span><span class="nt">"labware_barcodes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Any number of labware barcodes as a string separated by returns or carriage returns"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"example"</span><span class="p">:</span><span class="w"> </span><span class="s2">"barcode1\nbarcode2\nbarcode3\n"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
-</span><span class="err">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></code></pre>
 </code></pre>
   </div>
@@ -429,7 +430,20 @@
   <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100 Labwares scanned in to location 1"</span><span class="p">,</span><span class="w">
   </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thursday 4 June 08:54"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thursday 4 June 08:54"</span><span class="w">
+  </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thursday 4 June 08:54"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"location"</span><span class="p">:</span><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Location 1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"barcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location-1-1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"parent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"null"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"container"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"location_type_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"labwares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location-1-1/labwares"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"audits"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location-1-1/audits"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api/locations/location-1-1/children"</span><span class="w">
+
+  </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 </code></pre>
@@ -1155,14 +1169,14 @@
 </section>
   </div>
 </section><section>
-  <label for="collapse-94"><h2>/labwares/<span class="url_param">{barcode}</span>/histories </h2></label><input aria-hidden="true" checked id="collapse-94" type="checkbox">
+  <label for="collapse-94"><h2>/labwares/<span class="url_param">{barcode}</span>/audits </h2></label><input aria-hidden="true" checked id="collapse-94" type="checkbox">
   <div class="collapse_content">
 <div class="properties">
 </div><section>
   <label for="collapse-95"><h3>get </h3></label><input aria-hidden="true" checked id="collapse-95" type="checkbox">
   <div class="collapse_content">
 <div class="method_description">
-  <p>Returns all of the histories for a labware</p>
+  <p>Returns all of the audits for a labware</p>
   
 </div><section>
   <label for="collapse-96"><h4>Responses </h4></label><input aria-hidden="true" checked id="collapse-96" type="checkbox">
@@ -1174,17 +1188,20 @@
   <label for="collapse-99"><h5>Example </h5></label><input aria-hidden="true" checked id="collapse-99" type="checkbox">
   <div class="collapse_content"><pre><code class="example"><pre class="highlight"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location1"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Friday 05 June 08:54"</span><span class="w">
-    </span><span class="s2">"updated_at"</span><span class="err">:</span><span class="w"> </span><span class="s2">"Friday 05 June 08:54"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user2"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location2"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Friday 30 May 08:54"</span><span class="w">
-    </span><span class="s2">"updated_at"</span><span class="err">:</span><span class="w"> </span><span class="s2">"Friday 30 May 08:54"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
+    </span><span class="nt">"user"</span><span class="p">:</span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"record_data"</span><span class="p">:</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="mi">30525</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"barcode"</span><span class="p">:</span><span class="s2">"SAMEA3451112"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"created_at"</span><span class="p">:</span><span class="s2">"Thursday September 10 2015 14:42"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"Thursday November 12 2015 10:16"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"location"</span><span class="p">:</span><span class="s2">"lw-cytomatic-incubator-2192"</span><span class="p">},</span><span class="w">
+      </span><span class="nt">"action"</span><span class="p">:</span><span class="s2">"scan"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"auditable_type"</span><span class="p">:</span><span class="s2">"Labware"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"created_at"</span><span class="p">:</span><span class="s2">"Thursday November 12 2015 10:16"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="s2">"Thursday November 12 2015 10:16"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="err">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
 </code></pre>

@@ -19,14 +19,12 @@ RSpec.describe LocationType, type: :model do
   end
 
   it "#has_locations? should signify whether a location type can be destroyed" do
-    location_type = create(:location_type)
-    location = create(:location, location_type: location_type)
-    expect(location_type.has_locations?).to be_truthy
-  end
+    location_type_1 = create(:location_type)
+    create(:location, location_type: location_type_1)
+    expect(location_type_1.has_locations?).to be_truthy
 
-   it "#has_locations? should signify whether a location type can be destroyed" do
-    location_type = create(:location_type)
-    expect(location_type.has_locations?).to be_falsey
+    location_type_2 = create(:location_type)
+    expect(location_type_2.has_locations?).to be_falsey
   end
 
   it "#ordered should produce a list ordered by name" do
@@ -43,7 +41,14 @@ RSpec.describe LocationType, type: :model do
     json = location_type.as_json
     expect(json["created_at"]).to eq(location_type.created_at.to_s(:uk))
     expect(json["updated_at"]).to eq(location_type.updated_at.to_s(:uk))
+  end
 
+  it "should not be destroyed if it has locations" do
+    location_type = create(:location_type)
+    create(:location, location_type: location_type)
+    location_type.destroy
+    expect(location_type).to_not be_destroyed
+    expect(location_type.errors).to_not be_empty
   end
 
 end

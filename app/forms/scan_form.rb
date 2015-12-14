@@ -3,71 +3,28 @@
 # It can be used from a view or elsewhere.
 class ScanForm
 
-  include ActiveModel::Model
-  include ActiveModel::Serialization
-  include HashAttributes
+  include FormObject
+  include AuthenticationForm
 
-  attr_reader :scan, :controller, :action, :current_user, :labwares
-  attr_accessor :location_barcode, :labware_barcodes, :user_code
-  delegate :location, :message, :created_at, :updated_at, to: :scan
+  set_form_variables :labwares, :labware_barcodes, :location_barcode, location: :find_location
 
-  validate :check_for_errors, :check_user
-
-  ##
-  # A scan will never be edited.
-  def persisted?
-    false
+  after_validate do 
+    scan.add_attributes_from_collection(LabwareCollection.new(location, current_user, labwares || labware_barcodes).push)
+    scan.save
   end
 
-  def self.model_name
-    ActiveModel::Name.new(self, nil, "Scan")
-  end
+  validate :check_location
 
-  def initialize
-  end
-
-  ##
-  # When a scan form is submitted the user and location are added
-  # from the passed attributes.
-  # If they are valid then the labwares are added to the scan and it
-  # is saved.
-  def submit(params)
-    set_params_attributes(:scan, params)
-    @current_user = User.find_by_code(user_code)
-    scan.location = Location.find_by_code(location_barcode)
-    scan.user = current_user
-    if valid?
-      ActiveRecord::Base.transaction do
-        scan.location.add_labwares(permitted_labwares(labwares) || labware_barcodes) do |after, before|
-          scan.add_labware(before)
-          after.create_audit(scan.user, "scan")
-        end
-      end
-      scan.save
-    else
-      false
-    end
-  end
-
-  def scan
-    @scan ||= Scan.new
-  end
+  delegate :message, :created_at, :updated_at, to: :scan
 
 private
 
-  def check_for_errors
+  def find_location
+    Location.find_by_code(location_barcode)
+  end
+
+  def check_location
     LocationValidator.new.validate(self)
-  end
-
-  def check_user
-    UserValidator.new.validate(self)
-  end
-
-  def permitted_labwares(labwares)
-    return unless labwares
-    labwares.collect do |labware|
-      labware.permit(:position, :row, :column, :barcode)
-    end
   end
 
 end

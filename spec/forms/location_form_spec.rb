@@ -35,6 +35,7 @@ RSpec.describe LocationTypeForm, type: :model do
     expect(location_form.location).to be_unordered
     expect(location_form.location.coordinates).to be_empty
 
+    location_form = LocationForm.new
     location_form.submit(params.merge(location: ordered_location_params))
     expect(location_form.location).to be_ordered
     expect(location_form.location.coordinates.count).to eq(create(:ordered_location).coordinates.count)

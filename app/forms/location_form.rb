@@ -2,28 +2,17 @@
 # Form object for a Location
 class LocationForm
 
+  include AuthenticationForm
   include Auditor
-
+  
   set_attributes :name, :location_type_id, :parent_id, :container, :status, :rows, :columns
 
-  attr_accessor :parent_barcode
+  set_form_variables :parent_barcode
+
+  after_assigning_model_variables :transform_location, :add_parent_location
 
   validate :check_parent_location
   delegate :parent, :barcode, :parentage, :type, to: :location
-
-  ##
-  # A locations parent can be provided via a select or a barcode.
-  # If the barcode is present we need to check whether it is a valid location.
-  # The location barcode will always take precedence.
-  # If the barcode is present and it is valid the parent will be added to the location.
-  def submit(params)
-    set_instance_variables(params)
-    set_current_user(params)
-    set_model_attributes(params)
-    transform_location
-    add_parent_location
-    save_if_valid
-  end
 
 private
 
@@ -39,7 +28,7 @@ private
   end
 
   def transform_location
-    @model = location.transform if creating?
+    @model = location.transform if location.new_record?
   end
 
 end

@@ -41,7 +41,7 @@ RSpec.describe Api::LocationTypesController, type: :request do
   end
 
   it "should create a new location type" do
-    post api_location_types_path, user_code: user.swipe_card_id, location_type: attributes_for(:location_type)
+    post api_location_types_path, location_type: attributes_for(:location_type).merge(user_code: user.swipe_card_id)
     location_type = LocationType.first
     expect(response).to be_success
     json = ActiveSupport::JSON.decode(response.body)
