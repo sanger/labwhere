@@ -135,5 +135,20 @@ RSpec.describe Location, type: :model do
     expect(Location.by_building.first).to eq(locations_2.first)
   end
 
-  
+  it '#should allow the same name with different parents' do
+
+    parent_1 = create(:location, name: "Building1")
+    parent_2 = create(:location, name: "Building2")
+
+    expect(create(:location, name: 'Location', parent: parent_1)).to be_valid
+    expect(create(:location, name: 'Location', parent: parent_2)).to be_valid
+  end
+
+  it '#should not allow the same name in the same parent' do
+    parent = create(:location, name: "Building")
+
+    expect(create(:location, name: 'Location', parent: parent)).to be_valid
+    expect(build(:location, name: 'Location', parent: parent)).to_not be_valid
+  end
+
 end

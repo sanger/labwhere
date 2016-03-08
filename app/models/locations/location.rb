@@ -13,8 +13,8 @@ class Location < ActiveRecord::Base
   belongs_to :parent, class_name: "Location"
   has_many :labwares
 
-  validates :name, presence: true
- 
+  validates :name, presence: true, uniqueness: {scope: :parent, case_sensitive: true}
+
   validates_format_of :name, with: /\A[\w\-\s\(\)]+\z/
   validates_length_of :name, maximum: 60
 
@@ -24,8 +24,8 @@ class Location < ActiveRecord::Base
   end
 
   scope :without, ->(location) { active.where.not(id: location.id) }
-  scope :without_unknown, ->{ where.not(name: UNKNOWN) }
-  scope :by_building, -> { without_unknown.where(location_type_id: LocationType.find_by(name: "Building"))}
+  scope :without_unknown, -> { where.not(name: UNKNOWN) }
+  scope :by_building, -> { without_unknown.where(location_type_id: LocationType.find_by(name: "Building")) }
 
   before_save :set_parentage
   after_create :generate_barcode
@@ -80,7 +80,7 @@ class Location < ActiveRecord::Base
   # This will transform the location into the correct type of location based on whether it
   # has coordinates.
   def transform
-    self.becomes! ( coordinateable? ? OrderedLocation : UnorderedLocation)
+    self.becomes! (coordinateable? ? OrderedLocation : UnorderedLocation)
   end
 
   def type
@@ -90,7 +90,7 @@ class Location < ActiveRecord::Base
   ##
   # Useful for creating audit records. There are certain attributes which are not needed.
   def as_json(options = {})
-    super({ except: [:deactivated_at, :location_type_id]}.merge(options)).merge(uk_dates).merge("location_type" => location_type.name)
+    super({except: [:deactivated_at, :location_type_id]}.merge(options)).merge(uk_dates).merge("location_type" => location_type.name)
   end
 
   def children
@@ -122,12 +122,12 @@ class Location < ActiveRecord::Base
     []
   end
 
-private
-  
+  private
+
   ##
   # The barcode is the name downcased with spaces replaced by dashes with the id added again separated by a space.
   def generate_barcode
-    update_column(:barcode, "lw-#{self.name.gsub(' ','-').downcase}-#{self.id}")
+    update_column(:barcode, "lw-#{self.name.gsub(' ', '-').downcase}-#{self.id}")
   end
 
 end
