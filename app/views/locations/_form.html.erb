@@ -6,11 +6,11 @@
        <%= render "user_code", object: f %>
       </li>
       <li>
-        <%= f.label :name %>
+        <%= f.label :name, 'Name*' %>
         <%= f.text_field :name %>
       </li>
       <li>
-        <%= f.label :location_type_id, "Location type" %>
+        <%= f.label :location_type_id, "Location type*" %>
         <%= f.select :location_type_id, options_from_collection_for_select(LocationType.ordered, :id, :name, @location.location_type_id) %>
       </li>
       <li>
