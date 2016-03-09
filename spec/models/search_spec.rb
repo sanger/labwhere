@@ -13,8 +13,11 @@ RSpec.describe Search, type: :model do
 
   it "should increment count each time the search term is used" do
     search = create(:search)
-    Search.find(search.id)
+    expect(search.search_count).to eq(0)
+    expect(Search.find(search.id).search_count).to eq(1)
     expect(Search.find(search.id).search_count).to eq(2)
+    expect(Search.find(search.id).search_count).to eq(3)
+    expect(Search.find(search.id).updated_at).to_not eq(search.updated_at)
   end
 
   context "Results" do
