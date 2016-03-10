@@ -97,6 +97,10 @@ class Location < ActiveRecord::Base
     []
   end
 
+  def child_count
+    children.length + labwares.length
+  end
+
   def coordinates
     []
   end

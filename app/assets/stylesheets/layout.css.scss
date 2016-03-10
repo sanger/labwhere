@@ -221,12 +221,8 @@ article{
     text-decoration: none;
   }
 
-  .id, .description, .name{
+  .description, .name{
     display: inline-block;
-  }
-
-  .id{
-    width: 30px;
   }
 
   .description{
@@ -235,6 +231,10 @@ article{
 
   .name{
     width: 200px;
+  }
+
+  .child-count{
+    font-style: italic;
   }
 
   div{

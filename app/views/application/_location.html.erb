@@ -2,11 +2,11 @@
     <div>
       <%= drilldown_link %>
     </div>
-    <div class="id">
-      <%= location.id %>.
-    </div>
     <div class="description">
       <%= location.name %>
+    </div>
+    <div class="child-count">
+      (<%= pluralize location.child_count, 'child' %>)
     </div>
     <div>
       <%= info_link %>
