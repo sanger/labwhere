@@ -18,17 +18,25 @@
         <%= f.select :parent_id, options_from_collection_for_select(UnorderedLocation.without(@location).reverse, :id, :barcode, @location.parent_id), {include_blank: true}, {class: 'select2_box'} %>
       </li>
       <li>
-        <%= f.label :rows %>
-        <%= f.text_field :rows %>
-      </li>
-       <li>
-        <%= f.label :columns %>
-        <%= f.text_field :columns %>
-      </li>
-      <li>
         <%= f.check_box :container %>
         <%= f.label :container %>
       </li>
+      <div class="container-options">
+        <li>
+          <input type="checkbox" <% if @location.location.coordinateable? %>checked<% end %> name="coordinated" id="location_coordinated">
+          <label for="location_coordinated">Has Co-ordinates</label>
+        </li>
+        <div class="coordinate-options">
+          <li>
+            <%= f.label :rows %>
+            <%= f.text_field :rows %>
+          </li>
+           <li>
+            <%= f.label :columns %>
+            <%= f.text_field :columns %>
+          </li>
+        </div>
+      </div>
       <li>
         <%= f.check_box :status, {}, Location.statuses.keys.first, Location.statuses.keys.last %>
         <%= f.label :status, "Active" %>
