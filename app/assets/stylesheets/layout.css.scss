@@ -294,7 +294,12 @@ article{
 }
 
 .new-location, .edit-location {
-  .select2{
+  .select2 {
     margin: 10px 0;
   }
+}
+
+.note {
+  font-style: italic;
+  font-size: smaller;
 }
