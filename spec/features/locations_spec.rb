@@ -75,7 +75,7 @@ RSpec.describe "Locations", type: :feature do
   end
 
   let!(:location_types)   { create_list(:location_type, 4)}
-  let!(:parent_location)  { create(:location)}
+  let!(:parent_location)  { create(:unordered_location)}
 
   
   it "Allows a user to add a new location" do
@@ -99,7 +99,7 @@ RSpec.describe "Locations", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: location.name
-      fill_in "Parent barcode", with: parent_location.barcode
+      select parent_location.id, from: "Parent"
       select location_types.first.name, from: "Location type"
       check "Container"
       fill_in "Rows", with: location.rows 
@@ -117,7 +117,7 @@ RSpec.describe "Locations", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: location.name
-      fill_in "Parent barcode", with: parent_location.barcode
+      select parent_location.id, from: "Parent"
       select location_types.first.name, from: "Location type"
       check "Container"
       click_button "Create Location"

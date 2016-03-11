@@ -14,12 +14,8 @@
         <%= f.select :location_type_id, options_from_collection_for_select(LocationType.ordered, :id, :name, @location.location_type_id) %>
       </li>
       <li>
-        <%= f.label :parent_barcode %>
-        <%= f.text_field :parent_barcode %>
-      </li>
-      <li>
         <%= f.label :parent_id %>
-        <%= f.select :parent_id, options_from_collection_for_select(UnorderedLocation.without(@location), :id, :barcode, @location.parent_id), {include_blank: true} %>
+        <%= f.select :parent_id, options_from_collection_for_select(UnorderedLocation.without(@location).reverse, :id, :barcode, @location.parent_id), {include_blank: true}, {class: 'select2_box'} %>
       </li>
       <li>
         <%= f.label :rows %>
