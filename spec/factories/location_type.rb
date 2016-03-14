@@ -19,7 +19,7 @@ FactoryGirl.define do
 
       after(:create) do |location_type, evaluator|
         1.upto(5) do |n|
-          FactoryGirl.create(:location, location_type: location_type)
+          FactoryGirl.create(:location_with_parent, location_type: location_type)
         end
       end
     end

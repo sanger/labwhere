@@ -22,11 +22,13 @@ RSpec.describe Search, type: :model do
 
   context "Results" do
 
+    let!(:location_type_building) { create(:location_type, name: 'Building')}
     let!(:location_type_room) { create(:location_type, name: "Room")}
     let!(:location_type_freezer) { create(:location_type, name: "Freezer")}
-    let!(:location_freezer_1) { create(:location, name: "Freezer 1", location_type: location_type_room)} 
-    let!(:location_freezer_2) { create(:location, name: "Freezer 2", location_type: location_type_room)} 
-    let!(:location_shelf_123) { create(:location, name: "Shelf 123", location_type: location_type_freezer)} 
+    let!(:location_building) { create(:location, name: 'Building', location_type: location_type_building)}
+    let!(:location_freezer_1) { create(:location, name: "Freezer 1", location_type: location_type_room, parent: location_building)}
+    let!(:location_freezer_2) { create(:location, name: "Freezer 2", location_type: location_type_room, parent: location_building)}
+    let!(:location_shelf_123) { create(:location, name: "Shelf 123", location_type: location_type_freezer, parent: location_freezer_1)}
     let!(:labware_1) { create(:labware)}
     let!(:labware_2) { create(:labware)}
 

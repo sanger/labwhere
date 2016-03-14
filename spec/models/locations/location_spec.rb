@@ -68,7 +68,7 @@ RSpec.describe Location, type: :model do
   end
 
   it "#as_json should return the correct attributes" do
-    location_type = create(:location_type)
+    location_type = create(:location_type, name: 'Building')
     location      = create(:location, location_type: location_type)
     json          = location.as_json
     expect(json["deactivated_at"]).to be_nil
@@ -123,16 +123,16 @@ RSpec.describe Location, type: :model do
 
   it "#by_building should return locations which have a location type of building" do
 
-    site     = create(:location_type, name: "Site")
     building = create(:location_type, name: "Building")
+    site     = create(:location_type, name: "Site")
     room     = create(:location_type, name: "Room")
 
-    locations_1 = create_list(:location, 3, location_type: site)
-    locations_2 = create_list(:location, 3, location_type: building)
-    locations_3 = create_list(:location, 3, location_type: room)
+    locations_1 = create_list(:location, 3, location_type: building)
+    locations_2 = create_list(:location, 3, location_type: site, parent: locations_1.first)
+    locations_3 = create_list(:location, 3, location_type: room, parent: locations_1.first)
 
     expect(Location.by_building.count).to eq(3)
-    expect(Location.by_building.first).to eq(locations_2.first)
+    expect(Location.by_building.first).to eq(locations_1.first)
   end
 
   it '#should allow the same name with different parents' do
@@ -178,4 +178,16 @@ RSpec.describe Location, type: :model do
       expect(location.child_count).to eq(5)
     end
   end
+
+  it 'should allow buildings with no parent' do
+    building_type = create(:location_type, name: "Building")
+
+    expect(build(:location, location_type: building_type)).to be_valid
+  end
+
+  it 'should not allow bins with no parent' do
+    building_type = create(:location_type, name: "Bin")
+
+    expect(build(:location, location_type: building_type)).to_not be_valid
+    end
 end

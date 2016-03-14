@@ -23,6 +23,14 @@ class Location < ActiveRecord::Base
     validates_format_of :name, without: /UNKNOWN/i
   end
 
+  validate :valid_parent
+
+  def valid_parent
+    if not location_type.nil? and location_type != LocationType.find_by(name: "Building") and parent.is_a? NullLocation
+      errors.add(:parent, "can only be blank for buildings")
+    end
+  end
+
   scope :without, ->(location) { active.where.not(id: location.id) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
   scope :by_building, -> { without_unknown.where(location_type_id: LocationType.find_by(name: "Building")) }
