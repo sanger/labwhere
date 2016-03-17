@@ -1,8 +1,8 @@
 class LabelPrinting
 
-  def initialize(printer, location_id)
-    @locations = find_locations(location_id)
-    @label_printer = LabelPrinter.new(printer, @locations.map(&:id))
+  def initialize(printer, location_ids)
+    @locations = location_ids.instance_of?(Array) ? location_ids : find_locations(location_ids).map(&:id)
+    @label_printer = LabelPrinter.new(printer, @locations)
   end
 
   def json

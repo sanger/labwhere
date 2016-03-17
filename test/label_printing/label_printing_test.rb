@@ -9,18 +9,24 @@ class LabelPrintingTest < ActiveSupport::TestCase
   def setup
     @location = create(:unordered_location)
     @shelf_1 = create(:unordered_location_with_children, parent: location)
-    @shelf_1 = create(:unordered_location_with_children, parent: location)
+    @shelf_2 = create(:unordered_location_with_children, parent: location)
     @printer = create(:printer)
-    @label_printing = LabelPrinting.new(printer.id, location.id)
   end
 
   test "create the correct json" do
+    @label_printing = LabelPrinting.new(printer.id, location.id)
     assert_equal 13, label_printing.json["label_printer"][:labels].length
   end
 
   test "should print the labels" do
+    label_printing = LabelPrinting.new(printer.id, location.id)
     Net::HTTP.any_instance.stubs(:request).returns(Net::HTTPResponse.new(2.0, 200, "OK"))
     assert label_printing.run
+  end
+
+  test "should create the correct json for a subsection of the location" do
+    @label_printing = LabelPrinting.new(printer.id, shelf_1.children.pluck(:id))
+    assert_equal shelf_1.children.count, label_printing.json["label_printer"][:labels].length
   end
 
   def teardown
