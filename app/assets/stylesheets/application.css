@@ -14,4 +14,5 @@
  *= require jquery-ui
  *= require_tree .
  *= require_self
+ *= require select2
  */

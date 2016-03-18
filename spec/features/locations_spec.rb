@@ -67,7 +67,7 @@ RSpec.describe "Locations", type: :feature do
 
   it "Should not be able to destroy a location type with an association location" do
     location_type = create(:location_type)
-    location = create(:location, location_type: location_type)
+    location = create(:location, location_type: location_type, parent: create(:location))
     visit location_types_path
     within("#location_type_#{location_type.id}") do
       expect(page).to_not have_content("Delete")
@@ -75,7 +75,7 @@ RSpec.describe "Locations", type: :feature do
   end
 
   let!(:location_types)   { create_list(:location_type, 4)}
-  let!(:parent_location)  { create(:location)}
+  let!(:parent_location)  { create(:unordered_location)}
 
   
   it "Allows a user to add a new location" do
@@ -85,7 +85,7 @@ RSpec.describe "Locations", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: location.name
-      select location_types.first.name, from: "Location type"
+      select 'Building', from: "Location type"
       check "Container"
       click_button "Create Location"
     }.to change(Location, :count).by(1)
@@ -99,7 +99,7 @@ RSpec.describe "Locations", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: location.name
-      fill_in "Parent barcode", with: parent_location.barcode
+      select parent_location.id, from: "Parent"
       select location_types.first.name, from: "Location type"
       check "Container"
       fill_in "Rows", with: location.rows 
@@ -117,7 +117,7 @@ RSpec.describe "Locations", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: location.name
-      fill_in "Parent barcode", with: parent_location.barcode
+      select parent_location.id, from: "Parent"
       select location_types.first.name, from: "Location type"
       check "Container"
       click_button "Create Location"
@@ -207,7 +207,7 @@ RSpec.describe "Locations", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
       fill_in "Name", with: location.name
-      select location_types.first.name, from: "Location type"
+      select 'Building', from: "Location type"
       check "Container"
       click_button "Create Location"
     }.to_not change(Location, :count)

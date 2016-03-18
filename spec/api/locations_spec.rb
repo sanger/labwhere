@@ -122,7 +122,7 @@ RSpec.describe Api::LocationsController, type: :request do
   it "should update an existing location" do
     location = create(:location_with_parent)
     location_parent = create(:location)
-    patch api_location_path(location.barcode), location: { user_code: user.swipe_card_id, parent_barcode: location_parent.barcode }
+    patch api_location_path(location.barcode), location: { user_code: user.swipe_card_id, parent_id: location_parent.id }
     expect(response).to be_success
     expect(location.reload.parent).to eq(location_parent)
   end
