@@ -19,8 +19,8 @@ RSpec.describe LocationType, type: :model do
   end
 
   it "#has_locations? should signify whether a location type can be destroyed" do
-    location_type_1 = create(:location_type)
-    create(:location, location_type: location_type_1)
+    location_type_1 = create(:location_type, name: "Building")
+    create(:location_with_parent, location_type: location_type_1)
     expect(location_type_1.has_locations?).to be_truthy
 
     location_type_2 = create(:location_type)
@@ -45,10 +45,24 @@ RSpec.describe LocationType, type: :model do
 
   it "should not be destroyed if it has locations" do
     location_type = create(:location_type)
-    create(:location, location_type: location_type)
+    create(:location_with_parent, location_type: location_type)
     location_type.destroy
     expect(location_type).to_not be_destroyed
     expect(location_type.errors).to_not be_empty
+  end
+
+  it "#building  should return location type of building" do
+    location_type = create(:location_type)
+    building = create(:location_type, name: "Building")
+    expect(LocationType.building).to eq(building)
+  end
+
+  it "#building? should check whether location type is a building" do
+    location_type = create(:location_type)
+    building = create(:location_type, name: "Building")
+    expect(LocationType.not_building?(location_type)).to be_truthy
+    expect(LocationType.building?(building)).to be_truthy
+
   end
 
 end

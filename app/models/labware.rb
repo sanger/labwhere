@@ -37,6 +37,17 @@ class Labware < ActiveRecord::Base
     super || coordinate.location
   end
 
+  def full_path
+    path = []
+    curr_location = location
+    until curr_location.empty?
+      path << curr_location
+      curr_location = curr_location.parent
+    end
+
+    (path.map { |l| l.name }).reverse.join(' > ')
+  end
+
   def coordinate
     super || NullCoordinate.new
   end

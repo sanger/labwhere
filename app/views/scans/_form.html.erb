@@ -6,11 +6,11 @@
         <%= render "user_code", object: f %>
       </li>
       <li>
-        <div><%= f.label :location_barcode %></div>
+        <div><%= f.label :location_barcode %> <span class="note">(Leave blank to scan out)</span></div>
         <div><%= f.text_field :location_barcode %></div>
       </li>
       <li>
-        <div><%= f.label :labware_barcodes %></div>
+        <div><%= f.label :labware_barcodes, 'Labware barcodes*' %></div>
         <div class="pr-5"><%= f.text_area :labware_barcodes %></div>
       </li>
       <li>

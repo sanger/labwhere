@@ -67,31 +67,26 @@ nav{
   position: absolute;
   top: 30px;
   right: 300px;
-  width: 150px;
 
-
-  a{
-    display: block;
-    width: 120px;
-
-  }
-
-  .root{
+  a:hover {
     color: white;
-    background:{    
-      image: image-url("down-arrow.png");
-      position: right 40px top 3px;
-      repeat: no-repeat;
-      padding: 5px;
-
-    }
   }
 
-  ul{
-    li{
-
+  & > ul{
+    background:{
+      image: image-url("down-arrow.png");
+      position: right 0 top 3px;
+      repeat: no-repeat;
+    }
+    & > li{
+      display: inline;
+      & > a, & > a:visited{
+        color: white;
+        padding-right: 25px;
+      }
       ul{
-        
+        position: absolute;
+        left: 80px;
         @include rounded-corners(5px);
         @include drop-shadow(2px, gray);
         opacity: 0.9;
@@ -108,9 +103,7 @@ nav{
         li{
 
           font-size: 0.9em;
-
-          &:hover{
-            color: white;
+          &:hover {
             background:$red-dark;
           }
 
@@ -221,12 +214,8 @@ article{
     text-decoration: none;
   }
 
-  .id, .description, .name{
+  .description, .name{
     display: inline-block;
-  }
-
-  .id{
-    width: 30px;
   }
 
   .description{
@@ -235,6 +224,10 @@ article{
 
   .name{
     width: 200px;
+  }
+
+  .child-count{
+    font-style: italic;
   }
 
   div{
@@ -291,4 +284,22 @@ article{
     &:hover { @include transition; }
 
   }
+}
+
+.about {
+  padding-left: 20px;
+  div {
+    padding: 5px;
+  }
+}
+
+.new-location, .edit-location {
+  .select2 {
+    margin: 10px 0;
+  }
+}
+
+.note {
+  font-style: italic;
+  font-size: smaller;
 }

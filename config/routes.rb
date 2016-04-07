@@ -52,7 +52,7 @@ Rails.application.routes.draw do
   resources :printers do
     concerns :auditable, parent: :printers
   end
-  
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -95,8 +95,11 @@ Rails.application.routes.draw do
 
   end
 
-  match '(errors)/:status', to: 'errors#show', constraints: {status: /\d{3}/}, via: :all
+  unless Rails.env.development?
+    match '(errors)/:status', to: 'errors#show', constraints: {status: /\d{3}/}, via: :all
+  end
 
   match 'test_exception_notifier', controller: 'application', action: 'test_exception_notifier', via: :get
 
+  match '/about', to: 'about#show', via: :get
 end

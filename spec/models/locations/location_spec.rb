@@ -18,7 +18,7 @@ RSpec.describe Location, type: :model do
   end
 
   it "#without_location should return a list of locations without a specified location" do
-    locations = create_list(:location, 3)
+    locations         = create_list(:location, 3)
     inactive_location = create(:location, status: Location.statuses[:inactive])
     expect(Location.without(locations.last).count).to eq(2)
     expect(Location.without(locations.last)).to_not include(locations.last)
@@ -68,9 +68,9 @@ RSpec.describe Location, type: :model do
   end
 
   it "#as_json should return the correct attributes" do
-    location_type = create(:location_type)
-    location = create(:location, location_type: location_type)
-    json = location.as_json
+    location_type = create(:location_type, name: 'Building')
+    location      = create(:location, location_type: location_type)
+    json          = location.as_json
     expect(json["deactivated_at"]).to be_nil
     expect(json["created_at"]).to eq(location.created_at.to_s(:uk))
     expect(json["updated_at"]).to eq(location.updated_at.to_s(:uk))
@@ -123,17 +123,78 @@ RSpec.describe Location, type: :model do
 
   it "#by_building should return locations which have a location type of building" do
 
-    site = create(:location_type, name: "Site")
     building = create(:location_type, name: "Building")
-    room = create(:location_type, name: "Room")
+    site     = create(:location_type, name: "Site")
+    room     = create(:location_type, name: "Room")
 
-    locations_1 = create_list(:location, 3, location_type: site)
-    locations_2 = create_list(:location, 3, location_type: building)
-    locations_3 = create_list(:location, 3, location_type: room)
+    locations_1 = create_list(:location, 3, location_type: building)
+    locations_2 = create_list(:location, 3, location_type: site, parent: locations_1.first)
+    locations_3 = create_list(:location, 3, location_type: room, parent: locations_1.first)
 
     expect(Location.by_building.count).to eq(3)
-    expect(Location.by_building.first).to eq(locations_2.first)
+    expect(Location.by_building.first).to eq(locations_1.first)
   end
 
-  
+  it '#should allow the same name with different parents' do
+
+    parent_1 = create(:location, name: "Building1")
+    parent_2 = create(:location, name: "Building2")
+
+    expect(create(:location, name: 'Location', parent: parent_1)).to be_valid
+    expect(create(:location, name: 'Location', parent: parent_2)).to be_valid
+  end
+
+  it '#should not allow the same name in the same parent' do
+    parent = create(:location, name: "Building")
+
+    expect(create(:location, name: 'Location', parent: parent)).to be_valid
+    expect(build(:location, name: 'Location', parent: parent)).to_not be_valid
+  end
+
+  describe 'should have the correct child count' do
+    it 'when empty' do
+      expect(create(:location).child_count).to eq(0)
+    end
+
+    it 'with container children' do
+      location = create(:unordered_location)
+      location.children = create_list(:location, 2)
+
+      expect(location.child_count).to eq(2)
+    end
+
+    it 'with labware children' do
+      location = create(:location, parent: create(:location))
+      location.labwares = create_list(:labware, 3)
+
+      expect(location.child_count).to eq(3)
+    end
+
+    it 'with both container and labware children' do
+      location = create(:unordered_location, parent: create(:location))
+      location.children = create_list(:location, 2)
+      location.labwares = create_list(:labware, 3)
+
+      expect(location.child_count).to eq(5)
+    end
+  end
+
+  it 'should allow buildings with no parent' do
+    building_type = create(:location_type, name: "Building")
+
+    expect(build(:location, location_type: building_type)).to be_valid
+  end
+
+  it "should not allow empty parent when location type is not a building" do
+    location_type = create(:location_type, name: "Not a Building")
+
+    expect(build(:location, location_type: location_type)).to_not be_valid
+
+  end
+
+  it 'should not allow bins with no parent' do
+    building_type = create(:location_type, name: "Bin")
+
+    expect(build(:location, location_type: building_type)).to_not be_valid
+    end
 end

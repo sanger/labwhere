@@ -15,6 +15,18 @@ class LocationType < ActiveRecord::Base
 
   before_destroy :check_locations
 
+  def self.building
+    find_by_name("Building")
+  end
+
+  def self.building?(location_type)
+    location_type == building
+  end
+
+  def self.not_building?(location_type)
+    location_type != building
+  end
+
   ##
   # A location type can only be destroyed if it has no locations
   def destroyable
