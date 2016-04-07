@@ -95,7 +95,9 @@ Rails.application.routes.draw do
 
   end
 
-  match '(errors)/:status', to: 'errors#show', constraints: {status: /\d{3}/}, via: :all
+  unless Rails.env.development?
+    match '(errors)/:status', to: 'errors#show', constraints: {status: /\d{3}/}, via: :all
+  end
 
   match 'test_exception_notifier', controller: 'application', action: 'test_exception_notifier', via: :get
 

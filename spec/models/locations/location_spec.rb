@@ -185,6 +185,13 @@ RSpec.describe Location, type: :model do
     expect(build(:location, location_type: building_type)).to be_valid
   end
 
+  it "should not allow empty parent when location type is not a building" do
+    location_type = create(:location_type, name: "Not a Building")
+
+    expect(build(:location, location_type: location_type)).to_not be_valid
+
+  end
+
   it 'should not allow bins with no parent' do
     building_type = create(:location_type, name: "Bin")
 

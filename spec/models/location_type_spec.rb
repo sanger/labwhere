@@ -51,4 +51,18 @@ RSpec.describe LocationType, type: :model do
     expect(location_type.errors).to_not be_empty
   end
 
+  it "#building  should return location type of building" do
+    location_type = create(:location_type)
+    building = create(:location_type, name: "Building")
+    expect(LocationType.building).to eq(building)
+  end
+
+  it "#building? should check whether location type is a building" do
+    location_type = create(:location_type)
+    building = create(:location_type, name: "Building")
+    expect(LocationType.not_building?(location_type)).to be_truthy
+    expect(LocationType.building?(building)).to be_truthy
+
+  end
+
 end

@@ -2,27 +2,48 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$(document).ready ->
-  $('.select2_box').select2()
-  $(".select2_box").next(".select2").find(".select2-selection").focus(() ->
-    $(".select2_box").select2("open")
-  )
+class @Select2
+  constructor: (item) ->
+    @item = $(item)
+    @addSelect2()
+    @addListener()
 
-  containerChange = () ->
-    if($('#location_container').is(':checked'))
-      $('.container-options').show()
+  addSelect2: ->
+    @item.select2({width: '102%'})
+
+  addListener: ->
+    @item.next(".select2").find(".select2-selection").focus =>
+      @item.select2("open")
+
+class @Location
+
+  constructor: (item) ->
+    @item             = $(item)
+    @addListeners()
+    @toggleAll()
+
+  addListeners: =>
+    self = @
+    @item.on "change", "[data-toggle~=container],[data-toggle~=coordinates]", (event) ->
+      self.toggleSelector($(this))
+
+  toggleSelector: (item) =>
+    toggled = @item.find("[data-behavior~=" + item.data("toggle") + "]")
+    if item.is(':checked')
+      toggled.show()
     else
-      $('.container-options').hide()
+      toggled.hide()
+      toggled.find('input[type="text"]').val(0)
 
-  coordinateChange = () ->
-    if($('#location_coordinated').is(':checked'))
-      $('.coordinate-options').show()
-    else
-      $('.coordinate-options').hide()
-      $('#location_rows').val(0)
-      $('#location_columns').val(0)
+  toggleAll: =>
+    $.each [ "container", "coordinates" ], (index, value) =>
+      @toggleSelector(@item.find("[data-toggle~=" + value + "]"))
 
-  $('#location_container').change(containerChange)
-  $('#location_coordinated').change(coordinateChange)
-  containerChange()
-  coordinateChange()
+
+jQuery ->
+  for item in $("[data-behavior~=location]")
+    new Location item
+
+  for item in $("[data-behavior~=select2]")
+    new Select2 item
+

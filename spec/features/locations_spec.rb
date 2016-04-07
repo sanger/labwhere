@@ -92,22 +92,24 @@ RSpec.describe "Locations", type: :feature do
     expect(page).to have_content("Location successfully created")
   end
 
-  it "Allows a user to add a new location with coordinates" do
-    location = build(:ordered_location)
-    visit locations_path
-    click_link "Add new location"
-    expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
-      fill_in "Name", with: location.name
-      select parent_location.id, from: "Parent"
-      select location_types.first.name, from: "Location type"
-      check "Container"
-      fill_in "Rows", with: location.rows 
-      fill_in "Columns", with: location.columns
-      click_button "Create Location"
-    }.to change(Location, :count).by(1)
-    expect(OrderedLocation.first.coordinates.count).to eq(create(:ordered_location).coordinates.length)
-    expect(page).to have_content("Location successfully created")
+  describe "with coordinates", js: :true do
+    it "Allows a user to add a new location with coordinates" do
+      location = build(:ordered_location)
+      visit locations_path
+      click_link "Add new location"
+      expect {
+        fill_in "User swipe card id/barcode", with: user.swipe_card_id
+        fill_in "Name", with: location.name
+        select parent_location.id, from: "Parent"
+        select location_types.first.name, from: "Location type"
+        check "Has Co-ordinates"
+        fill_in "Rows", with: location.rows 
+        fill_in "Columns", with: location.columns
+        click_button "Create Location"
+      }.to change(Location, :count).by(1)
+      expect(OrderedLocation.first.coordinates.count).to eq(create(:ordered_location).coordinates.length)
+      expect(page).to have_content("Location successfully created")
+    end
   end
 
   it "Allows a user to add a new location with a parent via a barcode" do
@@ -119,7 +121,6 @@ RSpec.describe "Locations", type: :feature do
       fill_in "Name", with: location.name
       select parent_location.id, from: "Parent"
       select location_types.first.name, from: "Location type"
-      check "Container"
       click_button "Create Location"
     }.to change(Location, :count).by(1)
     expect(Location.last.parent).to eq(parent_location)
@@ -132,7 +133,6 @@ RSpec.describe "Locations", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       select location_types.first.name, from: "Location type"
-      check "Container"
       click_button "Create Location"
     }.to_not change(Location, :count)
     expect(page.text).to match("errors prohibited this record from being saved")

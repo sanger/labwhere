@@ -1,5 +1,5 @@
 <%= form_for @location do |f| %>
-  <fieldset>
+  <fieldset data-behavior="location">
     <legend><%= header.to_s %></legend>
     <ul>
       <li>
@@ -15,19 +15,19 @@
       </li>
       <li>
         <%= f.label :parent_id %>
-        <%= f.select :parent_id, options_from_collection_for_select(UnorderedLocation.without(@location).reverse, :id, :barcode, @location.parent_id), {include_blank: true}, {class: 'select2_box'} %>
+        <%= f.select :parent_id, options_from_collection_for_select(UnorderedLocation.without(@location), :id, :barcode, @location.parent_id), {include_blank: true}, {class: 'select2_box', data: {behavior: "select2"}} %>
       </li>
       <li>
-        <%= f.check_box :container %>
+        <%= f.check_box :container, data: {toggle: "container"} %>
         <%= f.label :container %>
         <span class="note">(Can store labware)</span>
       </li>
-      <div class="container-options">
+      <div class="container-options" data-behavior="container">
         <li>
-          <input type="checkbox" <% if @location.location.coordinateable? %>checked<% end %> name="coordinated" id="location_coordinated">
-          <label for="location_coordinated">Has Co-ordinates</label>
+          <%= f.check_box :coordinateable, data: {toggle: "coordinates"} %>
+          <%= f.label :coordinateable, "Has Co-ordinates" %>
         </li>
-        <div class="coordinate-options">
+        <div class="coordinate-options" data-behavior="coordinates">
           <li>
             <%= f.label :rows %>
             <%= f.text_field :rows %>

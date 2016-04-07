@@ -9,7 +9,13 @@ class LocationForm
 
   after_assigning_model_variables :transform_location
 
-  delegate :parent, :barcode, :parentage, :type, to: :location
+  delegate :parent, :barcode, :parentage, :type, :coordinateable?, to: :location
+
+  attr_writer :coordinateable
+
+  def coordinateable
+    @coordinateable ||= coordinateable?
+  end
 
 private
 
