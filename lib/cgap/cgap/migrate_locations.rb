@@ -34,9 +34,9 @@ module Cgap
     end
 
     def initialize(path)
-      LoadData.new("locations_top", path).load!
-      LoadData.new("locations_sub", path).load!
-      @cgap_locations = CgapLocation.all 
+      Cgap::LoadData.new("locations_top", path).load!
+      Cgap::LoadData.new("locations_sub", path).load!
+      @cgap_locations = Cgap::Location.all 
       create_location_types
     end
 
@@ -53,19 +53,19 @@ module Cgap
     end
 
     def add_top_level_parents
-      CgapLocation.where.not(barcode: nil).each do |cgap_location|
-        Location.find(cgap_location.labwhere_id).update_attribute(:parent_id, CgapStorage.find_by(barcode: cgap_location.barcode).labwhere_id)
+      Cgap::Location.where.not(barcode: nil).each do |cgap_location|
+        ::Location.find(cgap_location.labwhere_id).update_attribute(:parent_id, Cgap::Storage.find_by(barcode: cgap_location.barcode).labwhere_id)
       end
     end
 
     def add_parents
-      CgapLocation.where.not(parent_id: nil).each do |cgap_location|
-        Location.find(cgap_location.labwhere_id).update_attribute(:parent_id, cgap_location.parent.labwhere_id)
+      Cgap::Location.where.not(parent_id: nil).each do |cgap_location|
+        ::Location.find(cgap_location.labwhere_id).update_attribute(:parent_id, cgap_location.parent.labwhere_id)
       end
     end
 
     def add_coordinates
-      Location.where("rows > 0 and columns > 0").each do |location|
+      ::Location.where("rows > 0 and columns > 0").each do |location|
         location = location.transform
         location.populate_coordinates
         location.save
@@ -82,7 +82,7 @@ module Cgap
     end
 
     def new_location(cgap_location)
-      UnorderedLocation.new(
+      ::Location.new(
         name: cgap_location.name, 
         rows: cgap_location.rows, 
         columns: cgap_location.columns,

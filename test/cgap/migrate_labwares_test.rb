@@ -13,6 +13,8 @@ class MigrateLabwaresTest < ActiveSupport::TestCase
     assert_equal Cgap::Labware.all.count, Labware.all.count
   end
 
+  # TODO: This test now fails because names are no longer allowed to be the same in the context
+  # of the same parent.
   test "should be linked to the right location if labware has no row or column" do
     labwares = Cgap::Labware.where("row = 0  and column = 0")
 

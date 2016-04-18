@@ -17,13 +17,12 @@ module Cgap
 
       sanger = UnorderedLocation.create(name: "Sanger", location_type: LocationType.find_by(name: "Site"), container: false)
       sulston = UnorderedLocation.create(name: "Sulston", location_type: LocationType.find_by(name: "Building"),container: false, parent: sanger)
-
       cgap_storages.pluck(:top_location).uniq.each do |name|
         location = UnorderedLocation.create(name: name, location_type: LocationType.find_by(name: "Room"), container: false, parent: sulston)
       end
 
       cgap_storages.each do |cgap_storage|
-        cgap_storage.update_attribute(:labwhere_id, Location.find_by(name: cgap_storage.top_location).id)
+        cgap_storage.update_attribute(:labwhere_id, UnorderedLocation.find_by(name: cgap_storage.top_location).id)
       end
     end
 
