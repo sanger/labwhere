@@ -179,14 +179,16 @@ RSpec.describe Location, type: :model do
     end
   end
 
-  it 'should allow buildings with no parent' do
+  it 'should allow buildings or sites with no parent' do
     building_type = create(:location_type, name: "Building")
+    site_type = create(:location_type, name: "Site")
 
     expect(build(:location, location_type: building_type)).to be_valid
+    expect(build(:location, location_type: site_type)).to be_valid
   end
 
-  it "should not allow empty parent when location type is not a building" do
-    location_type = create(:location_type, name: "Not a Building")
+  it "should not allow empty parent when location type is not a building or site" do
+    location_type = create(:location_type, name: "Not a Building or Site")
 
     expect(build(:location, location_type: location_type)).to_not be_valid
 

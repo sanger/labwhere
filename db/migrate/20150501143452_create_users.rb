@@ -6,7 +6,6 @@ class CreateUsers < ActiveRecord::Migration
       t.string :barcode
       t.string :type
       t.integer :status, default: 0
-      t.integer :audits_count, default: 0
       t.datetime :deactivated_at
       t.references :team, index: true, foreign_key: true
  

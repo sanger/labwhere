@@ -65,4 +65,17 @@ RSpec.describe LocationType, type: :model do
 
   end
 
+   it "#site  should return location type of site" do
+    location_type = create(:location_type)
+    site = create(:location_type, name: "Site")
+    expect(LocationType.site).to eq(site)
+  end
+
+  it "#site? should check whether location type is a site" do
+    location_type = create(:location_type)
+    site = create(:location_type, name: "Site")
+    expect(LocationType.not_site?(location_type)).to be_truthy
+    expect(LocationType.site?(site)).to be_truthy
+  end
+
 end
