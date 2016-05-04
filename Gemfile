@@ -43,6 +43,8 @@ gem 'puma'
 # Exception Notification to send exception emails
 gem 'exception_notification'
 
+gem 'pmb-client', '0.1.0', :github => 'jbeast/pmb-client'
+
 group :deployment do
   gem 'mysql2'
   gem 'therubyracer'
@@ -50,6 +52,9 @@ end
 
 group :development do
   gem 'raml_ruby', '~> 0.1.1'
+
+  # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'web-console', '~> 2.0'
 end
 
 # Use Capistrano for deployment
@@ -58,9 +63,6 @@ end
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring','~>1.3.6'

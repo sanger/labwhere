@@ -47,4 +47,6 @@ Rails.application.configure do
       exception_recipients: %w(#{Rails.configuration.mailer['smtp']['recipient']})
   }
 
+  # Print My Barcode api base
+  config.x.pmb_api_base = 'http://pmb.test/api/v1'
 end
