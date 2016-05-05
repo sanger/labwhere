@@ -1,32 +1,17 @@
 ##
 # Print barcode for a particular location
-# The object will create a request from a print and location.
-# The body of the json request is created through a serializer.
+# The object will create a request from a printer_id and location_ids.
 class LabelPrinter
 
-  # Site which hosts barcode printing service
-  class_attribute :site
-  self.site = "http://psd2g.internal.sanger.ac.uk:8000/lims-support"
+  attr_reader :printer, :locations, :labels
 
-  # JSON headers
-  class_attribute :headers
-  self.headers = {'Content-Type' => "application/json", 'Accept' => "application/json"}
-
-  attr_reader :request, :uri, :body, :location
-
-  delegate :as_json, :to_json, to: :serializer
-  
   ##
   # For a given printer and location create a json request.
-  # The url is based on the site and the uuid of the printer.
-  # The body of the request will contain a header and footer and info about the location.
-  def initialize(printer_id, location_id)
+  # The labels will contain a header and footer and info about the location.
+  def initialize(printer_id, location_ids)
     @printer = Printer.find(printer_id)
-    @location = Location.find(location_id)
-
-    @uri = URI.parse("#{self.site}/#{printer.uuid}")
-    @http = Net::HTTP.new(uri.host, uri.port)
-    @body = self.to_json
+    @locations = Location.find(Array(location_ids))
+    @labels = Label.new(@locations)
   end
 
   ##
@@ -36,31 +21,20 @@ class LabelPrinter
   end
 
   ##
-  # Post the request to the barcode service.
-  # Will return boolean dependent on the success of the request.
+  # Post the request to the barcode service. The label_template_id: 1 refers to the LabWhere label template
+  # Will return true if successful
+  # Will return false if there is either an unexpected error or a server error
   def post
-    @request = Net::HTTP::Post.new(uri.path, initheader = self.headers)
-    request.body = body
-    @response_code = http.request(request).code.to_i
-    response_ok?
-  end
-
-  def response_code
-    @response_code ||= 200
+    begin
+      PMB::PrintJob.execute(printer_name: @printer.name, label_template_id: 1, labels: @labels.to_h)
+      @response_ok = true
+    rescue JsonApiClient::Errors::ServerError, JsonApiClient::Errors::UnexpectedStatus => e
+      @response_ok = false
+    end
   end
 
   def response_ok?
-    response_code == 200
+    @response_ok ||= false
   end
-
-  ##
-  # Create the json request body using the serializer
-  def serializer
-    @serializer ||= LabelPrinterSerializer.new(self)
-  end
-
-private
-
-  attr_reader :http, :printer
 
 end

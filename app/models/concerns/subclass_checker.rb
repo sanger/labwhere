@@ -11,15 +11,31 @@ module SubclassChecker
     def has_subclasses(*classes)
       options = classes.extract_options!
       classes.each do |klass|
-        object_type = if options[:suffix]
-          "#{klass.to_s.capitalize}#{self.to_s.capitalize}"
-        else
-          "#{klass.to_s.capitalize}"
-        end
-        define_method "#{klass.to_s}?" do
+        object_type = klass_name(klass, options)
+        define_method method_name(klass) do
           type == object_type
         end
       end
+    end
+
+    def klass_name(klass, options)
+      if options[:suffix]
+        "#{set_klass_name(klass)}#{self.to_s.capitalize}"
+      else
+        set_klass_name(klass)
+      end
+    end
+
+    def method_name(klass)
+      name = klass.to_s
+      name.include?("_") ? "#{name.split('_').first}?" : "#{name}?"
+    end
+
+  private
+
+    def set_klass_name(klass)
+      name = klass.to_s
+      name.include?("_") ? name.camelize : name.capitalize
     end
   end
   

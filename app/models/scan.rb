@@ -17,10 +17,7 @@ class Scan < ActiveRecord::Base
 
   before_save :set_status, :create_message
 
-  # Add a labware to a temporary object
-  def add_labware(labware)
-    labwares.add(labware) if labware
-  end
+  attr_accessor :labwares
 
   # If we are scanning in tell the user how many labwares have been scanned in to the scan location.
   # If we are scanning out tell the user how many labwares have been scanned out of their previous locations.
@@ -28,37 +25,24 @@ class Scan < ActiveRecord::Base
     self.message = "#{labwares.count} labwares scanned #{self.status} " << if in?
       "to #{location.name}"
     else
-      "from #{labwares.unique_location_names}"
+      "from #{labwares.original_location_names}"
     end
+  end
+
+  def labwares
+    @labwares ||= NullLabwareCollection.new
+  end
+
+  def add_attributes_from_collection(labware_collection)
+    self.location = labware_collection.location
+    self.user = labware_collection.user
+    self.labwares = labware_collection
   end
 
 private
 
   def set_status
     self.status = Scan.statuses[:out] if self.location.unknown?
-  end
-
-  def labwares
-    @labwares ||= Labwares.new
-  end
-
-  class Labwares
-
-    attr_reader :count, :location_names
-
-    def initialize
-      @count = 0
-      @location_names = []
-    end
-
-    def add(labware)
-      @count += 1
-      @location_names << labware.location.name
-    end
-
-    def unique_location_names
-      location_names.uniq.join(", ")
-    end
   end
 
 end

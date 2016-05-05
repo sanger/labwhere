@@ -20,4 +20,5 @@ module SerializerDates
   def updated_at
     object.updated_at.to_s(:uk)
   end
+  
 end

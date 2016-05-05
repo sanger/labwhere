@@ -34,6 +34,8 @@ module Labwhere
 
     config.autoload_paths += %W(#{config.root}/app/models/users #{config.root}/app/models/locations)
 
+    config.autoload_paths += %W(#{config.root}/lib/label_printing)
+
     config.mailer = YAML.load_file("#{Rails.root}/config/mailer.yml")[Rails.env]
 
     # replace fixtures with factory girl
@@ -46,7 +48,7 @@ module Labwhere
             controller_specs: false,
             request_specs: true
         g.fixture_replacement :factory_girl, dir: "spec/factories"
-        
+
     end
   end
 end

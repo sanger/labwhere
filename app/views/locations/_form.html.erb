@@ -1,38 +1,43 @@
 <%= form_for @location do |f| %>
-  <fieldset>
+  <fieldset data-behavior="location">
     <legend><%= header.to_s %></legend>
     <ul>
       <li>
        <%= render "user_code", object: f %>
       </li>
       <li>
-        <%= f.label :name %>
+        <%= f.label :name, 'Name*' %>
         <%= f.text_field :name %>
       </li>
       <li>
-        <%= f.label :location_type_id, "Location type" %>
+        <%= f.label :location_type_id, "Location type*" %>
         <%= f.select :location_type_id, options_from_collection_for_select(LocationType.ordered, :id, :name, @location.location_type_id) %>
       </li>
       <li>
-        <%= f.label :parent_barcode %>
-        <%= f.text_field :parent_barcode %>
-      </li>
-      <li>
         <%= f.label :parent_id %>
-        <%= f.select :parent_id, options_from_collection_for_select(UnorderedLocation.without(@location), :id, :barcode, @location.parent_id), {include_blank: true} %>
+        <%= f.select :parent_id, options_from_collection_for_select(UnorderedLocation.without(@location), :id, :barcode, @location.parent_id), {include_blank: true}, {class: 'select2_box', data: {behavior: "select2"}} %>
       </li>
       <li>
-        <%= f.label :rows %>
-        <%= f.text_field :rows %>
-      </li>
-       <li>
-        <%= f.label :columns %>
-        <%= f.text_field :columns %>
-      </li>
-      <li>
-        <%= f.check_box :container %>
+        <%= f.check_box :container, data: {toggle: "container"} %>
         <%= f.label :container %>
+        <span class="note">(Can store labware)</span>
       </li>
+      <div class="container-options" data-behavior="container">
+        <li>
+          <%= f.check_box :coordinateable, data: {toggle: "coordinates"} %>
+          <%= f.label :coordinateable, "Has Co-ordinates" %>
+        </li>
+        <div class="coordinate-options" data-behavior="coordinates">
+          <li>
+            <%= f.label :rows %>
+            <%= f.text_field :rows %>
+          </li>
+           <li>
+            <%= f.label :columns %>
+            <%= f.text_field :columns %>
+          </li>
+        </div>
+      </div>
       <li>
         <%= f.check_box :status, {}, Location.statuses.keys.first, Location.statuses.keys.last %>
         <%= f.label :status, "Active" %>
