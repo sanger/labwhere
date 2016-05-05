@@ -43,7 +43,7 @@ gem 'puma'
 # Exception Notification to send exception emails
 gem 'exception_notification'
 
-gem 'pmb-client', '0.1.0', :github => 'jbeast/pmb-client'
+gem 'pmb-client', '0.1.0', :github => 'sanger/pmb-client'
 
 group :deployment do
   gem 'mysql2'
