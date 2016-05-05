@@ -7,6 +7,7 @@ RSpec.describe LabelPrinter, type: :feature do
 
   before(:each) do
     allow_any_instance_of(LabelPrinter).to receive(:post).and_return(true)
+    allow_any_instance_of(LabelPrinter).to receive('response_ok?').and_return(true)
   end
 
   describe "printing", js: true do

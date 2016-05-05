@@ -39,4 +39,6 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
+  # Print My Barcode api base
+  config.x.pmb_api_base = 'http://pmb.dev/api/v1'
 end
