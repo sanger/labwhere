@@ -1,9 +1,9 @@
 ##
 # Printers which are used to reprint barcodes.
-# The name and uuid of printers are needed to use the printing service.
+# The name of the printers are needed to use the printing service.
 class Printer < ActiveRecord::Base
 
-  validates_presence_of :name, :uuid
+  validates_presence_of :name
   validates_uniqueness_of :name
 
   include Auditable
