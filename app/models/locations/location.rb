@@ -103,6 +103,10 @@ class Location < ActiveRecord::Base
     @child_count ||= (children.count + labwares.count)
   end
 
+  def has_child_locations?
+    children.count > 0
+  end
+
   def coordinates
     []
   end
