@@ -1,7 +1,10 @@
 <nav>
   <ul>
     <li>
-      <a class="root" href="#">ADMIN</a>
+      <%= link_to 'ABOUT', about_path %>
+    </li>
+    <li>
+      <a class="root" href="#">CONFIGURE</a>
       <ul>
         <li><%= link_to "Location Types", location_types_path %></li>
         <li><%= link_to "Locations", locations_path %></li>

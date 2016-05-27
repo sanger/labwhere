@@ -28,32 +28,6 @@ RSpec.describe UnorderedLocation, type: :model do
 
   end
 
-  it "#add_labware should add labware with barcode" do
-    location = create(:unordered_location_with_parent)
-    labware_1 = create(:labware)
-    labware_2 = build(:labware)
-    location.add_labware(labware_1.barcode)
-    location.add_labware(labware_2.barcode)
-    expect(location.labwares.count).to eq(2)
-    expect(location.labwares.last).to_not be_new_record
-  end
-
-  context "#add_labwares" do
-
-    let!(:location) { create(:unordered_location_with_parent) }
-
-    it "should add multiple labwares" do
-      location.add_labwares(create_list(:labware, 3).join_barcodes)
-      expect(location.labwares.count).to eq(3)
-    end
-
-    it "should fail silently if somebody is a bit free and easy with their arguments" do
-      location.add_labwares(create_list(:labware, 3))
-      expect(location.labwares).to be_empty
-    end
-    
-  end
-
   it "allows nesting of locations" do
     parent_location = create(:unordered_location, name: "A parent location")
     child_location = create(:unordered_location, name: "A child location", parent: parent_location)

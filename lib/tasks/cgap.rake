@@ -1,4 +1,5 @@
 Dir[File.join(Rails.root,"lib","cgap","migrations","*.rb")].each { |f| require f }
+require File.join(Rails.root,"lib","cgap","cgap")
 
 namespace :cgap do
 
@@ -13,9 +14,9 @@ namespace :cgap do
 
     desc "remove all of the data"
     task :clear => :environment do |t|
-      CgapStorage.delete_all
-      CgapLocation.delete_all
-      CgapLabware.delete_all
+      Cgap::Storage.delete_all
+      Cgap::Location.delete_all
+      Cgap::Labware.delete_all
     end
   end
 
@@ -23,9 +24,9 @@ namespace :cgap do
 
     desc "migrate data"
     task :migrate => :environment do |t|
-      MigrateTopLevelLocations.run!
-      MigrateLocations.run!
-      MigrateLabwares.run!
+      Cgap::MigrateTopLevelLocations.run!
+      Cgap::MigrateLocations.run!
+      Cgap::MigrateLabwares.run!
     end
   end
   

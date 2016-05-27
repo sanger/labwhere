@@ -16,21 +16,17 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :swipe_card_id, :barcode, allow_blank: true, allow_nil: true
 
-  validates_with EitherOrValidator, fields: [:swipe_card_id, :barcode]
+  validates_with EitherOrValidator, fields: [:swipe_card_id, :barcode], on: :create
 
   has_subclasses :administrator, :scientist, :guest
+
+  before_update :check_password_fields
 
   ##
   # A list of the different types of inherited user.
   def self.types
     %w(Scientist Administrator)
   end
-
-  ##
-  # Is the user a guest i.e. a user that doesn't exist.
-  # def guest?
-  #   type == "Guest"
-  # end
 
   ##
   # Is the user allowed to perform this action.
@@ -51,5 +47,16 @@ class User < ActiveRecord::Base
   def as_json(options = {})
     super({ except: [:swipe_card_id, :barcode, :deactivated_at, :team_id]}.merge(options)).merge(uk_dates).merge("team" => team.name)
   end
+
+private
+
+  def check_password_fields
+    remove_password_fields [:swipe_card_id, :barcode].reject { |attr| self[attr].present? }
+  end
+
+  def remove_password_fields(attrs)
+    restore_attributes(attrs) unless attrs.empty?
+  end
+
 
 end

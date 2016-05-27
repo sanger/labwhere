@@ -55,7 +55,7 @@ RSpec.describe ScanForm, type: :model do
         {"location_barcode" => location.barcode, "labware_barcodes" => new_labware.join_barcodes, user_code: user.swipe_card_id}))
       expect(Audit.all.count).to eq(4)
       expect(location.labwares.first.audits.first.user).to eq(user)
-      expect(location.labwares.first.audits.first.action).to eq("scan")
+      expect(location.labwares.first.audits.first.action).to eq("create")
     end
 
   end

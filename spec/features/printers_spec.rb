@@ -5,20 +5,19 @@ RSpec.describe "Printers", type: :feature do
   let!(:administrator) { create(:administrator) }
   let!(:scientist) { create(:scientist) }
 
-  it "Should allow a user to create a new printer" do 
+  it "Should allow a user to create a new printer" do
     printer = build(:printer)
     visit printers_path
     click_link "Add new printer"
     expect {
       fill_in "Name", with: printer.name
-      fill_in "Uuid", with: printer.uuid
       fill_in "User swipe card id/barcode", with: administrator.barcode
       click_button "Create Printer"
     }.to change(Printer, :count).by(1)
     expect(page).to have_content("Printer successfully created")
   end
 
-  it "Should allow a user to edit an existing printer" do 
+  it "Should allow a user to edit an existing printer" do
     printer = create(:printer)
     new_printer = build(:printer)
     visit printers_path
@@ -31,13 +30,12 @@ RSpec.describe "Printers", type: :feature do
     expect(page).to have_content("Printer successfully updated")
   end
 
-  it "Should return an error if a printer is created with invalid attributes" do 
+  it "Should return an error if a printer is created with invalid attributes" do
     printer = build(:printer)
     visit printers_path
     click_link "Add new printer"
     expect {
       fill_in "User swipe card id/barcode", with: administrator.barcode
-      fill_in "Name", with: printer.name
       click_button "Create Printer"
     }.to_not change(Printer, :count)
     expect(page).to have_content("error prohibited this record from being saved")
@@ -50,7 +48,6 @@ RSpec.describe "Printers", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: scientist.barcode
       fill_in "Name", with: printer.name
-      fill_in "Uuid", with: printer.uuid
       click_button "Create Printer"
     }.to_not change(Printer, :count)
     expect(page).to have_content("error prohibited this record from being saved")

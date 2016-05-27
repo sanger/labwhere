@@ -2,11 +2,11 @@
     <div>
       <%= drilldown_link %>
     </div>
-    <div class="id">
-      <%= location.id %>.
-    </div>
     <div class="description">
       <%= location.name %>
+    </div>
+    <div class="child-count">
+      (<%= pluralize location.child_count, 'child' %>)
     </div>
     <div>
       <%= info_link %>
@@ -34,9 +34,6 @@
     <div>
       <%= print_link %>
     </div>
-    <!-- <div>
-      <%#= link_to image_tag("print.png", alt: "Print Barcode", title: "Print Barcode"), new_location_print_path(location), remote: true %>
-    </div> -->
     <div>
       <%= link_to image_tag("edit.png", alt: "Edit", title: "Edit"), edit_location_path(location) %>
     </div>

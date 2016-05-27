@@ -19,14 +19,12 @@ RSpec.describe LocationType, type: :model do
   end
 
   it "#has_locations? should signify whether a location type can be destroyed" do
-    location_type = create(:location_type)
-    location = create(:location, location_type: location_type)
-    expect(location_type.has_locations?).to be_truthy
-  end
+    location_type_1 = create(:location_type, name: "Building")
+    create(:location_with_parent, location_type: location_type_1)
+    expect(location_type_1.has_locations?).to be_truthy
 
-   it "#has_locations? should signify whether a location type can be destroyed" do
-    location_type = create(:location_type)
-    expect(location_type.has_locations?).to be_falsey
+    location_type_2 = create(:location_type)
+    expect(location_type_2.has_locations?).to be_falsey
   end
 
   it "#ordered should produce a list ordered by name" do
@@ -43,7 +41,41 @@ RSpec.describe LocationType, type: :model do
     json = location_type.as_json
     expect(json["created_at"]).to eq(location_type.created_at.to_s(:uk))
     expect(json["updated_at"]).to eq(location_type.updated_at.to_s(:uk))
+  end
 
+  it "should not be destroyed if it has locations" do
+    location_type = create(:location_type)
+    create(:location_with_parent, location_type: location_type)
+    location_type.destroy
+    expect(location_type).to_not be_destroyed
+    expect(location_type.errors).to_not be_empty
+  end
+
+  it "#building  should return location type of building" do
+    location_type = create(:location_type)
+    building = create(:location_type, name: "Building")
+    expect(LocationType.building).to eq(building)
+  end
+
+  it "#building? should check whether location type is a building" do
+    location_type = create(:location_type)
+    building = create(:location_type, name: "Building")
+    expect(LocationType.not_building?(location_type)).to be_truthy
+    expect(LocationType.building?(building)).to be_truthy
+
+  end
+
+   it "#site  should return location type of site" do
+    location_type = create(:location_type)
+    site = create(:location_type, name: "Site")
+    expect(LocationType.site).to eq(site)
+  end
+
+  it "#site? should check whether location type is a site" do
+    location_type = create(:location_type)
+    site = create(:location_type, name: "Site")
+    expect(LocationType.not_site?(location_type)).to be_truthy
+    expect(LocationType.site?(site)).to be_truthy
   end
 
 end

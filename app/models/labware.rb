@@ -28,8 +28,24 @@ class Labware < ActiveRecord::Base
     find_by(barcode: code)
   end
 
+  def self.find_or_initialize_by_barcode(object)
+    barcode = object.kind_of?(Hash) ? object[:barcode] : object
+    Labware.find_or_initialize_by(barcode: barcode.remove_control_chars)
+  end
+
   def location
     super || coordinate.location
+  end
+
+  def full_path
+    path = []
+    curr_location = location
+    until curr_location.empty?
+      path << curr_location
+      curr_location = curr_location.parent
+    end
+
+    (path.map { |l| l.name }).reverse.join(' > ')
   end
 
   def coordinate
@@ -42,15 +58,18 @@ class Labware < ActiveRecord::Base
 
   def flush_coordinate
     assign_attributes(coordinate: nil)
+    self
   end
 
   def flush_location
     assign_attributes(location: nil)
+    self
   end
 
   def flush
     flush_coordinate
     flush_location
+    self
   end
 
   ##

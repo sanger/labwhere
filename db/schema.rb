@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150727073844) do
+ActiveRecord::Schema.define(version: 20160519085618) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id"
@@ -28,12 +28,12 @@ ActiveRecord::Schema.define(version: 20150727073844) do
   add_index "audits", ["user_id"], name: "index_audits_on_user_id"
 
   create_table "coordinates", force: :cascade do |t|
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "location_id"
     t.integer  "position"
     t.integer  "row"
     t.integer  "column"
+    t.integer  "location_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   add_index "coordinates", ["location_id"], name: "index_coordinates_on_location_id"
@@ -59,35 +59,34 @@ ActiveRecord::Schema.define(version: 20150727073844) do
   create_table "locations", force: :cascade do |t|
     t.string   "name"
     t.string   "barcode"
+    t.string   "parentage"
+    t.string   "type"
     t.integer  "parent_id"
     t.boolean  "container",        default: true
     t.integer  "status",           default: 0
+    t.integer  "rows",             default: 0
+    t.integer  "columns",          default: 0
     t.datetime "deactivated_at"
     t.integer  "location_type_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.string   "parentage"
-    t.string   "type"
-    t.integer  "rows",             default: 0
-    t.integer  "columns",          default: 0
   end
 
   add_index "locations", ["location_type_id"], name: "index_locations_on_location_type_id"
 
   create_table "printers", force: :cascade do |t|
     t.string   "name"
-    t.string   "uuid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "scans", force: :cascade do |t|
     t.integer  "status",      default: 0
+    t.string   "message"
     t.integer  "location_id"
     t.integer  "user_id"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
-    t.string   "message"
   end
 
   add_index "scans", ["location_id"], name: "index_scans_on_location_id"
@@ -95,7 +94,7 @@ ActiveRecord::Schema.define(version: 20150727073844) do
 
   create_table "searches", force: :cascade do |t|
     t.string   "term"
-    t.integer  "search_count", default: 1
+    t.integer  "search_count", default: 0
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
   end

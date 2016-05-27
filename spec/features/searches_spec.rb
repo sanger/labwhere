@@ -57,7 +57,7 @@ RSpec.describe "Searches", type: :feature do
 
     it "with a location type should allow viewing of associated locations" do
       location_type = create(:location_type_with_locations)
-      other_locations = create_list(:location, 10, location_type: create(:location_type))
+      other_locations = create_list(:location_with_parent, 10, location_type: create(:location_type))
       visit root_path
       fill_in "Term", with: location_type.name
       click_button "Search"

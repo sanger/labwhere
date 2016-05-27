@@ -3,18 +3,20 @@ require "test_helper"
 class MigrateLabwaresTest < ActiveSupport::TestCase
 
   def setup
-    MigrateTopLevelLocations.run!("test/fixtures")
-    MigrateLocations.run!("test/fixtures")
-    MigrateLabwares.run!("test/fixtures")
+    Cgap::MigrateTopLevelLocations.run!("test/fixtures")
+    Cgap::MigrateLocations.run!("test/fixtures")
+    Cgap::MigrateLabwares.run!("test/fixtures")
   end
 
   test "should migrate all of the labwares" do
     assert_operator Labware.all.count, :>, 0
-    assert_equal CgapLabware.all.count, Labware.all.count
+    assert_equal Cgap::Labware.all.count, Labware.all.count
   end
 
+  # TODO: This test now fails because names are no longer allowed to be the same in the context
+  # of the same parent.
   test "should be linked to the right location if labware has no row or column" do
-    labwares = CgapLabware.where("row = 0  and column = 0")
+    labwares = Cgap::Labware.where("row = 0  and column = 0")
 
     labware = labwares.first
     assert_equal Location.find(labware.cgap_location.labwhere_id), Labware.find_by_code(labware.barcode).location
@@ -24,7 +26,7 @@ class MigrateLabwaresTest < ActiveSupport::TestCase
   end
 
   test "should be in a coordinate and the correct location if labware has a row or column" do
-    labwares = CgapLabware.where("row > 0 and column > 0")
+    labwares = Cgap::Labware.where("row > 0 and column > 0")
 
     cgap_labware = labwares.first
     labware = Labware.find_by_code(cgap_labware.barcode)
@@ -40,8 +42,8 @@ class MigrateLabwaresTest < ActiveSupport::TestCase
   end
 
   def teardown
-    CgapLocation.delete_all
-    CgapLabware.delete_all
+    Cgap::Location.delete_all
+    Cgap::Labware.delete_all
   end
   
 end

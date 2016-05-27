@@ -7,8 +7,8 @@ RSpec.describe Api::LocationsController, type: :request do
   let!(:user) { create(:administrator) }
 
   it "should retrieve information about locations get /api/locations" do
-
-    locations = create_list(:location, 5)
+    location_type = create(:location_type, name: "Building")
+    locations = create_list(:location, 5, location_type: location_type)
     get api_locations_path
     expect(response).to be_success
     expect(ActiveSupport::JSON.decode(response.body).length).to eq(locations.length)
@@ -99,7 +99,7 @@ RSpec.describe Api::LocationsController, type: :request do
   end
 
   it "should create a new location" do
-    post api_locations_path, user_code: user.swipe_card_id, location: attributes_for(:location)
+    post api_locations_path, location: attributes_for(:location).merge(user_code: user.swipe_card_id)
     expect(response).to be_success
     location = Location.first
     json = ActiveSupport::JSON.decode(response.body)
@@ -122,7 +122,7 @@ RSpec.describe Api::LocationsController, type: :request do
   it "should update an existing location" do
     location = create(:location_with_parent)
     location_parent = create(:location)
-    patch api_location_path(location.barcode), location: { user_code: user.swipe_card_id, parent_barcode: location_parent.barcode }
+    patch api_location_path(location.barcode), location: { user_code: user.swipe_card_id, parent_id: location_parent.id }
     expect(response).to be_success
     expect(location.reload.parent).to eq(location_parent)
   end

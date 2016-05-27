@@ -89,4 +89,19 @@ RSpec.describe Labware, type: :model do
     expect(labware.location).to be_empty
     expect(labware.coordinate).to be_empty
   end
+
+  it "#find_or_initialize_by_barcode should create or find a labware" do
+    labware = create(:labware)
+    expect(Labware.find_or_initialize_by_barcode(labware.barcode)).to eq(labware)
+    expect(Labware.find_or_initialize_by_barcode(barcode: labware.barcode)).to eq(labware)
+    expect(Labware.find_or_initialize_by_barcode("999")).to be_new_record
+  end
+
+  it 'should have a full path string' do
+    location_1 = build(:location, name: 'Location_1')
+    location_2 = build(:location, name: 'Location_2', parent: location_1)
+    location_3 = build(:location, name: 'Location_3', parent: location_2)
+
+    expect(create(:labware, location: location_3).full_path).to eq('Location_1 > Location_2 > Location_3')
+  end
 end

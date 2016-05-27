@@ -13,8 +13,8 @@ class Location < ActiveRecord::Base
   belongs_to :parent, class_name: "Location"
   has_many :labwares
 
-  validates :name, presence: true
- 
+  validates :name, presence: true, uniqueness: {scope: :parent, case_sensitive: true}
+
   validates_format_of :name, with: /\A[\w\-\s\(\)]+\z/
   validates_length_of :name, maximum: 60
 
@@ -23,9 +23,11 @@ class Location < ActiveRecord::Base
     validates_format_of :name, without: /UNKNOWN/i
   end
 
-  scope :without, ->(location) { active.where.not(id: location.id) }
-  scope :without_unknown, ->{ where.not(name: UNKNOWN) }
-  scope :by_building, -> { without_unknown.where(location_type_id: LocationType.find_by(name: "Building"))}
+  validates_with ParentLocationValidator
+
+  scope :without, ->(location) { active.where.not(id: location.id).order(id: :desc) }
+  scope :without_unknown, -> { where.not(name: UNKNOWN) }
+  scope :by_building, -> { without_unknown.where(location_type_id: LocationType.building) }
 
   before_save :set_parentage
   after_create :generate_barcode
@@ -80,7 +82,7 @@ class Location < ActiveRecord::Base
   # This will transform the location into the correct type of location based on whether it
   # has coordinates.
   def transform
-    self.becomes! ( coordinateable? ? OrderedLocation : UnorderedLocation)
+    self.becomes! (coordinateable? ? OrderedLocation : UnorderedLocation)
   end
 
   def type
@@ -90,11 +92,15 @@ class Location < ActiveRecord::Base
   ##
   # Useful for creating audit records. There are certain attributes which are not needed.
   def as_json(options = {})
-    super({ except: [:deactivated_at, :location_type_id]}.merge(options)).merge(uk_dates).merge("location_type" => location_type.name)
+    super({except: [:deactivated_at, :location_type_id]}.merge(options)).merge(uk_dates).merge("location_type" => location_type.name)
   end
 
   def children
     []
+  end
+
+  def child_count
+    @child_count ||= (children.count + labwares.count)
   end
 
   def coordinates
@@ -116,41 +122,18 @@ class Location < ActiveRecord::Base
     end
   end
 
-  # Add a piece of Labware to the location.
-  # Find or initialize it first.
-  # Returns the labware and a copy of it before the location is updated
-  def add_labware(barcode)
-    labware = Labware.find_or_initialize_by(barcode: barcode)
-    labware_dup = labware.dup
-    labware.flush_coordinate
-    labwares << labware
-    [labware, labware_dup]
-  end
-
-  # Add several pieces of Labware only if the barcodes passed are a string
-  # Split the barcodes by returns and add each one.
-  # In some cases we need to do stuff with each labware before and after it has changed.
-  # in which case we allow a block to be executed on each piece of labware that is added.
-  def add_labwares(barcodes)
-    return unless barcodes.instance_of?(String)
-    barcodes.split("\n").each do |barcode| 
-      after, before = add_labware(barcode.remove_control_chars)
-      yield(after, before) if block_given?
-    end
-  end
-
   # Find any locations within the location which have enough contiguous available coordinates
   # signified by n.
   def available_coordinates(n)
     []
   end
 
-private
-  
+  private
+
   ##
   # The barcode is the name downcased with spaces replaced by dashes with the id added again separated by a space.
   def generate_barcode
-    update_column(:barcode, "lw-#{self.name.gsub(' ','-').downcase}-#{self.id}")
+    update_column(:barcode, "lw-#{self.name.gsub(' ', '-').downcase}-#{self.id}")
   end
 
 end
