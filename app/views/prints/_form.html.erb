@@ -6,6 +6,12 @@
         <%= label_tag :printer_id %>
         <%= select_tag :printer_id, options_from_collection_for_select(Printer.all, :id, :name) %>
       </li>
+      <% if @location.has_child_locations? %>
+        <li>
+          <%= check_box_tag :print_child_barcodes %>
+          <%= label_tag :print_child_barcodes, 'Print Child Barcodes?' %>
+        </li>
+      <% end %>
     </ul>
     <%= submit_tag "Print" %>
   </fieldset>

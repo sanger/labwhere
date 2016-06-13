@@ -179,6 +179,22 @@ RSpec.describe Location, type: :model do
     end
   end
 
+  describe '#has_child_locations?' do
+    context 'when location has child locations' do
+      it 'is true' do
+        location = create(:unordered_location)
+        location.children = create_list(:location, 3)
+        expect(location.has_child_locations?).to eql(true)
+      end
+    end
+
+    context 'when location has no child locations' do
+      it 'is false' do
+        expect(create(:location).has_child_locations?).to eql(false)
+      end
+    end
+  end
+
   it 'should allow buildings or sites with no parent' do
     building_type = create(:location_type, name: "Building")
     site_type = create(:location_type, name: "Site")
