@@ -24,6 +24,11 @@
       </li>
       <div class="container-options" data-behavior="container">
         <li>
+          <%= f.check_box :reserve %>
+          <%= f.label :reserve, "Reserve?" %>
+          <span class="note">(Only your team can store labware in this container)</span>
+        </li>
+        <li>
           <%= f.check_box :coordinateable, data: {toggle: "coordinates"} %>
           <%= f.label :coordinateable, "Has Co-ordinates" %>
         </li>

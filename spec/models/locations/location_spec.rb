@@ -17,6 +17,10 @@ RSpec.describe Location, type: :model do
     expect(build(:location, name: "unknown")).to_not be_valid
   end
 
+  it "is invalid if is container and has a team" do
+    expect(build(:location, container: 0, team: create(:team))).to_not be_valid
+  end
+
   it "#without_location should return a list of locations without a specified location" do
     locations         = create_list(:location, 3)
     inactive_location = create(:location, status: Location.statuses[:inactive])
@@ -214,5 +218,6 @@ RSpec.describe Location, type: :model do
     building_type = create(:location_type, name: "Bin")
 
     expect(build(:location, location_type: building_type)).to_not be_valid
-    end
+  end
+
 end

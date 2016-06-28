@@ -57,4 +57,50 @@ RSpec.describe "Scans", type: :feature do
     expect(page).to have_content("errors prohibited this record from being saved")
   end
 
+  describe "Reservations" do
+    it "does not allow a user to scan labware into a location reserved by another team" do
+      location = create(:location_with_parent, team: create(:team))
+      labwares = build_list(:labware, 10)
+      visit new_scan_path
+
+      expect {
+        fill_in "User swipe card id/barcode", with: user.swipe_card_id
+        fill_in "Location barcode", with: location.barcode
+        fill_in "Labware barcodes", with: labwares.join_barcodes
+        click_button "Go!"
+      }.to_not change(Scan, :count)
+
+      expect(page).to have_content("error prohibited this record from being saved")
+    end
+
+    it "does not allow a user to scan labware out of a location reserved by another team" do
+      labwares = create_list(:labware, 10, location: create(:location_with_parent, team: create(:team)))
+      visit new_scan_path
+
+      expect {
+        fill_in "User swipe card id/barcode", with: user.swipe_card_id
+        fill_in "Labware barcodes", with: labwares.join_barcodes
+        click_button "Go!"
+      }.to change(Scan, :count).by(0)
+
+      expect(page).to have_content("errors prohibited this record from being saved")
+    end
+
+    it "does not allow a user to scan labware out of a location with a parent reserved by another team" do
+      parent_location = create(:location, team: create(:team))
+      labwares = create_list(:labware, 10, location: create(:location_with_parent, parent: parent_location))
+
+      visit new_scan_path
+
+      expect {
+        fill_in "User swipe card id/barcode", with: user.swipe_card_id
+        fill_in "Labware barcodes", with: labwares.join_barcodes
+        click_button "Go!"
+      }.to change(Scan, :count).by(0)
+
+      expect(page).to have_content("errors prohibited this record from being saved")
+    end
+
+  end
+
 end
