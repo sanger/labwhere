@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519085618) do
+ActiveRecord::Schema.define(version: 20160622130259) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id"
@@ -70,9 +70,11 @@ ActiveRecord::Schema.define(version: 20160519085618) do
     t.integer  "location_type_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.integer  "team_id"
   end
 
   add_index "locations", ["location_type_id"], name: "index_locations_on_location_type_id"
+  add_index "locations", ["team_id"], name: "index_locations_on_team_id"
 
   create_table "printers", force: :cascade do |t|
     t.string   "name"

@@ -3,6 +3,7 @@ FactoryGirl.define do
     sequence(:name) {|n| "Location #{n}" }
     location_type_id { LocationType.find_or_create_by(name: "Building").id }
     parent nil
+    team nil
 
     factory :location_with_parent do
       parent { FactoryGirl.create(:location)}
@@ -76,14 +77,14 @@ FactoryGirl.define do
 
       after(:create) do |location, evaluator|
         1.upto(5) do |n|
-          FactoryGirl.create(:audit, auditable_type: location.class, 
+          FactoryGirl.create(:audit, auditable_type: location.class,
             auditable_id: location.id, user: evaluator.user, record_data: location)
         end
       end
     end
 
     factory :unknown_location, class: "UnknownLocation" do
-      
+
     end
 
   end
