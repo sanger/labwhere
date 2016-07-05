@@ -30,11 +30,7 @@ private
   end
 
   def set_team
-    @model.team_id = if reserve_param?
-        current_user.team_id
-      else
-        nil
-      end
+    @model.team_id = reserve_param? ? current_user.team_id : nil
   end
 
   def only_same_team_can_release_location

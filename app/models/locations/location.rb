@@ -25,9 +25,7 @@ class Location < ActiveRecord::Base
     validates_format_of :name, without: /UNKNOWN/i
   end
 
-  validates_with ParentLocationValidator
-
-  validate :only_containers_can_be_reserved
+  validates_with ContainerReservationValidator
 
   scope :without, ->(location) { active.where.not(id: location.id).order(id: :desc) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
@@ -142,12 +140,6 @@ class Location < ActiveRecord::Base
   # The barcode is the name downcased with spaces replaced by dashes with the id added again separated by a space.
   def generate_barcode
     update_column(:barcode, "lw-#{self.name.gsub(' ', '-').downcase}-#{self.id}")
-  end
-
-  def only_containers_can_be_reserved
-    if team.present? && !container?
-      errors.add(:base, 'Only Locations which are containers can be reserved')
-    end
   end
 
 end
