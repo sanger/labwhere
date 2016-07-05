@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe LocationType, type: :model do 
+RSpec.describe LocationType, type: :model do
 
   it "is invalid without a name" do
     expect(build(:location_type, name: nil)).to_not be_valid
@@ -49,33 +49,6 @@ RSpec.describe LocationType, type: :model do
     location_type.destroy
     expect(location_type).to_not be_destroyed
     expect(location_type.errors).to_not be_empty
-  end
-
-  it "#building  should return location type of building" do
-    location_type = create(:location_type)
-    building = create(:location_type, name: "Building")
-    expect(LocationType.building).to eq(building)
-  end
-
-  it "#building? should check whether location type is a building" do
-    location_type = create(:location_type)
-    building = create(:location_type, name: "Building")
-    expect(LocationType.not_building?(location_type)).to be_truthy
-    expect(LocationType.building?(building)).to be_truthy
-
-  end
-
-   it "#site  should return location type of site" do
-    location_type = create(:location_type)
-    site = create(:location_type, name: "Site")
-    expect(LocationType.site).to eq(site)
-  end
-
-  it "#site? should check whether location type is a site" do
-    location_type = create(:location_type)
-    site = create(:location_type, name: "Site")
-    expect(LocationType.not_site?(location_type)).to be_truthy
-    expect(LocationType.site?(site)).to be_truthy
   end
 
 end

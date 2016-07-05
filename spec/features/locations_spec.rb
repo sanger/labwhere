@@ -85,7 +85,6 @@ RSpec.describe "Locations", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: location.name
-      select 'Building', from: "Location type"
       check "Container"
       click_button "Create Location"
     }.to change(Location, :count).by(1)
@@ -268,7 +267,6 @@ RSpec.describe "Locations", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
       fill_in "Name", with: location.name
-      select 'Building', from: "Location type"
       check "Container"
       click_button "Create Location"
     }.to_not change(Location, :count)

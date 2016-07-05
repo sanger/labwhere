@@ -32,7 +32,7 @@ module Labwhere
 
     config.autoload_paths += %W(#{config.root}/lib/utils #{config.root}/lib/validators)
 
-    config.autoload_paths += %W(#{config.root}/app/models/users #{config.root}/app/models/locations)
+    config.autoload_paths += %W(#{config.root}/app/models/users #{config.root}/app/models/locations #{config.root}/app/models/restrictions)
 
     config.autoload_paths += %W(#{config.root}/lib/label_printing)
 

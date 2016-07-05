@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :location do
     sequence(:name) {|n| "Location #{n}" }
-    location_type_id { LocationType.find_or_create_by(name: "Building").id }
+    location_type_id { create(:location_type).id }
     parent nil
     team nil
 
