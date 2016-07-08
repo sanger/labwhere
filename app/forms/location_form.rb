@@ -34,11 +34,7 @@ private
   end
 
   def only_same_team_can_release_location
-    if @model.team_id_changed? && !reserve_param?
-      unless @model.team_id_was === current_user.team_id
-        errors.add(:base, I18n.t("errors.messages.location_release", team: @model.reload.team.name))
-      end
-    end
+    LocationReleaseValidator.new(team_id: current_user.team_id).validate(self) if !reserve_param?
   end
 
   def reserve_param?
