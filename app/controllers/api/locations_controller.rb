@@ -1,7 +1,7 @@
 class Api::LocationsController < ApiController
 
   def index
-    render json: Location.by_building
+    render json: Location.by_root
   end
 
   def show

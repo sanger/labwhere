@@ -151,5 +151,5 @@ RSpec.describe Api::LocationsController, type: :request do
     json = ActiveSupport::JSON.decode(response.body)
     expect(json).to be_empty
   end
-  
+
 end
