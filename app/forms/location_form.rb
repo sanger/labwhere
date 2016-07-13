@@ -11,7 +11,7 @@ class LocationForm
 
   after_assigning_model_variables :transform_location, :set_team
 
-  delegate :parent, :barcode, :parentage, :type, :coordinateable?, :reserved?, to: :location
+  delegate :parent, :barcode, :parentage, :type, :coordinateable?, :reserved?, :reserved_by, to: :location
 
   attr_writer :coordinateable, :reserve
 

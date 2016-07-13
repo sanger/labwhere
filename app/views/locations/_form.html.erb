@@ -26,7 +26,13 @@
         <li>
           <%= f.check_box :reserve %>
           <%= f.label :reserve, "Reserve?" %>
-          <span class="note">(Only your team can store labware in this container)</span>
+          <span class="note">
+            <% if @location.reserved? %>
+              <%= "Reserved by #{@location.reserved_by.name}" %>
+            <% else %>
+              (Only your team can store labware in this container)'
+            <% end %>
+          </span>
         </li>
         <li>
           <%= f.check_box :coordinateable, data: {toggle: "coordinates"} %>
