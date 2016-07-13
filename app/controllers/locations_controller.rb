@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
 
   before_action :locations, only: [:index]
   before_action :set_location, except: [:index, :activate, :deactivate]
-  
+
   def index
   end
 
@@ -47,7 +47,7 @@ class LocationsController < ApplicationController
 protected
 
   def locations
-    @locations = Location.by_building
+    @locations = Location.by_root
   end
 
   helper_method :locations

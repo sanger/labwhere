@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519085618) do
+ActiveRecord::Schema.define(version: 20160701091211) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id"
@@ -56,6 +56,13 @@ ActiveRecord::Schema.define(version: 20160519085618) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "location_types_restrictions", id: false, force: :cascade do |t|
+    t.integer "location_type_id", null: false
+    t.integer "restriction_id",   null: false
+  end
+
+  add_index "location_types_restrictions", ["restriction_id", "location_type_id"], name: "restriction_id_and_location_type_id_index", unique: true
+
   create_table "locations", force: :cascade do |t|
     t.string   "name"
     t.string   "barcode"
@@ -70,15 +77,26 @@ ActiveRecord::Schema.define(version: 20160519085618) do
     t.integer  "location_type_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.integer  "team_id"
   end
 
   add_index "locations", ["location_type_id"], name: "index_locations_on_location_type_id"
+  add_index "locations", ["team_id"], name: "index_locations_on_team_id"
 
   create_table "printers", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "restrictions", force: :cascade do |t|
+    t.string  "type"
+    t.string  "validator"
+    t.text    "params"
+    t.integer "location_type_id"
+  end
+
+  add_index "restrictions", ["location_type_id"], name: "index_restrictions_on_location_type_id"
 
   create_table "scans", force: :cascade do |t|
     t.integer  "status",      default: 0

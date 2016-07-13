@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe LabwareCollection, type: :model do
 
-  let!(:previous_location_1)    { create(:location_with_parent)}    
-  let!(:previous_location_2)    { create(:location_with_parent)}    
+  let!(:previous_location_1)    { create(:location_with_parent)}
+  let!(:previous_location_2)    { create(:location_with_parent)}
   let!(:labwares_1)             { create_list(:labware, 5, location: previous_location_1) }
   let!(:labwares_2)             { create_list(:labware, 5, location: previous_location_2) }
   let(:new_labwares)            { build_list(:labware, 5)}
@@ -36,7 +36,6 @@ RSpec.describe LabwareCollection, type: :model do
       end
     end
 
-    
   end
 
   describe 'adding to an ordered location' do
@@ -73,5 +72,5 @@ RSpec.describe LabwareCollection, type: :model do
 
   end
 
-  
+
 end

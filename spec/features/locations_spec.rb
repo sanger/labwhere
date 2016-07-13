@@ -77,7 +77,7 @@ RSpec.describe "Locations", type: :feature do
   let!(:location_types)   { create_list(:location_type, 4)}
   let!(:parent_location)  { create(:unordered_location)}
 
-  
+
   it "Allows a user to add a new location" do
     location = build(:location)
     visit locations_path
@@ -85,10 +85,10 @@ RSpec.describe "Locations", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: location.name
-      select 'Building', from: "Location type"
       check "Container"
       click_button "Create Location"
     }.to change(Location, :count).by(1)
+    expect(Location.last.reserved?).to eq(false)
     expect(page).to have_content("Location successfully created")
   end
 
@@ -103,11 +103,31 @@ RSpec.describe "Locations", type: :feature do
         select parent_location.id, from: "Parent"
         select location_types.first.name, from: "Location type"
         check "Has Co-ordinates"
-        fill_in "Rows", with: location.rows 
+        fill_in "Rows", with: location.rows
         fill_in "Columns", with: location.columns
         click_button "Create Location"
       }.to change(Location, :count).by(1)
       expect(OrderedLocation.first.coordinates.count).to eq(create(:ordered_location).coordinates.length)
+      expect(page).to have_content("Location successfully created")
+    end
+  end
+
+  describe "reserved", js: true do
+    it "Allows a user to new location that is reserved for their team" do
+      location = build(:ordered_location)
+      visit locations_path
+      click_link "Add new location"
+
+      expect {
+        fill_in "User swipe card id/barcode", with: user.swipe_card_id
+        fill_in "Name", with: location.name
+        select parent_location.id, from: "Parent"
+        select location_types.first.name, from: "Location type"
+        check "Reserve?"
+        click_button "Create Location"
+      }.to change(Location, :count).by(1)
+
+      expect(Location.last.team).to eq(user.team)
       expect(page).to have_content("Location successfully created")
     end
   end
@@ -147,6 +167,46 @@ RSpec.describe "Locations", type: :feature do
       click_button "Update Location"
     }.to change { location.reload.name }.to("An updated location name")
     expect(page).to have_content("Location successfully updated")
+  end
+
+  it "Allows a user to reserve a Location" do
+    location = create(:location)
+
+    visit edit_location_path(location)
+
+    expect {
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      check "Reserve?"
+      click_button "Update Location"
+    }.to change { location.reload.team }.to(user.team)
+
+    expect(page).to have_content("Location successfully updated")
+  end
+
+  it "Allows a user to release a Location" do
+    location = create(:location, team: user.team)
+
+    visit edit_location_path(location)
+
+    expect {
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      uncheck "Reserve?"
+      click_button "Update Location"
+    }.to change { location.reload.team }.to(nil)
+
+    expect(page).to have_content("Location successfully updated")
+  end
+
+  it "Does not allow a user to release a Location not reserved by their team" do
+    reserved_location = create(:location, team: create(:team))
+
+    visit edit_location_path(reserved_location)
+
+    fill_in "User swipe card id/barcode", with: user.swipe_card_id
+    uncheck "Reserve?"
+    click_button "Update Location"
+
+    expect(page.text).to match("error prohibited this record from being saved")
   end
 
   it "Allows a user to nest locations" do
@@ -207,7 +267,6 @@ RSpec.describe "Locations", type: :feature do
     expect {
       fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
       fill_in "Name", with: location.name
-      select 'Building', from: "Location type"
       check "Container"
       click_button "Create Location"
     }.to_not change(Location, :count)
