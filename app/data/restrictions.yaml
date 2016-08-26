@@ -1,57 +1,57 @@
-1: 
+1:
   validator: EmptyParentValidator
   location_type: Site
 2:
-  type: ParentageRestriction 
+  type: ParentageRestriction
   validator: ParentWhiteListValidator
   location_type: Building
   location_types_restrictions:
     - Site
 4:
-  validator: ActiveRecord::Validations::UniquenessValidator 
+  validator: ActiveRecord::Validations::UniquenessValidator
   params:
-    attributes:
+    :attributes:
       - :name
-    scope: :location_type_id 
-    message: has already been taken for this Location Type 
+    :scope: :location_type_id
+    :message: has already been taken for this Location Type
   location_type: Building
 5:
-  validator: ActiveRecord::Validations::UniquenessValidator 
+  validator: ActiveRecord::Validations::UniquenessValidator
   params:
-    attributes:
-      - :name 
-    scope: location_type_id 
-    message: has already been taken for this Location Type 
-    location_type: Room
+    :attributes:
+      - :name
+    :scope: location_type_id
+    :message: has already been taken for this Location Type
+  location_type: Room
 6:
-  type: ParentageRestriction 
+  type: ParentageRestriction
   validator: ParentWhiteListValidator
   location_type: Room
   location_types_restrictions:
     - Building
 7:
-  type: ParentageRestriction 
-  validator: ParentBlackListValidator 
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
   location_type: Freezer -80C
   location_types_restrictions:
     - Site
     - Building
 8:
-  type: ParentageRestriction 
+  type: ParentageRestriction
   validator: ParentBlackListValidator
   location_type: Incubator 37C
   location_types_restrictions:
     - Site
     - Building
-9: 
-  type: ParentageRestriction 
+9:
+  type: ParentageRestriction
   validator: ParentBlackListValidator
   location_type: Shelf
   location_types_restrictions:
     - Site
     - Building
 10:
-  type: ParentageRestriction 
+  type: ParentageRestriction
   validator: ParentBlackListValidator
   location_type: Box
   location_types_restrictions:
@@ -63,10 +63,9 @@
   location_type: Bin
   location_types_restrictions:
     - Site
-    - Building
 12:
   type: ParentageRestriction
-  validator: ParentBlackListValidator 
+  validator: ParentBlackListValidator
   location_type: CO2 Incubator
   location_types_restrictions:
     - Site
@@ -113,7 +112,7 @@
   location_types_restrictions:
     - Site
     - Building
-19: 
+19:
   type: ParentageRestriction
   validator: ParentBlackListValidator
   location_type: Thermoblock
@@ -134,7 +133,7 @@
   location_types_restrictions:
     - Site
     - Building
-22: 
+22:
   type: ParentageRestriction
   validator: ParentBlackListValidator
   location_type: Bench
@@ -150,17 +149,17 @@
     - Building
 24:
   type: ParentageRestriction
-  validator: ParentBlackListValidator 
+  validator: ParentBlackListValidator
   location_type: Drawer
   location_types_restrictions:
     - Site
     - Building
 25:
   type: ParentageRestriction
-  validator: ParentWhiteListValidator
+  validator: ParentBlackListValidator
   location_type: Tray
   location_types_restrictions:
-    - Building
+    - Site
 26:
   type: ParentageRestriction
   validator: ParentWhiteListValidator
