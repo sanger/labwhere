@@ -22,7 +22,7 @@ private
     type  = restriction["type"] || "Restriction"
     location_type = LocationType.find_or_create_by(name: restriction["location_type"])
     location_types_restrictions = restriction.delete("location_types_restrictions")
-    new_restriction = type.constantize.create(restriction.merge("location_type": location_type))
+    new_restriction = type.constantize.create(restriction.merge("location_type" => location_type))
     create_location_types_restrictions(new_restriction, location_types_restrictions) if location_types_restrictions.present?
   end
 
