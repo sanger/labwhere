@@ -4,7 +4,7 @@ module Cgap
     include CreateLocationTypes
 
     LOCATION_TYPE_MATCHES = { "-80 freezer" => "Freezer -80C",
-                              "CO2 Incubator" => "CO2 Incubator", 
+                              "CO2 Incubator" => "CO2 Incubator",
                               "Multi-Gas Incubator" => "Multi-Gas Incubator",
                               "CryoStore" => "Nitrogen Freezer",
                               "Underbench -80" => "Freezer -80C",
@@ -36,14 +36,14 @@ module Cgap
     def initialize(path)
       Cgap::LoadData.new("locations_top", path).load!
       Cgap::LoadData.new("locations_sub", path).load!
-      @cgap_locations = Cgap::Location.all 
+      @cgap_locations = Cgap::Location.all
       create_location_types
     end
 
     def run!
       cgap_locations.each do |cgap_location|
         location = new_location(cgap_location)
-        location.save(validate: false)
+        location.save
         cgap_location.update_attribute(:labwhere_id, location.id)
       end
 
@@ -82,12 +82,18 @@ module Cgap
     end
 
     def new_location(cgap_location)
+
       ::Location.new(
-        name: cgap_location.name, 
-        rows: cgap_location.rows, 
+        name: create_unique_name(cgap_location),
+        rows: cgap_location.rows,
         columns: cgap_location.columns,
         location_type: find_location_type(cgap_location.name)
         )
+    end
+
+    def create_unique_name(cgap_location)
+      name = cgap_location.name
+      ::Location.where(["name LIKE ?", name]).present? ? (name + " " + cgap_location.id.to_s) : name
     end
 
   end

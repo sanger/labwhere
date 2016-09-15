@@ -61,6 +61,7 @@ GEM
     childprocess (0.5.5)
       ffi (~> 1.0, >= 1.0.11)
     cliver (0.3.2)
+    coderay (1.1.1)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -118,6 +119,7 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     metaclass (0.0.4)
+    method_source (0.8.2)
     mime-types (2.6.1)
     mini_portile (0.6.2)
     minitest (5.7.0)
@@ -134,6 +136,10 @@ GEM
       cliver (~> 0.3.1)
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     puma (2.11.1)
       rack (>= 1.1, < 2.0)
     rack (1.6.4)
@@ -213,6 +219,7 @@ GEM
     slim (2.1.0)
       temple (~> 0.6.9)
       tilt (>= 1.3.3, < 2.1)
+    slop (3.6.0)
     spring (1.3.6)
     sprockets (3.2.0)
       rack (~> 1.0)
@@ -274,6 +281,7 @@ DEPENDENCIES
   phantomjs
   pmb-client (= 0.1.0)!
   poltergeist
+  pry
   puma
   rails (= 4.2.3)
   raml_ruby (~> 0.1.1)
@@ -292,4 +300,4 @@ DEPENDENCIES
   with_model
 
 BUNDLED WITH
-   1.12.1
+   1.12.5

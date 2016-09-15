@@ -1,0 +1,169 @@
+1:
+  validator: EmptyParentValidator
+  location_type: Site
+2:
+  type: ParentageRestriction
+  validator: ParentWhiteListValidator
+  location_type: Building
+  location_types_restrictions:
+    - Site
+4:
+  validator: ActiveRecord::Validations::UniquenessValidator
+  params:
+    :attributes:
+      - :name
+    :scope: :location_type_id
+    :message: has already been taken for this Location Type
+  location_type: Building
+5:
+  validator: ActiveRecord::Validations::UniquenessValidator
+  params:
+    :attributes:
+      - :name
+    :scope: location_type_id
+    :message: has already been taken for this Location Type
+  location_type: Room
+6:
+  type: ParentageRestriction
+  validator: ParentWhiteListValidator
+  location_type: Room
+  location_types_restrictions:
+    - Building
+7:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Freezer -80C
+  location_types_restrictions:
+    - Site
+    - Building
+8:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Incubator 37C
+  location_types_restrictions:
+    - Site
+    - Building
+9:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Shelf
+  location_types_restrictions:
+    - Site
+    - Building
+10:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Box
+  location_types_restrictions:
+    - Site
+    - Building
+11:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Bin
+  location_types_restrictions:
+    - Site
+12:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: CO2 Incubator
+  location_types_restrictions:
+    - Site
+    - Building
+13:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Multi-Gas Incubator
+  location_types_restrictions:
+    - Site
+    - Building
+14:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Nitrogen Freezer
+  location_types_restrictions:
+    - Site
+    - Building
+15:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Freezer -20C
+  location_types_restrictions:
+    - Site
+    - Building
+16:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Fridge
+  location_types_restrictions:
+    - Site
+    - Building
+17:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Sonicator
+  location_types_restrictions:
+    - Site
+    - Building
+18:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Rotator
+  location_types_restrictions:
+    - Site
+    - Building
+19:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Thermoblock
+  location_types_restrictions:
+    - Site
+    - Building
+20:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Plate shaker
+  location_types_restrictions:
+    - Site
+    - Building
+21:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Automatic Incubator
+  location_types_restrictions:
+    - Site
+    - Building
+22:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Bench
+  location_types_restrictions:
+    - Site
+    - Building
+23:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Rack
+  location_types_restrictions:
+    - Site
+    - Building
+24:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Drawer
+  location_types_restrictions:
+    - Site
+    - Building
+25:
+  type: ParentageRestriction
+  validator: ParentBlackListValidator
+  location_type: Tray
+  location_types_restrictions:
+    - Site
+26:
+  type: ParentageRestriction
+  validator: ParentWhiteListValidator
+  location_type: DELIVERED
+  location_types_restrictions:
+    - Building
+
