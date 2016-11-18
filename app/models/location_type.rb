@@ -6,6 +6,7 @@ class LocationType < ActiveRecord::Base
   include Auditable
 
   has_many :locations
+  has_many :restrictions, dependent: :destroy
 
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 
@@ -14,33 +15,6 @@ class LocationType < ActiveRecord::Base
   searchable_by :name
 
   before_destroy :check_locations
-
-  #TODO: Buildings and Sites need to be dealt with differently to ensure more flexible code
-  def self.building
-    find_by_name("Building")
-  end
-
-  def self.building?(location_type)
-    location_type == building
-  end
-
-  def self.not_building?(location_type)
-    location_type != building
-  end
-
-   def self.site
-    find_by_name("Site")
-  end
-
-  def self.site?(location_type)
-    location_type == site
-  end
-
-  def self.not_site?(location_type)
-    location_type != site
-  end
-
-
 
   ##
   # A location type can only be destroyed if it has no locations

@@ -54,5 +54,5 @@ private
       location.coordinates.find_by_position(labware.permit(:position, :row, :column))
     end
   end
-  
+
 end

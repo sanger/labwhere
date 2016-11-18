@@ -17,6 +17,72 @@ RSpec.describe Location, type: :model do
     expect(build(:location, name: "unknown")).to_not be_valid
   end
 
+  it "is invalid if is container and has a team" do
+    expect(build(:location, container: 0, team: create(:team))).to_not be_valid
+  end
+
+  context "when location type has empty parent restriction" do
+
+    before(:each) do
+      restriction = create(:restriction, validator: EmptyParentValidator)
+      @location_type = create(:location_type)
+      @location_type.restrictions << restriction
+    end
+
+    it "is invalid with a parent" do
+      location = build(:location_with_parent, location_type: @location_type)
+      expect(location).to_not be_valid
+    end
+
+    it "is valid without a parent" do
+      location = build(:location, location_type: @location_type)
+      expect(location).to be_valid
+    end
+  end
+
+  context "when location type has enforced parent types" do
+
+    before(:each) do
+      @restriction = create(:parentage_restriction, validator: ParentWhiteListValidator)
+      @location_type = create(:location_type)
+      @location_type.restrictions << @restriction
+    end
+
+    it "is valid with a parent that is one of the enforced types" do
+      parent_location = build(:location, location_type: @restriction.location_types.first)
+      location = build(:location, parent: parent_location, location_type: @location_type)
+
+      expect(location).to be_valid
+    end
+
+    it "is invalid with a parent that is not one of the enforced location types" do
+      parent_location = build(:location)
+      location = build(:location, parent: parent_location, location_type: @location_type)
+
+      expect(location).to_not be_valid
+    end
+  end
+
+  context "when location type has restricted parent types" do
+
+    before(:each) do
+      @restriction = create(:parentage_restriction, validator: ParentBlackListValidator)
+      @location_type = create(:location_type)
+      @location_type.restrictions << @restriction
+    end
+
+    it "is valid when parent is not a restricted type" do
+      location = build(:location_with_parent, location_type: @location_type)
+      expect(location).to be_valid
+    end
+
+    it "is invalid when parent is a restricted type" do
+      parent_location = build(:location, location_type: @restriction.location_types.first)
+      location = build(:location, location_type: @location_type, parent: parent_location)
+      expect(location).to_not be_valid
+    end
+  end
+
   it "#without_location should return a list of locations without a specified location" do
     locations         = create_list(:location, 3)
     inactive_location = create(:location, status: Location.statuses[:inactive])
@@ -121,18 +187,10 @@ RSpec.describe Location, type: :model do
     expect(location.available_coordinates(10)).to be_empty
   end
 
-  it "#by_building should return locations which have a location type of building" do
-
-    building = create(:location_type, name: "Building")
-    site     = create(:location_type, name: "Site")
-    room     = create(:location_type, name: "Room")
-
-    locations_1 = create_list(:location, 3, location_type: building)
-    locations_2 = create_list(:location, 3, location_type: site, parent: locations_1.first)
-    locations_3 = create_list(:location, 3, location_type: room, parent: locations_1.first)
-
-    expect(Location.by_building.count).to eq(3)
-    expect(Location.by_building.first).to eq(locations_1.first)
+  it "#by_root should return locations which have no parent" do
+    locations_with_parents = create_list(:location_with_parent, 3)
+    locations_without_parents = create_list(:location, 3)
+    expect(Location.by_root.count).to eq(6)
   end
 
   it '#should allow the same name with different parents' do
@@ -195,24 +253,4 @@ RSpec.describe Location, type: :model do
     end
   end
 
-  it 'should allow buildings or sites with no parent' do
-    building_type = create(:location_type, name: "Building")
-    site_type = create(:location_type, name: "Site")
-
-    expect(build(:location, location_type: building_type)).to be_valid
-    expect(build(:location, location_type: site_type)).to be_valid
-  end
-
-  it "should not allow empty parent when location type is not a building or site" do
-    location_type = create(:location_type, name: "Not a Building or Site")
-
-    expect(build(:location, location_type: location_type)).to_not be_valid
-
-  end
-
-  it 'should not allow bins with no parent' do
-    building_type = create(:location_type, name: "Bin")
-
-    expect(build(:location, location_type: building_type)).to_not be_valid
-    end
 end

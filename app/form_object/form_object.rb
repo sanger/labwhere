@@ -70,7 +70,7 @@ module FormObject
 
     class_attribute :form_variables
     self.form_variables = FormObject::FormVariables.new(self, _model.underscore.to_sym, [:controller, :action])
-  
+
     validate :check_for_errors
 
     define_singleton_method :model_name do

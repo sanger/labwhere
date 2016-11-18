@@ -8,9 +8,11 @@ class Location < ActiveRecord::Base
   include HasActive
   include Auditable
   include SubclassChecker
+  include Reservable
 
   belongs_to :location_type
   belongs_to :parent, class_name: "Location"
+  belongs_to :team
   has_many :labwares
 
   validates :name, presence: true, uniqueness: {scope: :parent, case_sensitive: true}
@@ -21,13 +23,17 @@ class Location < ActiveRecord::Base
   with_options unless: :unknown? do
     validates :location_type, existence: true
     validates_format_of :name, without: /UNKNOWN/i
+
+    before_validation do
+      apply_restrictions
+    end
   end
 
-  validates_with ParentLocationValidator
+  validates_with ContainerReservationValidator
 
   scope :without, ->(location) { active.where.not(id: location.id).order(id: :desc) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
-  scope :by_building, -> { without_unknown.where(location_type_id: LocationType.building) }
+  scope :by_root, -> { without_unknown.where(parent_id: nil) }
 
   before_save :set_parentage
   after_create :generate_barcode
@@ -138,6 +144,13 @@ class Location < ActiveRecord::Base
   # The barcode is the name downcased with spaces replaced by dashes with the id added again separated by a space.
   def generate_barcode
     update_column(:barcode, "lw-#{self.name.gsub(' ', '-').downcase}-#{self.id}")
+  end
+
+  def apply_restrictions
+    return unless location_type
+    location_type.restrictions.each do |restriction|
+      validates_with restriction.validator, restriction.params
+    end
   end
 
 end
