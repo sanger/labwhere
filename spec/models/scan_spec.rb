@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe Scan, type: :model do
 
-  let!(:location)         { create(:location_with_parent)}
-  let!(:labwares)          { build(:labware_collection)}
+  let!(:location)          { create(:location_with_parent)}
+  let!(:labwares)          { build(:labware_collection_unordered_location) }
 
   it "should correctly set the type based on the nature of the scan" do
     scan = create(:scan, location: location)

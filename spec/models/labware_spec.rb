@@ -71,8 +71,8 @@ RSpec.describe Labware, type: :model do
     coordinate.fill(labware)
     labware.flush_coordinate
     labware.save
-    expect(labware.coordinate).to be_empty
-    expect(coordinate.reload).to be_empty
+    expect(labware.coordinate).to be_vacant
+    expect(coordinate.reload).to be_vacant
   end
 
   it "#flush_location should remove location" do
@@ -87,7 +87,7 @@ RSpec.describe Labware, type: :model do
     labware.flush
     labware.save
     expect(labware.location).to be_empty
-    expect(labware.coordinate).to be_empty
+    expect(labware.coordinate).to be_vacant
   end
 
   it "#find_or_initialize_by_barcode should create or find a labware" do

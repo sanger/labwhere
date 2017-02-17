@@ -25,7 +25,7 @@ class AvailableCoordinates
   # If we can find n empty coordinates then returnt the coordinates location
   def find
     coordinates.each do |coordinate|
-      if coordinate.empty?
+      if coordinate.vacant?
         line = line(coordinate.position, coordinate.position+(n-1))
         return coordinate.location if available?(line) && line.length == n
       end
@@ -36,7 +36,7 @@ class AvailableCoordinates
 private
 
   def available?(coordinates)
-    coordinates.all? { |c| c.empty? }
+    coordinates.all? { |c| c.vacant? }
   end
 
   def line(min, max)

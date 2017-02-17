@@ -64,4 +64,14 @@ RSpec.describe Coordinate, type: :model do
     expect(Coordinate.ordered.last.position).to eq(4)
   end
 
+  it "#filled will return all of the coordinates which have labwares" do
+    create(:coordinate, labware: create(:labware))
+    create(:coordinate, labware: create(:labware))
+    create(:coordinate, labware: create(:labware))
+    create(:coordinate, labware: create(:labware))
+    create(:coordinate, labware: create(:labware))
+    create_list(:coordinate, 3)
+    expect(Coordinate.filled.count).to eq(5)
+  end
+
 end

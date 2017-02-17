@@ -15,14 +15,27 @@ RSpec.describe OrderedLocation, type: :model do
 
   end
 
-  it "#available_coordinates should return location if location is available" do
-    location = create(:ordered_location_with_parent)
-    locations = location.available_coordinates(10)
-    expect(locations.length).to eq(1)
-    expect(locations).to include(location)
+  it "#available_coordinates returns coordinates which have no labware" do
+    location = create(:ordered_location_with_parent, rows: 5, columns: 5)
+    coordinates = location.available_coordinates(5, 10)
+    expect(coordinates.length).to eq(10)
+    expect(coordinates.first.position).to eq(5)
+    expect(coordinates.last.position).to eq(14)
+
+    location.coordinates.find_by_position(position: 10).fill(create(:labware))
+    location.reload
+    coordinates = location.available_coordinates(5, 10)
+    expect(coordinates.length).to eq(10)
+    expect(coordinates.first.position).to eq(5)
+    expect(coordinates.last.position).to eq(15)
+
+    coordinates = location.available_coordinates(20, 10)
+    expect(coordinates.length).to eq(6)
 
     location = create(:ordered_location_with_labwares)
-    expect(location.available_coordinates(10)).to be_empty
+    expect(location.available_coordinates(5, 10)).to be_empty
+
+
   end
   
 end

@@ -184,7 +184,7 @@ RSpec.describe Location, type: :model do
 
   it "#available_coordinates should be emtpy" do
     location = create(:location)
-    expect(location.available_coordinates(10)).to be_empty
+    expect(location.available_coordinates(5, 10)).to be_empty
   end
 
   it "#by_root should return locations which have no parent" do
