@@ -10,6 +10,10 @@
         <div><%= f.text_field :location_barcode %></div>
       </li>
       <li>
+        <div><%= f.label :start_position %> <span class="note">(Only necessary for locations with coordinates)</span></div>
+        <div><%= f.text_field :start_position %></div>
+      </li>
+      <li>
         <div><%= f.label :labware_barcodes, 'Labware barcodes*' %></div>
         <div class="pr-5"><%= f.text_area :labware_barcodes %></div>
       </li>

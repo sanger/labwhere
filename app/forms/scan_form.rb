@@ -6,14 +6,15 @@ class ScanForm
   include FormObject
   include AuthenticationForm
 
-  set_form_variables :labwares, :labware_barcodes, :location_barcode, location: :find_location
+  set_form_variables :labware_barcodes, :location_barcode, :start_position, location: :find_location
 
   after_validate do
-    scan.add_attributes_from_collection(LabwareCollection.new(location, current_user, _labwares).push)
+    scan.add_attributes_from_collection(LabwareCollection.open(location: location, user: current_user, coordinates: available_coordinates, labwares: labware_barcodes).push)
     scan.save
   end
 
   validate :check_location, :check_reservation
+  validate :check_available_coordinates, if: proc { |l| l.start_position.present? && l.location.present? }
 
   delegate :message, :created_at, :updated_at, to: :scan
 
@@ -28,9 +29,7 @@ private
   end
 
   def check_reservation
-    barcodes = _labwares.instance_of?(String) ? _labwares.split("\n") : _labwares
-
-    barcodes.each do |barcode|
+    labwares.each do |barcode|
       labware = Labware.find_or_initialize_by_barcode(barcode)
       next if labware.location.empty?
       check_location_for_reservation(labware.location)
@@ -46,8 +45,18 @@ private
     check_location_for_reservation(location.parent) if location.parent_id?
   end
 
-  def _labwares
-    labwares || labware_barcodes
+  def available_coordinates
+    @available_coordinates ||= location.available_coordinates(start_position.to_i, labwares.count)
+  end
+
+  def check_available_coordinates
+    unless available_coordinates.count == labwares.count
+      errors.add(:base, I18n.t("errors.messages.not_enough_empty_coordinates"))
+    end
+  end
+
+  def labwares
+    @labwares ||= labware_barcodes.split("\n")
   end
 
 end

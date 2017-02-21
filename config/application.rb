@@ -34,7 +34,7 @@ module Labwhere
 
     config.autoload_paths += %W(#{config.root}/app/models/users #{config.root}/app/models/locations #{config.root}/app/models/restrictions)
 
-    config.autoload_paths += %W(#{config.root}/lib/label_printing)
+    config.autoload_paths += %W(#{config.root}/lib/label_printing #{config.root}/app/models/labware_collection)
 
     config.mailer = YAML.load_file("#{Rails.root}/config/mailer.yml")[Rails.env]
 

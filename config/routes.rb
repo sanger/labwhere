@@ -69,7 +69,6 @@ Rails.application.routes.draw do
       scope module: :locations do
         resources :labwares, only: [:index]
         resources :children, only: [:index]
-        resources :coordinates, only: [:show], param: :available
       end
 
       concerns :auditable, parent: :locations

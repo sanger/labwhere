@@ -7,13 +7,13 @@ RSpec.describe LabwareCollection, type: :model do
   let!(:labwares_1)             { create_list(:labware, 5, location: previous_location_1) }
   let!(:labwares_2)             { create_list(:labware, 5, location: previous_location_2) }
   let(:new_labwares)            { build_list(:labware, 5)}
-  let(:labwares)                { labwares_1 + labwares_2 + new_labwares}
+  let(:labwares)                { labwares_1 + labwares_2 + new_labwares }
   let!(:user)                   { create(:administrator)}
 
   describe 'adding to an unordered location' do
 
     let!(:location)           { create(:location_with_parent) }
-    let(:labware_collection)  { LabwareCollection.new(location, user, labwares.join_barcodes)}
+    let(:labware_collection)  { LabwareCollection.open(location: location, user: user, labwares: labwares.join_barcodes)}
 
     it "should create the correct number of labwares" do
       expect(labware_collection.count).to eq(labwares.count)
@@ -38,39 +38,43 @@ RSpec.describe LabwareCollection, type: :model do
 
   end
 
-  describe 'adding to an ordered location' do
-    let!(:location)           { create(:ordered_location_with_parent, rows: 3, columns: 4)}
-    let(:labwares_array)      {  [ ActionController::Parameters.new(barcode: labwares_1.first.barcode, position: 1),
-                                  ActionController::Parameters.new(barcode: new_labwares.first.barcode, position: 4),
-                                  ActionController::Parameters.new(barcode: labwares_2.first.barcode, row: 3, column: 4) ] }
-    let(:labware_collection)  { LabwareCollection.new(location, user, labwares_array)}
+  describe 'adding to an ordered location with a starting position' do
 
-    it "should create the correct number of labwares" do
-      expect(labware_collection.count).to eq(labwares_array.count)
-    end
+    let!(:location)           { create(:ordered_location_with_parent, rows: 5, columns: 5)}
 
-    it "should add each of the labwares to the location" do
+    it "adds labwares to the correct coordinates if a starting position is added" do
+      labware_collection = LabwareCollection.open(location: location, user: user, labwares: labwares.join_barcodes, start_position: 5)
       labware_collection.push
       expect(location.labwares.count).to eq(labware_collection.count)
-      expect(location.coordinates.find_by_position(position: 1).labware.barcode).to eq(labwares_1.first.barcode)
-      expect(location.coordinates.find_by_position(position: 4).labware.barcode).to eq(new_labwares.first.barcode)
-      expect(location.coordinates.find_by_position(row: 3, column: 4).labware.barcode).to eq(labwares_2.first.barcode)
-    end
-
-    it "should provide a list of the original locations for the labware" do
-      labware_collection.push
-      expect(labware_collection.original_location_names).to eq(previous_location_1.name + ", " + previous_location_2.name)
-    end
-
-     it "should create an audit record for each labware" do
-      labware_collection.push
-      location.labwares.each do |labware|
-        expect(labware.audits.count).to eq(1)
+      ((labware_collection.start_position)..(labware_collection.start_position + labware_collection.count - 1)).each do |i|
+        expect(location.coordinates.find_by_position(position: i)).to be_filled
       end
     end
 
+    it "allows coordinates to be passed" do
+      coordinates = location.available_coordinates(5, labwares.count)
+      labware_collection = LabwareCollection.open(location: location, user: user, labwares: labwares.join_barcodes, coordinates: coordinates)
+      labware_collection.push
+      expect(location.labwares.count).to eq(labware_collection.count)
+    end
+
+    it "adds labwares to the correct coordinates if some of the coordinates are already filled" do
+      location.coordinates.find_by_position(position: 6).fill(create(:labware))
+      labware_collection = LabwareCollection.open(location: location, user: user, labwares: labwares.join_barcodes, start_position: 5)
+      labware_collection.push
+      expect(location.labwares.count).to eq(labware_collection.count + 1)
+      ((labware_collection.start_position)..(labware_collection.start_position + labware_collection.count)).each do |i|
+        expect(location.coordinates.find_by_position(position: i)).to be_filled
+      end
+    end
+
+    it "fails if the position runs over the end of the available coordinates" do
+      labware_collection = LabwareCollection.open(location: location, user: user, labwares: labwares.join_barcodes, start_position: 20)
+      expect(labware_collection).to_not be_valid
+      labware_collection.push
+      expect(location.labwares).to be_empty
+    end
 
   end
-
 
 end

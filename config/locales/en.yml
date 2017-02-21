@@ -33,6 +33,7 @@ en:
       reserved: "is reserved by another team (%{team})"
       location_type_in_use: "Can't delete a location type which is being used for a location."
       location_release: "Location can only be released by the team that reserved it (%{team})"
+      not_enough_empty_coordinates: "There are not enough positions available in the coordinates for the labwares."
 
   printing:
     success: "Barcode was successfully printed"

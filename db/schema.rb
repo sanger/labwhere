@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160701091211) do
+ActiveRecord::Schema.define(version: 20170214114659) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id"
@@ -99,12 +99,13 @@ ActiveRecord::Schema.define(version: 20160701091211) do
   add_index "restrictions", ["location_type_id"], name: "index_restrictions_on_location_type_id"
 
   create_table "scans", force: :cascade do |t|
-    t.integer  "status",      default: 0
+    t.integer  "status",         default: 0
     t.string   "message"
     t.integer  "location_id"
     t.integer  "user_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "start_position"
   end
 
   add_index "scans", ["location_id"], name: "index_scans_on_location_id"

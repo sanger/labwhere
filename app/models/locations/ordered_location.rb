@@ -8,8 +8,8 @@ class OrderedLocation < Location
 
   before_create :populate_coordinates
 
-  def available_coordinates(n)
-    [AvailableCoordinates.find(self.coordinates, n)].compact
+  def available_coordinates(start_position, number_of_coordinates)
+    coordinates.select { |c| c.position >= start_position && c.vacant? }.take(number_of_coordinates)
   end
 
   def populate_coordinates

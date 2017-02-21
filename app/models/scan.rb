@@ -37,6 +37,7 @@ class Scan < ActiveRecord::Base
     self.location = labware_collection.location
     self.user = labware_collection.user
     self.labwares = labware_collection
+    self.start_position = labware_collection.start_position
   end
 
 private

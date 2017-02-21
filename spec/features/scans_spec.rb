@@ -19,6 +19,20 @@ RSpec.describe "Scans", type: :feature do
     expect(page).to have_content(Scan.first.message)
   end
 
+  it "allows a user to scan is some labware to a location with coordinates" do
+    location = create(:ordered_location_with_parent, rows: 5, columns: 5)
+    labwares = build_list(:labware, 10)
+    visit new_scan_path
+    expect {
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "Location barcode", with: location.barcode
+      fill_in "Labware barcodes", with: labwares.join_barcodes
+      fill_in "Start position", with: 5
+      click_button "Go!"
+    }.to change(Scan, :count).by(1)
+    expect(page).to have_content(Scan.first.message)
+  end
+
   it "allows a user to scan out some labware with no location" do
     labwares = create_list(:labware, 10, location: create(:location_with_parent))
     visit new_scan_path
