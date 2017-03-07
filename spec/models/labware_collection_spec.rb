@@ -15,25 +15,32 @@ RSpec.describe LabwareCollection, type: :model do
     let!(:location)           { create(:location_with_parent) }
     let(:labware_collection)  { LabwareCollection.open(location: location, user: user, labwares: labwares.join_barcodes)}
 
-    it "should create the correct number of labwares" do
+    it "creates the correct number of labwares" do
       expect(labware_collection.count).to eq(labwares.count)
     end
 
-    it "should add each of the labwares to the location" do
+    it "adds each of the labwares to the location" do
       labware_collection.push
       expect(location.labwares.count).to eq(labware_collection.count)
     end
 
-    it "should provide a list of the original locations for the labware" do
+    it "provides a list of the original locations for the labware" do
       labware_collection.push
       expect(labware_collection.original_location_names).to eq(previous_location_1.name + ", " + previous_location_2.name)
     end
 
-    it "should create an audit record for each labware" do
+    it "creates an audit record for each labware" do
       labware_collection.push
       location.labwares.each do |labware|
         expect(labware.audits.count).to eq(1)
       end
+    end
+
+    it 'removes duplicates from labwares which have been passed' do
+      labware_collection = LabwareCollection.open(location: location, user: user, labwares: new_labwares.join_barcodes << "\n" << new_labwares.join_barcodes)
+      expect(labware_collection.count).to eq(new_labwares.count)
+      labware_collection.push
+      expect(location.labwares.count).to eq(new_labwares.count)
     end
 
   end
@@ -73,6 +80,15 @@ RSpec.describe LabwareCollection, type: :model do
       expect(labware_collection).to_not be_valid
       labware_collection.push
       expect(location.labwares).to be_empty
+    end
+
+    it 'removes duplicates from labwares which have been passed' do
+      labware_collection = LabwareCollection.open(location: location, user: user, labwares: new_labwares.join_barcodes << "\n" << new_labwares.join_barcodes, start_position: 5)
+      expect(labware_collection.count).to eq(new_labwares.count)
+      labware_collection.push
+       ((labware_collection.start_position)..(labware_collection.start_position + labware_collection.count - 1)).each do |i|
+        expect(location.coordinates.find_by_position(position: i)).to be_filled
+      end
     end
 
   end

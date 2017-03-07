@@ -4,7 +4,7 @@
     <div data-behavior="<%= heading %>-list">
       <h4><%= heading.to_s.titleize %></h4>
       <% records.each do |record| %>
-        <%= render record.morph %>
+        <%= render record %>
       <% end %>
     </div>
   <% end %>

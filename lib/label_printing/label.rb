@@ -8,16 +8,7 @@ class Label
 
   def to_h
     {
-      header: header,
-      body: body,
-      footer: footer
-    }
-  end
-
-  def header
-    {
-      'header_text_1' => 'header by LabWhere',
-      'header_text_2' => 'header'
+      body: body
     }
   end
 
@@ -31,13 +22,6 @@ class Label
         }
       }
     end
-  end
-
-  def footer
-    {
-      'footer_text_1' => 'footer by LabWhere',
-      'footer_text_2' => 'footer'
-    }
   end
 
 end
