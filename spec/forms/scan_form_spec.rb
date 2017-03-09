@@ -43,7 +43,7 @@ RSpec.describe ScanForm, type: :model do
 
     it "existing location with new and existing labware should create them and add or move them to the location" do
       create_scan.submit(params.merge(scan:
-        {"location_barcode" => location.barcode, "labware_barcodes" => (new_labware+existing_labware).join_barcodes, user_code: user.swipe_card_id}))
+        {"location_barcode" => location.barcode, "labware_barcodes" => (new_labware + existing_labware).join_barcodes, user_code: user.swipe_card_id}))
       scan = Scan.first
       expect(scan.location).to eq(location)
       expect(scan.location.labwares.count).to eq(8)
@@ -60,8 +60,27 @@ RSpec.describe ScanForm, type: :model do
 
   end
 
-  context "no location" do
+  context "ordered location" do
 
+    let!(:location)           { create(:ordered_location_with_parent, rows: 5, columns: 5) }
+
+    it "will fill coordinates with labwares if there are enough available coordinates" do
+      create_scan.submit(params.merge(scan: 
+        {"location_barcode" => location.barcode, "labware_barcodes" => (new_labware + existing_labware).join_barcodes, start_position: 5, user_code: user.swipe_card_id}))
+      scan = Scan.first
+      expect(scan.location.labwares.count).to eq(8)
+      expect(scan.location.coordinates.filled.count).to eq(8)
+    end
+
+    it "will return an error if there are not enough available coordinates" do
+      create_scan.submit(params.merge(scan: 
+        {"location_barcode" => location.barcode, "labware_barcodes" => (new_labware + existing_labware).join_barcodes, start_position: 25, user_code: user.swipe_card_id}))
+      expect(create_scan.errors.full_messages).to include("#{I18n.t("errors.messages.not_enough_empty_coordinates")}")
+    end
+
+  end
+
+  context "no location" do
 
      it "no location with existing labware should remove them from the location" do
       create_scan.submit(params.merge(scan:
@@ -79,35 +98,6 @@ RSpec.describe ScanForm, type: :model do
       expect(scan.location).to be_unknown
       expect(scan.location.labwares.count).to eq(4)
       expect(scan.location.labwares.all? {|labware| labware.location.unknown? }).to be_truthy
-    end
-
-  end
-
-  context "ordered location" do
-    let!(:location)           { create(:ordered_location_with_parent)}
-
-    it "should add new labwares to coordinates" do
-      labwares = [ {position: location.coordinates.first.position, barcode: new_labware.first.barcode},
-                      {position: location.coordinates.last.position, barcode: new_labware.last.barcode}]
-      create_scan.submit(params.merge(scan:
-        {"location_barcode" => location.barcode, "labwares" => labwares, user_code: user.swipe_card_id}))
-      scan = Scan.first
-      expect(scan.location).to eq(location)
-      expect(location.reload.coordinates.first).to be_filled
-      expect(location.coordinates.first.labware.barcode).to eq(new_labware.first.barcode)
-      expect(location.coordinates.last).to be_filled
-    end
-
-    it "should add existing labwares to coordinates" do
-      labwares = [ {position: location.coordinates.first.position, barcode: existing_labware.first.barcode},
-                      {position: location.coordinates.last.position, barcode: existing_labware.last.barcode}]
-      create_scan.submit(params.merge(scan:
-        {"location_barcode" => location.barcode, "labwares" => labwares, user_code: user.swipe_card_id}))
-      scan = Scan.first
-      expect(scan.location).to eq(location)
-      expect(location.reload.coordinates.first).to be_filled
-      expect(location.coordinates.first.labware.barcode).to eq(existing_labware.first.barcode)
-      expect(location.coordinates.last).to be_filled
     end
 
   end

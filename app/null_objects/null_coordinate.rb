@@ -12,10 +12,13 @@
   end
 
   # A null location will always be empty
-  def empty?
+  def vacant?
     true
   end
 
   def flush
+  end
+
+  def position
   end
 end

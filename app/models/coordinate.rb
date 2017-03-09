@@ -15,13 +15,19 @@ class Coordinate < ActiveRecord::Base
     find_by(attributes)
   end
 
-  # Check if the coordinate has a piece of labware
-  def filled?
-    !empty?
+  def self.filled
+    all.select { |c| c.filled? }
   end
 
-  # Check if the coordinate can be filled with a peice of labware
-  def empty?
+  # Check if the coordinate has a piece of labware
+  def filled?
+    !vacant?
+  end
+
+
+
+  # Check if the coordinate can be filled with a piece of labware
+  def vacant?
     labware.empty?
   end
 

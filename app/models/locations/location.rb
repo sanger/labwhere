@@ -132,9 +132,8 @@ class Location < ActiveRecord::Base
     end
   end
 
-  # Find any locations within the location which have enough contiguous available coordinates
-  # signified by n.
-  def available_coordinates(n)
+  # Dummy method
+  def available_coordinates(_start, _number)
     []
   end
 
