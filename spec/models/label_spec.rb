@@ -1,23 +1,6 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'a label' do
-  describe '#header' do
-    it 'has a header label' do
-      expect(subject.header).to have_key 'header_text_1'
-      expect(subject.header).to have_key 'header_text_2'
-      expect(subject.header['header_text_1']).to eql 'header by LabWhere'
-      expect(subject.header['header_text_2']).to eql 'header'
-    end
-  end
-
-  describe '#footer' do
-    it 'has a footer label' do
-      expect(subject.footer).to have_key 'footer_text_1'
-      expect(subject.footer).to have_key 'footer_text_2'
-      expect(subject.footer['footer_text_1']).to eql 'footer by LabWhere'
-      expect(subject.footer['footer_text_2']).to eql 'footer'
-    end
-  end
 
   describe '#body' do
     it 'creates the body from the location(s)' do
