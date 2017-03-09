@@ -37,5 +37,10 @@ RSpec.describe OrderedLocation, type: :model do
 
 
   end
+
+  it '#child_count returns correct number of children' do
+    location = create(:ordered_location_with_labwares)
+    expect(location.child_count).to eq(location.labwares.count)
+  end
   
 end

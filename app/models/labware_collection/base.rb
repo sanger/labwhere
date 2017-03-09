@@ -36,7 +36,7 @@ module LabwareCollection
     end
 
     def labwares=(labwares)
-      @labwares = labwares.split("\n")
+      @labwares = labwares.split("\n").uniq
     end
 
   private
