@@ -113,7 +113,7 @@ GEM
       faraday (~> 0.9)
       faraday_middleware (~> 0.9)
     kramdown (1.7.0)
-    libv8 (3.16.14.7)
+    libv8 (3.16.14.19-x86_64-darwin-16)
     loofah (2.0.2)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -127,7 +127,7 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.11.2)
     multipart-post (2.0.0)
-    mysql2 (0.3.18)
+    mysql2 (0.4.9)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     phantomjs (1.9.8.0)
@@ -233,8 +233,8 @@ GEM
     teaspoon-jasmine (2.2.0)
       teaspoon (>= 1.0.0)
     temple (0.6.10)
-    therubyracer (0.12.2)
-      libv8 (~> 3.16.14.0)
+    therubyracer (0.12.3)
+      libv8 (~> 3.16.14.15)
       ref
     thor (0.19.1)
     thread_safe (0.3.5)
@@ -300,4 +300,4 @@ DEPENDENCIES
   with_model
 
 BUNDLED WITH
-   1.12.5
+   1.15.4

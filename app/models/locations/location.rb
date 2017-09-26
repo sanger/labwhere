@@ -37,6 +37,7 @@ class Location < ActiveRecord::Base
 
   before_save :set_parentage
   after_create :generate_barcode
+  before_destroy :has_been_used
 
   searchable_by :name, :barcode
   has_subclasses :ordered, :unordered, :unknown, suffix: true
@@ -150,6 +151,12 @@ class Location < ActiveRecord::Base
     location_type.restrictions.each do |restriction|
       validates_with restriction.validator, restriction.params
     end
+  end
+
+  def has_been_used
+    return if children.blank? && labwares.blank? && audits.blank?
+    errors.add :location, "Has been used"
+    false
   end
 
 end
