@@ -16,18 +16,6 @@ RSpec.describe LocationTypeForm, type: :model do
     expect(location_form.parent).to eq(parent_locations.first)
   end
 
-  # it "should return an error if the parent barcode does not represent a valid location" do
-  #   location_form = LocationForm.new
-  #   expect(location_form.submit(params.merge(location: location_params.merge(parent_barcode: "666666:1")))).to be_falsey
-  #   expect(location_form.errors.full_messages).to include("Parent #{I18n.t("errors.messages.existence")}")
-  # end
-  #
-  # it "parent_barcode should take precedence over parent_id" do
-  #   location_form = LocationForm.new
-  #   expect(location_form.submit(params.merge(
-  #     location: location_params.merge(parent_barcode: parent_locations.first.barcode, parent_id: parent_locations.last.id)))).to be_truthy
-  #   expect(location_form.parent).to eq(parent_locations.first)
-  # end
 
   it "should create the correct type of location dependent on the attributes" do
     location_form = LocationForm.new
@@ -41,4 +29,11 @@ RSpec.describe LocationTypeForm, type: :model do
     expect(location_form.location.coordinates.count).to eq(create(:ordered_location).coordinates.count)
   end
 
+  it "should only destroy a location if it has not been used" do
+    controller_params = { controller: "location", action: "create"} 
+    params = ActionController::Parameters.new(controller_params)
+    location = create(:location, name: 'Test Location')
+    location_form = LocationForm.new(location)
+    expect(location_form.destroy(params.merge(user_code: administrator.barcode))).to be_truthy
+  end
 end

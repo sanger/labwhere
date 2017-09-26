@@ -37,7 +37,10 @@
     <div>
       <%= link_to image_tag("edit.png", alt: "Edit", title: "Edit"), edit_location_path(location) %>
     </div>
-     <div>
+    <div>
       <%= audits_link %>
+    </div>
+    <div>
+        <%= link_to image_tag("delete.png", alt: "Delete", title: "Delete"), [:delete, location.morph], remote: true %>
     </div>
 </article>

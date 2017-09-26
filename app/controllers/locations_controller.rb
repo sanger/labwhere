@@ -32,6 +32,23 @@ class LocationsController < ApplicationController
     end
   end
 
+  def delete
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def destroy
+    respond_to do |format|
+      if @location.destroy(params)
+        flash_keep "Location successfully deleted"
+        format.js { render js: "window.location.pathname='#{locations_path}'" }
+      else
+        format.js 
+      end
+    end
+  end
+
   def deactivate
     @location = current_resource
     @location.deactivate
