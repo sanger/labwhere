@@ -1,0 +1,18 @@
+default: &default
+  1D: 1
+  2D: 2
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
+
+staging:
+  <<: *default
+
+cgap:
+  <<: *default
