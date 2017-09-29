@@ -312,7 +312,7 @@ RSpec.describe "Locations", type: :feature do
   end
 
   describe "destroying location", js: true do
-    it "success" do
+    it "will destroy" do
       location = create(:unordered_location)
       visit locations_path
       find(:data_id, location.id).click_link "Delete"
@@ -321,14 +321,11 @@ RSpec.describe "Locations", type: :feature do
       expect(page).to have_content("Location successfully deleted")
       expect(Location.find_by(id: location.id)).to be_nil
     end
-    it "failure" do
+    it "wont have the link" do
       location = create(:unordered_location_with_children)
       visit locations_path
-      find(:data_id, location.id).click_link "Delete"
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
-      click_button "Delete"
-      expect(page).to have_content("error prohibited this record from being saved")
-      expect(Location.find_by(id: location.id)).to be_present
+      expect(find(:data_id, location.id)).to_not have_link("Delete")
+
     end
   end
 end
