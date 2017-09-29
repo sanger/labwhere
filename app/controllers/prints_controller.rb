@@ -7,7 +7,7 @@ class PrintsController < ApplicationController
   end
 
   def create
-    @print_barcode = LabelPrinter.new(params[:printer_id], location_ids)
+    @print_barcode = LabelPrinter.new(printer: params[:printer_id], locations: location_ids, label_template_id: Rails.configuration.label_templates[params[:barcode_type]])
     @print_barcode.post
     redirect_to locations_path, notice: @print_barcode.message
   end
