@@ -11,6 +11,10 @@
         <%= radio_button_tag 'barcode_type', '2D' %>
         <%= label_tag :barcode_type_2D, "2D" %>
       </li>
+      <li>
+        <%= number_field_tag 'copies', '1', min: 1 %>
+        <%= label_tag :copies, "Copies" %>
+      </li>
       <% if @location.has_child_locations? %>
         <li>
           <%= check_box_tag :print_child_barcodes %>
