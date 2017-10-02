@@ -18,7 +18,7 @@
         <div class="pr-5"><%= f.text_area :labware_barcodes %></div>
       </li>
       <li>
-        <%= f.submit "Go!" %>
+          <%= f.submit "Go!", data: {disable_with: "scanning..."} %>
       </li>
     </ul>
   </fieldset>

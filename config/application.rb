@@ -38,6 +38,8 @@ module Labwhere
 
     config.mailer = YAML.load_file("#{Rails.root}/config/mailer.yml")[Rails.env]
 
+    config.label_templates = Rails.application.config_for(:label_templates)
+
     # replace fixtures with factory girl
     config.generators do |g|
         g.test_framework :rspec,

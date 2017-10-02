@@ -86,6 +86,12 @@ class Location < ActiveRecord::Base
     rows > 0 && columns > 0
   end
 
+  def destroyable
+    unless used?
+      yield if block_given?
+    end
+  end
+
   # This will transform the location into the correct type of location based on whether it
   # has coordinates.
   def transform
@@ -153,10 +159,13 @@ class Location < ActiveRecord::Base
     end
   end
 
+  def used?
+    children.present? || labwares.present? || audits.present?
+  end
+
   def has_been_used
-    return if children.blank? && labwares.blank? && audits.blank?
+    return unless used?
     errors.add :location, "Has been used"
     false
   end
-
 end
