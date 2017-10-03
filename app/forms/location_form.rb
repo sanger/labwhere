@@ -13,6 +13,7 @@ class LocationForm
 
   delegate :parent, :barcode, :parentage, :type, :coordinateable?, :reserved?, :reserved_by, to: :location
   attr_writer :coordinateable, :reserve
+  attr_reader :start_from, :end_to
 
   def coordinateable
     @coordinateable ||= coordinateable?

@@ -6,8 +6,18 @@
        <%= render "user_code", object: f %>
       </li>
       <li>
-        <%= f.label :name, 'Name*' %>
-        <%= f.text_field :name %>
+        <div class="table">
+          <div class="table-row">
+            <div class="table-head"><%= f.label :name, 'Name*' %></div>
+            <div class="table-head"><%= f.label :start_from, 'Start' %></div>
+            <div class="table-head"><%= f.label :end_at, 'End' %></div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell" id="location-name"><%= f.text_field :name %></div>
+            <div class="table-cell"><%= f.number_field :start_from %></div>
+            <div class="table-cell"><%= f.number_field :end_to %></div>
+          </div>
+        </div>
       </li>
       <li>
         <%= f.label :location_type_id, "Location type*" %>
