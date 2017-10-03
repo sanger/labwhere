@@ -3,16 +3,17 @@
 # The object will create a request from a printer_id and location_ids.
 class LabelPrinter
   include ActiveModel::Model
-  attr_accessor :printer, :locations, :label_template_id
+  attr_accessor :printer, :locations, :label_template_id, :copies
   attr_reader :labels
 
   validates_presence_of :printer, :locations, :label_template_id
+  validates_numericality_of :copies, greater_than: 0
   ##
   # For a given printer and location create a json request.
   # The labels will contain a header and footer and info about the location.
   def initialize(attributes = {})
     super
-    @labels = Label.new(@locations)
+    @labels = Label.new(@locations, copies)
   end
 
   def printer=(printer)
