@@ -36,8 +36,6 @@ class LabelPrinter
   def post
     return unless valid?
     begin
-      puts "!!! PRINTING !!!"
-      # puts labels.body
       PMB::PrintJob.execute(printer_name: printer.name, label_template_id: label_template_id, labels: labels.to_h)
       @response_ok = true
     rescue JsonApiClient::Errors::ServerError, JsonApiClient::Errors::UnexpectedStatus => e
