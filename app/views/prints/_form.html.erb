@@ -5,15 +5,18 @@
       <li>
         <%= label_tag :printer_id %>
         <%= select_tag :printer_id, options_from_collection_for_select(Printer.all, :id, :name) %>
-        <%= radio_button_tag 'barcode_type', '1D', true %>
-        <%= label_tag :barcode_type_1D, "1D" %>
-        <br>
-        <%= radio_button_tag 'barcode_type', '2D' %>
-        <%= label_tag :barcode_type_2D, "2D" %>
       </li>
       <li>
-        <%= number_field_tag 'copies', '1', min: 1 %>
         <%= label_tag :copies, "Copies" %>
+        <%= number_field_tag 'copies', '1', min: 1 %>
+      </li>
+      <li>
+        <%= radio_button_tag 'barcode_type', '1D', true %>
+        <%= label_tag :barcode_type_1D, "1D" %>
+      </li>
+      <li>
+        <%= radio_button_tag 'barcode_type', '2D' %>
+        <%= label_tag :barcode_type_2D, "2D" %>
       </li>
       <% if @location.has_child_locations? %>
         <li>
