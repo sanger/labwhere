@@ -48,36 +48,4 @@ RSpec.describe Label, type: :model do
     end
   end
 
-  context 'with one location and multiple copies' do
-
-    subject { Label.new(location, 2) }
-
-    it_behaves_like 'a label'
-
-    it 'creates two copies of the same label for the body' do
-      expect(subject.body.length).to eql(2)
-      subject.body.each do |body_elem|
-        expect(body_elem[:location][:barcode]).to eql(location.barcode)
-        expect(body_elem[:location][:parent_location]).to eql(location.parent.name)
-        expect(body_elem[:location][:location]).to eql(location.name)
-      end
-    end
-  end
-
-  context 'with many locations and multiple copies' do
-
-    subject { Label.new(locations, 2) }
-
-    it_behaves_like 'a label'
-
-    it 'creates three copies of the labels for the body' do
-      expect(subject.body.length).to eql(6)
-      subject.body.each.with_index do |body_elem, n|
-        expect(body_elem[:location][:barcode]).to eql(locations[n % 3].barcode)
-        expect(body_elem[:location][:parent_location]).to eql(locations[n % 3].parent.name)
-        expect(body_elem[:location][:location]).to eql(locations[n % 3].name)
-      end
-    end
-  end
-
 end

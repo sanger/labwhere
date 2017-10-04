@@ -1,10 +1,9 @@
 class Label
 
-  attr_accessor :locations, :copies
+  attr_accessor :locations
 
-  def initialize(locations, copies=1)
+  def initialize(locations)
     @locations = Array(locations)
-    @copies = copies
   end
 
   def to_h
@@ -13,13 +12,7 @@ class Label
     }
   end
 
-  def body
-    filled_locations * copies
-  end
-
-  private
-
-  def filled_locations 
+  def body 
     locations.map do |location|
       {
         location: {

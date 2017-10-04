@@ -13,7 +13,7 @@ class LabelPrinter
   # The labels will contain a header and footer and info about the location.
   def initialize(attributes = {})
     super
-    @labels = Label.new(@locations, copies)
+    @labels = Label.new(locations * copies)
   end
 
   def printer=(printer)
@@ -23,6 +23,15 @@ class LabelPrinter
   def locations=(locations)
     @locations = Location.find(Array(locations))
   end
+
+  def copies
+    @copies || 1
+  end
+
+  def locations
+    @locations || []
+  end
+
   ##
   # Produce a success or failure message
   def message
