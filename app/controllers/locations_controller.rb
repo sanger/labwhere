@@ -32,7 +32,8 @@ class LocationsController < ApplicationController
       end
       redirect_to locations_path, notice: "Location successfully created"
     else
-      puts 'ERROR: Cannot generate location_forms'
+      # puts 'ERROR: Cannot generate location_forms'
+      @location = location_forms[0]
       render :new      
     end
   end
@@ -124,7 +125,7 @@ private
     unless start_from.empty? or end_to.empty?
       # puts "GENERATE NAMES:"
       generate_names(prefix, start_from, end_to) do |name|
-        puts name
+        # puts name
         loc[:name] = name
         location_form = LocationForm.new(current_resource)
         location_form.fill_model(params)
@@ -133,6 +134,7 @@ private
           locations_batch.push location_form
         else
           err = true
+          locations_batch = [location_form]
         end 
       end  
     else
@@ -142,6 +144,7 @@ private
         locations_batch.push location_form
       else
         err = true
+        locations_batch = [location_form]
       end
     end
     return locations_batch, err
