@@ -13,11 +13,22 @@ class LocationForm
   def submit(params)
     assign_attributes(params)
     if valid?
-      params.delete[:start_from]
-      params.delete[:end_to]
-      location.assign_attributes(params[:location])
-      transform_location
-      location.save if valid?
+      locations = create_locations(params)
+      run_transaction do
+        locations.each do |new_location|
+          new_location.save
+        end
+      end
+    end
+  end
+
+  def update(params)
+    assign_attributes(params)
+    if valid?
+      location.save
+      true
+    else
+      false
     end
   end
 
@@ -43,9 +54,14 @@ class LocationForm
   end
 
   def check_range
-    return if (start_from.empty? and end_to.empty?) or (not start_from.empty? and not end_to.empty?)
-    errors.add(:start_from, :blank, message: "must be present if End is present") if start_from.empty? 
-    errors.add(:end_to, :blank, message: "must be present if Start is present") if end_to.empty? 
+    if start_from.nil? and not end_to.nil? 
+      errors.add(:start_from, :blank, message: "must be present if End is present") 
+    elsif not start_from.nil? and end_to.nil?
+      errors.add(:end_to, :blank, message: "must be present if Start is present")
+    elsif pos_int?(start_from) and pos_int?(end_to) and start_from.to_i >= end_to.to_i
+      errors.add(:start_from, :invalid, message: "must be less than End")
+      errors.add(:end_to, :invalid, message: "must be greater than Start")
+    end
   end
 
   private
@@ -54,6 +70,11 @@ class LocationForm
     @current_user = User.find_by_code(params[:user_code])
     @controller = params[:controller]
     @action = params[:action]
+    @start_from = params.fetch(:location, {}).fetch(:start_from, nil)
+    @end_to = params.fetch(:location, {}).fetch(:end_to, nil)
+    params.fetch(:location, {}).delete(:start_from)
+    params.fetch(:location, {}).delete(:end_to)
+    @location.assign_attributes(params.fetch(:location, {}))
   end
 
   def add_location_errors
@@ -65,13 +86,36 @@ class LocationForm
   def transform_location
     @location = location.transform if location.new_record?
   end
+ 
+  def pos_int?(value)
+    if /\A\d+\Z/.match(value.to_s)
+      true
+    else
+      false
+    end
+  end
 
   def generate_names(prefix, start_from, end_to, &block)
-    if pos_int?(start_from) and pos_int?(end_to) and start_from.to_i < end_to.to_i
-      (prefix + start_from..prefix + end_to).each do |name|
+    if not start_from.nil? and not end_to.nil?
+      ("#{prefix} #{start_from}".."#{prefix} #{end_to}").each do |name|
         yield name
       end
+    else
+      yield prefix
     end
+  end
+
+  def create_locations(params)
+    locations = []
+    prefix = params[:location][:name]
+    generate_names(prefix, start_from, end_to) do |name|
+      params[:location][:name] = name
+      @location = Location.new
+      location.assign_attributes(params[:location])
+      transform_location
+      locations.push location
+    end
+    locations
   end
 
   def run_transaction(&block)
