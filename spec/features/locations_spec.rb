@@ -67,7 +67,6 @@ RSpec.describe "Locations", type: :feature do
 
   it "Should not be able to destroy a location type with an association location" do
     location_type = create(:location_type)
-    location = create(:location, location_type: location_type, parent: create(:location))
     visit location_types_path
     within("#location_type_#{location_type.id}") do
       expect(page).to_not have_content("Delete")
@@ -89,7 +88,7 @@ RSpec.describe "Locations", type: :feature do
       click_button "Create Location"
     }.to change(Location, :count).by(1)
     expect(Location.last.reserved?).to eq(false)
-    expect(page).to have_content("Location successfully created")
+    expect(page).to have_content("Location(s) successfully created")
   end
 
   describe "with coordinates", js: :true do
@@ -108,7 +107,7 @@ RSpec.describe "Locations", type: :feature do
         click_button "Create Location"
       }.to change(Location, :count).by(1)
       expect(OrderedLocation.first.coordinates.count).to eq(create(:ordered_location).coordinates.length)
-      expect(page).to have_content("Location successfully created")
+      expect(page).to have_content("Location(s) successfully created")
     end
   end
 
@@ -128,7 +127,7 @@ RSpec.describe "Locations", type: :feature do
       }.to change(Location, :count).by(1)
 
       expect(Location.last.team).to eq(user.team)
-      expect(page).to have_content("Location successfully created")
+      expect(page).to have_content("Location(s) successfully created")
     end
   end
 
@@ -144,11 +143,10 @@ RSpec.describe "Locations", type: :feature do
       click_button "Create Location"
     }.to change(Location, :count).by(1)
     expect(Location.last.parent).to eq(parent_location)
-    expect(page).to have_content("Location successfully created")
+    expect(page).to have_content("Location(s) successfully created")
   end
 
   it "Reports an error if user adds a location with invalid attributes" do
-    location = build(:location)
     visit new_location_path
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
@@ -220,7 +218,6 @@ RSpec.describe "Locations", type: :feature do
   end
 
   it "Does not allow a user to select parent location as itself" do
-    location_parent = create(:location)
     location_child = create(:location)
     visit edit_location_path(location_child)
     within("#location_parent_id") do

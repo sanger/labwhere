@@ -14,8 +14,8 @@
           </div>
           <div class="table-row">
             <div class="table-cell" id="location-name"><%= f.text_field :name %></div>
-            <div class="table-cell"><%= f.number_field :start_from %></div>
-            <div class="table-cell"><%= f.number_field :end_to %></div>
+            <div class="table-cell"><%= f.number_field :start_from, min: 1 %></div>
+            <div class="table-cell"><%= f.number_field :end_to, min: 1 %></div>
           </div>
         </div>
       </li>

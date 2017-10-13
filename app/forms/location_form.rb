@@ -3,14 +3,21 @@
 class LocationForm
 
   include ActiveModel::Model
-  validate :check_user, :check_location, :check_range
+  include ActiveModel::Serialization
+  
+  validate :check_user, :check_location, :check_range, :only_same_team_can_release_location 
   attr_reader :current_user, :controller, :action, :location, :start_from, :end_to
+  # delegate_missing_to :location # rails 5
+  delegate :parent, :barcode, :parentage, :type, :coordinateable?, :reserved?, :reserved_by, to: :location
+  delegate :id, :created_at, :updated_at, :to_json, to: :location 
+  delegate :name, :location_type_id, :parent_id, :container, :status, :rows, :columns, to: :location
 
   def initialize(location = nil)
     @location = location || Location.new
   end
 
   def submit(params)
+    @params = params
     assign_attributes(params)
     if valid?
       locations = create_locations(params)
@@ -19,21 +26,27 @@ class LocationForm
           new_location.save
         end
       end
+    else
+      false
     end
   end
 
   def update(params)
+    @params = params
     assign_attributes(params)
     if valid?
-      location.save
-      true
+      run_transaction do
+        location.save
+      end
     else
       false
     end
   end
 
   def destroy(params)
-    assign_attributes(params)
+    @params = params
+    @current_user = User.find_by_code(params[:user_code])
+    # assign_attributes(params)
     return false unless valid?
     location.destroy
     if location.destroyed?
@@ -60,21 +73,49 @@ class LocationForm
       errors.add(:end_to, :blank, message: "must be present if Start is present")
     elsif pos_int?(start_from) and pos_int?(end_to) and start_from.to_i >= end_to.to_i
       errors.add(:start_from, :invalid, message: "must be less than End")
-      errors.add(:end_to, :invalid, message: "must be greater than Start")
     end
+  end
+
+  def self.model_name
+    ActiveModel::Name.new(Location)
+  end
+
+  def reserve
+    @reserve ||= reserved?
+  end
+
+  def coordinateable
+    @coordinateable ||= coordinateable?
+  end
+
+  def persisted?
+    location.id?
+  end
+
+  def model
+    @location
   end
 
   private
 
   def assign_attributes(params)
-    @current_user = User.find_by_code(params[:user_code])
+    @current_user = User.find_by_code(params[:location][:user_code])
     @controller = params[:controller]
     @action = params[:action]
     @start_from = params.fetch(:location, {}).fetch(:start_from, nil)
     @end_to = params.fetch(:location, {}).fetch(:end_to, nil)
-    params.fetch(:location, {}).delete(:start_from)
-    params.fetch(:location, {}).delete(:end_to)
-    @location.assign_attributes(params.fetch(:location, {}))
+    # puts "PARAMS", params.inspect
+    @location.assign_attributes(location_attrs(params))
+    transform_location
+    set_team
+  end
+
+  def location_attrs(params)
+    params.fetch(:location, {}).except(:start_from, :end_to, :user_code, :reserve, :coordinateable)
+    ## This is more flexible but location's attributes :team_id and :parent_id
+    ## don't match parameters :team and :parent (check locations factory)
+    # attrs = location.attributes.keys.map {|s| s.to_sym}
+    # params.fetch(:location, {}).slice(*attrs)
   end
 
   def add_location_errors
@@ -111,8 +152,9 @@ class LocationForm
     generate_names(prefix, start_from, end_to) do |name|
       params[:location][:name] = name
       @location = Location.new
-      location.assign_attributes(params[:location])
+      location.assign_attributes(location_attrs(params))
       transform_location
+      set_team
       locations.push location
     end
     locations
@@ -129,5 +171,17 @@ class LocationForm
     end
   end
 
+  def set_team
+    @location.team_id = reserve_param? ? current_user.team_id : nil
+  end
+
+  def only_same_team_can_release_location
+    return unless @params.has_key? :location
+    LocationReleaseValidator.new(team_id: current_user.team_id).validate(self) if !reserve_param?
+  end
+
+  def reserve_param?
+    @params.fetch(:location).fetch(:reserve, "0") == "1"
+  end
 
 end
