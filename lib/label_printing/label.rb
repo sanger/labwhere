@@ -12,7 +12,7 @@ class Label
     }
   end
 
-  def body
+  def body 
     locations.map do |location|
       {
         location: {
