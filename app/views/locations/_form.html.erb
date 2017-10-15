@@ -6,6 +6,7 @@
        <%= render "user_code", object: f %>
       </li>
       <li>
+      <% unless @location.persisted? %>
         <div class="table">
           <div class="table-row">
             <div class="table-head"><%= f.label :name, 'Name*' %></div>
@@ -18,6 +19,10 @@
             <div class="table-cell"><%= f.number_field :end_to, min: 1 %></div>
           </div>
         </div>
+      <% else %>
+        <%= f.label :name, 'Name*' %>
+        <%= f.text_field :name %>
+      <% end %>
       </li>
       <li>
         <%= f.label :location_type_id, "Location type*" %>
