@@ -36,7 +36,7 @@ RSpec.describe LocationForm, type: :model do
     location = create(:location)
     location_form = LocationForm.new(location)
     new_location = build(:location)
-    res = location_form.submit(
+    res = location_form.update(
       controller_params.merge(location: { name: new_location.name }
                                           .merge(user_code: administrator.barcode),
                               action: "update")
