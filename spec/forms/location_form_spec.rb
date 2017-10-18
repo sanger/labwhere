@@ -107,7 +107,28 @@ RSpec.describe LocationForm, type: :model do
       expect(res).to be_falsey
       expect(location_form).to_not be_valid
     end
-    
+
+    it "should not create multiple locations if at least one with the same name exists within the same location" do
+      location_form = LocationForm.new
+      parent_location = create(:unordered_location)
+      child_location = create(:location, parent: parent_location, name: "Test Location 2")
+      res = location_form.submit(
+              controller_params.merge(location: params.merge(
+                                                  name: "Test Location",
+                                                  start_from: "1",
+                                                  end_to: "3",
+                                                  parent: parent_location,
+                                                  user_code: administrator.barcode))
+      )
+      expect(res).to be_falsey
+      expect(location_form).to_not be_valid
+      expect(location_form.location).to_not be_persisted
+      expect(child_location).to be_persisted
+      expect(child_location.parent).to eq(parent_location)
+      location = Location.find(parent_location.id)
+      expect(location.children.count).to eq(1)
+    end
+
   end
 
 end

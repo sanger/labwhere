@@ -23,7 +23,9 @@ class LocationForm
       locations = create_locations(params)
       run_transaction do
         locations.each do |new_location|
-          new_location.save
+          @location = new_location
+          check_location
+          @location.save!
         end
       end
     else
@@ -104,7 +106,6 @@ class LocationForm
     @action = params[:action]
     @start_from = params.fetch(:location, {}).fetch(:start_from, nil)
     @end_to = params.fetch(:location, {}).fetch(:end_to, nil)
-    # puts "PARAMS", params.inspect
     @location.assign_attributes(location_attrs(params))
     transform_location
     set_team

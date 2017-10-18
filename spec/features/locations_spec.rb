@@ -91,6 +91,22 @@ RSpec.describe "Locations", type: :feature do
     expect(page).to have_content("Location(s) successfully created")
   end
 
+  it "Allows a user to add multiple locations" do
+    location = build(:location)
+    visit locations_path
+    click_link "Add new location"
+    expect {
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "Name", with: location.name
+      fill_in "Start", with: "1"
+      fill_in "End", with: "3"
+      check "Container"
+      click_button "Create Location"
+    }.to change(Location, :count).by(3)
+    expect(Location.last.reserved?).to eq(false)
+    expect(page).to have_content("Location(s) successfully created")
+  end
+
   describe "with coordinates", js: :true do
     it "Allows a user to add a new location with coordinates" do
       location = build(:ordered_location)
@@ -154,6 +170,20 @@ RSpec.describe "Locations", type: :feature do
       click_button "Create Location"
     }.to_not change(Location, :count)
     expect(page.text).to match("errors prohibited this record from being saved")
+  end
+
+  it "Reports an error if user adds multiple locations and at least one is already present" do
+    create(:location, name: "Test Location 2")
+    visit new_location_path
+    expect {
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "Name", with: "Test Location"
+      fill_in "Start", with: "1"
+      fill_in "End", with: "3"
+      check "Container"
+      click_button "Create Location"
+    }.to_not change(Location, :count)
+    expect(page.text).to match("error prohibited this record from being saved")
   end
 
   it "Allows a user to edit an existing location" do
