@@ -2,6 +2,7 @@ class LocationsController < ApplicationController
 
   before_action :locations, only: [:index]
   before_action :set_location, except: [:index, :activate, :deactivate]
+  before_action :permitted_params, only: [:create, :update]
 
   def index
   end
@@ -14,8 +15,8 @@ class LocationsController < ApplicationController
   end
 
   def create
-    if @location.submit(params)
-      redirect_to locations_path, notice: "Location successfully created"
+    if @location.submit(permitted_params)
+      redirect_to locations_path, notice: "Location(s) successfully created"
     else
       render :new
     end
@@ -25,7 +26,7 @@ class LocationsController < ApplicationController
   end
 
   def update
-    if @location.submit(params)
+    if @location.update(permitted_params)
       redirect_to locations_path, notice: "Location successfully updated"
     else
       render :edit
@@ -77,6 +78,16 @@ private
 
   def current_resource
     @current_resource ||= Location.includes(:labwares).find(params[:id]) if params[:id]
+  end
+
+  def permitted_params
+    location_attrs =  Location.new.attributes.keys.map {|k| k.to_sym}
+    params.permit(location: [*location_attrs,
+                            :user_code,
+                            :start_from,
+                            :end_to,
+                            :reserve,
+                            :coordinateable])
   end
 
 end

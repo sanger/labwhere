@@ -50,7 +50,7 @@ fieldset{
     @include gradient($green-mid, $green-dark)
   }
 
-  input#copies {
+  input[type=number] {
     width: 3em;
   }
 
@@ -125,4 +125,21 @@ fieldset{
 
   }
 
+}
+
+.table{
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+.table-row{
+  display: table-row;
+}
+.table-cell, .table-head{
+  display: table-cell;
+  padding-right: 1em;
+}
+#location-name {
+    width: 100%;
+    padding-right: 1.5em;
 }
