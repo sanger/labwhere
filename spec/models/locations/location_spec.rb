@@ -252,5 +252,22 @@ RSpec.describe Location, type: :model do
       end
     end
   end
-
+  describe 'destroying locations' do
+    it 'success' do
+      location = create(:location)
+      location.destroy
+      expect(location).to be_destroyed
+    end
+    it 'failure' do
+      location = create(:unordered_location_with_children)
+      location.destroy
+      expect(location).to_not be_destroyed
+      location = create(:unordered_location_with_labwares)
+      location.destroy
+      expect(location).to_not be_destroyed
+      location = create(:location_with_audits)
+      location.destroy
+      expect(location).to_not be_destroyed
+    end
+  end
 end

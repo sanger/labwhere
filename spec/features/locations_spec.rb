@@ -67,7 +67,6 @@ RSpec.describe "Locations", type: :feature do
 
   it "Should not be able to destroy a location type with an association location" do
     location_type = create(:location_type)
-    location = create(:location, location_type: location_type, parent: create(:location))
     visit location_types_path
     within("#location_type_#{location_type.id}") do
       expect(page).to_not have_content("Delete")
@@ -89,7 +88,23 @@ RSpec.describe "Locations", type: :feature do
       click_button "Create Location"
     }.to change(Location, :count).by(1)
     expect(Location.last.reserved?).to eq(false)
-    expect(page).to have_content("Location successfully created")
+    expect(page).to have_content("Location(s) successfully created")
+  end
+
+  it "Allows a user to add multiple locations" do
+    location = build(:location)
+    visit locations_path
+    click_link "Add new location"
+    expect {
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "Name", with: location.name
+      fill_in "Start", with: "1"
+      fill_in "End", with: "3"
+      check "Container"
+      click_button "Create Location"
+    }.to change(Location, :count).by(3)
+    expect(Location.last.reserved?).to eq(false)
+    expect(page).to have_content("Location(s) successfully created")
   end
 
   describe "with coordinates", js: :true do
@@ -108,7 +123,7 @@ RSpec.describe "Locations", type: :feature do
         click_button "Create Location"
       }.to change(Location, :count).by(1)
       expect(OrderedLocation.first.coordinates.count).to eq(create(:ordered_location).coordinates.length)
-      expect(page).to have_content("Location successfully created")
+      expect(page).to have_content("Location(s) successfully created")
     end
   end
 
@@ -128,7 +143,7 @@ RSpec.describe "Locations", type: :feature do
       }.to change(Location, :count).by(1)
 
       expect(Location.last.team).to eq(user.team)
-      expect(page).to have_content("Location successfully created")
+      expect(page).to have_content("Location(s) successfully created")
     end
   end
 
@@ -144,11 +159,10 @@ RSpec.describe "Locations", type: :feature do
       click_button "Create Location"
     }.to change(Location, :count).by(1)
     expect(Location.last.parent).to eq(parent_location)
-    expect(page).to have_content("Location successfully created")
+    expect(page).to have_content("Location(s) successfully created")
   end
 
   it "Reports an error if user adds a location with invalid attributes" do
-    location = build(:location)
     visit new_location_path
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
@@ -156,6 +170,20 @@ RSpec.describe "Locations", type: :feature do
       click_button "Create Location"
     }.to_not change(Location, :count)
     expect(page.text).to match("errors prohibited this record from being saved")
+  end
+
+  it "Reports an error if user adds multiple locations and at least one is already present" do
+    create(:location, name: "Test Location 2")
+    visit new_location_path
+    expect {
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "Name", with: "Test Location"
+      fill_in "Start", with: "1"
+      fill_in "End", with: "3"
+      check "Container"
+      click_button "Create Location"
+    }.to_not change(Location, :count)
+    expect(page.text).to match("error prohibited this record from being saved")
   end
 
   it "Allows a user to edit an existing location" do
@@ -220,7 +248,6 @@ RSpec.describe "Locations", type: :feature do
   end
 
   it "Does not allow a user to select parent location as itself" do
-    location_parent = create(:location)
     location_child = create(:location)
     visit edit_location_path(location_child)
     within("#location_parent_id") do
@@ -311,4 +338,21 @@ RSpec.describe "Locations", type: :feature do
 
   end
 
+  describe "destroying location", js: true do
+    it "will destroy" do
+      location = create(:unordered_location)
+      visit locations_path
+      find(:data_id, location.id).click_link "Delete"
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      click_button "Delete"
+      expect(page).to have_content("Location successfully deleted")
+      expect(Location.find_by(id: location.id)).to be_nil
+    end
+    it "wont have the link" do
+      location = create(:unordered_location_with_children)
+      visit locations_path
+      expect(find(:data_id, location.id)).to_not have_link("Delete")
+
+    end
+  end
 end

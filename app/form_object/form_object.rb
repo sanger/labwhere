@@ -84,6 +84,7 @@ module FormObject
     delegate :id, :created_at, :updated_at, :to_json, to: :model
 
     define_model_callbacks :submit, only: :after
+    define_model_callbacks :save_model, only: :after
     define_model_callbacks :assigning_model_variables, only: :after
 
   end
@@ -121,16 +122,20 @@ module FormObject
     @model = object || self.model_name.klass.new
   end
 
+  def fill_model(params)
+    self.form_variables.assign(self, params)
+    if self.respond_to?(:model_attributes)
+      run_callbacks :assigning_model_variables do
+        model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
+      end
+    end
+  end
+
   # form variables are assigned, attributes are assigned to the model object validate and save the object
   # and run any callbacks.
   def submit(params)
     run_callbacks :submit do
-      self.form_variables.assign(self, params)
-      if self.respond_to?(:model_attributes)
-        run_callbacks :assigning_model_variables do
-          model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
-        end
-      end
+      fill_model(params)
       save_if_valid
     end
   end
@@ -145,6 +150,12 @@ module FormObject
   # If the model is valid and any transaction runs successfully then return true otherwise return false.
   def save_if_valid
     run_transaction do
+      model.save
+    end
+  end
+
+  def save_model
+    run_callbacks :save_model do
       model.save
     end
   end

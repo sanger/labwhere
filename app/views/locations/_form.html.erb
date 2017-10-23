@@ -6,8 +6,23 @@
        <%= render "user_code", object: f %>
       </li>
       <li>
+      <% unless @location.persisted? %>
+        <div class="table">
+          <div class="table-row">
+            <div class="table-head"><%= f.label :name, 'Name*' %></div>
+            <div class="table-head"><%= f.label :start_from, 'Start' %></div>
+            <div class="table-head"><%= f.label :end_to, 'End' %></div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell" id="location-name"><%= f.text_field :name %></div>
+            <div class="table-cell"><%= f.number_field :start_from, min: 1 %></div>
+            <div class="table-cell"><%= f.number_field :end_to, min: 1 %></div>
+          </div>
+        </div>
+      <% else %>
         <%= f.label :name, 'Name*' %>
         <%= f.text_field :name %>
+      <% end %>
       </li>
       <li>
         <%= f.label :location_type_id, "Location type*" %>

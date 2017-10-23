@@ -46,7 +46,6 @@ RSpec.describe Label, type: :model do
         expect(subject.body[n][:location][:location]).to eql(location.name)
       end
     end
-
   end
 
 end

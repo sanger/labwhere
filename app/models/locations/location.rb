@@ -37,6 +37,7 @@ class Location < ActiveRecord::Base
 
   before_save :set_parentage
   after_create :generate_barcode
+  before_destroy :has_been_used
 
   searchable_by :name, :barcode
   has_subclasses :ordered, :unordered, :unknown, suffix: true
@@ -83,6 +84,12 @@ class Location < ActiveRecord::Base
   # A location will only need coordinates if it has rows and columns
   def coordinateable?
     rows > 0 && columns > 0
+  end
+
+  def destroyable
+    unless used?
+      yield if block_given?
+    end
   end
 
   # This will transform the location into the correct type of location based on whether it
@@ -152,4 +159,13 @@ class Location < ActiveRecord::Base
     end
   end
 
+  def used?
+    children.present? || labwares.present? || audits.present?
+  end
+
+  def has_been_used
+    return unless used?
+    errors.add :location, "Has been used"
+    false
+  end
 end

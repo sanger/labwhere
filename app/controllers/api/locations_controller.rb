@@ -1,5 +1,8 @@
 class Api::LocationsController < ApiController
 
+
+  before_action :permitted_params, only: [:create, :update]
+  
   def index
     render json: Location.by_root
   end
@@ -10,12 +13,12 @@ class Api::LocationsController < ApiController
 
   def create
     @location = LocationForm.new
-    process_location
+    process_location(@location.submit(permitted_params))
   end
 
   def update
     @location = LocationForm.new(current_resource)
-    process_location
+    process_location(@location.update(permitted_params))
   end
 
 private
@@ -24,12 +27,22 @@ private
     Location.find_by_code(params[:barcode]) if params[:barcode]
   end
 
-  def process_location
-    if @location.submit(params)
+  def process_location(succeeded)
+    if succeeded
       render json: @location, serializer: "#{@location.type}Serializer".constantize
     else
       render json: { errors: @location.errors.full_messages}, status: :unprocessable_entity
     end
+  end
+
+  def permitted_params
+    location_attrs =  Location.new.attributes.keys.map {|k| k.to_sym}
+    params.permit(location: [*location_attrs,
+                            :user_code,
+                            :start_from,
+                            :end_to,
+                            :reserve,
+                            :coordinateable])
   end
 
 end
