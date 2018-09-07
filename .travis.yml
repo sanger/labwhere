@@ -1,13 +1,32 @@
 language: ruby
+rvm:
+- 2.2.2
+dist: xenial
+bundle_args: "--without deployment"
 before_script:
-  - cp config/database.yml.example config/database.yml
-  - cp config/secrets.yml.example config/secrets.yml
-  - bundle exec rake db:reset
-  - bundle exec rake db:setup
-  - bundle exec rake cgap:db:migrate
-  - bundle exec rake assets:precompile
-
-script:
-  - bundle exec rspec
-  - bundle exec rake test
-
+- cp config/database.yml.example config/database.yml
+- cp config/secrets.yml.example config/secrets.yml
+- bundle exec rake db:reset
+- bundle exec rake db:setup
+- bundle exec rake cgap:db:migrate
+jobs:
+  include:
+  - stage: test
+    script: bundle exec rake test
+    name: "Rake Test"
+  - script: bundle exec rspec
+    name: "Rspec"
+  - stage: build
+    if: tag IS present
+    script: "./compile-build"
+    name: "Compile Build"
+    deploy:
+      provider: releases
+      file: release.tar.gz
+      file_glob: true
+      skip_cleanup: true
+      on:
+        tags: true
+        repo: radome/labwhere
+      api_key:
+        secure: bbo6OfQUF0a7yHENW7onXVTgydHgOBPzx9vfHCqQFLkNstfEUgjfG7v/mn0q2u7dTJ8Hoazf3dyKwu7ozFuePoVIwSsJ8XGaTwRE/lW7uDmW60v06XrrpaJmQE+6VDZJqrkuoqNYE9z82kpbgaIjd6yc0eFex/PQyK9HKnmIJYA8qIQ4ccwJ0+FbAZzzXQRXTqi+FCeOCPoX9HiG8xTpdAnlZuwRoPcMVy0XNBTvm+dzGiuaxQ5AdiUt9V9RNfIHuIOmFKTYsU9pDuyyhtU5DIH0iCQMerl31iR8Qz2IytE0YCjhWq7TPTE71BmGmwpFDRIG5IxjpEEgnEM7XHP45QeDUCE80T3v0qJlNsXSj8U82+zPAf6l08kXQiu5AkZLBSWPbputRe6wIVUXQK8yXkS3FDhshlN14qIGoviMaT+yPl1TeoDl17qTy/5MIrBLSlya+wgjVYprBjYw0nHmIYZHDovvKlbolv0eEq8hp2jEdlef1i3ZMoUEPg8QyFymR5EzM+OqHaOQMgBK2v1B1qKHLK7YAXiXNsRfA6FRTB9UuizPBJyUmCkFGA6wM2JF6NnGB5KMX6NIb4eEztzppfjXP27aZBZfql0LTVvUl0pD+zeO1XA24Z52Z+J2L+7VWQV/tgGhuakJ9rg6AycaVyVmRjVSLNlP/8agGfC3JaY=
