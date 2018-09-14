@@ -18,6 +18,7 @@ jobs:
     name: "Rspec"
   - stage: build
     if: tag IS present
+    before_script: echo 'Compile Build'
     script: "./compile-build"
     name: "Compile Build"
     deploy:
