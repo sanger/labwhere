@@ -18,7 +18,9 @@ jobs:
     name: "Rspec"
   - stage: build
     if: tag IS present
-    before_script: echo 'Compile Build'
+    before_script:
+    - cp config/database.yml.example config/database.yml
+    - cp config/secrets.yml.example config/secrets.yml
     script: "./compile-build"
     name: "Compile Build"
     deploy:
