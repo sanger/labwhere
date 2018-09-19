@@ -11,14 +11,14 @@ git tag -l --points-at HEAD --sort -version:refname | head -1 > TAG
 git rev-parse --abbrev-ref HEAD > BRANCH
 echo 'Compiling tar.gz'
 tar \
-  --exclude='./*.swp' \
+  --exclude='*.swp' \
   --exclude='./.bundle' \
   --exclude='./.git' \
   --exclude='./.gitignore' \
+  --exclude='./.rspec' \
   --exclude='./.tags' \
   --exclude='./.travis.yml' \
-  --exclude='./README.doc' \
-  --exclude='./README.md' \
+  --exclude='./README*' \
   --exclude='./compile-build' \
   --exclude='./coverage' \
   --exclude='./log/*' \
