@@ -140,9 +140,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    puma (2.11.1)
-      rack (>= 1.1, < 2.0)
-    rack (1.6.4)
+    puma (3.12.0)
+    rack (1.6.10)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.3)
@@ -178,7 +177,7 @@ GEM
       sass (~> 3.4)
       slim (~> 2.0)
       uri_template (~> 0.7)
-    rdoc (4.2.0)
+    rdoc (4.3.0)
     ref (1.0.5)
     rouge (1.9.0)
     rspec-core (3.2.3)
@@ -300,4 +299,4 @@ DEPENDENCIES
   with_model
 
 BUNDLED WITH
-   1.12.5
+   1.16.2
