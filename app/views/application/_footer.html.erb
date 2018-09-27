@@ -1,6 +1,9 @@
 <footer>
   <p>
-    <%= Deployed::VERSION_STRING %> <%= link_to Deployed::VERSION_COMMIT, Deployed::REPO_URL%> <%= Deployed::RELEASE_NAME %>
+    <%= Deployed::VERSION_STRING %> <%= Deployed::RELEASE_NAME %> <%= link_to Deployed::VERSION_COMMIT, Deployed::REPO_URL%>
+  </p>
+  <p>
+    <%= Deployed::HOSTNAME %>
   </p>
   <p>
     &copy; Sanger Institute <%= current_year %>
