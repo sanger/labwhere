@@ -9,6 +9,7 @@ before_script:
 - cp config/secrets.yml.example config/secrets.yml
 - bundle exec rake db:setup
 - bundle exec rake cgap:db:migrate
+- phantomjs --version
 jobs:
   include:
   - stage: test
