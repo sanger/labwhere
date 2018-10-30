@@ -4,12 +4,14 @@ dist: xenial
 bundle_args: "--without deployment"
 cache:
   bundler: true
+before_install:
+  - "export PATH=$PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH"
+  - "phantomjs --version"
 before_script:
 - cp config/database.yml.example config/database.yml
 - cp config/secrets.yml.example config/secrets.yml
 - bundle exec rake db:setup
 - bundle exec rake cgap:db:migrate
-- phantomjs --version
 jobs:
   include:
   - stage: test
