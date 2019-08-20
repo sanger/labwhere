@@ -36,6 +36,6 @@ jobs:
       skip_cleanup: true
       on:
         tags: true
-        repo: sanger/labwhere
+        repo: radome/labwhere
       api_key:
-        secure: DvDQ91V1q7AP2PjgzsB9G+3erq504LfYLxNWGooMNtf2AVu9+iLgZcBmsXzIHGtzbAIYs4j+m+7K2/VuokqkiZd1OizP4pntY1PywtTiZ66VEMnsm+TBNSKjuJKbeINQmPJwEhEGxIm1AvzbcnzBS+aKSRtuUTSyCXXPNbJW00M=
+        secure: bbo6OfQUF0a7yHENW7onXVTgydHgOBPzx9vfHCqQFLkNstfEUgjfG7v/mn0q2u7dTJ8Hoazf3dyKwu7ozFuePoVIwSsJ8XGaTwRE/lW7uDmW60v06XrrpaJmQE+6VDZJqrkuoqNYE9z82kpbgaIjd6yc0eFex/PQyK9HKnmIJYA8qIQ4ccwJ0+FbAZzzXQRXTqi+FCeOCPoX9HiG8xTpdAnlZuwRoPcMVy0XNBTvm+dzGiuaxQ5AdiUt9V9RNfIHuIOmFKTYsU9pDuyyhtU5DIH0iCQMerl31iR8Qz2IytE0YCjhWq7TPTE71BmGmwpFDRIG5IxjpEEgnEM7XHP45QeDUCE80T3v0qJlNsXSj8U82+zPAf6l08kXQiu5AkZLBSWPbputRe6wIVUXQK8yXkS3FDhshlN14qIGoviMaT+yPl1TeoDl17qTy/5MIrBLSlya+wgjVYprBjYw0nHmIYZHDovvKlbolv0eEq8hp2jEdlef1i3ZMoUEPg8QyFymR5EzM+OqHaOQMgBK2v1B1qKHLK7YAXiXNsRfA6FRTB9UuizPBJyUmCkFGA6wM2JF6NnGB5KMX6NIb4eEztzppfjXP27aZBZfql0LTVvUl0pD+zeO1XA24Z52Z+J2L+7VWQV/tgGhuakJ9rg6AycaVyVmRjVSLNlP/8agGfC3JaY=
