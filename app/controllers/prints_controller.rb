@@ -6,14 +6,23 @@ class PrintsController < ApplicationController
     @location = current_resource
   end
 
-  def create 
+  def create
     label_template_id = Rails.configuration.label_templates[params[:barcode_type]]
     @print_barcode = LabelPrinter.new(printer: params[:printer_id],
                                       locations: location_ids,
                                       label_template_id: label_template_id,
                                       copies: params[:copies].to_i)
     @print_barcode.post
-    redirect_to locations_path, notice: @print_barcode.message
+
+    respond_to do |format|
+      msg = @print_barcode.message + message_suffix
+      if @print_barcode.response_ok?
+        flash[:notice] = msg
+      else
+        flash[:alert] = msg
+      end
+      format.js { render 'prints/print_update_view' }
+    end
   end
 
 private
@@ -28,5 +37,10 @@ private
 
   def location_resource
     Location.find(params[:location_id])
+  end
+
+  def message_suffix
+    suffix = params[:print_child_barcodes] ? " for each child of" : " for"
+    suffix + " location: #{current_resource.name}"
   end
 end

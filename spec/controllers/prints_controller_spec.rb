@@ -7,7 +7,8 @@ RSpec.describe PrintsController, type: :controller do
     let(:label_printer_double) do
       label_printer = instance_double(LabelPrinter)
       allow(label_printer).to receive(:post)
-      allow(label_printer).to receive(:message)
+      allow(label_printer).to receive(:message).and_return('Barcode printed')
+      allow(label_printer).to receive(:response_ok?).and_return(true)
       label_printer
     end
 
@@ -24,14 +25,16 @@ RSpec.describe PrintsController, type: :controller do
           .with(printer: @printer.id.to_s, locations: @location.child_ids, label_template_id: 1, copies: 1)
           .and_return(label_printer_double)
 
-        post :create,
+        xhr :post, :create,
           location_id: @location.id,
           printer_id: @printer.id,
           barcode_type: "1D",
           print_child_barcodes: 1,
           copies: 1
 
-        expect(response).to redirect_to locations_path
+        expect(response.status).to eq(200)
+
+        expect(flash['notice']).to eq("Barcode printed for each child of location: #{@location.name}")
       end
     end
 
@@ -42,13 +45,15 @@ RSpec.describe PrintsController, type: :controller do
           .with(printer: @printer.id.to_s, locations: @location.id.to_s, label_template_id: 1, copies: 1)
           .and_return(label_printer_double)
 
-        post :create,
+        xhr :post, :create,
           location_id: @location.id,
           printer_id: @printer.id,
           barcode_type: "1D",
           copies: 1
 
-        expect(response).to redirect_to locations_path
+        expect(response.status).to eq(200)
+
+        expect(flash['notice']).to eq("Barcode printed for location: #{@location.name}")
       end
     end
 
