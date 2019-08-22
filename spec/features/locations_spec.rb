@@ -128,7 +128,7 @@ RSpec.describe "Locations", type: :feature do
   end
 
   describe "reserved", js: true do
-    it "Allows a user to new location that is reserved for their team" do
+    it "Allows a user to add a new location that is reserved for their team" do
       location = build(:ordered_location)
       visit locations_path
       click_link "Add new location"
