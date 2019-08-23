@@ -1,0 +1,12 @@
+// display the response message to the user (ajax does not have access to the session to set flash normally)
+$(".flash").show()
+<% if @message_type == 'notice' %>
+  $(".flash").append("<div class='notice'><p><%= @message %></p></div>")
+  $(".notice").fade(10000)
+<% else %>
+  $(".flash").append("<div class='alert'><p><%= @message %></p></div>")
+  $(".alert").fade(15000)
+<% end %>
+
+// close the dialog window
+jQuery('.ui-icon-closethick').trigger('click');

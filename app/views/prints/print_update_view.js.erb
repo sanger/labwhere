@@ -1,4 +1,0 @@
-// display the response message to the user (ajax does not have access to the session to set flash normally)
-$('#flash_messages_from_ajax').html("<%= escape_javascript raw(flash_display) %>");
-// close the dialog window
-jQuery('.ui-icon-closethick').trigger('click');

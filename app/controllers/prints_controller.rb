@@ -15,13 +15,13 @@ class PrintsController < ApplicationController
     @print_barcode.post
 
     respond_to do |format|
-      msg = @print_barcode.message + message_suffix
+      @message = @print_barcode.message + message_suffix
       if @print_barcode.response_ok?
-        flash[:notice] = msg
+        @message_type = 'notice'
       else
-        flash[:alert] = msg
+        @message_type = 'alert'
       end
-      format.js { render 'prints/print_update_view' }
+      format.js { render 'prints/create_response' }
     end
   end
 

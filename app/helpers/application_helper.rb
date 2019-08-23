@@ -36,17 +36,4 @@ module ApplicationHelper
   def print_link
     behavior_link "print", "print.png", "Print Barcode"
   end
-
-  ##
-  # Allows us to display ajax post response messages to flash.
-  def flash_display
-    response = ''
-    flash.each do |name, msg|
-      response = response + content_tag(:div, msg, :id => "flash_#{name}", :title=>name.to_s.humanize, :class=>name) do
-        content_tag(:p, "#{msg}".html_safe)
-      end
-    end
-    flash.discard
-    response
-  end
 end
