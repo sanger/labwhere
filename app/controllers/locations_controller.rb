@@ -48,7 +48,7 @@ class LocationsController < ApplicationController
         @message = "Delete failed for location '#{@location.name}'"
         @message_type = 'alert'
       end
-      format.js { render 'locations/delete_response' }
+      format.js { render 'locations/destroy' }
     end
   end
 

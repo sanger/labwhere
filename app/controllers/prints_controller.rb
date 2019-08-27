@@ -21,7 +21,7 @@ class PrintsController < ApplicationController
       else
         @message_type = 'alert'
       end
-      format.js { render 'prints/create_response' }
+      format.js { render 'prints/create' }
     end
   end
 
