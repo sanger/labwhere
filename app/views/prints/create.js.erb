@@ -1,2 +1,10 @@
-$("#errors").remove();
-$("#delete-form").prepend("<%= escape_javascript(render('error_messages', target: @location)) %>");
+// display the response message to the user (ajax does not have access to the session to set flash normally)
+$(".flash").show()
+<% if @message_type == 'notice' %>
+   <%= render partial: "application/flash_notice", object: @message %>
+<% else %>
+   <%= render partial: 'application/flash_alert', object: @message %>
+<% end %>
+
+// close the dialog window
+jQuery('.ui-icon-closethick').trigger('click');
