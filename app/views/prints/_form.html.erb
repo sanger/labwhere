@@ -1,5 +1,5 @@
 <%= render "error_messages", target: @location %>
-<%= form_tag location_prints_path(@location) do %>
+<%= form_tag(location_prints_path(@location), remote: true) do %>
   <fieldset>
     <ul>
       <li>
