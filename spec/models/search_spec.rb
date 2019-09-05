@@ -17,7 +17,8 @@ RSpec.describe Search, type: :model do
     expect(Search.find(search.id).search_count).to eq(1)
     expect(Search.find(search.id).search_count).to eq(2)
     expect(Search.find(search.id).search_count).to eq(3)
-    expect(Search.find(search.id).updated_at).to_not eq(search.updated_at)
+    # Rails 5 version of increment! does not cause timestamp to change
+    # expect(Search.find(search.id).updated_at).to_not eq(search.updated_at)
   end
 
   context "Results" do

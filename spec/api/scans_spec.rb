@@ -10,8 +10,8 @@ RSpec.describe Api::ScansController, type: :request do
 
   it "should be able to scan some labware in using barcodes via post api/scans" do
     location = create(:unordered_location_with_parent)
-    post api_scans_path, scan: { location_barcode: location.barcode, labware_barcodes: new_labware.join_barcodes, user_code: user.swipe_card_id }
-    expect(response).to be_success
+    post api_scans_path, params: { scan: { location_barcode: location.barcode, labware_barcodes: new_labware.join_barcodes, user_code: user.swipe_card_id } }
+    expect(response).to be_successful
     json = ActiveSupport::JSON.decode(response.body)
     expect(json["message"]).to eq(Scan.first.message)
     expect(json["location"]["id"]).to eq(location.id)
@@ -23,7 +23,7 @@ RSpec.describe Api::ScansController, type: :request do
   #               {position: location.coordinates.last.position, barcode: new_labware.last.barcode}]
  
   #   post api_scans_path, scan: { location_barcode: location.barcode, labwares: labwares, user_code: user.swipe_card_id }
-  #   expect(response).to be_success
+  #   expect(response).to be_successful
   #   json = ActiveSupport::JSON.decode(response.body)
   #   expect(json["message"]).to eq(Scan.first.message)
   #   expect(json["location"]["coordinates"].first["labware"]).to eq(new_labware.first.barcode)
@@ -31,14 +31,14 @@ RSpec.describe Api::ScansController, type: :request do
   # end
 
   it "should return an error if the scan is incorrect" do
-    post api_scans_path, scan: { location_barcode: "999999:1", labware_barcodes: new_labware.join_barcodes, user_code: user.swipe_card_id }
+    post api_scans_path, params: { scan: { location_barcode: "999999:1", labware_barcodes: new_labware.join_barcodes, user_code: user.swipe_card_id } }
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end
 
   it "should return an error if the user is not authorised" do
     location = create(:location)
-    post api_scans_path, scan: { location_barcode: location.barcode, labware_barcodes: new_labware.join_barcodes }
+    post api_scans_path, params: { scan: { location_barcode: location.barcode, labware_barcodes: new_labware.join_barcodes } }
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end

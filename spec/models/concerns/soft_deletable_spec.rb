@@ -20,7 +20,7 @@ RSpec.describe SoftDeletable, type: :model do
     end
 
     model do
-      belongs_to :blog_post
+      belongs_to :blog_post, optional: true
 
       include SoftDeletable
       removable_associations :blog_post

@@ -1,4 +1,4 @@
-class CoordinateSerializer < ActiveModel::Serializer
+class CoordinateSerializer < ActiveModel::V08::Serializer
   
   attributes :position, :row, :column, :labware, :location
 

@@ -22,7 +22,7 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
 
-  include FactoryGirl::Syntax::Methods
+  include FactoryBot::Syntax::Methods
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -75,6 +75,8 @@ RSpec.configure do |config|
     Capybara.reset_sessions!
     DatabaseCleaner.clean
   end
+
+  Capybara.server = :puma, { Silent: true }
 
   Capybara.add_selector(:data_behavior) do
     xpath { |name| XPath.css("[data-behavior='#{name}']") }

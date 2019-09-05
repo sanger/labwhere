@@ -1,8 +1,6 @@
 # Serializer for Location Type
 # includes created_at and updated_at
-class LocationTypeSerializer < ActiveModel::Serializer
-
-  self.root = false
+class LocationTypeSerializer < ActiveModel::V08::Serializer
 
   attributes :id, :name, :locations, :audits
 

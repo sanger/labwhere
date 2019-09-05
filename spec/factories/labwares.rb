@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :labware do
     sequence(:barcode) {|n| "Labware:#{n}" }
     location nil
@@ -10,14 +10,14 @@ FactoryGirl.define do
 
       after(:create) do |labware, evaluator|
         1.upto(5) do |n|
-          FactoryGirl.create(:audit, auditable_type: labware.class, 
+          FactoryBot.create(:audit, auditable_type: labware.class,
             auditable_id: labware.id, user: evaluator.user, record_data: labware)
         end
       end
     end
 
     factory :labware_with_location do
-      location { FactoryGirl.create(:location_with_parent)}
+      location { FactoryBot.create(:location_with_parent)}
     end
 
   end

@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   include Auditable
   include SubclassChecker
 
-  belongs_to :team
+  belongs_to :team, optional: true
 
   validates :login, presence: true, uniqueness: true
 

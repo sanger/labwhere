@@ -11,7 +11,7 @@ RSpec.describe Api::Locations::AuditsController, type: :request do
  end
 
  it "should be a success" do
-  expect(response).to be_success
+  expect(response).to be_successful
  end
 
  it "should return user" do

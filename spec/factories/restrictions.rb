@@ -3,7 +3,7 @@ class MyFakeValidator < ActiveModel::Validator
   end
 end
 
-FactoryGirl.define do
+FactoryBot.define do
 
   factory :restriction do
     location_type
@@ -12,7 +12,7 @@ FactoryGirl.define do
     factory :parentage_restriction, class: "ParentageRestriction" do
 
       after(:create) do |parentage_restriction, evaluator|
-        1.upto(2) { parentage_restriction.location_types << FactoryGirl.create(:location_type) }
+        create_list(:location_types_restriction, 2, parentage_restriction: parentage_restriction)
       end
 
     end

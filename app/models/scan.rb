@@ -2,7 +2,7 @@
 # Scanning labware in and out of a location
 # A scan is a throwaway object i.e. it has no use once it has been done.
 # A scan will have any number of Labwares attached but these are not permanently linked.
-# We know we are scanning in or out be whether there is a location.
+# We know we are scanning in or out by whether there is a location.
 # We need to show a message to the user showing how many pieces of labwares were scanned in or out
 # of the location. For this purpose we create a temporary list of all the labwares
 # so we can determine which locations they have come from and how many there are.
@@ -12,8 +12,8 @@ class Scan < ActiveRecord::Base
 
   enum status: [:in, :out]
 
-  belongs_to :location
-  belongs_to :user
+  belongs_to :location, optional: true
+  belongs_to :user, optional: true
 
   before_save :set_status, :create_message
 

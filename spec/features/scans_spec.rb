@@ -56,7 +56,7 @@ RSpec.describe "Scans", type: :feature do
     }.to_not change(Scan, :count)
     expect(page).to have_content("error prohibited this record from being saved")
     expect(page).to have_field("Location barcode", with: location.barcode)
-    expect(page).to have_content(labwares.join_barcodes)
+    expect(page).to have_content(labwares.join_barcodes("\r "))
   end
 
    it "Does not allow an unauthorised user to modify locations" do

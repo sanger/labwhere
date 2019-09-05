@@ -86,9 +86,9 @@ RSpec.describe Location, type: :model do
   it "#without_location should return a list of locations without a specified location" do
     locations         = create_list(:location, 3)
     inactive_location = create(:location, status: Location.statuses[:inactive])
-    expect(Location.without(locations.last).count).to eq(2)
-    expect(Location.without(locations.last)).to_not include(locations.last)
-    expect(Location.without(locations.last)).to_not include(inactive_location)
+    expect(Location.without_location(locations.last).count).to eq(2)
+    expect(Location.without_location(locations.last)).to_not include(locations.last)
+    expect(Location.without_location(locations.last)).to_not include(inactive_location)
   end
 
   it "#without_unknown should return all locations without UnknownLocation" do

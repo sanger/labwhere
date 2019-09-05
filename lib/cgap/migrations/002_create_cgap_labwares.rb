@@ -1,4 +1,4 @@
-class CreateCgapLabwares < ActiveRecord::Migration
+class CreateCgapLabwares < ActiveRecord::Migration[4.2]
   def change
     create_table :cgap_labwares do |t|
       t.string :barcode

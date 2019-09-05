@@ -24,8 +24,6 @@ class Coordinate < ActiveRecord::Base
     !vacant?
   end
 
-
-
   # Check if the coordinate can be filled with a piece of labware
   def vacant?
     labware.empty?

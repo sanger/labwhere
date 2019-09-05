@@ -33,12 +33,13 @@ RSpec.describe PrintsController, type: :controller do
           .with(printer: @printer.id.to_s, locations: @location.child_ids, label_template_id: 1, copies: 1)
           .and_return(label_printer_double)
 
-        xhr :post, :create,
+        post :create, params: {
           location_id: @location.id,
           printer_id: @printer.id,
           barcode_type: "1D",
           print_child_barcodes: 1,
           copies: 1
+        }, xhr: true
 
         expect(response.status).to eq(200)
 
@@ -54,11 +55,12 @@ RSpec.describe PrintsController, type: :controller do
           .with(printer: @printer.id.to_s, locations: @location.id.to_s, label_template_id: 1, copies: 1)
           .and_return(label_printer_double)
 
-        xhr :post, :create,
+        post :create, params: {
           location_id: @location.id,
           printer_id: @printer.id,
           barcode_type: "1D",
           copies: 1
+        }, xhr: true
 
         expect(response.status).to eq(200)
 
@@ -74,11 +76,12 @@ RSpec.describe PrintsController, type: :controller do
           .with(printer: @printer.id.to_s, locations: @location.id.to_s, label_template_id: 1, copies: 1)
           .and_return(label_printer_double_error)
 
-        xhr :post, :create,
+        post :create, params: {
           location_id: @location.id,
           printer_id: @printer.id,
           barcode_type: "1D",
           copies: 1
+        }, xhr: true
 
         expect(assigns(:message_type)).to eq('alert')
         expect(assigns(:message)).to eq(I18n.t("printing.failure") + " for location: #{@location.name}")

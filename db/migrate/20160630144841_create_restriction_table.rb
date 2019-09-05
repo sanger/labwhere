@@ -1,4 +1,4 @@
-class CreateRestrictionTable < ActiveRecord::Migration
+class CreateRestrictionTable < ActiveRecord::Migration[4.2]
   def change
     create_table :restrictions do |t|
       t.string :type
