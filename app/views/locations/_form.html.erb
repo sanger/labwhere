@@ -30,7 +30,7 @@
       </li>
       <li>
         <%= f.label :parent_id %>
-        <%= f.select :parent_id, options_from_collection_for_select(UnorderedLocation.without(@location), :id, :barcode, @location.parent_id), {include_blank: true}, {class: 'select2_box', data: {behavior: "select2"}} %>
+        <%= f.select :parent_id, options_from_collection_for_select(UnorderedLocation.without_location(@location), :id, :barcode, @location.parent_id), {include_blank: true}, {class: 'select2_box', data: {behavior: "select2"}} %>
       </li>
       <li>
         <%= f.check_box :container, data: {toggle: "container"} %>

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :search do
     sequence(:term) {|n| "Search #{n}" }
   end

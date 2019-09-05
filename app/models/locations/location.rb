@@ -10,9 +10,9 @@ class Location < ActiveRecord::Base
   include SubclassChecker
   include Reservable
 
-  belongs_to :location_type
+  belongs_to :location_type, optional: true # Optional for UnknownLocation
   belongs_to :parent, class_name: "Location"
-  belongs_to :team
+  belongs_to :team, optional: true
   has_many :labwares
 
   validates :name, presence: true, uniqueness: {scope: :parent, case_sensitive: true}
@@ -31,7 +31,7 @@ class Location < ActiveRecord::Base
 
   validates_with ContainerReservationValidator
 
-  scope :without, ->(location) { active.where.not(id: location.id).order(id: :desc) }
+  scope :without_location, ->(location) { active.where.not(id: location.id).order(id: :desc) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
   scope :by_root, -> { without_unknown.where(parent_id: nil) }
 
@@ -166,6 +166,6 @@ class Location < ActiveRecord::Base
   def has_been_used
     return unless used?
     errors.add :location, "Has been used"
-    false
+    throw :abort
   end
 end

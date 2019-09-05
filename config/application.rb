@@ -1,5 +1,4 @@
-require File.expand_path('../boot', __FILE__)
-
+require_relative 'boot'
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
@@ -8,6 +7,8 @@ Bundler.require(*Rails.groups)
 
 module Labwhere
   class Application < Rails::Application
+    config.load_defaults 5.2
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -27,8 +28,7 @@ module Labwhere
     # redirect errors to errors controller
     config.exceptions_app = self.routes
 
-    # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
+    config.autoload_paths += %W(#{config.root}/lib)
 
     config.autoload_paths += %W(#{config.root}/lib/utils #{config.root}/lib/validators)
 
@@ -40,7 +40,7 @@ module Labwhere
 
     config.label_templates = Rails.application.config_for(:label_templates)
 
-    # replace fixtures with factory girl
+    # replace fixtures with factory bot
     config.generators do |g|
         g.test_framework :rspec,
             fixtures: true,
@@ -49,7 +49,7 @@ module Labwhere
             routing_specs: false,
             controller_specs: false,
             request_specs: true
-        g.fixture_replacement :factory_girl, dir: "spec/factories"
+        g.fixture_replacement :factory_bot, dir: "spec/factories"
 
     end
   end

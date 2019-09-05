@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -14,18 +13,17 @@
 ActiveRecord::Schema.define(version: 20170214114659) do
 
   create_table "audits", force: :cascade do |t|
-    t.integer  "auditable_id"
     t.string   "auditable_type"
+    t.integer  "auditable_id"
     t.string   "action"
     t.text     "record_data"
     t.integer  "user_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.index ["auditable_id", "auditable_type"], name: "index_audits_on_auditable_id_and_auditable_type"
+    t.index ["auditable_type"], name: "index_audits_on_auditable_type"
+    t.index ["user_id"], name: "index_audits_on_user_id"
   end
-
-  add_index "audits", ["auditable_id", "auditable_type"], name: "index_audits_on_auditable_id_and_auditable_type"
-  add_index "audits", ["auditable_type"], name: "index_audits_on_auditable_type"
-  add_index "audits", ["user_id"], name: "index_audits_on_user_id"
 
   create_table "coordinates", force: :cascade do |t|
     t.integer  "position"
@@ -34,9 +32,8 @@ ActiveRecord::Schema.define(version: 20170214114659) do
     t.integer  "location_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["location_id"], name: "index_coordinates_on_location_id"
   end
-
-  add_index "coordinates", ["location_id"], name: "index_coordinates_on_location_id"
 
   create_table "labwares", force: :cascade do |t|
     t.string   "barcode"
@@ -45,10 +42,9 @@ ActiveRecord::Schema.define(version: 20170214114659) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "coordinate_id"
+    t.index ["coordinate_id"], name: "index_labwares_on_coordinate_id"
+    t.index ["location_id"], name: "index_labwares_on_location_id"
   end
-
-  add_index "labwares", ["coordinate_id"], name: "index_labwares_on_coordinate_id"
-  add_index "labwares", ["location_id"], name: "index_labwares_on_location_id"
 
   create_table "location_types", force: :cascade do |t|
     t.string   "name"
@@ -59,9 +55,8 @@ ActiveRecord::Schema.define(version: 20170214114659) do
   create_table "location_types_restrictions", id: false, force: :cascade do |t|
     t.integer "location_type_id", null: false
     t.integer "restriction_id",   null: false
+    t.index ["restriction_id", "location_type_id"], name: "restriction_id_and_location_type_id_index", unique: true
   end
-
-  add_index "location_types_restrictions", ["restriction_id", "location_type_id"], name: "restriction_id_and_location_type_id_index", unique: true
 
   create_table "locations", force: :cascade do |t|
     t.string   "name"
@@ -78,10 +73,9 @@ ActiveRecord::Schema.define(version: 20170214114659) do
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.integer  "team_id"
+    t.index ["location_type_id"], name: "index_locations_on_location_type_id"
+    t.index ["team_id"], name: "index_locations_on_team_id"
   end
-
-  add_index "locations", ["location_type_id"], name: "index_locations_on_location_type_id"
-  add_index "locations", ["team_id"], name: "index_locations_on_team_id"
 
   create_table "printers", force: :cascade do |t|
     t.string   "name"
@@ -94,9 +88,8 @@ ActiveRecord::Schema.define(version: 20170214114659) do
     t.string  "validator"
     t.text    "params"
     t.integer "location_type_id"
+    t.index ["location_type_id"], name: "index_restrictions_on_location_type_id"
   end
-
-  add_index "restrictions", ["location_type_id"], name: "index_restrictions_on_location_type_id"
 
   create_table "scans", force: :cascade do |t|
     t.integer  "status",         default: 0
@@ -106,10 +99,9 @@ ActiveRecord::Schema.define(version: 20170214114659) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.integer  "start_position"
+    t.index ["location_id"], name: "index_scans_on_location_id"
+    t.index ["user_id"], name: "index_scans_on_user_id"
   end
-
-  add_index "scans", ["location_id"], name: "index_scans_on_location_id"
-  add_index "scans", ["user_id"], name: "index_scans_on_user_id"
 
   create_table "searches", force: :cascade do |t|
     t.string   "term"
@@ -135,8 +127,7 @@ ActiveRecord::Schema.define(version: 20170214114659) do
     t.integer  "team_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.index ["team_id"], name: "index_users_on_team_id"
   end
-
-  add_index "users", ["team_id"], name: "index_users_on_team_id"
 
 end

@@ -1,9 +1,7 @@
 # Serializer for Location
 # includes created_at and updated_at
-class LocationSerializer < ActiveModel::Serializer
+class LocationSerializer < ActiveModel::V08::Serializer
   
-  self.root = false
-
   attributes :id, :name, :parent, :container, :status, :location_type_id, :audits, :barcode, :rows, :columns, :parentage
 
   include SerializerDates

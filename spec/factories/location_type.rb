@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :location_type do
     sequence(:name) {|n| "Location Type #{n}" }
 
@@ -13,7 +13,7 @@ FactoryGirl.define do
 
       after(:create) do |location_type, evaluator|
         1.upto(5) do |n|
-          FactoryGirl.create(:audit, auditable_type: location_type.class,
+          FactoryBot.create(:audit, auditable_type: location_type.class,
             auditable_id: location_type.id, user: evaluator.user, record_data: location_type)
         end
       end
@@ -23,7 +23,7 @@ FactoryGirl.define do
 
       after(:create) do |location_type, evaluator|
         1.upto(5) do |n|
-          FactoryGirl.create(:location_with_parent, location_type: location_type)
+          FactoryBot.create(:location_with_parent, location_type: location_type)
         end
       end
     end

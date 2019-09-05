@@ -10,7 +10,7 @@ RSpec.describe Api::LocationsController, type: :request do
     location_type = create(:location_type, name: "Building")
     locations = create_list(:location, 5, location_type: location_type)
     get api_locations_path
-    expect(response).to be_success
+    expect(response).to be_successful
     expect(ActiveSupport::JSON.decode(response.body).length).to eq(locations.length)
   end
 
@@ -24,7 +24,7 @@ RSpec.describe Api::LocationsController, type: :request do
   it "should return null for parent if location does not have a parent" do
     location = create(:location)
     get api_location_path(location.barcode)
-    expect(response).to be_success
+    expect(response).to be_successful
     json = ActiveSupport::JSON.decode(response.body)
     expect(json["parent"]).to eq("Empty")
   end
@@ -32,7 +32,7 @@ RSpec.describe Api::LocationsController, type: :request do
   it "should retrieve information about a location get /api/locations/<barcode>" do
     location = create(:location_with_parent)
     get api_location_path(location.barcode)
-    expect(response).to be_success
+    expect(response).to be_successful
     json = ActiveSupport::JSON.decode(response.body)
     expect(json["id"]).to eq(location.id)
     expect(json["name"]).to eq(location.name)
@@ -51,7 +51,7 @@ RSpec.describe Api::LocationsController, type: :request do
   it "ordered location should store information about coordinates" do
     location = create(:ordered_location_with_parent)
     get api_location_path(location.barcode)
-    expect(response).to be_success
+    expect(response).to be_successful
     json = ActiveSupport::JSON.decode(response.body)
     expect(json["coordinates"].length).to eq(location.coordinates.count)
   end
@@ -59,21 +59,21 @@ RSpec.describe Api::LocationsController, type: :request do
   it "should retrieve information about a locations audits get api/locations/<barcode>/audits" do
     location = create(:location_with_audits)
     get api_location_audits_path(location.barcode)
-    expect(response).to be_success
+    expect(response).to be_successful
     expect(ActiveSupport::JSON.decode(response.body).length).to eq(location.audits.length)
   end
 
   it "should retrieve information about a locations labwares get api/locations/<barcode>/labwares" do
     location = create(:unordered_location_with_labwares)
     get api_location_labwares_path(location.barcode)
-    expect(response).to be_success
+    expect(response).to be_successful
     expect(ActiveSupport::JSON.decode(response.body).length).to eq(location.labwares.length)
   end
 
   it "should retrieve information about a locations children get api/location/<barcode>/children" do
     location = create(:unordered_location_with_children)
     get api_location_children_path(location.barcode)
-    expect(response).to be_success
+    expect(response).to be_successful
     expect(ActiveSupport::JSON.decode(response.body).length).to eq(location.children.length)
   end
 
@@ -99,8 +99,8 @@ RSpec.describe Api::LocationsController, type: :request do
   end
 
   it "should create a new location" do
-    post api_locations_path, location: attributes_for(:location).merge(user_code: user.swipe_card_id)
-    expect(response).to be_success
+    post api_locations_path, params: { location: attributes_for(:location).merge(user_code: user.swipe_card_id) }
+    expect(response).to be_successful
     location = Location.first
     json = ActiveSupport::JSON.decode(response.body)
     expect(json["created_at"]).to eq(location.created_at.to_s(:uk))
@@ -108,13 +108,13 @@ RSpec.describe Api::LocationsController, type: :request do
   end
 
   it "should return an error if the location has invalid attributes" do
-    post api_locations_path, location: attributes_for(:location).except(:name).merge(user_code: user.swipe_card_id)
+    post api_locations_path, params: { location: attributes_for(:location).except(:name).merge(user_code: user.swipe_card_id) }
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end
 
   it "should return an error if the user is invalid" do
-    post api_locations_path, location: attributes_for(:location)
+    post api_locations_path, params: { location: attributes_for(:location) }
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end
@@ -122,15 +122,15 @@ RSpec.describe Api::LocationsController, type: :request do
   it "should update an existing location" do
     location = create(:location_with_parent)
     location_parent = create(:location)
-    patch api_location_path(location.barcode), location: { user_code: user.swipe_card_id, parent_id: location_parent.id }
-    expect(response).to be_success
+    patch api_location_path(location.barcode), params: { location: { user_code: user.swipe_card_id, parent_id: location_parent.id } }
+    expect(response).to be_successful
     expect(location.reload.parent).to eq(location_parent)
   end
 
   it "should return an error if the updated location has invalid attributes" do
     location = create(:location_with_parent)
     location_parent = create(:location)
-    patch api_location_path(location.barcode), location: { user_code: user.swipe_card_id, name: nil }
+    patch api_location_path(location.barcode), params: { location: { user_code: user.swipe_card_id, name: nil } }
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end

@@ -19,7 +19,7 @@ class Audit < ActiveRecord::Base
 
   serialize :record_data, JSON
 
-  belongs_to :auditable, polymorphic: true
+  belongs_to :auditable, polymorphic: true, optional: true # Optional in case auditable has been destroyed
 
   ##
   # A summary message for the audit record

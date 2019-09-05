@@ -1,4 +1,4 @@
-class CreateCgapStorage < ActiveRecord::Migration
+class CreateCgapStorage < ActiveRecord::Migration[4.2]
   def change
     create_table :cgap_storages do |t|
       t.string :barcode
