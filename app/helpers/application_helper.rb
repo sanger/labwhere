@@ -36,5 +36,4 @@ module ApplicationHelper
   def print_link
     behavior_link "print", "print.png", "Print Barcode"
   end
- 
 end
