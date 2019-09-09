@@ -1,6 +1,5 @@
 language: ruby
 # We don't specify a list of ruby versions, as Travis will fall back to .ruby-version
-dist: xenial
 bundle_args: "--without deployment"
 cache:
   bundler: true
