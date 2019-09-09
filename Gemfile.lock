@@ -132,6 +132,7 @@ GEM
     multi_json (1.11.2)
     multipart-post (2.0.0)
     mysql2 (0.3.18)
+    nio4r (2.5.1)
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     phantomjs (1.9.8.0)
@@ -144,7 +145,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    puma (3.12.1)
+    puma (4.1.1)
+      nio4r (~> 2.0)
     rack (1.6.10)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -303,4 +305,4 @@ DEPENDENCIES
   with_model
 
 BUNDLED WITH
-   1.16.2
+   1.17.3
