@@ -23,6 +23,7 @@ tar \
   --exclude='./coverage' \
   --exclude='./log/*' \
   --exclude='./node_modules' \
+  --exclude='./travis_phantomjs' \
   --exclude='./spec' \
   --exclude='./test' \
   --exclude='./tmp' \
