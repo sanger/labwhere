@@ -51,18 +51,18 @@ gem 'exception_notification'
 
 gem 'pmb-client', '0.1.0', :github => 'sanger/pmb-client'
 
+gem 'ancestry'
+
 group :deployment do
   gem 'mysql2'
   gem 'therubyracer'
 end
 
 group :development do
-  gem 'raml_ruby', '~> 0.1.1'
-
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-
   gem 'listen'
+  gem 'apiaryio', '~> 0.11'
 end
 
 # Use Capistrano for deployment

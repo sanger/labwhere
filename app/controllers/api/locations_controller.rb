@@ -38,6 +38,7 @@ private
   def permitted_params
     location_attrs =  Location.new.attributes.keys.map {|k| k.to_sym}
     params.permit(location: [*location_attrs,
+                            :parent_id,
                             :user_code,
                             :start_from,
                             :end_to,

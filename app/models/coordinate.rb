@@ -2,6 +2,8 @@
 # A coordinate is a defined position in a location which can hold a piece of labware.
 # A location will usually have a fixed set of coordinates.
 class Coordinate < ActiveRecord::Base
+  include Auditable
+
   belongs_to :location
   has_one :labware, autosave: true
 
