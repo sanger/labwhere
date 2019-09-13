@@ -1,12 +1,12 @@
 if Rails.env == "development"
-  require 'raml'
 
   namespace :docs do
     desc "generate the api docs"
     task :api do |t|
-      puts "generating api docs..." 
-      Raml.document(File.join(Rails.root,"config","api.raml"), File.join(Rails.root,"app","views","api","docs","index.html.erb"))
-      puts "done"
+      path_to_doc = "app/views/api/docs/index.html.erb"
+      sh("bundle exec apiary preview --path=\"config/api.apib\" --output=\"#{path_to_doc}\" --no-server")
+      puts "Done!"
+      puts "Docs have been generated in #{path_to_doc}"
     end
   end
 end

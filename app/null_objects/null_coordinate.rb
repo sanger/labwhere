@@ -19,6 +19,12 @@
   def flush
   end
 
+  def row
+  end
+
+  def column
+  end
+
   def position
   end
 

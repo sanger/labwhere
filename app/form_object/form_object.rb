@@ -18,7 +18,7 @@ module FormObject
   # specific validations that are added. It will then save the model if it is valid.
   # The after_validate method allows you to change which actions are carried out post validation.
   # The after_submit callback allows you to specify actions which can be carried out after a successful submit.
-  # Each form object will automatically assign controller and action variables if the paramters come from a controller and will
+  # Each form object will automatically assign controller and action variables if the parameters come from a controller and will
   # also assign the parameters to an instance variable.
   # Each object will also have an attribute called model which relates to the underlying model this is also aliased to the name of the model.
   # e.g. if model is called MyModel there will an attribute called my_model.
