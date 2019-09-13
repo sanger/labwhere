@@ -6,7 +6,7 @@ FactoryBot.define do
     team nil
 
     factory :location_with_parent do
-      parent { FactoryBot.create(:location)}
+      parent { FactoryBot.create(:location) }
     end
 
     factory :unordered_location, class: "UnorderedLocation" do
@@ -31,18 +31,21 @@ FactoryBot.define do
           1.upto(5) do |n|
             FactoryBot.create(:location, parent: location)
           end
+          location.reload
         end
       end
 
       factory :unordered_location_with_labwares_and_children do
 
-        parent { FactoryBot.create(:location)}
+        parent { FactoryBot.create(:location) }
 
         after(:create) do |location, evaluator|
           1.upto(5) do |n|
             FactoryBot.create(:location, parent: location)
             FactoryBot.create(:labware, location: location)
           end
+          # The children_count cache will have been updated
+          location.reload
         end
 
       end
@@ -59,12 +62,14 @@ FactoryBot.define do
 
       factory :ordered_location_with_labwares do
 
-        parent { FactoryBot.create(:location)}
+        parent { FactoryBot.create(:location) }
 
         after(:create) do |location, evaluator|
           location.coordinates.each do |coordinate|
             coordinate.fill(FactoryBot.create(:labware))
           end
+
+          location.reload
         end
       end
 

@@ -51,6 +51,8 @@ gem 'exception_notification'
 
 gem 'pmb-client', '0.1.0', :github => 'sanger/pmb-client'
 
+gem 'ancestry'
+
 group :deployment do
   gem 'mysql2'
   gem 'therubyracer'

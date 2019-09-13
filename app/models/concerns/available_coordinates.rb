@@ -22,7 +22,7 @@ class AvailableCoordinates
 
   ##
   # Check each coordinate. If it is empty then check if the next n coordinates are empty.
-  # If we can find n empty coordinates then returnt the coordinates location
+  # If we can find n empty coordinates then return the coordinates location
   def find
     coordinates.each do |coordinate|
       if coordinate.vacant?

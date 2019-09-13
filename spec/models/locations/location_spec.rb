@@ -49,14 +49,14 @@ RSpec.describe Location, type: :model do
     end
 
     it "is valid with a parent that is one of the enforced types" do
-      parent_location = build(:location, location_type: @restriction.location_types.first)
+      parent_location = create(:location, location_type: @restriction.location_types.first)
       location = build(:location, parent: parent_location, location_type: @location_type)
 
       expect(location).to be_valid
     end
 
     it "is invalid with a parent that is not one of the enforced location types" do
-      parent_location = build(:location)
+      parent_location = create(:location)
       location = build(:location, parent: parent_location, location_type: @location_type)
 
       expect(location).to_not be_valid
@@ -77,7 +77,7 @@ RSpec.describe Location, type: :model do
     end
 
     it "is invalid when parent is a restricted type" do
-      parent_location = build(:location, location_type: @restriction.location_types.first)
+      parent_location = create(:location, location_type: @restriction.location_types.first)
       location = build(:location, location_type: @location_type, parent: parent_location)
       expect(location).to_not be_valid
     end
@@ -258,16 +258,52 @@ RSpec.describe Location, type: :model do
       location.destroy
       expect(location).to be_destroyed
     end
-    it 'failure' do
-      location = create(:unordered_location_with_children)
-      location.destroy
-      expect(location).to_not be_destroyed
-      location = create(:unordered_location_with_labwares)
-      location.destroy
-      expect(location).to_not be_destroyed
-      location = create(:location_with_audits)
-      location.destroy
-      expect(location).to_not be_destroyed
+
+    context 'when location has children' do
+      it 'fails' do
+        location = create(:unordered_location_with_children)
+        location.destroy
+        expect(location).to_not be_destroyed
+      end
     end
+
+    context 'when location has labwares' do
+      it 'fails' do
+        location = create(:unordered_location_with_labwares)
+        location.destroy
+        expect(location).to_not be_destroyed
+      end
+    end
+
+    context 'when location has audits' do
+      it 'fails' do
+        location = create(:location_with_audits)
+        location.destroy
+        expect(location).to_not be_destroyed
+      end
+    end
+
+  end
+
+  describe '#children=' do
+
+    before do
+      @parent = create(:location)
+      @children = create_list(:location, 3)
+      @parent.children = @children
+    end
+
+    it 'sets itself as each child\'s parent' do
+      expect(@parent.children).to include(*@children)
+      @children.each do |child|
+        expect(child.parent).to eql(@parent)
+      end
+    end
+
+    it 'sets the children_count' do
+      expect(@parent.children_count).to eql(@children.length)
+    end
+
+
   end
 end

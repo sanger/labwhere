@@ -20,5 +20,7 @@ class NullLocation
 
   def unknown?; false end
 
-  def unspecified?; true end 
+  def unspecified?; true end
+
+  def path; [] end
 end

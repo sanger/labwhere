@@ -11,11 +11,11 @@ class Location < ActiveRecord::Base
   include Reservable
 
   belongs_to :location_type, optional: true # Optional for UnknownLocation
-  belongs_to :parent, class_name: "Location"
   belongs_to :team, optional: true
+  has_many :coordinates
   has_many :labwares
 
-  validates :name, presence: true, uniqueness: {scope: :parent, case_sensitive: true}
+  validates :name, presence: true, uniqueness: { scope: :ancestry, case_sensitive: true }
 
   validates_format_of :name, with: /\A[\w\-\s\(\)]+\z/
   validates_length_of :name, maximum: 60
@@ -33,7 +33,7 @@ class Location < ActiveRecord::Base
 
   scope :without_location, ->(location) { active.where.not(id: location.id).order(id: :desc) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
-  scope :by_root, -> { without_unknown.where(parent_id: nil) }
+  scope :by_root, -> { without_unknown.roots }
 
   before_save :set_parentage
   after_create :generate_barcode
@@ -42,11 +42,24 @@ class Location < ActiveRecord::Base
   searchable_by :name, :barcode
   has_subclasses :ordered, :unordered, :unknown, suffix: true
 
+  # See https://github.com/stefankroes/ancestry
+  has_ancestry counter_cache: true
+
+  alias_method :has_child_locations?, :has_children?
+
   ##
   # It is possible for the parent to be nil
   # This will ensure we don't get a no method error.
   def parent
     super || NullLocation.new
+  end
+
+  def children=(child_locations)
+    child_locations.each do |child_location|
+      child_location.parent = self
+      child_location.save
+    end
+    reload
   end
 
   def unspecified?
@@ -108,35 +121,20 @@ class Location < ActiveRecord::Base
     super({except: [:deactivated_at, :location_type_id]}.merge(options)).merge(uk_dates).merge("location_type" => location_type.name)
   end
 
-  def children
-    []
-  end
-
   def child_count
-    @child_count ||= (children.count + labwares.count)
+    @child_count ||= (children_count + labwares.count)
   end
 
-  def has_child_locations?
-    children.count > 0
+  def children_count
+    super.nil? ? 0 : super
   end
 
   def coordinates
     []
   end
 
-  ##
-  # The parentage field is a text representation of all the names of a locations parents.
-  # Useful for querying purposes.
-  # This will iterate through the parentage adding the name to a string until the parent is empty.
   def set_parentage
-    current = parent
-    [].tap do |p|
-      until current.empty?
-        p.unshift(current.name)
-        current = current.parent
-      end
-      self.parentage = p.join(" / ")
-    end
+    self.parentage = ancestors.pluck(:name).join(" / ")
   end
 
   # Dummy method
@@ -160,7 +158,7 @@ class Location < ActiveRecord::Base
   end
 
   def used?
-    children.present? || labwares.present? || audits.present?
+    child_count > 0 || audits.present?
   end
 
   def has_been_used

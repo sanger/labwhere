@@ -65,14 +65,17 @@ Rails.application.routes.draw do
     post 'labwares/searches', to: 'labwares/searches#create'
     root 'docs#index' 
 
+    put 'coordinates', to: 'coordinates#update'
+
     resources :locations, param: :barcode, except: [:destroy] do
       scope module: :locations do
         resources :labwares, only: [:index]
         resources :children, only: [:index]
+        resources :descendants, only: [:index]
+        resources :coordinates, only: [:index, :update]
       end
 
       concerns :auditable, parent: :locations
-      
     end
 
     resources :location_types, except: [:destroy] do

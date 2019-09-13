@@ -1,6 +1,6 @@
 ##
 # Labware is stored in a location.
-# LabWhere needs to know nothing about it apart from it's barcode and where it is.
+# LabWhere needs to know nothing about it apart from its barcode and where it is.
 class Labware < ActiveRecord::Base
 
   include SoftDeletable
@@ -38,14 +38,7 @@ class Labware < ActiveRecord::Base
   end
 
   def full_path
-    path = []
-    curr_location = location
-    until curr_location.empty?
-      path << curr_location
-      curr_location = curr_location.parent
-    end
-
-    (path.map { |l| l.name }).reverse.join(' > ')
+    @full_path ||= location.path.pluck(:name).join(' > ')
   end
 
   def coordinate
