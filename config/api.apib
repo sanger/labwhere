@@ -1,0 +1,865 @@
+HOST: http://labwhere.dev/api
+
+# LabWhere API
+
+A tool for tracking uniquely barcoded labware
+
+# Group Scans
+
+## Scans [/scans]
+
+### Scan [POST]
+Scan Labware in or out of a Location
+
++ Attributes
+    + scan (object, required)
+        + user_code (string, required) - The swipe card id or barcode of the user creating the scan
+        + labware_barcodes (string, required) - Any number of labware barcodes as a string separated by returns or carriage returns
+        + location_barcode (string) - The barcode of the location for the labware to be scanned in to. For scanning out leave location barcode blank.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        {
+          "message": "100 Labwares scanned in to location 1",
+          "created_at": "Thursday 4 June 08:54",
+          "updated_at": "Thursday 4 June 08:54",
+          "location":  {
+            "id": 1,
+            "name": "Location 1",
+            "barcode": "location-1-1",
+            "parent": "null",
+            "container": true,
+            "status": "active",
+            "location_type_id": 1,
+            "labwares": "api/locations/location-1-1/labwares",
+            "audits": "api/locations/location-1-1/audits",
+            "children": "api/locations/location-1-1/children"
+
+          }
+        }
+
+# Group Locations
+
+## Location Collection [/locations]
+
+### List All Locations [GET]
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "Location 1",
+                "barcode": "location-1-1",
+                "parent": "null",
+                "container": true,
+                "status": "active",
+                "location_type_id": 1,
+                "labwares": "api/locations/location-1-1/labwares",
+                "audits": "api/locations/location-1-1/audits",
+                "children": "api/locations/location-1-1/children"
+            },
+            {
+                "id": 2,
+                "name": "Location 2",
+                "barcode": "location-2-2",
+                "parent": "api/locations/location-1-1",
+                "container": true,
+                "status": "active",
+                "location_type_id": 2,
+                "audits": "api/locations/location-2-2/audits",
+                "coordinates" : [{
+                    "position" : "1",
+                    "row" : "1",
+                    "column" : "1",
+                    "labware" : "Empty",
+                    "location" : "location-2-2"
+                }]
+            }
+        ]
+
+### Create A Location [POST]
+
++ Attributes
+    + location (object, required)
+        + user_code (string, required) - The swipe card id or barcode of the user creating the scan
+        + name (string, required) - Location name
+        + location_type_id (number, required) - ID of the location type
+        + container: true (boolean) - Can the location store stuff
+        + parent_id (number) - ID of the parent location
+        + parent_barcode (string) - Barcode of the parent location
+        + rows (number) - Number of rows in the location
+        + columns (number) - Number of columns in the location
+
++ Request (application/json)
+
++ Response 201 (application/json)
+
+        {
+            "id": 1,
+            "name": "Location 1",
+            "barcode": "location-1-1",
+            "parent": "Empty",
+            "container": true,
+            "status": "active",
+            "location_type_id": 1,
+            "labwares": "api/locations/location-1-1/labwares",
+            "audits": "api/locations/location-1-1/audits",
+            "children": "api/locations/location-1-1/children"
+        }
+
++ Response 422 (application/json)
+
+        {
+            "errors":[
+                "user does not exist",
+                "user is not authorsed",
+                "parent does not exist",
+                "location type does not exist"
+            ]
+        }
+
+## Location [/locations/{barcode}]
++ Parameters
+  + barcode (string) - The barcode of the Location
+
+### View A Location [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        {
+          "id": 1,
+          "name": "Sanger",
+          "parent": "Empty",
+          "container": false,
+          "status": "active",
+          "location_type_id": 1,
+          "audits": "/api/locations/lw-sanger-1/audits",
+          "barcode": "lw-sanger-1",
+          "rows": 0,
+          "columns": 0,
+          "parentage": "",
+          "created_at": "Thursday November  5 2015 14:46",
+          "updated_at": "Thursday November  5 2015 14:48",
+          "labwares": "/api/locations/lw-sanger-1/labwares",
+          "children": "/api/locations/lw-sanger-1/children"
+        }
+
+### Update Part Of A Location [PATCH]
+
++ Request (application/json)
+
+        {
+            "location": {
+                "user_code": "1000000188830",
+                "name": Wellcome - Sanger"
+            }
+        }
+
++ Response 200 (application/json)
+
+        {
+          "id": 1,
+          "name": "Wellcome - Sanger",
+          "parent": "Empty",
+          "container": false,
+          "status": "active",
+          "location_type_id": 1,
+          "audits": "/api/locations/lw-sanger-1/audits",
+          "barcode": "lw-sanger-1",
+          "rows": 0,
+          "columns": 0,
+          "parentage": "",
+          "created_at": "Thursday November  5 2015 14:46",
+          "updated_at": "Thursday November  5 2015 14:48",
+          "labwares": "/api/locations/lw-sanger-1/labwares",
+          "children": "/api/locations/lw-sanger-1/children"
+        }
+
+### Update A Location [PUT]
+
++ Attributes
+    + location (object, required)
+        + user_code (string, required) - The swipe card id or barcode of the user creating the scan
+        + name (string, required) - Location name
+        + location_type_id (number, required) - ID of the location type
+        + container: true (boolean) - Can the location store stuff
+        + parent_id (number) - ID of the parent location
+        + parent_barcode (string) - Barcode of the parent location
+        + rows (number) - Number of rows in the location
+        + columns (number) - Number of columns in the location
+
++ Request 200 (application/json)
+
++ Response 200 (application/json)
+
+                {
+                  "id": 1,
+                  "name": "Sanger",
+                  "parent": "Empty",
+                  "container": false,
+                  "status": "active",
+                  "location_type_id": 1,
+                  "audits": "/api/locations/lw-sanger-1/audits",
+                  "barcode": "lw-sanger-1",
+                  "rows": 0,
+                  "columns": 0,
+                  "parentage": "",
+                  "created_at": "Thursday November  5 2015 14:46",
+                  "updated_at": "Thursday November  5 2015 14:48",
+                  "labwares": "/api/locations/lw-sanger-1/labwares",
+                  "children": "/api/locations/lw-sanger-1/children"
+                }
+
+## Labwares [/locations/{barcode}/labwares]
++ Parameters
+  + barcode (string) - The barcode of the Location
+
+### View Labwares in a specified Location [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        [
+            {
+                "barcode": "2000000125268",
+                "audits": "/api/labwares/2000000125268/audits",
+                "created_at": "Friday September 11 2015 09:55",
+                "updated_at": "Friday September 11 2015 09:55",
+                "location": {
+                "id": 1905,
+                "name": "Shelf 1",
+                "parent": "/api/locations/lw--80-freezer-mdfu55v-2107",
+                "container": true,
+                "status": "active",
+                "location_type_id": 6,
+                "audits": "/api/locations/lw-shelf-1-1905/audits",
+                "barcode": "lw-shelf-1-1905",
+                "rows": 0,
+                "columns": 0,
+                "parentage": "Sanger / Sulston / Myco (E362) / -80 freezer MDFU55V",
+                "created_at": "Friday September 11 2015 09:32",
+                "updated_at": "Friday September 11 2015 09:33",
+                "labwares": "/api/locations/lw-shelf-1-1905/labwares",
+                "children": "/api/locations/lw-shelf-1-1905/children"
+            }
+        ]
+
+## Children [/locations/{barcode}/children]
++ Parameters
+  + barcode (string) - The barcode of the Location
+
+### View child Locations for a specified Location [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        [
+            {
+              "id": 2,
+              "name": "Sulston",
+              "parent": "/api/locations/lw-sanger-1",
+              "container": false,
+              "status": "active",
+              "location_type_id": 2,
+              "audits": "/api/locations/lw-sulston-2/audits",
+              "barcode": "lw-sulston-2",
+              "rows": 0,
+              "columns": 0,
+              "parentage": "Sanger",
+              "created_at": "Friday September 11 2015 09:30",
+              "updated_at": "Friday September 11 2015 09:30",
+              "labwares": "/api/locations/lw-sulston-2/labwares",
+              "children": "/api/locations/lw-sulston-2/children"
+            },
+            {
+              "id": 2209,
+              "name": "Ogilvie",
+              "parent": "/api/locations/lw-sanger-1",
+              "container": false,
+              "status": "active",
+              "location_type_id": 2,
+              "audits": "/api/locations/lw-ogilvie-2209/audits",
+              "barcode": "lw-ogilvie-2209",
+              "rows": 0,
+              "columns": 0,
+              "parentage": "Sanger",
+              "created_at": "Thursday September 17 2015 13:53",
+              "updated_at": "Thursday September 17 2015 13:53",
+              "labwares": "/api/locations/lw-ogilvie-2209/labwares",
+              "children": "/api/locations/lw-ogilvie-2209/children"
+            }
+        ]
+
+## Coordinates [/locations/{barcode}/coordinates]
++ Parameters
+    + barcode (string) - The barcode of the Location
+
+### View Coordinates of a specified Location [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 65,
+                "position": 1,
+                "row": 1,
+                "column": 1,
+                "labware": "3981126131809",
+                "location": "lw-box-2-681"
+            },
+            {
+                "id": 66,
+                "position": 2,
+                "row": 1,
+                "column": 2,
+                "labware": "3981126129868",
+                "location": "lw-box-2-681"
+            },
+            {
+                "id": 67,
+                "position": 3,
+                "row": 1,
+                "column": 3,
+                "labware": "3981126141822",
+                "location": "lw-box-2-681"
+            }
+        ]
+
+## Coordinate [/locations/{barcode}/coordinates/{id}]
++ Parameters
+    + barcode (string) - The barcode of the Location
+    + id (number) - The ID of the Coordinate
+
+### Update a Coordinate [PATCH]
+
++ Attributes
+    + coordinate (object, required)
+        + labware_barcode (string, required) - The barcode of Labware to place at this Coordinate. Use `null` to empty the Coordinate.
+
++ Request (application/json)
+
+        {
+          "coordinate": {
+            "labware_barcode": "Giraffe287"
+          }
+        }
+
++ Response 200 (application/json)
+
+        {
+            "id": 67,
+            "position": 3,
+            "row": 1,
+            "column": 3,
+            "labware": "Giraffe287",
+            "location": "lw-box-2-681"
+        }
+
+## Descendants [/locations/{barcode}/descendants{?min_available_coordinates}]
++ Parameters
+    + barcode (string) - The barcode of the Location
+
+### View Descendants for a specified Location [GET]
+
++ Parameters
+    + min_available_coordinates: 10 (number, optional) - When specified, only Locations with the specified number of Coordinates available will be returned
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 790,
+                "name": "Shelf 1",
+                "parent": "/api/locations/lw-sm2022-900",
+                "container": true,
+                "status": "active",
+                "location_type_id": 6,
+                "audits": "/api/locations/lw-box-108-790/audits",
+                "barcode": "lw-box-108-790",
+                "rows": 0,
+                "columns": 0,
+                "parentage": "Sanger / Sulston / B109 / SM2022",
+                "created_at": "Tuesday February 28 2017 20:58",
+                "updated_at": "Wednesday September 18 2019 10:28",
+                "labwares": "/api/locations/lw-box-108-790/labwares",
+                "children": "/api/locations/lw-box-108-790/children"
+            },
+            {
+                "id": 904,
+                "name": "Shelf 2",
+                "parent": "/api/locations/lw-sm2022-900",
+                "container": true,
+                "status": "active",
+                "location_type_id": 6,
+                "audits": "/api/locations/lw-shelf-1-904/audits",
+                "barcode": "lw-shelf-1-904",
+                "rows": 0,
+                "columns": 0,
+                "parentage": "Sanger / Sulston / B109 / SM2022",
+                "created_at": "Tuesday March 14 2017 13:42",
+                "updated_at": "Wednesday September 18 2019 10:28",
+                "labwares": "/api/locations/lw-shelf-1-904/labwares",
+                "children": "/api/locations/lw-shelf-1-904/children"
+            },
+            {
+                "id": 905,
+                "name": "Shelf 3",
+                "parent": "/api/locations/lw-sm2022-900",
+                "container": true,
+                "status": "active",
+                "location_type_id": 6,
+                "audits": "/api/locations/lw-box-2-905/audits",
+                "barcode": "lw-box-2-905",
+                "rows": 0,
+                "columns": 0,
+                "parentage": "Sanger / Sulston / B109 / SM2022",
+                "created_at": "Tuesday March 14 2017 13:42",
+                "updated_at": "Wednesday September 18 2019 10:28",
+                "labwares": "/api/locations/lw-box-2-905/labwares",
+                "children": "/api/locations/lw-box-2-905/children"
+            }
+        ]
+
+
+## Audits [/locations/{barcode}/audits]
++ Parameters
+  + barcode (string) - The barcode of the Location
+
+### View Audits for a specified Location [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        [
+            {
+              "user": "user1",
+              "action": "create",
+              "auditable_type": "Location",
+              "record_data":{
+
+              },
+              "created_at":"Friday 30 May 2015 10:16",
+              "updated_at":"Friday 30 May 2015 10:16"
+            },
+            {
+              "user": "user2",
+              "action": "update",
+              "auditable_type": "Location",
+              "record_data":{
+
+              },
+              "created_at":"Friday 05 May 2015 10:16",
+              "updated_at":"Friday 05 May 2015 10:16"
+            }
+        ]
+
+# Group Location Types
+
+## Location Type Collection [/location_types]
+
+### List All Location Types [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        [
+            {
+              "id": 1,
+              "name": "Site",
+              "locations": "/api/location_types/1/locations",
+              "audits": "/api/location_types/1/audits",
+              "created_at": "Friday September 11 2015 08:51",
+              "updated_at": "Friday September 11 2015 08:51"
+            },
+            {
+              "id": 2,
+              "name": "Building",
+              "locations": "/api/location_types/2/locations",
+              "audits": "/api/location_types/2/audits",
+              "created_at": "Friday September 11 2015 08:51",
+              "updated_at": "Friday September 11 2015 08:51"
+            },
+            {
+              "id": 3,
+              "name": "Room",
+              "locations": "/api/location_types/3/locations",
+              "audits": "/api/location_types/3/audits",
+              "created_at": "Friday September 11 2015 08:51",
+              "updated_at": "Friday September 11 2015 08:51"
+            }
+        ]
+
+### Create A Location Type [POST]
+
++ Attributes
+    + location_type (object, required)
+        + user_code (string, required) - The swipe card id or barcode of the user creating the Location Type
+        + name (string, required) - Location Type name
+
++ Request (application/json)
+
+        {
+            "location_type": {
+                "user_code": "12345678",
+                "name": "Location Type 1"
+            }
+        }
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "name": "Location Type 1",
+            "locations": "api/location_types/1/locations",
+            "audits": "api/location_types/1/audits"
+        }
+
++ Response 422 (application/json)
+
+        {
+            "errors":[
+                "user does not exist",
+                "user is not authorsed",
+                "Name has already been taken"
+            ]
+        }
+
+## Location Type [/location_types/{id}]
++ Parameters
+  + id (integer) - The ID of the Location Type
+
+### View A Location Type [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "name": "Site",
+            "locations": "/api/location_types/1/locations",
+            "audits": "/api/location_types/1/audits",
+            "created_at": "Friday September 11 2015 08:51",
+            "updated_at": "Friday September 11 2015 08:51"
+        }
+
+
+## Locations [/location_types/{id}/locations]
++ Parameters
+  + id (integer) - The ID of the Location Type
+
+### View Locations in a Location Type [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 2,
+                "name": "Sulston",
+                "parent": "/api/locations/lw-sanger-1",
+                "container": false,
+                "status": "active",
+                "location_type_id": 2,
+                "audits": "/api/locations/lw-sulston-2/audits",
+                "barcode": "lw-sulston-2",
+                "rows": 0,
+                "columns": 0,
+                "parentage": "Sanger",
+                "created_at": "Friday September 11 2015 09:30",
+                "updated_at": "Friday September 11 2015 09:30",
+                "labwares": "/api/locations/lw-sulston-2/labwares",
+                "children": "/api/locations/lw-sulston-2/children"
+            },
+            {
+                "id": 18,
+                "name": "Sulston",
+                "parent": "/api/locations/lw-sanger-17",
+                "container": false,
+                "status": "active",
+                "location_type_id": 2,
+                "audits": "/api/locations/lw-sulston-18/audits",
+                "barcode": "lw-sulston-18",
+                "rows": 0,
+                "columns": 0,
+                "parentage": "Sanger",
+                "created_at": "Friday September 11 2015 09:32",
+                "updated_at": "Friday September 11 2015 09:32",
+                "labwares": "/api/locations/lw-sulston-18/labwares",
+                "children": "/api/locations/lw-sulston-18/children"
+            },
+            {
+                "id": 2209,
+                "name": "Ogilvie",
+                "parent": "/api/locations/lw-sanger-1",
+                "container": false,
+                "status": "active",
+                "location_type_id": 2,
+                "audits": "/api/locations/lw-ogilvie-2209/audits",
+                "barcode": "lw-ogilvie-2209",
+                "rows": 0,
+                "columns": 0,
+                "parentage": "Sanger",
+                "created_at": "Thursday September 17 2015 13:53",
+                "updated_at": "Thursday September 17 2015 13:53",
+                "labwares": "/api/locations/lw-ogilvie-2209/labwares",
+                "children": "/api/locations/lw-ogilvie-2209/children"
+            }
+        ]
+
+## Audits [/location_types/{id}/audits]
++ Parameters
+  + id (integer) - The ID of the Location Type
+
+### View Audits for a specified Location Type [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        [
+            {
+                "user": "user1",
+                "action": "create",
+                "auditable_type": "LocationType",
+                "record_data":{
+
+                },
+                "created_at":"Friday 30 May 2015 10:16",
+                "updated_at":"Friday 30 May 2015 10:16"
+            },
+            {
+                "user": "user2",
+                "action": "update",
+                "auditable_type": "LocationType",
+                "record_data":{
+
+                },
+                "created_at":"Friday 05 May 2015 10:16",
+                "updated_at":"Friday 05 May 2015 10:16"
+            }
+        ]
+
+# Group Labwares
+
+## Labware [/labwares/{barcode}]
+
+### View Specified Labware [GET]
++ Parameters
+    + barcode (string) - The barcode of the Labware
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        {
+            "barcode": "labware1",
+            "coordinate": "1",
+            "history": "api/labwares/labware1/histories",
+            "location":{
+                "id": 1
+                "name": "Location 1",
+                "barcode": "location-1-1",
+                "parent": "null",
+                "container": true,
+                "status": "active",
+                "location_type_id": 1,
+                "labwares": "api/locations/location-1-1/labwares",
+                "audits": "api/locations/location-1-1/audits",
+                "children": api/locations/location-1-1/children
+            }
+        }
+
+## Audits [/labwares/{barcode}/audits]
+
+### View Audits for Specified Labware [GET]
++ Parameters
+    + barcode (string) - The barcode of the Labware
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        [
+            {
+                "user": "admin",
+                "record_data": {
+                    "id": 30525,
+                    "barcode": "SAMEA3451112",
+                    "created_at": "Thursday September 10 2015 14:42",
+                    "updated_at": "Thursday November 12 2015 10:16",
+                    "location": "lw-cytomatic-incubator-2192"
+                },
+                "action": "scan",
+                "auditable_type": "Labware",
+                "created_at": "Thursday November 12 2015 10:16",
+                "updated_at": "Thursday November 12 2015 10:16"
+            }
+        ]
+
+## Search [/labwares/searches]
+
+### Find Labware by their barcodes [POST]
++ Attributes
+    + barcodes (array, required) - The list of barcodes to find
+
++ Request (application/json)
+
+        {
+            "barcodes": ["labware1", "labware2"]
+        }
+
++ Response 200 (application/json)
+
+
+        [
+            {
+              "barcode": "labware1",
+              "coordinate": "1",
+              "history": "api/labwares/labware1/histories",
+              "location":{
+                "id": 1
+                "name": "Location 1",
+                "barcode": "location-1-1",
+                "parent": "null",
+                "container": true,
+                "status": "active",
+                "location_type_id": 1,
+                "labwares": "api/locations/location-1-1/labwares",
+                "audits": "api/locations/location-1-1/audits",
+                "children": "api/locations/location-1-1/children"
+              }
+            },
+            {
+              "barcode": "labware2",
+              "coordinate": "1",
+              "history": "api/labwares/labware2/histories",
+              "location":{
+                "id": 1,
+                "name": "Location 1",
+                "barcode": "location-1-1",
+                "parent": "null",
+                "container": true,
+                "status": "active",
+                "location_type_id": 1,
+                "labwares": "api/locations/location-1-1/labwares",
+                "audits": "api/locations/location-1-1/audits",
+                "children": "api/locations/location-1-1/children"
+              }
+            }
+        ]
+
+
+# Group Searches
+
+## Search [/searches]
+
+### Search [POST]
+Search for Location, Location Type, and Labware
+
++ Attributes
+    + term (string, required) - Search term
+
++ Request (application/json)
+
+        {
+            "term": "monkey"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "count": 3,
+          "results":{
+            "locations":[
+              {
+                "name": "Location 1",
+                "barcode": "location-1-1",
+                "parent": "Empty",
+                "container": true,
+                "status": "active",
+                "location_type_id": 1,
+                "labwares": "api/locations/location-1-1/labwares",
+                "audits": "api/locations/location-1-1/audits",
+                "children": "api/locations/location-1-1/children"
+              }
+            ],
+            "location_types":[
+              {
+                "id": 1,
+                "name": "Location Type 1",
+                "locations": "api/location_types/1/locations",
+                "audits": "api/location_types/1/audits"
+              }
+            ],
+            "labwares":[
+              {
+                "barcode": "labware1",
+                "history": "api/labwares/labware1/histories"
+              }
+            ]
+          }
+        }
+
+# Group Coordinates
+
+## Coordinates Collection [/coordinates]
+
+### Update Coordinates [PUT]
+
++ Attributes
+    + user_code (string, required) - The swipe card id or barcode of the user updating the Coordinates
+    + coordinates (array, fixed)
+        + (object)
+            + id (number, required) - The ID of the Coordinate
+            + labware_barcode (string, required) - The barcode of the Labware to store in this Coordinate
+
++ Request (application/json)
+
+        {
+          "user_code": "23423234",
+          "coordinates": [
+            {
+              "id": 100,
+              "labware_barcode": "hippo123"
+            },
+            {
+              "id": 200,
+              "labware_barcode": "pangolin77"
+            }
+          ]
+        }
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 100,
+                "position": 23,
+                "row": 3,
+                "column": 7,
+                "labware": "hippo123",
+                "location": "lw-box-3-682"
+            },
+            {
+                "id": 200,
+                "position": 1,
+                "row": 1,
+                "column": 1,
+                "labware": "pangolin77",
+                "location": "lw-box-1-131"
+            }
+        ]

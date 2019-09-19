@@ -34,3 +34,11 @@ bundle exec rails db:setup
 ## Running The Server
 
 `bundle exec rails s`
+
+## Generating the API Documentation
+
+`bundle exec rails docs:api`
+
+The documentation is written in [API Blueprint](https://apiblueprint.org/) and converted to HTML using the [Apiary CLI client](https://github.com/apiaryio/apiary-client) gem.
+
+The documentation will be available at `/api`.
