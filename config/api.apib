@@ -1,4 +1,4 @@
-HOST: http://labwhere.dev/api
+HOST: <%= polymorphic_url([:api_root]) %>
 
 # LabWhere API
 
@@ -44,7 +44,10 @@ Scan Labware in or out of a Location
 
 ## Location Collection [/locations]
 
-### List All Locations [GET]
+### List Root Locations [GET]
+
++ Request (application/json)
+
 + Response 200 (application/json)
 
         [
