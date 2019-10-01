@@ -182,7 +182,7 @@ RSpec.describe Location, type: :model do
     expect(location_2).to be_ordered
   end
 
-  it "#available_coordinates should be emtpy" do
+  it "#available_coordinates should be empty" do
     location = create(:location)
     expect(location.available_coordinates(5, 10)).to be_empty
   end
@@ -252,6 +252,7 @@ RSpec.describe Location, type: :model do
       end
     end
   end
+
   describe 'destroying locations' do
     it 'success' do
       location = create(:location)
@@ -304,6 +305,23 @@ RSpec.describe Location, type: :model do
       expect(@parent.children_count).to eql(@children.length)
     end
 
+  end
+
+  context 'when parent is updated' do
+
+    before do
+      @original_parent = create(:location)
+      @new_parent = create(:location)
+      @location = create(:location, parent: @original_parent)
+    end
+
+    it 'updates the internal_parent_id column' do
+      expect(@location.internal_parent).to eq(@original_parent)
+      @location.parent = @new_parent
+      @location.save
+      expect(@location.internal_parent).to eq(@new_parent)
+    end
 
   end
+
 end

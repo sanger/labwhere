@@ -12,6 +12,7 @@ class Location < ActiveRecord::Base
 
   belongs_to :location_type, optional: true # Optional for UnknownLocation
   belongs_to :team, optional: true
+  belongs_to :internal_parent, class_name: "Location", optional: true
   has_many :coordinates
   has_many :labwares
 
@@ -31,11 +32,12 @@ class Location < ActiveRecord::Base
 
   validates_with ContainerReservationValidator
 
-  scope :without_location, ->(location) { active.where.not(id: location.id).order(id: :desc) }
+  scope :without_location, -> (location) { active.where.not(id: location.id).order(id: :desc) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
   scope :by_root, -> { without_unknown.roots }
 
   before_save :set_parentage
+  before_save :set_internal_parent_id
   after_create :generate_barcode
   before_destroy :has_been_used
 
@@ -52,6 +54,10 @@ class Location < ActiveRecord::Base
   # This will ensure we don't get a no method error.
   def parent
     super || NullLocation.new
+  end
+
+  def unknown?
+    false
   end
 
   def children=(child_locations)
@@ -108,7 +114,7 @@ class Location < ActiveRecord::Base
   # This will transform the location into the correct type of location based on whether it
   # has coordinates.
   def transform
-    self.becomes! (coordinateable? ? OrderedLocation : UnorderedLocation)
+    self.becomes!(coordinateable? ? OrderedLocation : UnorderedLocation)
   end
 
   def type
@@ -135,6 +141,10 @@ class Location < ActiveRecord::Base
 
   def set_parentage
     self.parentage = ancestors.pluck(:name).join(" / ")
+  end
+
+  def set_internal_parent_id
+    self.internal_parent_id = parent_id
   end
 
   # Dummy method

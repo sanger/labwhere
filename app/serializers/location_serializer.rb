@@ -10,10 +10,10 @@ class LocationSerializer < ActiveModel::V08::Serializer
   # If the parent is not valid return its name
   # otherwise return a link to the parent
   def parent
-    unless object.parent.empty? || object.parent.unknown?
-      api_location_path(object.parent.barcode)
+    if object.internal_parent.nil? || object.internal_parent.unknown?
+      NullLocation.new.name
     else
-      object.parent.name
+      api_location_path(object.internal_parent.barcode)
     end
   end
 

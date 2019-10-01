@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :location do
     sequence(:name) {|n| "Location #{n}" }
     location_type_id { create(:location_type).id }
+    internal_parent nil
     parent nil
     team nil
 

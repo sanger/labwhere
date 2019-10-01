@@ -10,6 +10,6 @@ class AddAncestryToLocations < ActiveRecord::Migration[5.2]
       location.update_columns(children_count: location.children.count)
     end
 
-    remove_column :locations, :parent_id
+    rename_column :locations, :parent_id, :internal_parent_id
   end
 end
