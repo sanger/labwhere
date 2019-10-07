@@ -765,6 +765,37 @@ Scan Labware in or out of a Location
             }
         ]
 
+## Location Search [/labwares/locations]
+
+### Find Labwares' Location by labware barcodes [POST]
++ Attributes
+    + barcodes (array, required) - The list of barcodes to find locations of
+
++ Request (application/json)
+
+        {
+            "barcodes": ["labware1", "labware2", "labware3"]
+        }
+
++ Response 200 (application/json)
+
+
+        {
+            "locations": [
+                {
+                    "id": 1,
+                    "labware_barcode": "labware1",
+                    "row": 2,
+                    "column": 5
+                },
+                {
+                    "id": 1,
+                    "labware_barcode": "labware2",
+                    "row": null,
+                    "column": null
+                }
+            ]
+        }
 
 # Group Searches
 

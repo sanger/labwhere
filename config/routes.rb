@@ -63,7 +63,8 @@ Rails.application.routes.draw do
 
     get 'docs', to: 'docs#index'
     post 'labwares/searches', to: 'labwares/searches#create'
-    root 'docs#index' 
+    post 'labwares/locations', to: 'labwares/locations#create'
+    root 'docs#index'
 
     put 'coordinates', to: 'coordinates#update'
 

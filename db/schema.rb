@@ -12,9 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2019_09_13_100133) do
 
-  create_table "audits", force: :cascade do |t|
-    t.string "auditable_type"
+  create_table "audits", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "auditable_id"
+    t.string "auditable_type"
     t.string "action"
     t.text "record_data"
     t.integer "user_id"
@@ -25,17 +25,17 @@ ActiveRecord::Schema.define(version: 2019_09_13_100133) do
     t.index ["user_id"], name: "index_audits_on_user_id"
   end
 
-  create_table "coordinates", force: :cascade do |t|
+  create_table "coordinates", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "location_id"
     t.integer "position"
     t.integer "row"
     t.integer "column"
-    t.integer "location_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_coordinates_on_location_id"
   end
 
-  create_table "labwares", force: :cascade do |t|
+  create_table "labwares", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "barcode"
     t.datetime "deleted_at"
     t.integer "location_id"
@@ -46,32 +46,32 @@ ActiveRecord::Schema.define(version: 2019_09_13_100133) do
     t.index ["location_id"], name: "index_labwares_on_location_id"
   end
 
-  create_table "location_types", force: :cascade do |t|
+  create_table "location_types", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "location_types_restrictions", id: false, force: :cascade do |t|
+  create_table "location_types_restrictions", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "location_type_id", null: false
     t.integer "restriction_id", null: false
     t.index ["restriction_id", "location_type_id"], name: "restriction_id_and_location_type_id_index", unique: true
   end
 
-  create_table "locations", force: :cascade do |t|
+  create_table "locations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
     t.string "barcode"
-    t.string "parentage"
-    t.string "type"
     t.integer "internal_parent_id"
     t.boolean "container", default: true
     t.integer "status", default: 0
-    t.integer "rows", default: 0
-    t.integer "columns", default: 0
     t.datetime "deactivated_at"
     t.integer "location_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "parentage"
+    t.string "type"
+    t.integer "rows", default: 0
+    t.integer "columns", default: 0
     t.integer "team_id"
     t.string "ancestry"
     t.integer "children_count", default: 0, null: false
@@ -80,13 +80,13 @@ ActiveRecord::Schema.define(version: 2019_09_13_100133) do
     t.index ["team_id"], name: "index_locations_on_team_id"
   end
 
-  create_table "printers", force: :cascade do |t|
+  create_table "printers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "restrictions", force: :cascade do |t|
+  create_table "restrictions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "type"
     t.string "validator"
     t.text "params"
@@ -94,33 +94,33 @@ ActiveRecord::Schema.define(version: 2019_09_13_100133) do
     t.index ["location_type_id"], name: "index_restrictions_on_location_type_id"
   end
 
-  create_table "scans", force: :cascade do |t|
+  create_table "scans", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "status", default: 0
-    t.string "message"
     t.integer "location_id"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "message"
     t.integer "start_position"
     t.index ["location_id"], name: "index_scans_on_location_id"
     t.index ["user_id"], name: "index_scans_on_user_id"
   end
 
-  create_table "searches", force: :cascade do |t|
+  create_table "searches", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "term"
-    t.integer "search_count", default: 0
+    t.integer "search_count", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "teams", force: :cascade do |t|
+  create_table "teams", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name"
     t.integer "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "login"
     t.string "swipe_card_id"
     t.string "barcode"
@@ -133,4 +133,6 @@ ActiveRecord::Schema.define(version: 2019_09_13_100133) do
     t.index ["team_id"], name: "index_users_on_team_id"
   end
 
+  add_foreign_key "locations", "teams"
+  add_foreign_key "restrictions", "location_types"
 end
