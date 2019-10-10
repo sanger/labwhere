@@ -24,7 +24,8 @@ The local database uses `sqlite`.
 
 ```bash
 bundle exec rails db:environment:set
-bundle exec rails db:setup
+bundle exec rails db:create
+bundle exec rails db:migrate
 ```
 
 ## Running The Specs
