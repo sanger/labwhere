@@ -115,9 +115,9 @@ RSpec.describe "Locations", type: :feature do
       expect {
         fill_in "User swipe card id/barcode", with: user.swipe_card_id
         fill_in "Name", with: location.name
+        check "Has Co-ordinates"
         select parent_location.id, from: "Parent"
         select location_types.first.name, from: "Location type"
-        check "Has Co-ordinates"
         fill_in "Rows", with: location.rows
         fill_in "Columns", with: location.columns
         click_button "Create Location"
@@ -128,7 +128,7 @@ RSpec.describe "Locations", type: :feature do
   end
 
   describe "reserved", js: true do
-    it "Allows a user to new location that is reserved for their team" do
+    it "Allows a user to add a new location that is reserved for their team" do
       location = build(:ordered_location)
       visit locations_path
       click_link "Add new location"
@@ -136,9 +136,9 @@ RSpec.describe "Locations", type: :feature do
       expect {
         fill_in "User swipe card id/barcode", with: user.swipe_card_id
         fill_in "Name", with: location.name
+        check "Reserve?"
         select parent_location.id, from: "Parent"
         select location_types.first.name, from: "Location type"
-        check "Reserve?"
         click_button "Create Location"
       }.to change(Location, :count).by(1)
 
@@ -338,21 +338,80 @@ RSpec.describe "Locations", type: :feature do
 
   end
 
-  describe "destroying location", js: true do
-    it "will destroy" do
+  describe 'delete', js: true do
+    it 'can be deleted if it has a delete link' do
       location = create(:unordered_location)
       visit locations_path
-      find(:data_id, location.id).click_link "Delete"
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
-      click_button "Delete"
-      expect(page).to have_content("Location successfully deleted")
+      find(:data_id, location.id).click_link 'Delete'
+      fill_in 'User swipe card id/barcode', with: user.swipe_card_id
+      click_button 'Delete'
+
+      expect(page).to have_content("Location '#{location.name}' successfully deleted")
+
+      expect(page).to_not have_css('article#location_' + location.id.to_s)
+
       expect(Location.find_by(id: location.id)).to be_nil
     end
-    it "wont have the link" do
+
+    it 'cannot be deleted without the delete link' do
       location = create(:unordered_location_with_children)
       visit locations_path
-      expect(find(:data_id, location.id)).to_not have_link("Delete")
 
+      expect(find(:data_id, location.id)).to_not have_link("Delete")
+    end
+
+    it 'is possible to delete multiple locations one after another' do
+      location1 = create(:unordered_location)
+      location2 = create(:unordered_location)
+      location3 = create(:unordered_location)
+      visit locations_path
+      find(:data_id, location1.id).click_link 'Delete'
+      fill_in 'User swipe card id/barcode', with: user.swipe_card_id
+      click_button 'Delete'
+
+      expect(page).to have_content("Location '#{location1.name}' successfully deleted")
+
+      expect(page).to_not have_css('article#location_' + location1.id.to_s)
+
+      find(:data_id, location2.id).click_link 'Delete'
+      fill_in 'User swipe card id/barcode', with: user.swipe_card_id
+      click_button 'Delete'
+
+      expect(page).to have_content("Location '#{location2.name}' successfully deleted")
+
+      expect(page).to_not have_css('article#location_' + location2.id.to_s)
+
+      expect(page).to have_css('article#location_' + location3.id.to_s)
+
+      expect(Location.find_by(id: location1.id)).to be_nil
+      expect(Location.find_by(id: location2.id)).to be_nil
+      expect(Location.find_by(id: location3.id)).to_not be_nil
+    end
+  end
+
+  describe 'print', js: true do
+    let!(:printer)  { create(:printer)}
+
+    before(:each) do
+      allow_any_instance_of(LabelPrinter).to receive(:post).and_return(true)
+      allow_any_instance_of(LabelPrinter).to receive('response_ok?').and_return(true)
+    end
+
+    it 'should allow printing one location barcode after another' do
+      user = create(:administrator)
+      location1 = create(:unordered_location)
+      location2 = create(:unordered_location)
+
+      visit locations_path
+      find(:data_id, location1.id).click_link 'Print Barcode'
+      click_button 'Print'
+
+      expect(page).to have_content(I18n.t('printing.success'))
+
+      find(:data_id, location2.id).click_link 'Print Barcode'
+      click_button 'Print'
+
+      expect(page).to have_content(I18n.t('printing.success'))
     end
   end
 end

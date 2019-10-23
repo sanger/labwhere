@@ -1,8 +1,6 @@
 ##
 # Serializer for the Labware
-class LabwareSerializer < ActiveModel::Serializer
-
-  self.root = false
+class LabwareSerializer < ActiveModel::V08::Serializer
 
   attributes :barcode, :audits
 

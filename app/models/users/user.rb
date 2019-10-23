@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   include Auditable
   include SubclassChecker
 
-  belongs_to :team
+  belongs_to :team, optional: true
 
   validates :login, presence: true, uniqueness: true
 
@@ -36,10 +36,10 @@ class User < ActiveRecord::Base
   end
 
   ##
-  # Find a user by their swipe card id or barcode
+  # Find a user by their swipe card id, barcode, or login
   def self.find_by_code(code)
     return Guest.new if code.blank?
-    where("swipe_card_id = :code OR barcode = :code", { code: code}).take || Guest.new
+    where("swipe_card_id = :code OR barcode = :code OR login = :code", { code: code }).take || Guest.new
   end
 
   ##

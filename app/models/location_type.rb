@@ -41,7 +41,7 @@ private
   def check_locations
     if has_locations?
       errors.add(:base, I18n.t("errors.messages.location_type_in_use"))
-      false
+      throw :abort
     end
   end
 

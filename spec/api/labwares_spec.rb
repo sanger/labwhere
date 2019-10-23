@@ -13,7 +13,7 @@ RSpec.describe Api::LabwaresController, type: :request do
  end
 
  it "should be a success" do
-  expect(response).to be_success
+  expect(response).to be_successful
  end
 
  it "should return labware barcode" do
@@ -30,7 +30,7 @@ RSpec.describe Api::LabwaresController, type: :request do
 
  it "link to labware audits should return audits for labware" do
   get @json["audits"]
-  expect(response).to be_success
+  expect(response).to be_successful
   json = ActiveSupport::JSON.decode(response.body).first
   audit = labware.audits.first
   expect(json["user"]).to eq(audit.user.login)

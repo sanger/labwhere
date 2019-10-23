@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
     sequence(:login) {|n| "User:#{n}" }
     swipe_card_id { "SwipeCardId:#{login}" }
@@ -18,7 +18,7 @@ FactoryGirl.define do
 
       after(:create) do |user, evaluator|
         1.upto(5) do |n|
-          FactoryGirl.create(:audit, auditable_type: user.class, 
+          FactoryBot.create(:audit, auditable_type: user.class,
             auditable_id: user.id, user: evaluator.user, record_data: user)
         end
       end

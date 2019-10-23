@@ -27,6 +27,4 @@ RSpec.describe AssertLocation, type: :model do
     expect(my_model.location).to_not eq(UnknownLocation.get)
   end
 
-  
-
 end

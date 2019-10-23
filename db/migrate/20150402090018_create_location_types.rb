@@ -1,4 +1,4 @@
-class CreateLocationTypes < ActiveRecord::Migration
+class CreateLocationTypes < ActiveRecord::Migration[4.2]
   def change
     create_table :location_types do |t|
       t.string :name

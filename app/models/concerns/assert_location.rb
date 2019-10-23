@@ -6,7 +6,7 @@ module AssertLocation
   extend ActiveSupport::Concern
 
   included do
-    before_save :assert_location
+    before_validation :assert_location
   end
 
   ##

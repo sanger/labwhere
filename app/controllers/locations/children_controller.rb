@@ -8,7 +8,7 @@ class Locations::ChildrenController < ApplicationController
 protected
 
   def children
-    @children ||= Location.find(params[:location_id]).children
+    @children ||= Location.find(params[:location_id]).children.includes(:location_type, :labwares, :audits)
   end
 
   helper_method :children

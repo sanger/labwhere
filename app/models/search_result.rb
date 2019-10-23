@@ -3,6 +3,7 @@
 # An object which will be returned by the search or the api.
 class SearchResult
 
+  extend ActiveModel::Naming
   include Enumerable
   include ActiveModel::Serialization
   include ActionView::Helpers::TextHelper
@@ -21,7 +22,7 @@ class SearchResult
   # The number of results the search is limited to
   attr_accessor :limit
 
-  delegate [], :empty?, to: :results
+  delegate :[], :empty?, to: :results
 
   ##
   # If the results are passed will add them to SearchResult otherwise create an empty result.

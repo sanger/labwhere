@@ -7,6 +7,8 @@ module Permissions
       super
       allow :scans, [:create]
       allow "api/scans", [:create]
+      allow "api/coordinates", [:update]
+      allow "api/locations/coordinates", [:update]
     end
   end
 end

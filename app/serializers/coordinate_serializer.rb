@@ -1,6 +1,6 @@
-class CoordinateSerializer < ActiveModel::Serializer
+class CoordinateSerializer < ActiveModel::V08::Serializer
   
-  attributes :position, :row, :column, :labware, :location
+  attributes :id, :position, :row, :column, :labware, :location
 
   # the labware barcode of the coordinate
   def labware

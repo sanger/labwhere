@@ -16,7 +16,11 @@ class NullLocation
   # will always be empty
   def empty?; true end
 
+  def marked_for_destruction?; false end
+
   def unknown?; false end
 
-  def unspecified?; true end 
+  def unspecified?; true end
+
+  def path; [] end
 end

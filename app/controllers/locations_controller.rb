@@ -42,11 +42,13 @@ class LocationsController < ApplicationController
   def destroy
     respond_to do |format|
       if @location.destroy(params)
-        flash_keep "Location successfully deleted"
-        format.js { render js: "window.location.pathname='#{locations_path}'" }
+        @message = "Location '#{@location.name}' successfully deleted"
+        @message_type = 'notice'
       else
-        format.js 
+        @message = "Delete failed for location '#{@location.name}'"
+        @message_type = 'alert'
       end
+      format.js { render 'locations/destroy' }
     end
   end
 
@@ -83,6 +85,7 @@ private
   def permitted_params
     location_attrs =  Location.new.attributes.keys.map {|k| k.to_sym}
     params.permit(location: [*location_attrs,
+                            :parent_id,
                             :user_code,
                             :start_from,
                             :end_to,

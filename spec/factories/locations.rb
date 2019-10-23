@@ -1,26 +1,27 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :location do
     sequence(:name) {|n| "Location #{n}" }
     location_type_id { create(:location_type).id }
+    internal_parent nil
     parent nil
     team nil
 
     factory :location_with_parent do
-      parent { FactoryGirl.create(:location)}
+      parent { FactoryBot.create(:location) }
     end
 
     factory :unordered_location, class: "UnorderedLocation" do
       factory :unordered_location_with_parent do
-        parent { FactoryGirl.create(:location)}
+        parent { FactoryBot.create(:location)}
       end
 
       factory :unordered_location_with_labwares do
 
-        parent { FactoryGirl.create(:location)}
+        parent { FactoryBot.create(:location)}
 
         after(:create) do |location, evaluator|
           1.upto(5) do |n|
-            FactoryGirl.create(:labware, location: location)
+            FactoryBot.create(:labware, location: location)
           end
         end
       end
@@ -29,20 +30,23 @@ FactoryGirl.define do
 
         after(:create) do |location, evaluator|
           1.upto(5) do |n|
-            FactoryGirl.create(:location, parent: location)
+            FactoryBot.create(:location, parent: location)
           end
+          location.reload
         end
       end
 
       factory :unordered_location_with_labwares_and_children do
 
-        parent { FactoryGirl.create(:location)}
+        parent { FactoryBot.create(:location) }
 
         after(:create) do |location, evaluator|
           1.upto(5) do |n|
-            FactoryGirl.create(:location, parent: location)
-            FactoryGirl.create(:labware, location: location)
+            FactoryBot.create(:location, parent: location)
+            FactoryBot.create(:labware, location: location)
           end
+          # The children_count cache will have been updated
+          location.reload
         end
 
       end
@@ -54,17 +58,19 @@ FactoryGirl.define do
       columns 4
 
       factory :ordered_location_with_parent do
-        parent { FactoryGirl.create(:location)}
+        parent { FactoryBot.create(:location)}
       end
 
       factory :ordered_location_with_labwares do
 
-        parent { FactoryGirl.create(:location)}
+        parent { FactoryBot.create(:location) }
 
         after(:create) do |location, evaluator|
           location.coordinates.each do |coordinate|
-            coordinate.fill(FactoryGirl.create(:labware))
+            coordinate.fill(FactoryBot.create(:labware))
           end
+
+          location.reload
         end
       end
 
@@ -77,7 +83,7 @@ FactoryGirl.define do
 
       after(:create) do |location, evaluator|
         1.upto(5) do |n|
-          FactoryGirl.create(:audit, auditable_type: location.class,
+          FactoryBot.create(:audit, auditable_type: location.class,
             auditable_id: location.id, user: evaluator.user, record_data: location)
         end
       end

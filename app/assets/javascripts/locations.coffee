@@ -40,10 +40,10 @@ class @Location
       @toggleSelector(@item.find("[data-toggle~=" + value + "]"))
 
 
-jQuery ->
+$(document).on("turbolinks:load", ->
   for item in $("[data-behavior~=location]")
     new Location item
 
   for item in $("[data-behavior~=select2]")
     new Select2 item
-
+)
