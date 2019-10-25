@@ -5,8 +5,12 @@ dist: xenial
 cache:
   bundler: true
 
+services:
+- mysql
+
 before_install:
 - export TZ=Europe/London
+- mysql -e 'CREATE DATABASE labwhere_test;'
 
 before_script:
 - export RAILS_ENV=test
