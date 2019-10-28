@@ -1,6 +1,5 @@
 module LabwareCollection
   class Base
-    
     include Enumerable
     include ActiveModel::Model
 
@@ -13,7 +12,7 @@ module LabwareCollection
       @original_locations = []
     end
 
-    def push(&block)
+    def push()
       if valid?
         ActiveRecord::Base.transaction do
           labwares.each_with_index do |labware, i|
@@ -35,11 +34,11 @@ module LabwareCollection
       original_locations.uniq.join(", ")
     end
 
-    def labwares=(labwares)
+    def labwares=(labwares) # rubocop:todo Lint/DuplicateMethods
       @labwares = labwares.split("\n").uniq
     end
 
-  private
+    private
 
     def find_labware(labware)
       Labware.find_or_initialize_by_barcode(labware)
@@ -48,7 +47,5 @@ module LabwareCollection
     def add_original_location(labware)
       original_locations << labware.location.name unless labware.location.empty?
     end
-
-   
   end
 end

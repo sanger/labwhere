@@ -7,7 +7,6 @@
 # of the location. For this purpose we create a temporary list of all the labwares
 # so we can determine which locations they have come from and how many there are.
 class Scan < ActiveRecord::Base
-
   include AssertLocation
 
   enum status: [:in, :out]
@@ -23,13 +22,13 @@ class Scan < ActiveRecord::Base
   # If we are scanning out tell the user how many labwares have been scanned out of their previous locations.
   def create_message
     self.message = "#{labwares.count} labwares scanned #{self.status} " << if in?
-      "to #{location.name}"
-    else
-      "from #{labwares.original_location_names}"
+                                                                             "to #{location.name}"
+                                                                           else
+                                                                             "from #{labwares.original_location_names}"
     end
   end
 
-  def labwares
+  def labwares # rubocop:todo Lint/DuplicateMethods
     @labwares ||= NullLabwareCollection.new
   end
 
@@ -40,10 +39,9 @@ class Scan < ActiveRecord::Base
     self.start_position = labware_collection.start_position
   end
 
-private
+  private
 
   def set_status
     self.status = Scan.statuses[:out] if self.location.unknown?
   end
-
 end

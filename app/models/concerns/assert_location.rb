@@ -2,7 +2,6 @@
 # Include on classes which have belong to location.
 # It will ensure that location is never nil
 module AssertLocation
-
   extend ActiveSupport::Concern
 
   included do

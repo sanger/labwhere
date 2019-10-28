@@ -1,27 +1,24 @@
 require "rails_helper"
 
 RSpec.describe FormObject::FormVariables, type: :model do
-  
   class ALovelyModel
-
     def marry
       "a" + attr_a.to_s
     end
 
     def pad
-      attr_a.to_s*5
+      attr_a.to_s * 5
     end
-    
   end
 
   let(:form_variables)  { FormObject::FormVariables.new(ALovelyModel, nil, [:controller, :action]) }
 
-  let(:params)          { { controller: "controller", action: "action", a_lovely_model: {attr_a: "a", attr_b: "b", attr_d: "d"} } }
-  let(:unnested_params) { { attr_a: "a", attr_b: "b"} }
+  let(:params)          { { controller: "controller", action: "action", a_lovely_model: { attr_a: "a", attr_b: "b", attr_d: "d" } } }
+  let(:unnested_params) { { attr_a: "a", attr_b: "b" } }
   let(:model)           { ALovelyModel.new }
 
   before(:each) do
-    form_variables.add(:attr_a, :attr_b, {attr_c: :marry}, :attr_d, {attr_e: :pad})
+    form_variables.add(:attr_a, :attr_b, { attr_c: :marry }, :attr_d, { attr_e: :pad })
   end
 
   it "should have all of the variable names" do
@@ -80,5 +77,4 @@ RSpec.describe FormObject::FormVariables, type: :model do
     form_variables = FormObject::FormVariables.new(ALovelyModel, :another_model_key)
     expect(form_variables.model_key).to eq(:another_model_key)
   end
-
 end

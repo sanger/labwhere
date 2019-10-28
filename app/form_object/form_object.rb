@@ -1,5 +1,4 @@
 module FormObject
-
   extend ActiveSupport::Concern
   include ActiveModel::Model
   include ActiveModel::Serialization
@@ -65,8 +64,7 @@ module FormObject
   #
 
   included do
-
-    _model = self.to_s.gsub("Form","")
+    _model = self.to_s.gsub("Form", "")
 
     class_attribute :form_variables
     self.form_variables = FormObject::FormVariables.new(self, _model.underscore.to_sym, [:controller, :action])
@@ -74,7 +72,7 @@ module FormObject
     validate :check_for_errors
 
     define_singleton_method :model_name do
-       ActiveModel::Name.new(_model.constantize)
+      ActiveModel::Name.new(_model.constantize)
     end
 
     attr_reader :model
@@ -86,20 +84,16 @@ module FormObject
     define_model_callbacks :submit, only: :after
     define_model_callbacks :save_model, only: :after
     define_model_callbacks :assigning_model_variables, only: :after
-
   end
 
   module ClassMethods
-
     # Set the whitelist of attributes that will be assigned to the model.
     def set_attributes(*attributes)
-
       delegate *attributes, to: :model
 
       define_method :model_attributes do
         attributes
       end
-
     end
 
     # Set the list of form variables which will be assigned on submit.
@@ -160,7 +154,7 @@ module FormObject
     end
   end
 
-private
+  private
 
   def check_for_errors
     add_errors unless model.valid?
@@ -186,5 +180,4 @@ private
       false
     end
   end
-
 end

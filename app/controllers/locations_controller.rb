@@ -1,5 +1,4 @@
 class LocationsController < ApplicationController
-
   before_action :locations, only: [:index]
   before_action :set_location, except: [:index, :activate, :deactivate]
   before_action :permitted_params, only: [:create, :update]
@@ -64,7 +63,7 @@ class LocationsController < ApplicationController
     redirect_to locations_path, notice: "Location successfully activated"
   end
 
-protected
+  protected
 
   def locations
     @locations = Location.by_root
@@ -72,7 +71,7 @@ protected
 
   helper_method :locations
 
-private
+  private
 
   def set_location
     @location = LocationForm.new(current_resource)
@@ -83,14 +82,13 @@ private
   end
 
   def permitted_params
-    location_attrs =  Location.new.attributes.keys.map {|k| k.to_sym}
+    location_attrs =  Location.new.attributes.keys.map { |k| k.to_sym }
     params.permit(location: [*location_attrs,
-                            :parent_id,
-                            :user_code,
-                            :start_from,
-                            :end_to,
-                            :reserve,
-                            :coordinateable])
+                             :parent_id,
+                             :user_code,
+                             :start_from,
+                             :end_to,
+                             :reserve,
+                             :coordinateable])
   end
-
 end

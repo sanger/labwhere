@@ -1,10 +1,9 @@
 class Api::Labwares::LocationsController < ApiController
-
   def create
     render json: labware_locations
   end
 
-private
+  private
 
   def labware_locations
     LabwareLocations.build(labwares)
@@ -16,5 +15,4 @@ private
       .by_barcode(params[:barcodes])
       .where("coordinate_id IS NOT NULL OR location_id IS NOT NULL")
   end
-
 end

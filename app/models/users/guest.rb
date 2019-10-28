@@ -9,7 +9,6 @@
 #
 # Most of the important methods are overriden.
 class Guest < User
-
   include Permissions
 
   ##
@@ -35,5 +34,4 @@ class Guest < User
   def team_id
     1
   end
-  
 end

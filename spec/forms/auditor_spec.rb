@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.describe Auditor, type: :model do
-  
   with_model :ModelE do
     table do |t|
       t.string :name
@@ -11,7 +10,6 @@ RSpec.describe Auditor, type: :model do
     model do
       include Auditable
     end
-    
   end
 
   before(:all) do
@@ -20,15 +18,13 @@ RSpec.describe Auditor, type: :model do
       include Auditor
 
       set_attributes :name
-
     end
   end
-  
 
-  let!(:user) { create(:administrator)}
+  let!(:user) { create(:administrator) }
 
   it "should add an audit record" do
-    params = ActionController::Parameters.new(controller: 'my_controller', action: 'create', model_e: {user_code: user.swipe_card_id, name: "aname"})
+    params = ActionController::Parameters.new(controller: 'my_controller', action: 'create', model_e: { user_code: user.swipe_card_id, name: "aname" })
     model_e_form = ModelEForm.new
     model_e_form.submit(params)
     expect(model_e_form.model_e.audits.count).to eq(1)

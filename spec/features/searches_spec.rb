@@ -1,8 +1,7 @@
-#(l4) As a Sample management RA I want to search for labware or location via barcode to find biomaterial I need for processing 
+# (l4) As a Sample management RA I want to search for labware or location via barcode to find biomaterial I need for processing
 require 'rails_helper'
 
 RSpec.describe "Searches", type: :feature do
-
   it "should be successful with a search term" do
     visit root_path
     fill_in "Term", with: "A search term"
@@ -54,14 +53,13 @@ RSpec.describe "Searches", type: :feature do
   end
 
   describe "drilling down", js: true do
-
     it "with a location type should allow viewing of associated locations" do
       location_type = create(:location_type_with_locations)
       other_locations = create_list(:location_with_parent, 10, location_type: create(:location_type))
       visit root_path
       fill_in "Term", with: location_type.name
       click_button "Search"
-      find(:data_id,location_type.id).find(:data_behavior, "drilldown").click
+      find(:data_id, location_type.id).find(:data_behavior, "drilldown").click
       location_type.locations.each do |location|
         expect(page).to have_content(location.name)
       end
@@ -81,7 +79,7 @@ RSpec.describe "Searches", type: :feature do
       end
     end
 
-     it "with a location should allow viewing of associated location further information" do
+    it "with a location should allow viewing of associated location further information" do
       location = create(:unordered_location_with_labwares_and_children)
       visit root_path
       fill_in "Term", with: location.barcode
@@ -103,7 +101,5 @@ RSpec.describe "Searches", type: :feature do
       find(:data_id, labware.id).find(:data_behavior, "drilldown").click
       expect(find(:data_id, labware.id)).to have_css("article", count: 5)
     end
-
   end
-
 end

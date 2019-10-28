@@ -9,7 +9,7 @@ class LocationValidator < ActiveModel::Validator
     unless record.location.nil? || record.location.unspecified?
       record.errors.add(:location, I18n.t("errors.messages.container")) unless record.location.container?
       record.errors.add(:location, I18n.t("errors.messages.active")) unless record.location.active?
-      NestedValidator.new({attributes: :location}).validate_each(record, :location, record.location)
+      NestedValidator.new({ attributes: :location }).validate_each(record, :location, record.location)
 
       if (record.location.reserved? && record.location.team_id != record.current_user.team_id)
         record.errors.add(:location, I18n.t("errors.messages.reserved", team: record.location.team.name))

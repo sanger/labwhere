@@ -1,9 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Api::Labwares::SearchesController, type: :request do
-
-  let!(:location) { create(:location_with_parent)}
-  let!(:labwares) { create_list(:labware, 5, location: location)}
+  let!(:location) { create(:location_with_parent) }
+  let!(:labwares) { create_list(:labware, 5, location: location) }
 
   before(:each) do
     post api_labwares_searches_path, params: { barcodes: Labware.pluck(:barcode) }

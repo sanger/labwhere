@@ -1,9 +1,8 @@
 require "rails_helper"
 
 RSpec.describe AvailableCoordinates, type: :model do
+  let!(:location) { create(:location_with_parent) }
 
-  let!(:location) { create(:location_with_parent)}
-  
   before(:each) do
     Hash.grid(4, 4) do |pos, row, col|
       create(:coordinate, location: location, position: pos, row: row, column: col)
@@ -17,7 +16,6 @@ RSpec.describe AvailableCoordinates, type: :model do
   it "should return the location if some coordinates are available anywhere" do
     Coordinate.find_by_position(position: 2).fill(create(:labware))
     expect(AvailableCoordinates.new(Coordinate.all, 10).find).to eq(location)
-  
   end
 
   it "should still return the location whatever length required" do

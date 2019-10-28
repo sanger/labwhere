@@ -9,5 +9,4 @@ FactoryBot.define do
     auditable_id { location.id }
     user
   end
-
 end

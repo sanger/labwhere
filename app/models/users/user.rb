@@ -3,7 +3,6 @@
 # Used for auditing, authentication and authorisation purposes.
 # Inherited by Guest, Admin and Standard.
 class User < ActiveRecord::Base
-
   include HasActive
   include Auditable
   include SubclassChecker
@@ -31,7 +30,7 @@ class User < ActiveRecord::Base
   ##
   # Is the user allowed to perform this action.
   # Will always be no for a base user
-  def allow?(controller, action)
+  def allow?(_controller, _action)
     false
   end
 
@@ -39,24 +38,25 @@ class User < ActiveRecord::Base
   # Find a user by their swipe card id, barcode, or login
   def self.find_by_code(code)
     return Guest.new if code.blank?
+
     where("swipe_card_id = :code OR barcode = :code OR login = :code", { code: code }).take || Guest.new
   end
 
   ##
   # Make sure that the swipe card id and barcode are not added to the audit record for security reasons.
   def as_json(options = {})
-    super({ except: [:swipe_card_id, :barcode, :deactivated_at, :team_id]}.merge(options)).merge(uk_dates).merge("team" => team.name)
+    super({ except: [:swipe_card_id, :barcode, :deactivated_at, :team_id] }.merge(options)).merge(uk_dates).merge("team" => team.name)
   end
 
-private
+  private
 
   def check_password_fields
+    # rubocop:todo Lint/AmbiguousBlockAssociation
     remove_password_fields [:swipe_card_id, :barcode].reject { |attr| self[attr].present? }
+    # rubocop:enable Lint/AmbiguousBlockAssociation
   end
 
   def remove_password_fields(attrs)
     restore_attributes(attrs) unless attrs.empty?
   end
-
-
 end

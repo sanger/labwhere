@@ -4,11 +4,9 @@ require "rails/test_help"
 require "#{Rails.root}/lib/cgap/cgap"
 
 class ActiveSupport::TestCase
-
   ActiveRecord::Migration.check_pending!
 
   include FactoryBot::Syntax::Methods
-
 end
 
 require 'mocha/mini_test'

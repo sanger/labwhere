@@ -1,8 +1,7 @@
 require "rails_helper"
 
-RSpec.describe LocationTypeForm, type: :model do 
-
-  let(:controller_params)       { { controller: "location_type", action: "destroy"} }
+RSpec.describe LocationTypeForm, type: :model do
+  let(:controller_params)       { { controller: "location_type", action: "destroy" } }
   let(:params)                  { ActionController::Parameters.new(controller_params) }
   let!(:administrator)          { create(:administrator) }
 
@@ -16,6 +15,5 @@ RSpec.describe LocationTypeForm, type: :model do
     location_type = create(:location_type)
     location_type_form = LocationTypeForm.new(location_type)
     expect(location_type_form.destroy(params.merge(user_code: administrator.barcode))).to be_truthy
-
   end
 end

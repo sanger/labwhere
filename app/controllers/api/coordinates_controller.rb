@@ -1,5 +1,4 @@
 class Api::CoordinatesController < ApiController
-
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def update
@@ -12,10 +11,9 @@ class Api::CoordinatesController < ApiController
     end
   end
 
-private
+  private
 
   def record_not_found(e)
     render json: { errors: e.message }, status: :unprocessable_entity
   end
-
 end

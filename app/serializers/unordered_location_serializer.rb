@@ -1,5 +1,4 @@
 class UnorderedLocationSerializer < LocationSerializer
-
   attributes :labwares, :children
 
   # #
@@ -13,5 +12,4 @@ class UnorderedLocationSerializer < LocationSerializer
   def children
     api_location_children_path(object.barcode)
   end
-  
 end

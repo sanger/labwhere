@@ -1,5 +1,4 @@
 class PrintsController < ApplicationController
-
   layout false
 
   def new
@@ -25,7 +24,7 @@ class PrintsController < ApplicationController
     end
   end
 
-private
+  private
 
   def current_resource
     @current_resource ||= Location.find(params[:location_id]) if params[:location_id]

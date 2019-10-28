@@ -1,8 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Scan, type: :model do
-
-  let!(:location)          { create(:location_with_parent)}
+  let!(:location)          { create(:location_with_parent) }
   let!(:labwares)          { build(:labware_collection_unordered_location) }
 
   it "should correctly set the type based on the nature of the scan" do
@@ -23,5 +22,4 @@ RSpec.describe Scan, type: :model do
     scan_2.save
     expect(scan_2.message).to eq("#{labwares.count} labwares scanned out from #{labwares.original_location_names}")
   end
-
 end

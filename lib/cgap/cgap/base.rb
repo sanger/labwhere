@@ -8,6 +8,5 @@ class Cgap::Base < ActiveRecord::Base
 
   # TODO: The following statement causes errors when the rake task is run and when the app is
   # deployed.
-  establish_connection  :cgap
-
+  establish_connection :cgap
 end

@@ -1,6 +1,5 @@
 module Cgap
   class MigrateLocations
-
     include CreateLocationTypes
 
     LOCATION_TYPE_MATCHES = { "-80 freezer" => "Freezer -80C",
@@ -26,8 +25,7 @@ module Cgap
                               "Slot" => "Slot",
                               "Floor" => "Floor",
                               "Platform" => "Platform",
-                              "Stack" => "Stack"
-                            }
+                              "Stack" => "Stack" }
 
     def self.run!(path = "lib/cgap/data")
       new(path).run!
@@ -72,29 +70,27 @@ module Cgap
       end
     end
 
-  private
+    private
 
     attr_reader :cgap_locations
 
     def find_location_type(name)
-      location_type = LOCATION_TYPE_MATCHES.detect { |k,v| name.downcase.include?(k.downcase) }
+      location_type = LOCATION_TYPE_MATCHES.detect { |k, _v| name.downcase.include?(k.downcase) }
       LocationType.find_by(name: location_type.last)
     end
 
     def new_location(cgap_location)
-
       ::Location.new(
         name: create_unique_name(cgap_location),
         rows: cgap_location.rows,
         columns: cgap_location.columns,
         location_type: find_location_type(cgap_location.name)
-        )
+      )
     end
 
     def create_unique_name(cgap_location)
       name = cgap_location.name
       ::Location.where(["name LIKE ?", name]).present? ? (name + " " + cgap_location.id.to_s) : name
     end
-
   end
 end

@@ -1,5 +1,4 @@
 module Cgap
-
   require_relative 'cgap/base'
   require_relative 'cgap/load_data'
   require_relative 'cgap/create_location_types'

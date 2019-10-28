@@ -5,7 +5,6 @@
 #
 # It also adds a +before_save+ callback to check whether the status is set to deactivated.
 module HasActive
-
   extend ActiveSupport::Concern
 
   included do
@@ -33,5 +32,4 @@ module HasActive
       self.deactivated_at = inactive? ? Time.zone.now : nil
     end
   end
-  
 end

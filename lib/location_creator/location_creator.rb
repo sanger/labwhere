@@ -1,5 +1,4 @@
 class LocationCreator
-
   attr_reader :locations
 
   def initialize(locations)
@@ -10,11 +9,11 @@ class LocationCreator
     generate!
   end
 
-private
+  private
 
   def generate!
     parents = [nil]
-    locations.each do |k,v|
+    locations.each do |k, v|
       parents = create_locations k, v, parents
     end
   end
@@ -43,5 +42,4 @@ private
   def parent_id(parent)
     parent.respond_to?(:id) ? parent.id : nil
   end
-  
 end

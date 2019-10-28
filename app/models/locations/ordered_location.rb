@@ -17,5 +17,4 @@ class OrderedLocation < Location
       coordinates.build(position: position, row: row, column: column)
     end
   end
-
 end

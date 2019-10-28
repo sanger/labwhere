@@ -1,5 +1,4 @@
 class Api::Locations::CoordinatesController < ApiController
-
   before_action :coordinate, only: [:update]
 
   def index
@@ -16,7 +15,7 @@ class Api::Locations::CoordinatesController < ApiController
     end
   end
 
-private
+  private
 
   def coordinates
     ordered_location.nil? ? [] : ordered_location.coordinates
@@ -24,12 +23,11 @@ private
 
   def ordered_location
     OrderedLocation
-        .includes(coordinates: [:labware, :location])
-        .find_by_code(params[:location_barcode])
+      .includes(coordinates: [:labware, :location])
+      .find_by_code(params[:location_barcode])
   end
 
   def coordinate
     @coordinate ||= Coordinate.find(params[:id])
   end
-
 end

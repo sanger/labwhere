@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   concern :change_status do
     patch 'activate', on: :member
     patch 'deactivate', on: :member
@@ -19,8 +18,7 @@ Rails.application.routes.draw do
     concerns :auditable, parent: :location_types
   end
 
-  resources :locations do 
-    
+  resources :locations do
     resources :prints, only: [:new, :create]
 
     concerns :change_status
@@ -29,7 +27,6 @@ Rails.application.routes.draw do
       resources :children, only: [:index]
       resources :labwares, only: [:index]
     end
-
   end
 
   resources :labwares, only: [:show] do
@@ -60,7 +57,6 @@ Rails.application.routes.draw do
   root 'scans#new'
 
   namespace :api do
-
     get 'docs', to: 'docs#index'
     post 'labwares/searches', to: 'labwares/searches#create'
     post 'labwares/locations', to: 'labwares/locations#create'
@@ -85,7 +81,6 @@ Rails.application.routes.draw do
       end
 
       concerns :auditable, parent: :location_types
-
     end
 
     resources :scans, only: [:create]
@@ -95,11 +90,10 @@ Rails.application.routes.draw do
     end
 
     resources :searches, only: [:create]
-
   end
 
   unless Rails.env.development?
-    match '(errors)/:status', to: 'errors#show', constraints: {status: /\d{3}/}, via: :all
+    match '(errors)/:status', to: 'errors#show', constraints: { status: /\d{3}/ }, via: :all
   end
 
   match 'test_exception_notifier', controller: 'application', action: 'test_exception_notifier', via: :get

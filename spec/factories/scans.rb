@@ -3,5 +3,4 @@ FactoryBot.define do
     user
     location nil
   end
-
 end

@@ -1,13 +1,12 @@
 module Cgap
   class MigrateLabwares
-    
     def self.run!(path = "lib/cgap/data")
       new(path).run!
-    end 
+    end
 
     def initialize(path)
       Cgap::LoadData.new("labwares", path).load!
-      @cgap_labwares = Cgap::Labware.all 
+      @cgap_labwares = Cgap::Labware.all
     end
 
     def run!
@@ -22,7 +21,7 @@ module Cgap
       end
     end
 
-  private
+    private
 
     attr_reader :cgap_labwares
   end

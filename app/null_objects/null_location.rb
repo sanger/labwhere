@@ -1,6 +1,5 @@
 # Null object for location
 class NullLocation
-
   # will always have name Empty
   def name; "Empty" end
 

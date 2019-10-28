@@ -41,5 +41,4 @@ class Coordinate < ActiveRecord::Base
     update_attribute(:labware, l)
     l
   end
-
 end

@@ -1,5 +1,4 @@
 module AuthenticationForm
-
   extend ActiveSupport::Concern
 
   included do
@@ -8,10 +7,9 @@ module AuthenticationForm
     set_form_variables :user_code, current_user: :find_current_user
 
     validate :check_user
-
   end
 
-private
+  private
 
   def find_current_user
     User.find_by_code(user_code)
@@ -20,5 +18,4 @@ private
   def check_user
     UserValidator.new.validate(self)
   end
-
 end

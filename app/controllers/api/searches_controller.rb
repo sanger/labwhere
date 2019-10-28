@@ -1,5 +1,4 @@
 class Api::SearchesController < ApiController
-
   def create
     @search = Search.find_or_create_by(search_params)
     if @search.valid?
@@ -9,10 +8,9 @@ class Api::SearchesController < ApiController
     end
   end
 
-private
-  
+  private
+
   def search_params
     params.require(:search).permit(:term)
   end
-  
 end

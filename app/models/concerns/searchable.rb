@@ -1,4 +1,4 @@
-#TODO: improve the way the search method is done. At the moment it works by adding all the results together and then filtering.
+# TODO: improve the way the search method is done. At the moment it works by adding all the results together and then filtering.
 
 ##
 # The Searchable module allows you to do a multi-model search across various attributes.
@@ -31,17 +31,14 @@
 # Each search result will be an ActiveRecord::Relation object.
 #
 module Searchable
-
   # You can have as many clients as you want but must inherit from ActiveRecord.
   module Client
-
     extend ActiveSupport::Concern
 
-    included do 
+    included do
     end
 
     module ClassMethods
-
       ##
       # Create a search method signified by the attributes.
       # For each attribute search the table for the term.
@@ -55,12 +52,10 @@ module Searchable
         end
       end
     end
-
   end
 
   # The Orchestrator will carry out the search.
   module Orchestrator
-
     extend ActiveSupport::Concern
 
     included do
@@ -68,7 +63,6 @@ module Searchable
     end
 
     module ClassMethods
-
       ##
       # Define which models the Orchestrator will search through.
       # Also allows for a limit option to limit the search to a number of results.
@@ -83,9 +77,7 @@ module Searchable
         define_singleton_method :searchable_models do
           Hash[models.collect { |model| [model, model.to_s.classify.constantize] }]
         end
-
       end
-
     end
 
     ##
@@ -94,7 +86,6 @@ module Searchable
     # Set the limit as defined by searches_in.
     # Will also add the true count of the results by adding the results of each search.
     def results
-
       count = 0
 
       @results ||= SearchResult.new do |result|
@@ -108,7 +99,5 @@ module Searchable
         result.count = count
       end
     end
-
   end
-  
 end

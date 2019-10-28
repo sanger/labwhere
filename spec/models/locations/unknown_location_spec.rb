@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.describe UnknownLocation, type: :model do
-
   it "#get should return an unknown location" do
     location = UnknownLocation.get
     expect(location).to be_unknown
@@ -18,5 +17,4 @@ RSpec.describe UnknownLocation, type: :model do
   it "location should be valid without a location type if location is UNKNOWN" do
     expect(build(:unknown_location, location_type: nil)).to be_valid
   end
-
 end

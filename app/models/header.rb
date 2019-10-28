@@ -15,6 +15,7 @@ class Header
   # location_types => "New Location Type" if the action is new.
   def to_s
     return controller.gsub('_', ' ').titleize if action == "index"
+
     "#{action.capitalize} #{controller.singularize.gsub('_', ' ').titleize}"
   end
 
@@ -24,10 +25,11 @@ class Header
   # location_types => "new-location-type" if action is new.
   def to_css_class
     return controller.gsub('_', '-') if action == "index"
+
     "#{action}-#{controller.singularize.gsub('_', '-')}"
   end
 
-private
+  private
 
   attr_reader :action, :controller
 end

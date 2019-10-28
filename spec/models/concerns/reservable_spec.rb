@@ -1,9 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Reservable, type: :model do
-
   with_model :MyModel do
-
     table do |t|
       t.integer :team_id
     end
@@ -12,10 +10,9 @@ RSpec.describe Reservable, type: :model do
       belongs_to :team
       include Reservable
     end
-
   end
 
-  let(:model)            { MyModel.create }
+  let(:model) { MyModel.create }
   let(:reserved_model)  { MyModel.create(team: create(:team)) }
 
   describe '#reserved?' do
@@ -56,5 +53,4 @@ RSpec.describe Reservable, type: :model do
       expect(model.reserved_by).to be_nil
     end
   end
-
 end

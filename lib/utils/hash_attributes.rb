@@ -1,7 +1,6 @@
 ##
 # A couple of useful methods to create hash attributes.
 module HashAttributes
-
   ##
   # Takes a list of attributes and their values and create instance variables.
   def set_attributes(attributes)
@@ -18,12 +17,11 @@ module HashAttributes
     create_attributes(attributes[key])
   end
 
-private
+  private
 
   def create_attributes(attributes)
-    attributes.each do |k,v|
-      instance_variable_set "@#{k.to_s}", v
+    attributes.each do |k, v|
+      instance_variable_set "@#{k}", v
     end
   end
-  
 end

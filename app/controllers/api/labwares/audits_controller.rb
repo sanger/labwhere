@@ -1,13 +1,11 @@
 class Api::Labwares::AuditsController < ApiController
-
   def index
     render json: current_resource
   end
 
-private
+  private
 
   def current_resource
     Labware.find_by_code(params[:labware_barcode]).audits if params[:labware_barcode]
   end
-  
 end

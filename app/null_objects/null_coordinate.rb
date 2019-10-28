@@ -1,6 +1,5 @@
- # Null object for a coordinate
- class NullCoordinate
-
+# Null object for a coordinate
+class NullCoordinate
   # Always set the name to null
   def name
     "null"

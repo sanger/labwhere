@@ -1,7 +1,6 @@
 ##
 # Updates a collection of Coordinates and adds an audit record for them
 class CoordinatesForm
-
   include ActiveModel::Model
   include ActiveModel::Serialization
 
@@ -29,11 +28,11 @@ class CoordinatesForm
     end
   end
 
-  def coordinates
+  def coordinates # rubocop:todo Lint/DuplicateMethods
     @coordinates ||= Coordinate.find(coordinate_ids)
   end
 
-private
+  private
 
   attr_accessor :params
 
@@ -83,5 +82,4 @@ private
   def find_labware!(barcode)
     Labware.find_or_create_by!(barcode: barcode) unless barcode.nil?
   end
-
 end

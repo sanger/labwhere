@@ -1,10 +1,9 @@
 require "rails_helper"
 
 RSpec.describe LabelPrinter, type: :model do
-
-  let!(:location)     { create(:location)}
-  let!(:printer)      { create(:printer)}
-  let!(:locations)    { create_list(:location, 5)}
+  let!(:location)     { create(:location) }
+  let!(:printer)      { create(:printer) }
+  let!(:locations)    { create_list(:location, 5) }
 
   it "if the printing is successful should return an appropriate message" do
     allow(PMB::PrintJob).to receive(:execute).and_return(true)

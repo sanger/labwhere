@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Search, type: :model do
-
   it "should not be valid without a term" do
     expect(build(:search, term: nil)).to_not be_valid
   end
@@ -22,16 +21,15 @@ RSpec.describe Search, type: :model do
   # end
 
   context "Results" do
-
-    let!(:location_type_building) { create(:location_type, name: 'Building')}
-    let!(:location_type_room) { create(:location_type, name: "Room")}
-    let!(:location_type_freezer) { create(:location_type, name: "Freezer")}
-    let!(:location_building) { create(:location, name: 'Building', location_type: location_type_building)}
-    let!(:location_freezer_1) { create(:location, name: "Freezer 1", location_type: location_type_room, parent: location_building)}
-    let!(:location_freezer_2) { create(:location, name: "Freezer 2", location_type: location_type_room, parent: location_building)}
-    let!(:location_shelf_123) { create(:location, name: "Shelf 123", location_type: location_type_freezer, parent: location_freezer_1)}
-    let!(:labware_1) { create(:labware)}
-    let!(:labware_2) { create(:labware)}
+    let!(:location_type_building) { create(:location_type, name: 'Building') }
+    let!(:location_type_room) { create(:location_type, name: "Room") }
+    let!(:location_type_freezer) { create(:location_type, name: "Freezer") }
+    let!(:location_building) { create(:location, name: 'Building', location_type: location_type_building) }
+    let!(:location_freezer_1) { create(:location, name: "Freezer 1", location_type: location_type_room, parent: location_building) }
+    let!(:location_freezer_2) { create(:location, name: "Freezer 2", location_type: location_type_room, parent: location_building) }
+    let!(:location_shelf_123) { create(:location, name: "Shelf 123", location_type: location_type_freezer, parent: location_freezer_1) }
+    let!(:labware_1) { create(:labware) }
+    let!(:labware_2) { create(:labware) }
 
     it "should be empty if nothing matches the term" do
       expect(Search.create(term: "dodgy term").results).to be_empty
@@ -70,6 +68,5 @@ RSpec.describe Search, type: :model do
       expect(search.results[:locations]).to include(location_shelf_123)
       expect(search.message).to eq("Your search returned 1 result.")
     end
-
   end
 end

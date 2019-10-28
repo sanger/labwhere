@@ -2,7 +2,6 @@
 # This will create a persisted scan.
 # It can be used from a view or elsewhere.
 class ScanForm
-
   include FormObject
   include AuthenticationForm
   include StorageValidator
@@ -18,7 +17,7 @@ class ScanForm
 
   delegate :message, :created_at, :updated_at, to: :scan
 
-private
+  private
 
   def find_location
     Location.find_by_code(location_barcode)
@@ -37,5 +36,4 @@ private
   def labwares
     @labwares ||= labware_barcodes.split("\n")
   end
-
 end

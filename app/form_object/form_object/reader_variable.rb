@@ -1,6 +1,5 @@
 module FormObject
   class ReaderVariable
-    
     attr_reader :name
 
     def initialize(model, name)
@@ -15,7 +14,5 @@ module FormObject
     def instance
       "@#{name}"
     end
-
-
   end
 end

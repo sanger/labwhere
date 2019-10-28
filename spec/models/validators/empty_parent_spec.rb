@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.describe EmptyParentValidator, type: :model do
-
   let(:validator) { EmptyParentValidator.new }
   let(:location_with_parent) { create(:location_with_parent) }
   let(:location) { create(:location) }
@@ -19,5 +18,4 @@ RSpec.describe EmptyParentValidator, type: :model do
       expect(location_with_parent).to_not be_empty
     end
   end
-
 end

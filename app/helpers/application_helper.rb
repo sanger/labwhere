@@ -1,5 +1,4 @@
 module ApplicationHelper
-
   ##
   # If the record has a status attribute.
   # Adds a link to activate or deactivate depending on the current status.
@@ -12,7 +11,7 @@ module ApplicationHelper
   ##
   # Add a link to a particular data behavior with a class and accessibility tags.
   def behavior_link(behavior, image, help)
-    link_to image_tag(image, alt: help, title: help), '#', data: { behavior: behavior}, class: "no-decoration"
+    link_to image_tag(image, alt: help, title: help), '#', data: { behavior: behavior }, class: "no-decoration"
   end
 
   ##

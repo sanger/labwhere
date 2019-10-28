@@ -2,7 +2,6 @@
 # When a user is loaded so are their permissions.
 # These will determine whether the user can scan or create and edit resources.
 module Permissions
-
   extend ActiveSupport::Concern
 
   included do
@@ -21,5 +20,4 @@ module Permissions
   def current_permissions
     @current_permissions ||= Permissions.permission_for(self)
   end
-
 end

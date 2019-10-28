@@ -4,4 +4,4 @@ module ActiveModelExtension
   end
 end
 
-ActiveModel::Name.send(:include, ActiveModelExtension)
+ActiveModel::Name.include ActiveModelExtension

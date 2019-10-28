@@ -1,5 +1,4 @@
 module Auditor
-
   extend ActiveSupport::Concern
 
   included do

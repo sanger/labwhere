@@ -1,10 +1,9 @@
-#(l4) As an admin I want to be able to create new users in the system and edit them in order to allow users to be tracked in the system.
+# (l4) As an admin I want to be able to create new users in the system and edit them in order to allow users to be tracked in the system.
 require "rails_helper"
 
 RSpec.describe "Users", type: :feature do
-
-  let!(:teams) { create_list(:team, 2)}
-  let!(:administrator) { create(:administrator)}
+  let!(:teams) { create_list(:team, 2) }
+  let!(:administrator) { create(:administrator) }
 
   it "Allows a user to create a new user" do
     user = build(:user)
@@ -32,7 +31,7 @@ RSpec.describe "Users", type: :feature do
       fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Swipe card", with: user_2.swipe_card_id
       click_button "Update User"
-    }.to change { user.reload.swipe_card_id}.to(user_2.swipe_card_id)
+    }.to change { user.reload.swipe_card_id }.to(user_2.swipe_card_id)
   end
 
   it "Allows a user to create a different type of user" do
@@ -59,7 +58,7 @@ RSpec.describe "Users", type: :feature do
       fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       uncheck "Active"
       click_button "Update User"
-    }.to change{user.reload.active?}.from(true).to(false)
+    }.to change { user.reload.active? }.from(true).to(false)
     expect(page).to have_content("User successfully updated")
   end
 
@@ -72,7 +71,7 @@ RSpec.describe "Users", type: :feature do
       fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       check "Active"
       click_button "Update User"
-    }.to change{user.reload.active?}.from(false).to(true)
+    }.to change { user.reload.active? }.from(false).to(true)
     expect(page).to have_content("User successfully updated")
   end
 
@@ -98,5 +97,4 @@ RSpec.describe "Users", type: :feature do
       expect(find(:data_id, user.id)).to have_css("article", count: 5)
     end
   end
-
 end

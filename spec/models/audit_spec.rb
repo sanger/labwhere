@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Audit, type: :model do
-
   let!(:location)    { create(:location) }
   let!(:user)        { create(:user) }
-  
+
   it "should not be valid without a user" do
     expect(build(:audit, user: nil)).to_not be_valid
   end
@@ -34,5 +33,4 @@ RSpec.describe Audit, type: :model do
     audit = labware.audits.first
     expect(audit.summary).to eq("Scanned by #{user.login} on #{audit.created_at.to_s(:uk)}")
   end
-
 end

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe AvailableCoordinatesQuery do
-
   let(:locations) { Location.all }
   let(:min_available_coordinates) { 10 }
   let(:result) { AvailableCoordinatesQuery.call(locations, min_available_coordinates) }
@@ -36,5 +35,4 @@ describe AvailableCoordinatesQuery do
   # it 'returns partially filled locations with enough space' do
   #   expect(result).to include(*@partially_filled_ordered_locations)
   # end
-
 end

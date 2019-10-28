@@ -1,6 +1,5 @@
 module Cgap
   class MigrateTopLevelLocations
-
     include CreateLocationTypes
 
     def self.run!(path = "lib/cgap/data")
@@ -9,14 +8,13 @@ module Cgap
 
     def initialize(path)
       Cgap::LoadData.new("storage_equipment", path, "\r").load!
-      @cgap_storages = Cgap::Storage.all 
+      @cgap_storages = Cgap::Storage.all
       create_location_types
     end
 
     def run!
-
       sanger = UnorderedLocation.create(name: "Sanger", location_type: LocationType.find_by(name: "Site"), container: false)
-      sulston = UnorderedLocation.create(name: "Sulston", location_type: LocationType.find_by(name: "Building"),container: false, parent: sanger)
+      sulston = UnorderedLocation.create(name: "Sulston", location_type: LocationType.find_by(name: "Building"), container: false, parent: sanger)
       cgap_storages.pluck(:top_location).uniq.each do |name|
         location = UnorderedLocation.create(name: name, location_type: LocationType.find_by(name: "Room"), container: false, parent: sulston)
       end
@@ -26,10 +24,8 @@ module Cgap
       end
     end
 
-  private
+    private
 
     attr_reader :cgap_storages
-
   end
-  
 end

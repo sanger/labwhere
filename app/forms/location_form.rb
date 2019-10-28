@@ -1,15 +1,14 @@
 ##
 # Form object for a Location
 class LocationForm
-
   include ActiveModel::Model
   include ActiveModel::Serialization
-  
-  validate :check_user, :check_location, :check_range, :only_same_team_can_release_location 
+
+  validate :check_user, :check_location, :check_range, :only_same_team_can_release_location
   attr_reader :current_user, :controller, :action, :location, :start_from, :end_to
   # delegate_missing_to :location # rails 5
   delegate :parent, :internal_parent, :barcode, :parentage, :type, :coordinateable?, :reserved?, :reserved_by, to: :location
-  delegate :id, :created_at, :updated_at, :to_json, to: :location 
+  delegate :id, :created_at, :updated_at, :to_json, to: :location
   delegate :name, :location_type_id, :parent_id, :container, :status, :rows, :columns, to: :location
 
   def initialize(location = nil)
@@ -50,6 +49,7 @@ class LocationForm
     @current_user = User.find_by_code(params[:user_code])
     # assign_attributes(params)
     return false unless valid?
+
     location.destroy
     if location.destroyed?
       true
@@ -60,17 +60,18 @@ class LocationForm
   end
 
   def check_user
-    UserValidator.new.validate(self) 
+    UserValidator.new.validate(self)
   end
 
   def check_location
     return if location.valid?
+
     add_location_errors
   end
 
   def check_range
-    if start_from.nil? and not end_to.nil? 
-      errors.add(:start_from, :blank, message: "must be present if End is present") 
+    if start_from.nil? and not end_to.nil?
+      errors.add(:start_from, :blank, message: "must be present if End is present")
     elsif not start_from.nil? and end_to.nil?
       errors.add(:end_to, :blank, message: "must be present if Start is present")
     elsif pos_int?(start_from) and pos_int?(end_to) and start_from.to_i >= end_to.to_i
@@ -128,7 +129,7 @@ class LocationForm
   def transform_location
     @location = location.transform if location.new_record?
   end
- 
+
   def pos_int?(value)
     if /\A\d+\Z/.match(value.to_s)
       true
@@ -137,7 +138,7 @@ class LocationForm
     end
   end
 
-  def generate_names(prefix, start_from, end_to, &block)
+  def generate_names(prefix, start_from, end_to)
     if not start_from.nil? and not end_to.nil?
       ("#{prefix} #{start_from}".."#{prefix} #{end_to}").each do |name|
         yield name
@@ -161,7 +162,7 @@ class LocationForm
     locations
   end
 
-  def run_transaction(&block)
+  def run_transaction()
     begin
       ActiveRecord::Base.transaction do
         yield
@@ -178,11 +179,11 @@ class LocationForm
 
   def only_same_team_can_release_location
     return unless @params.has_key? :location
+
     LocationReleaseValidator.new(team_id: current_user.team_id).validate(self) if !reserve_param?
   end
 
   def reserve_param?
     @params.fetch(:location).fetch(:reserve, "0") == "1"
   end
-
 end

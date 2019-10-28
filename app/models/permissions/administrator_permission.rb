@@ -3,7 +3,6 @@
 # Allowed access to do anything
 module Permissions
   class AdministratorPermission < BasePermission
-
     def initialize(user)
       super
       allow_all

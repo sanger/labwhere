@@ -8,7 +8,7 @@ class CreateUsers < ActiveRecord::Migration[4.2]
       t.integer :status, default: 0
       t.datetime :deactivated_at
       t.references :team, index: true, foreign_key: true
- 
+
       t.timestamps null: false
     end
   end

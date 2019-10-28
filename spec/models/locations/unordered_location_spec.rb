@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.describe UnorderedLocation, type: :model do
-  
   context "modifying status" do
     let!(:location_1) { create(:unordered_location) }
     let!(:location_2) { create(:unordered_location, parent: location_1) }
@@ -25,7 +24,6 @@ RSpec.describe UnorderedLocation, type: :model do
       expect(location_4.reload).to be_active
       expect(location_5.reload).to be_active
     end
-
   end
 
   it "allows nesting of locations" do
@@ -39,5 +37,4 @@ RSpec.describe UnorderedLocation, type: :model do
     location = create(:unordered_location)
     expect(location.available_coordinates(5, 10)).to be_empty
   end
-
 end

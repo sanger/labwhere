@@ -9,6 +9,7 @@ class LocationTypeForm
   def destroy(params)
     self.form_variables.assign(self, params)
     return false unless valid?
+
     location_type.destroy
     if location_type.destroyed?
       true
@@ -17,5 +18,4 @@ class LocationTypeForm
       false
     end
   end
-  
 end

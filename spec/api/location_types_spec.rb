@@ -3,7 +3,6 @@
 require "rails_helper"
 
 RSpec.describe Api::LocationTypesController, type: :request do
-
   let!(:user) { create(:administrator) }
 
   it "should retrieve information about location types get /api/location_types" do
@@ -78,5 +77,4 @@ RSpec.describe Api::LocationTypesController, type: :request do
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end
-  
 end

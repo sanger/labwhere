@@ -62,7 +62,6 @@ RSpec.describe Labware, type: :model do
     expect(json["coordinate_id"]).to be_nil
     expect(json["deleted_at"]).to be_nil
     expect(json["previous_location_id"]).to be_nil
-
   end
 
   it "#flush_coordinate should remove coordinate" do

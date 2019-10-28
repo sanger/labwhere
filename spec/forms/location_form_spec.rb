@@ -1,9 +1,8 @@
 require "rails_helper"
 
-RSpec.describe LocationForm, type: :model do 
-
+RSpec.describe LocationForm, type: :model do
   let(:params) { attributes_for(:location) }
-  let(:controller_params) { { controller: "location", action: "create"} }
+  let(:controller_params) { { controller: "location", action: "create" } }
   let!(:administrator) { create(:administrator) }
 
   it "is not valid without an user" do
@@ -43,10 +42,10 @@ RSpec.describe LocationForm, type: :model do
     )
     expect(res).to be_truthy
     expect(location.name).to eq(new_location.name)
-  end 
+  end
 
   it "can be destroyed if it has not been used" do
-    controller_params = { controller: "location", action: "create"} 
+    controller_params = { controller: "location", action: "create" }
     params = ActionController::Parameters.new(controller_params)
     location = create(:location, name: 'Test Location')
     location_form = LocationForm.new(location)
@@ -73,7 +72,7 @@ RSpec.describe LocationForm, type: :model do
     expect(location_form.location).to be_ordered
     expect(location_form.location.coordinates.count).to eq(create(:ordered_location).coordinates.count)
   end
-  
+
   describe "multiple locations creation" do
     it "should create multiple locations if start and end are not empty" do
       location_form = LocationForm.new
@@ -96,7 +95,7 @@ RSpec.describe LocationForm, type: :model do
       expect(res).to be_falsey
       expect(location_form).to_not be_valid
     end
-    
+
     it "should not create multiple locations if start and end are equal" do
       location_form = LocationForm.new
       res = location_form.submit(
@@ -113,12 +112,13 @@ RSpec.describe LocationForm, type: :model do
       parent_location = create(:unordered_location)
       child_location = create(:location, parent: parent_location, name: "Test Location 2")
       res = location_form.submit(
-              controller_params.merge(location: params.merge(
-                                                  name: "Test Location",
-                                                  start_from: "1",
-                                                  end_to: "3",
-                                                  parent: parent_location,
-                                                  user_code: administrator.barcode))
+        controller_params.merge(location: params.merge(
+          name: "Test Location",
+          start_from: "1",
+          end_to: "3",
+          parent: parent_location,
+          user_code: administrator.barcode
+        ))
       )
       expect(res).to be_falsey
       expect(location_form).to_not be_valid
@@ -128,7 +128,5 @@ RSpec.describe LocationForm, type: :model do
       location = Location.find(parent_location.id)
       expect(location.children.count).to eq(1)
     end
-
   end
-
 end

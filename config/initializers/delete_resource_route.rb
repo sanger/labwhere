@@ -1,5 +1,5 @@
 module DeleteResourceRoute
-  def resources(*args, &block)
+  def resources(*args)
     super(*args) do
       yield if block_given?
       if args.length == 1
@@ -12,4 +12,4 @@ module DeleteResourceRoute
   end
 end
 
-ActionDispatch::Routing::Mapper.send(:include, DeleteResourceRoute)
+ActionDispatch::Routing::Mapper.include DeleteResourceRoute

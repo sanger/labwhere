@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Printer, type: :model do
-   it "is invalid without a name" do
+  it "is invalid without a name" do
     expect(build(:printer, name: nil)).to_not be_valid
   end
 

@@ -1,10 +1,9 @@
-#(l2) As a Sample Management RA I want to scan labware into and out of a location to avoid misplacing biomaterial and delaying pipeline processing
+# (l2) As a Sample Management RA I want to scan labware into and out of a location to avoid misplacing biomaterial and delaying pipeline processing
 
 require 'rails_helper'
 
 RSpec.describe "Scans", type: :feature do
-
-  let!(:user) { create(:scientist)}
+  let!(:user) { create(:scientist) }
 
   it "allows a user to scan in some labware with a location" do
     location = create(:location_with_parent)
@@ -59,7 +58,7 @@ RSpec.describe "Scans", type: :feature do
     expect(page).to have_content(labwares.join_barcodes("\r "))
   end
 
-   it "Does not allow an unauthorised user to modify locations" do
+  it "Does not allow an unauthorised user to modify locations" do
     location = create(:location_with_parent)
     labwares = build_list(:labware, 10)
     visit new_scan_path
@@ -114,7 +113,5 @@ RSpec.describe "Scans", type: :feature do
 
       expect(page).to have_content("errors prohibited this record from being saved")
     end
-
   end
-
 end
