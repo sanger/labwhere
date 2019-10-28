@@ -36,6 +36,5 @@ describe AvailableCoordinatesQuery do
   # it 'returns partially filled locations with enough space' do
   #   expect(result).to include(*@partially_filled_ordered_locations)
   # end
-  end
 
 end
