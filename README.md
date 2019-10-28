@@ -1,6 +1,6 @@
 # Labwhere
 
-[![Build Status](https://travis-ci.org/sanger/labwhere.svg?branch=test_openstack)](https://travis-ci.org/sanger/labwhere)
+[![Build Status](https://travis-ci.org/sanger/labwhere.svg?branch=devel)](https://travis-ci.org/sanger/labwhere)
 
 A tool for tracking uniquely barcoded labware
 

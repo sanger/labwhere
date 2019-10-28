@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 ##
 # Scanning labware in and out of a location
 # A scan is a throwaway object i.e. it has no use once it has been done.
