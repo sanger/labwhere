@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # maintains the allowed actions for a Permission object
 # usage:

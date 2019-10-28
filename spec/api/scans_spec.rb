@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Allow one or more pieces of labware to be scanned in or out of a location via the API (POST api/scans)
 
 require "rails_helper"

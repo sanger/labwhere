@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # An unorderd location is one which can contain locations or labware e.g. shelf
 class UnorderedLocation < Location

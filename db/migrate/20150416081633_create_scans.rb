@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateScans < ActiveRecord::Migration[4.2]
   def change
     create_table :scans do |t|

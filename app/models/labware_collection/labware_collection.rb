@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LabwareCollection
   def self.open(attributes = {})
     if attributes[:location].ordered?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Form object for the Location Type
 class LocationTypeForm

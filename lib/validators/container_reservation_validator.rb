@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ContainerReservationValidator < ActiveModel::Validator
   def validate(record)
     if record.team.present? && !record.container?

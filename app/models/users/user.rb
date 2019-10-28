@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Base user
 # Used for auditing, authentication and authorisation purposes.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # The audit class is polymorphic.
 #

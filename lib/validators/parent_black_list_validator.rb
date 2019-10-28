@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ParentBlackListValidator < ActiveModel::Validator
   def validate(record)
     if record.parent.present? and record.parent.location_type.in?(options[:location_types])

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Used by Search
 # An object which will be returned by the search or the api.

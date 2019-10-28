@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # # A restriction can be created with a validator and optional parameters
 #  A restriction can be added to a LocationType
 #  When a Location of that LocationType is created, each of the restrictions' validators are

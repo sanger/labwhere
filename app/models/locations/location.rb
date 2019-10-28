@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # A location can store locations or labware
 class Location < ActiveRecord::Base

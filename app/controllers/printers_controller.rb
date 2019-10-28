@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PrintersController < ApplicationController
   before_action :printers, only: [:index]
 

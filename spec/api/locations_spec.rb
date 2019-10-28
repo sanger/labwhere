@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # As a LIMS developer I want to be able to access the functionality of LabWhere via a RESTful API in order to integrate LIMS with it.
 # Create locations
 require "rails_helper"

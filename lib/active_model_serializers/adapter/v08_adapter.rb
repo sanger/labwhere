@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActiveModelSerializers
   module Adapter
     class V08Adapter < ActiveModelSerializers::Adapter::Base

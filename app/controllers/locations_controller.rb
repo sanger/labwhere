@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LocationsController < ApplicationController
   before_action :locations, only: [:index]
   before_action :set_location, except: [:index, :activate, :deactivate]

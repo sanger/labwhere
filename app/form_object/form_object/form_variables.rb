@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FormObject
   # Allows you to set the form variables for the form object
   # Controller variables are assigned via the initializer and model variables are assigned via the add method.

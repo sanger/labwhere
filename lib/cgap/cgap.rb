@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cgap
   require_relative 'cgap/base'
   require_relative 'cgap/load_data'

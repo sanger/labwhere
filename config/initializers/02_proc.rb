@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # www.mattsears.com/articles/2011/11/27ruby-blocks-as-dynamic-callbacks
 class Proc
   def callback(callable, *args)

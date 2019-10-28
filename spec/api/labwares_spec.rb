@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Retrieve location information for a given piece of labware (GET /api/labwares/<barcode>) returns labware object and location object
 
 require "rails_helper"

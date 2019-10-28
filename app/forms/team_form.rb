@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Form object for creating or updating a Team
 class TeamForm

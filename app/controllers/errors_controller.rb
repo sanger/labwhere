@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Will show particular styled pages for a small number of standard errors.
 class ErrorsController < ApplicationController

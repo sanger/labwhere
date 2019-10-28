@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Printers which are used to reprint barcodes.
 # The name of the printers are needed to use the printing service.

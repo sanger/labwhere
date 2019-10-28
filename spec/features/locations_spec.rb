@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # (l1) As a SM manager (Admin) I want to create new locations to enable RAS's track labware whereabouts.
 
 require 'rails_helper'

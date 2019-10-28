@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::Labwares::SearchesController < ApiController
   def create
     # Little complex, but the includes here is eager loading as many associated models as possible

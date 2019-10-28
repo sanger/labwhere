@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Locations::LabwaresController < ApplicationController
   before_action :labwares, only: [:index]
 

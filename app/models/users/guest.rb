@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # A Guest is a user that doesn't exist useful for authentication.
 #

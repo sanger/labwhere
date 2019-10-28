@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActiveModel
   module V08
     class Serializer < ActiveModel::Serializer

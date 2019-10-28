@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # A lot of the serializers include created_at and updated_at
 # This minor concern provides a general way to deal with those dates.

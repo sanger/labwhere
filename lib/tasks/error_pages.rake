@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'erb'
 
 namespace :error_pages do

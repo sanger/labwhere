@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 Dir[File.join(Rails.root, "lib", "location_creator", "*.rb")].each { |f| require f }

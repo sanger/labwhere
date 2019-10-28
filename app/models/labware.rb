@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Labware is stored in a location.
 # LabWhere needs to know nothing about it apart from its barcode and where it is.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 DependentLoader.start(:location_types) do |on|
   on.success do
     LocationType.create(

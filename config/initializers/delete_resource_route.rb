@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DeleteResourceRoute
   def resources(*args)
     super(*args) do

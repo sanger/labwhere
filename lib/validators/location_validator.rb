@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Validates the location for a particular object:
 # * If the location is nil and a location barcode is present this signifies the barcode is wrong.

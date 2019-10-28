@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc "Print out all the locations that fail validation"
 task :invalid_locations => :environment do
   has_failures = false

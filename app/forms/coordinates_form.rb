@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Updates a collection of Coordinates and adds an audit record for them
 class CoordinatesForm

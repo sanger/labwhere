@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Useful for creating default headers for views.
 class Header

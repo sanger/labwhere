@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # When a user is loaded so are their permissions.
 # These will determine whether the user can scan or create and edit resources.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Provide ability to search via API
 
 require "rails_helper"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Teams which users belong to.
 class Team < ActiveRecord::Base

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # This will create a persisted scan.
 # It can be used from a view or elsewhere.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # This will add two methods in any class which includes it
 # to build or create an associated audit record.

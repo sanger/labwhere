@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Returns all locations with a minimum of the given number of available coordinates
 class AvailableCoordinatesQuery

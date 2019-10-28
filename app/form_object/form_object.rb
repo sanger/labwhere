@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FormObject
   extend ActiveSupport::Concern
   include ActiveModel::Model

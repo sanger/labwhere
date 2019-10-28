@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Check whether the passed attribute for the record has a parent.
 class NestedValidator < ActiveModel::EachValidator

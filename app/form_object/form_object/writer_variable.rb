@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FormObject
   class WriterVariable < ReaderVariable
     def initialize(model, name)

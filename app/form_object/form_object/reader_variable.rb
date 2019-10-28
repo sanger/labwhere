@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FormObject
   class ReaderVariable
     attr_reader :name

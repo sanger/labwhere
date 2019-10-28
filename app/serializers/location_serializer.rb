@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Serializer for Location
 # includes created_at and updated_at
 class LocationSerializer < ActiveModel::V08::Serializer

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Based loosely on the GoRails tutorial
 # Adds soft deletable capability to an ActiveRecord model.

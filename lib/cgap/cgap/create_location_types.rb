@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cgap
   module CreateLocationTypes
     LOCATION_TYPES = [

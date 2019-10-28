@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Print barcode for a particular location
 # The object will create a request from a printer_id and location_ids.

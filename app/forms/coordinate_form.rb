@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Form object for updating a single Coordinate
 class CoordinateForm

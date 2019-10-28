@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :location_type do
     sequence(:name) { |n| "Location Type #{n}" }

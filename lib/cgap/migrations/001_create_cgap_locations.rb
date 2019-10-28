@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCgapLocations < ActiveRecord::Migration[4.2]
   def change
     create_table :cgap_locations do |t|

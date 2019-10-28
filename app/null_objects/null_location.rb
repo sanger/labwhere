@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Null object for location
 class NullLocation
   # will always have name Empty

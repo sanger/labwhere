@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # This concern should be included within any model that has a status.
 #

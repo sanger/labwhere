@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # A coordinate is a defined position in a location which can hold a piece of labware.
 # A location will usually have a fixed set of coordinates.

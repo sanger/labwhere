@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Permissions for Admin User
 # Allowed access to do anything

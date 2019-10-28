@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :labware do
     sequence(:barcode) { |n| "Labware:#{n}" }

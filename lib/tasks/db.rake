@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :db do
   desc "clear the database"
   task :clear => :environment do |_t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::LabwaresController < ApiController
   def show
     render json: current_resource

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cgap
   class MigrateLabwares
     def self.run!(path = "lib/cgap/data")

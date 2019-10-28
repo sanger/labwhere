@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Serializer for the Audit model
 # includes created_at and updated_at

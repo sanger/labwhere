@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::Locations::LabwaresController < ApiController
   def index
     render json: current_resource, each_serializer: LabwareSerializer

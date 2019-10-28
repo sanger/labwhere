@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # For two fields will check whether either one is completed
 # These fields are signified by the options[:fields] attribute

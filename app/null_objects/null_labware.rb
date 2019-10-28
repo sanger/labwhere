@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Null object for Labware
 class NullLabware
   # barcode will always be empty

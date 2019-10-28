@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :labwares do
   desc "generate a number of fake barcodes to enter into scan page"
   task :generate_barcodes, [:num] => :environment do |_t, args|

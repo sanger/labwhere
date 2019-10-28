@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # This concern can be added into any sub-controller which handles audits.
 # It will infer the name of the model from the controller name and create the respective find method.

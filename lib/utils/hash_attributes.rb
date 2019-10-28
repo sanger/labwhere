@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # A couple of useful methods to create hash attributes.
 module HashAttributes

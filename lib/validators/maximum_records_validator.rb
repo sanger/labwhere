@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MaximumRecordsValidator < ActiveModel::Validator
   def validate(record)
     fields = options[:fields]

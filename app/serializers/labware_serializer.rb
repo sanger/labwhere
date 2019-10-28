@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Serializer for the Labware
 class LabwareSerializer < ActiveModel::V08::Serializer

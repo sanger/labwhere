@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Permissions for a Standard User
 # Allowed to create a scan in the user interface and the api.

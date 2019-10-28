@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Check whether the association for a belongs to exists.
 # looks for either an object or id.

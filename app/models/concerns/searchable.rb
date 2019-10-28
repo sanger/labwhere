@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: improve the way the search method is done. At the moment it works by adding all the results together and then filtering.
 
 ##

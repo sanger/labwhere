@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Find a consecutive list of available coordinates in a set of coordinates signified by n.
 # e.g. find 10 consecutive coordinates.

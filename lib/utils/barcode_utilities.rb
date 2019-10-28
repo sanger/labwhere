@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BarcodeUtilities
   ##
   # Take the barcodes for the object and create a string using the defined delimiter.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Every location must have a type.
 class LocationType < ActiveRecord::Base

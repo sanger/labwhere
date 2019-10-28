@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Locations::ChildrenController < ApplicationController
   before_action :children, only: [:index]
 
