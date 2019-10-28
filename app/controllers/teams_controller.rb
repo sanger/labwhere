@@ -40,5 +40,5 @@ class TeamsController < ApplicationController
 
   def current_resource
     @current_resource ||= Team.find(params[:id]) if params[:id]
- end
+  end
 end

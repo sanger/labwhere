@@ -25,7 +25,7 @@ class Scan < ActiveRecord::Base
                                                                              "to #{location.name}"
                                                                            else
                                                                              "from #{labwares.original_location_names}"
-    end
+                                                                           end
   end
 
   def labwares # rubocop:todo Lint/DuplicateMethods
