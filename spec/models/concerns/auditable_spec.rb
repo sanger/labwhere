@@ -38,7 +38,8 @@ RSpec.describe Auditable, type: :model do
     expect(my_model.audits.last.action).to eq("create")
     my_model.update_attributes(name: "New Name")
     my_model.create_audit(user)
-    # expect(my_model.audits.last.action).to eq("update")
+    pending
+    expect(my_model.audits.last.action).to eq("update")
     my_model.destroy
     my_model.create_audit(user)
     expect(my_model.audits.last.action).to eq("destroy")
