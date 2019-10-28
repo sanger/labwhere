@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateLocationTypesRestrictionJoinTable < ActiveRecord::Migration[4.2]
   def change
     create_join_table :location_types, :restrictions do |t|
