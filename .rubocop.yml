@@ -13,4 +13,4 @@ inherit_from: .rubocop_todo.yml
 require: rubocop-rails
 
 Metrics/LineLength:
-  Max: 100
+  Max: 120
