@@ -12,9 +12,8 @@ RSpec.describe Search, type: :model do
     expect(build(:search, term: search.term)).to_not be_valid
   end
 
-  it "should increment count each time the search term is used" do
+  xit "should increment count each time the search term is used" do
     search = create(:search)
-    pending
     expect(search.search_count).to eq(0)
     expect(Search.find(search.id).search_count).to eq(1)
     expect(Search.find(search.id).search_count).to eq(2)
