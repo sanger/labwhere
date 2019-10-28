@@ -1,4 +1,4 @@
-# inherit_from: .rubocop_todo.yml
+inherit_from: .rubocop_todo.yml
 
 # The behavior of RuboCop can be controlled via the .rubocop.yml
 # configuration file. It makes it possible to enable/disable
@@ -11,3 +11,6 @@
 #
 # See https://github.com/rubocop-hq/rubocop/blob/master/manual/configuration.md
 require: rubocop-rails
+
+Metrics/LineLength:
+  Max: 100
