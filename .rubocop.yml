@@ -17,5 +17,5 @@ AllCops:
     - 'db/schema.rb'
     - 'db/migrate/*'
 
-Metrics/LineLength:
-  Max: 120
+# Metrics/LineLength:
+#   Max: 120
