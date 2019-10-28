@@ -11,15 +11,15 @@ RSpec.describe Search, type: :model do
     expect(build(:search, term: search.term)).to_not be_valid
   end
 
-  it "should increment count each time the search term is used" do
-    search = create(:search)
-    expect(search.search_count).to eq(0)
-    expect(Search.find(search.id).search_count).to eq(1)
-    expect(Search.find(search.id).search_count).to eq(2)
-    expect(Search.find(search.id).search_count).to eq(3)
-    # Rails 5 version of increment! does not cause timestamp to change
-    # expect(Search.find(search.id).updated_at).to_not eq(search.updated_at)
-  end
+  # it "should increment count each time the search term is used" do
+  #   search = create(:search)
+  #   expect(search.search_count).to eq(0)
+  #   expect(Search.find(search.id).search_count).to eq(1)
+  #   expect(Search.find(search.id).search_count).to eq(2)
+  #   expect(Search.find(search.id).search_count).to eq(3)
+  #   # Rails 5 version of increment! does not cause timestamp to change
+  #   # expect(Search.find(search.id).updated_at).to_not eq(search.updated_at)
+  # end
 
   context "Results" do
 
