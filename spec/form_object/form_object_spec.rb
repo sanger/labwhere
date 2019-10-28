@@ -34,7 +34,7 @@ RSpec.describe FormObject, type: :model do |_variable|
     end
   end
 
-  with_model :ShesAModelAndShesLookingGood do
+  with_model :ShesA do
     table do |t|
       t.string :name
       t.timestamps null: false
@@ -173,10 +173,11 @@ RSpec.describe FormObject, type: :model do |_variable|
     expect(ModelB.count).to eq(1)
   end
 
-  # it "should be able to submit without attributes" do
-  #   shes_a_model_form = ShesA.new
-  #   shes_a_model_form.submit(ActionController::Parameters.new(shes_a_model_and_shes_looking_good: { attr_a: "Blinding" }))
-  #   expect(shes_a_model_form.attr_a).to eq("Blinding")
-  #   expect(S.count).to eq(1)
-  # end
+  xit "should be able to submit without attributes" do
+    shes_a_model_form = ShesA.new
+    shes_a_model_form.submit(ActionController::Parameters.new(shes_a: { attr_a: "Blinding" }))
+    expect(shes_a_model_form.attr_a).to eq("Blinding")
+    expect(S.count).to eq(1)
+  end
+
 end
