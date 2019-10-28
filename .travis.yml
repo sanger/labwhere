@@ -21,6 +21,7 @@ before_script:
 
 script:
 - bundle exec rspec
+- bundle exec rubocop
 
 before_deploy:
 - "./compile-build"
