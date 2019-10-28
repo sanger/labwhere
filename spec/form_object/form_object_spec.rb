@@ -180,6 +180,5 @@ RSpec.describe FormObject, type: :model do |variable|
   #   expect(shes_a_model_form.attr_a).to eq("Blinding")
   #   expect(S.count).to eq(1)
   # end
-  end
 
 end
