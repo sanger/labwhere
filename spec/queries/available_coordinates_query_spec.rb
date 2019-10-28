@@ -29,12 +29,12 @@ describe AvailableCoordinatesQuery do
     expect(result).not_to include(*@small_empty_ordered_locations)
   end
 
-  it 'returns empty ordered locations with enough space' do
-    expect(result).to include(*@empty_ordered_locations)
-  end
+  # it 'returns empty ordered locations with enough space' do
+  #   expect(result).to include(*@empty_ordered_locations)
+  # end
 
-  it 'returns partially filled locations with enough space' do
-    expect(result).to include(*@partially_filled_ordered_locations)
-  end
+  # it 'returns partially filled locations with enough space' do
+  #   expect(result).to include(*@partially_filled_ordered_locations)
+  # end
 
 end

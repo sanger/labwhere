@@ -1,43 +1,42 @@
+if: tag IS blank
 language: ruby
-# We don't specify a list of ruby versions, as Travis will fall back to .ruby-version
 dist: xenial
-bundle_args: "--without deployment"
+
 cache:
   bundler: true
+
+services:
+- mysql
+
 before_install:
-  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
-  - gem install bundler -v '< 2'
-  - "mkdir -p $PWD/travis_phantomjs"
-  - "wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2"
-  - "tar -xvf $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs"
-  - "export PATH=$PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH"
-  - "phantomjs --version"
+- export TZ=Europe/London
+- mysql -e 'CREATE DATABASE labwhere_test;'
+
 before_script:
+- export RAILS_ENV=test
 - cp config/database.yml.example config/database.yml
 - cp config/secrets.yml.example config/secrets.yml
-- bundle exec rake db:setup
-- bundle exec rake cgap:db:migrate
-jobs:
-  include:
-  - stage: test
-    script: bundle exec rake test
-    name: "Rake Test"
-  - script: bundle exec rspec
-    name: "Rspec"
-  - stage: build
-    if: tag IS present
-    before_script:
-    - cp config/database.yml.example config/database.yml
-    - cp config/secrets.yml.example config/secrets.yml
-    script: "./compile-build"
-    name: "Compile Build"
-    deploy:
-      provider: releases
-      file: release.tar.gz
-      file_glob: true
-      skip_cleanup: true
-      on:
-        tags: true
-        repo: radome/labwhere
-      api_key:
-        secure: bbo6OfQUF0a7yHENW7onXVTgydHgOBPzx9vfHCqQFLkNstfEUgjfG7v/mn0q2u7dTJ8Hoazf3dyKwu7ozFuePoVIwSsJ8XGaTwRE/lW7uDmW60v06XrrpaJmQE+6VDZJqrkuoqNYE9z82kpbgaIjd6yc0eFex/PQyK9HKnmIJYA8qIQ4ccwJ0+FbAZzzXQRXTqi+FCeOCPoX9HiG8xTpdAnlZuwRoPcMVy0XNBTvm+dzGiuaxQ5AdiUt9V9RNfIHuIOmFKTYsU9pDuyyhtU5DIH0iCQMerl31iR8Qz2IytE0YCjhWq7TPTE71BmGmwpFDRIG5IxjpEEgnEM7XHP45QeDUCE80T3v0qJlNsXSj8U82+zPAf6l08kXQiu5AkZLBSWPbputRe6wIVUXQK8yXkS3FDhshlN14qIGoviMaT+yPl1TeoDl17qTy/5MIrBLSlya+wgjVYprBjYw0nHmIYZHDovvKlbolv0eEq8hp2jEdlef1i3ZMoUEPg8QyFymR5EzM+OqHaOQMgBK2v1B1qKHLK7YAXiXNsRfA6FRTB9UuizPBJyUmCkFGA6wM2JF6NnGB5KMX6NIb4eEztzppfjXP27aZBZfql0LTVvUl0pD+zeO1XA24Z52Z+J2L+7VWQV/tgGhuakJ9rg6AycaVyVmRjVSLNlP/8agGfC3JaY=
+- bundle exec rails db:setup
+- bundle exec rails about
+
+script:
+- bundle exec rspec
+
+before_deploy:
+- "./compile-build"
+- export TAG_NAME=${TRAVIS_BRANCH}/$(date +'%Y-%m-%d/%H%M%S')
+- git tag "${TAG_NAME}"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: Nz+1tthHMuYX1Vhdj4FWIAxPDXR+uagRgPqhtM45t8R8cWmgKBabLgkqbObfAi+wDDjUreFDuBdbSIOCxE1xnXj7Wk6qxdQ2r+ZEpyhUgC6DH/TGid3qgzYifqDygbX6Kwq2CUMKhJxqjyEJazcaIapNcAIowi0B3I+iR+cNi3Y=
+  file: release.tar.gz
+  skip_cleanup: true
+  on:
+    repo: sanger/labwhere
+    all_branches: true
+    condition: "$TRAVIS_BRANCH =~ ^uat|master$"
+notifications:
+  slack:
+    secure: iKQj0jnqYe3Gf9Ky3+7wuP/5EiFo0bnUfl+7UjWbEUwxQj+eBHeb1I3ytNfH/Gre8ATLBNTUSFg5DOU+MxEJHhoFFanMa/ECgl9qh3j5NIQnztDVj2sdR7HWHvbMJerDJJ4vYa1MsnNpFTTtSkW2/05GoSAW+KIyQsy8aBECLqs=
