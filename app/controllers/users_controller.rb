@@ -1,5 +1,6 @@
-class UsersController < ApplicationController
+# frozen_string_literal: true
 
+class UsersController < ApplicationController
   before_action :users, only: [:index]
 
   def index
@@ -49,10 +50,9 @@ class UsersController < ApplicationController
 
   helper_method :users
 
-private
+  private
 
-   def current_resource
+  def current_resource
     @current_resource ||= User.find(params[:id]) if params[:id]
   end
-
 end

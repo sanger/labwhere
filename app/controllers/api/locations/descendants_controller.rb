@@ -1,10 +1,11 @@
-class Api::Locations::DescendantsController < ApiController
+# frozen_string_literal: true
 
+class Api::Locations::DescendantsController < ApiController
   def index
     render json: current_resource
   end
 
-private
+  private
 
   def current_resource
     locations = find_descendants if params[:location_barcode]
@@ -18,8 +19,7 @@ private
 
   def find_descendants
     Location.find_by_code(params[:location_barcode])
-        .descendants
-        .includes(coordinates: [:labware, :location])
+            .descendants
+            .includes(coordinates: [:labware, :location])
   end
-
 end

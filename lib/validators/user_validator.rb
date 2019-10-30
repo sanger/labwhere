@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Validates the user for a record.
 # * If the current user is guest i.e. nil it is not valid.

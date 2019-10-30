@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 module Cgap
   class LoadData
-
     TAB = "\t"
     SPLIT = "\r\n"
 
     attr_reader :filename, :model, :path, :split
 
-    def initialize(filename, path = "lib/cgap/data", split="\r\n")
+    def initialize(filename, path = "lib/cgap/data", split = "\r\n")
       @split = split
       @path = File.join(Rails.root, path)
       @filename = filename
@@ -25,7 +26,7 @@ module Cgap
       puts "#{model.all.count} records loaded into #{model}"
     end
 
-  private
+    private
 
     attr_reader :fields
 
@@ -40,6 +41,5 @@ module Cgap
     def set_model(filename)
       "Cgap::#{filename.split("_").first.classify}".constantize
     end
-    
   end
 end

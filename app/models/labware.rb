@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 ##
 # Labware is stored in a location.
 # LabWhere needs to know nothing about it apart from its barcode and where it is.
 class Labware < ActiveRecord::Base
-
   include SoftDeletable
   include Searchable::Client
   include Auditable
@@ -20,7 +21,7 @@ class Labware < ActiveRecord::Base
 
   searchable_by :barcode
 
-  scope :by_barcode, lambda{|barcodes| where(barcode: barcodes)}
+  scope :by_barcode, lambda { |barcodes| where(barcode: barcodes) }
 
   ##
   # find a Labware by its barcode
@@ -68,7 +69,6 @@ class Labware < ActiveRecord::Base
   ##
   # Useful for creating audit records. There are certain attributes which are not needed.
   def as_json(options = {})
-    super({ except: [:location_id, :coordinate_id, :previous_location_id, :deleted_at]}.merge(options)).merge(uk_dates).merge("location" => location.barcode)
+    super({ except: [:location_id, :coordinate_id, :previous_location_id, :deleted_at] }.merge(options)).merge(uk_dates).merge("location" => location.barcode)
   end
-
 end

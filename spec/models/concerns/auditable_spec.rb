@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe Auditable, type: :model do
-
   with_model :my_model do
     table do |t|
       t.string :name
@@ -9,15 +10,13 @@ RSpec.describe Auditable, type: :model do
     end
 
     model do
-
       include Auditable
-
     end
   end
 
-  let!(:user) { create(:user)}
+  let!(:user) { create(:user) }
 
-  it "should be able to create an audit record" do 
+  it "should be able to create an audit record" do
     my_model = MyModel.create(name: "My Model")
     my_model.create_audit(user, "create")
     audit = my_model.audits.first
@@ -44,5 +43,4 @@ RSpec.describe Auditable, type: :model do
     my_model.create_audit(user)
     expect(my_model.audits.last.action).to eq("destroy")
   end
-    
 end

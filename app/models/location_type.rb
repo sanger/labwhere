@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 ##
 # Every location must have a type.
 class LocationType < ActiveRecord::Base
-
   include Searchable::Client
   include Auditable
 
   has_many :locations
   has_many :restrictions, dependent: :destroy
 
-  validates :name, presence: true, uniqueness: {case_sensitive: false}
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
 
   scope :ordered, -> { order(:name) }
 
@@ -36,7 +37,7 @@ class LocationType < ActiveRecord::Base
     super(options).merge(uk_dates)
   end
 
-private
+  private
 
   def check_locations
     if has_locations?
@@ -44,5 +45,4 @@ private
       throw :abort
     end
   end
-
 end

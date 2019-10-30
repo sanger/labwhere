@@ -1,14 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe SoftDeletable, type: :model do
-
   with_model :BlogPost do
-
     table do |t|
       t.string :title
       t.timestamps null: false
     end
-    
   end
 
   with_model :Comment do
@@ -40,7 +39,7 @@ RSpec.describe SoftDeletable, type: :model do
   end
 
   before(:each) do
-    4.times { |n| TestModel.create(text: "A comment")}
+    4.times { |_n| TestModel.create(text: "A comment") }
   end
 
   it "#destroy should do a soft delete" do
@@ -71,5 +70,4 @@ RSpec.describe SoftDeletable, type: :model do
     comment.destroy
     expect(comment.reload.blog_post).to be_nil
   end
-  
 end

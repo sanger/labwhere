@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Coordinate, type: :model do
-
   it "is not valid without a position" do
     expect(build(:coordinate, position: nil)).to_not be_valid
   end
@@ -73,5 +74,4 @@ RSpec.describe Coordinate, type: :model do
     create_list(:coordinate, 3)
     expect(Coordinate.filled.count).to eq(5)
   end
-
 end

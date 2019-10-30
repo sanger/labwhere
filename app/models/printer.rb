@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 ##
 # Printers which are used to reprint barcodes.
 # The name of the printers are needed to use the printing service.
 class Printer < ActiveRecord::Base
-
   validates_presence_of :name
   validates_uniqueness_of :name
 

@@ -1,5 +1,6 @@
-class Label
+# frozen_string_literal: true
 
+class Label
   attr_accessor :locations
 
   def initialize(locations)
@@ -12,7 +13,7 @@ class Label
     }
   end
 
-  def body 
+  def body
     locations.map do |location|
       {
         location: {
@@ -23,5 +24,4 @@ class Label
       }
     end
   end
-
 end

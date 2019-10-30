@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Restriction, type: :model do
-
   it "is not valid without a validator" do
     expect(build(:restriction, validator: nil)).to be_invalid
   end
@@ -15,5 +16,4 @@ RSpec.describe Restriction, type: :model do
       expect(build(:restriction).params).to eql({})
     end
   end
-
 end

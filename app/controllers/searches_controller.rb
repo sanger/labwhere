@@ -1,5 +1,6 @@
-class SearchesController < ApplicationController
+# frozen_string_literal: true
 
+class SearchesController < ApplicationController
   def create
     @search = Search.find_or_create_by(search_params)
     if @search.valid?
@@ -13,12 +14,12 @@ class SearchesController < ApplicationController
     @search = current_resource
   end
 
-private
+  private
 
   def current_resource
     @current_resource ||= Search.find(params[:id]) if params[:id]
   end
-  
+
   def search_params
     params.require(:search).permit(:term)
   end

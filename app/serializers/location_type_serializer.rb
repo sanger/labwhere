@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 # Serializer for Location Type
 # includes created_at and updated_at
 class LocationTypeSerializer < ActiveModel::V08::Serializer
-
   attributes :id, :name, :locations, :audits
 
   include SerializerDates
@@ -16,6 +17,5 @@ class LocationTypeSerializer < ActiveModel::V08::Serializer
   # Link to audits for current location type
   def audits
     api_location_type_audits_path(object)
-
   end
 end

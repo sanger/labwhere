@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe PrintsController, type: :controller do
-
   describe 'POST create' do
-
     let(:label_printer_double) do
       label_printer = instance_double(LabelPrinter)
       allow(label_printer).to receive(:post)
@@ -50,7 +50,6 @@ RSpec.describe PrintsController, type: :controller do
 
     context 'when print_child_barcodes is false' do
       it 'sends the location to the LabelPrinter' do
-
         expect(LabelPrinter).to receive(:new)
           .with(printer: @printer.id.to_s, locations: @location.id.to_s, label_template_id: 1, copies: 1)
           .and_return(label_printer_double)
@@ -71,7 +70,6 @@ RSpec.describe PrintsController, type: :controller do
 
     context 'when label printer returns error' do
       it 'displays an error message to the user' do
-
         expect(LabelPrinter).to receive(:new)
           .with(printer: @printer.id.to_s, locations: @location.id.to_s, label_template_id: 1, copies: 1)
           .and_return(label_printer_double_error)
@@ -87,7 +85,5 @@ RSpec.describe PrintsController, type: :controller do
         expect(assigns(:message)).to eq(I18n.t("printing.failure") + " for location: #{@location.name}")
       end
     end
-
   end
-
 end

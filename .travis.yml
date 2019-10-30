@@ -21,6 +21,7 @@ before_script:
 
 script:
 - bundle exec rspec
+- bundle exec rubocop -c .rubocop.yml --fail-fast
 
 before_deploy:
 - "./compile-build"

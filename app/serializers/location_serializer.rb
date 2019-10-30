@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 # Serializer for Location
 # includes created_at and updated_at
 class LocationSerializer < ActiveModel::V08::Serializer
-  
   attributes :id, :name, :parent, :container, :status, :location_type_id, :audits, :barcode, :rows, :columns, :parentage
 
   include SerializerDates
@@ -22,5 +23,4 @@ class LocationSerializer < ActiveModel::V08::Serializer
   def audits
     api_location_audits_path(object.barcode)
   end
-
 end

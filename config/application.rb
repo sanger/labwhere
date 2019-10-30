@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 require 'rails/all'
 
@@ -16,7 +18,7 @@ module Labwhere
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
-    #convert dates and times to correct time zone
+    # convert dates and times to correct time zone
     config.time_zone = 'London'
     config.active_record.default_timezone = :local
     config.active_record.time_zone_aware_attributes = false
@@ -42,15 +44,14 @@ module Labwhere
 
     # replace fixtures with factory bot
     config.generators do |g|
-        g.test_framework :rspec,
-            fixtures: true,
-            view_specs: false,
-            helper_specs: false,
-            routing_specs: false,
-            controller_specs: false,
-            request_specs: true
-        g.fixture_replacement :factory_bot, dir: "spec/factories"
-
+      g.test_framework :rspec,
+                       fixtures: true,
+                       view_specs: false,
+                       helper_specs: false,
+                       routing_specs: false,
+                       controller_specs: false,
+                       request_specs: true
+      g.fixture_replacement :factory_bot, dir: "spec/factories"
     end
   end
 end

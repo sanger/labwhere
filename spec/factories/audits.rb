@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :audit do
     transient do
@@ -9,5 +11,4 @@ FactoryBot.define do
     auditable_id { location.id }
     user
   end
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # The audit class is polymorphic.
 #
@@ -9,7 +11,7 @@
 #
 # This ensures we know the state of that record when the audit record was created.
 class Audit < ActiveRecord::Base
-  PAST_TENSES = {"scan" => "Scanned", "destroy" => "Destroyed"}
+  PAST_TENSES = { "scan" => "Scanned", "destroy" => "Destroyed" }
 
   belongs_to :user
 
@@ -27,5 +29,4 @@ class Audit < ActiveRecord::Base
   def summary
     "#{PAST_TENSES[action] || action.capitalize << 'd'} by #{user.login} on #{created_at.to_s(:uk)}"
   end
-
 end

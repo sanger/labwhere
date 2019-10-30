@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module ActiveModelExtension
   def klass
     @klass
   end
 end
 
-ActiveModel::Name.send(:include, ActiveModelExtension)
+ActiveModel::Name.include ActiveModelExtension

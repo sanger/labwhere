@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
-RSpec.describe AssertLocation, type: :model do 
-
+RSpec.describe AssertLocation, type: :model do
   with_model :my_model do
     table do |t|
       t.string :name
@@ -12,9 +13,7 @@ RSpec.describe AssertLocation, type: :model do
       belongs_to :location
 
       include AssertLocation
-
     end
-    
   end
 
   it "should always add the unknown location if it is empty" do
@@ -26,5 +25,4 @@ RSpec.describe AssertLocation, type: :model do
     my_model = MyModel.create(name: "My Model", location: create(:location))
     expect(my_model.location).to_not eq(UnknownLocation.get)
   end
-
 end

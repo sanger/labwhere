@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 ##
 # A location can store locations or labware
 class Location < ActiveRecord::Base
-
   UNKNOWN = "UNKNOWN"
 
   include Searchable::Client
@@ -32,7 +33,7 @@ class Location < ActiveRecord::Base
 
   validates_with ContainerReservationValidator
 
-  scope :without_location, -> (location) { active.where.not(id: location.id).order(id: :desc) }
+  scope :without_location, ->(location) { active.where.not(id: location.id).order(id: :desc) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
   scope :by_root, -> { without_unknown.roots }
 
@@ -124,7 +125,7 @@ class Location < ActiveRecord::Base
   ##
   # Useful for creating audit records. There are certain attributes which are not needed.
   def as_json(options = {})
-    super({except: [:deactivated_at, :location_type_id]}.merge(options)).merge(uk_dates).merge("location_type" => location_type.name)
+    super({ except: [:deactivated_at, :location_type_id] }.merge(options)).merge(uk_dates).merge("location_type" => location_type.name)
   end
 
   def child_count
@@ -162,6 +163,7 @@ class Location < ActiveRecord::Base
 
   def apply_restrictions
     return unless location_type
+
     location_type.restrictions.each do |restriction|
       validates_with restriction.validator, restriction.params
     end
@@ -173,6 +175,7 @@ class Location < ActiveRecord::Base
 
   def has_been_used
     return unless used?
+
     errors.add :location, "Has been used"
     throw :abort
   end

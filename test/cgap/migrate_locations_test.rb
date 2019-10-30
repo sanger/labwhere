@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class MigrateLocationsTest < ActiveSupport::TestCase
-
   def setup
     Cgap::MigrateTopLevelLocations.run!("test/fixtures")
     Cgap::MigrateLocations.run!("test/fixtures")
@@ -9,7 +10,7 @@ class MigrateLocationsTest < ActiveSupport::TestCase
 
   test "should migrate all of the locations data" do
     assert_operator Location.all.count, :>, 0
-    assert_equal Cgap::Location.all.count+Cgap::Storage.pluck(:top_location).uniq.length, Location.all.count-2
+    assert_equal Cgap::Location.all.count + Cgap::Storage.pluck(:top_location).uniq.length, Location.all.count - 2
   end
 
   test "should add the correct location types" do
@@ -44,16 +45,16 @@ class MigrateLocationsTest < ActiveSupport::TestCase
 
   test "should add coordinates to ordered locations" do
     ordered_locations = Cgap::Location.where("rows > 0 and columns > 0")
-    
+
     cgap_location = ordered_locations.first
     location = Location.find(cgap_location.labwhere_id)
     assert location.ordered?
-    assert_equal cgap_location.rows*cgap_location.columns, location.coordinates.count
+    assert_equal cgap_location.rows * cgap_location.columns, location.coordinates.count
 
     cgap_location = ordered_locations.last
     location = Location.find(cgap_location.labwhere_id)
     assert location.ordered?
-    assert_equal cgap_location.rows*cgap_location.columns, location.coordinates.count
+    assert_equal cgap_location.rows * cgap_location.columns, location.coordinates.count
   end
 
   def teardown

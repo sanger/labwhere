@@ -1,5 +1,6 @@
-class PrintersController < ApplicationController
+# frozen_string_literal: true
 
+class PrintersController < ApplicationController
   before_action :printers, only: [:index]
 
   def index
@@ -23,7 +24,7 @@ class PrintersController < ApplicationController
   end
 
   def update
-     @printer = PrinterForm.new(current_resource)
+    @printer = PrinterForm.new(current_resource)
     if @printer.submit(params)
       redirect_to printers_path, notice: "Printer successfully updated"
     else
@@ -32,14 +33,14 @@ class PrintersController < ApplicationController
   end
 
   def printers
-    @printers ||= Printer.all 
+    @printers ||= Printer.all
   end
 
   helper_method :printers
 
-private
+  private
 
   def current_resource
-    @current_resource ||=Printer.find(params[:id]) if params[:id]
+    @current_resource ||= Printer.find(params[:id]) if params[:id]
   end
 end

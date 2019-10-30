@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
-RSpec.describe Searchable, type: :model do 
-
+RSpec.describe Searchable, type: :model do
   with_model :Label do
     table do |t|
       t.string :name
@@ -13,7 +14,6 @@ RSpec.describe Searchable, type: :model do
 
       searchable_by :name
     end
-    
   end
 
   with_model :BarcodeLabel do
@@ -53,7 +53,6 @@ RSpec.describe Searchable, type: :model do
       expect(Label.search("Gobbledeyguke").count).to eq(1)
       expect(Label.search("gobbledeyguke").count).to eq(1)
       expect(Label.search("gobble").count).to eq(1)
-
     end
 
     it "should allow for search by term on multiple fields" do
@@ -75,7 +74,6 @@ RSpec.describe Searchable, type: :model do
   end
 
   describe Searchable::Orchestrator do
-
     it "should return an empty result if nothing matches" do
       Label.create(name: "A name")
       BarcodeLabel.create(name: "Another name")
@@ -90,15 +88,13 @@ RSpec.describe Searchable, type: :model do
 
       expect(Search.create(term: "name").results.count).to eq(2)
       expect(Search.create(term: "Gobbledey").results.count).to eq(1)
-
     end
 
     it "limit should limit the number of results returned by the search" do
-      (1...101).each { |i| Label.create(name: "A name")}
-      (1...106).each { |i| BarcodeLabel.create(name: "A name")}
+      (1...101).each { |_i| Label.create(name: "A name") }
+      (1...106).each { |_i| BarcodeLabel.create(name: "A name") }
       expect(Search.create(term: "name").results.count).to eq(205)
       expect(Search.create(term: "name").results.adjusted_count).to eq(200)
     end
   end
-
 end

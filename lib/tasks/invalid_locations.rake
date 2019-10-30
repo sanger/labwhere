@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 desc "Print out all the locations that fail validation"
 task :invalid_locations => :environment do
-
   has_failures = false
-  format="%-20s\t%-20s\t%-20s\t%-20s\n"
+  format = "%-20s\t%-20s\t%-20s\t%-20s\n"
 
   Location.all.each do |location|
     unless location.valid?
@@ -23,5 +24,4 @@ task :invalid_locations => :environment do
   end
 
   puts "All locations passed" unless has_failures
-
 end

@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 ##
 # Find a consecutive list of available coordinates in a set of coordinates signified by n.
 # e.g. find 10 consecutive coordinates.
 #
 class AvailableCoordinates
-
   # The set of coordinates to check
   attr_reader :coordinates
 
@@ -26,21 +27,20 @@ class AvailableCoordinates
   def find
     coordinates.each do |coordinate|
       if coordinate.vacant?
-        line = line(coordinate.position, coordinate.position+(n-1))
+        line = line(coordinate.position, coordinate.position + (n - 1))
         return coordinate.location if available?(line) && line.length == n
       end
     end
     nil
   end
 
-private
+  private
 
   def available?(coordinates)
     coordinates.all? { |c| c.vacant? }
   end
 
   def line(min, max)
-    coordinates.select { |c| c.position >= min && c.position <= max}
+    coordinates.select { |c| c.position >= min && c.position <= max }
   end
-  
 end

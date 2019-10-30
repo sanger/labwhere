@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # An Ordered Location is one which has a number of coordinates which can contain pieces of labware
 # at defined positions e.g. box.
@@ -17,5 +19,4 @@ class OrderedLocation < Location
       coordinates.build(position: position, row: row, column: column)
     end
   end
-
 end

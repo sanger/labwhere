@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class MigrateTopLevelLocationsTest < ActiveSupport::TestCase
-
   def setup
     Cgap::MigrateTopLevelLocations.run!("test/fixtures")
   end
@@ -13,7 +14,7 @@ class MigrateTopLevelLocationsTest < ActiveSupport::TestCase
 
   test "should migrate all of the storage equipment data" do
     assert_operator Location.all.count, :>, 0
-    assert_equal Cgap::Storage.pluck(:top_location).uniq.length, Location.all.count-2
+    assert_equal Cgap::Storage.pluck(:top_location).uniq.length, Location.all.count - 2
   end
 
   test "should assign the correct location type" do
@@ -22,7 +23,6 @@ class MigrateTopLevelLocationsTest < ActiveSupport::TestCase
   end
 
   test "should assign the correct parent" do
-
     assert_equal Location.find_by(name: "Sanger"), Location.find_by(name: "Sulston").parent
 
     assert_equal Location.find(Cgap::Storage.first.labwhere_id).parent, Location.find_by(name: "Sulston")
@@ -37,5 +37,4 @@ class MigrateTopLevelLocationsTest < ActiveSupport::TestCase
   def teardown
     Cgap::Storage.delete_all
   end
-  
 end

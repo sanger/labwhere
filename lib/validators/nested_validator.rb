@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 ##
-# Check whether the passed attribute for the record has a parent. 
+# Check whether the passed attribute for the record has a parent.
 class NestedValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     unless value.parent.valid?

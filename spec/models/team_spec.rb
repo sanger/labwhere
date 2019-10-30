@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Team, type: :model do
-  
   it "should not be valid without a number" do
     expect(build(:team, number: nil)).to_not be_valid
   end
@@ -30,5 +31,4 @@ RSpec.describe Team, type: :model do
     expect(json["created_at"]).to eq(team.created_at.to_s(:uk))
     expect(json["updated_at"]).to eq(team.updated_at.to_s(:uk))
   end
-
 end

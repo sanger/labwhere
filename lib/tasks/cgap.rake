@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Dir[File.join(Rails.root,"lib","cgap","migrations","*.rb")].each { |f| require f }
 # require File.join(Rails.root,"lib","cgap","cgap")
 
@@ -29,6 +30,5 @@
 #       Cgap::MigrateLabwares.run!
 #     end
 #   end
-  
- 
+
 # end

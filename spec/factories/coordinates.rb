@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :coordinate do
     location { create(:location_with_parent) }

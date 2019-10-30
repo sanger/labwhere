@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Cgap::Base < ActiveRecord::Base
   self.abstract_class = true
 
@@ -8,6 +10,5 @@ class Cgap::Base < ActiveRecord::Base
 
   # TODO: The following statement causes errors when the rake task is run and when the app is
   # deployed.
-  establish_connection  :cgap
-
+  establish_connection :cgap
 end

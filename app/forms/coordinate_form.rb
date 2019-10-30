@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 ##
 # Form object for updating a single Coordinate
 class CoordinateForm
-
   include AuthenticationForm
   include StorageValidator
   include Auditor
@@ -15,7 +16,7 @@ class CoordinateForm
     coordinate.labware = find_labware
   end
 
-private
+  private
 
   def labware_barcode_is_provided
     if !params.require(:coordinate).has_key?(:labware_barcode)
@@ -34,5 +35,4 @@ private
   def labwares
     [labware_barcode]
   end
-
 end

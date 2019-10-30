@@ -1,13 +1,12 @@
+# frozen_string_literal: true
 
 module SubclassChecker
-
   extend ActiveSupport::Concern
 
   included do
   end
 
   module ClassMethods
-
     def has_subclasses(*classes)
       options = classes.extract_options!
       classes.each do |klass|
@@ -31,12 +30,11 @@ module SubclassChecker
       name.include?("_") ? "#{name.split('_').first}?" : "#{name}?"
     end
 
-  private
+    private
 
     def set_klass_name(klass)
       name = klass.to_s
       name.include?("_") ? name.camelize : name.capitalize
     end
   end
-  
 end

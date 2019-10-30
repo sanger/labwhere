@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Api::Labwares::LocationsController, type: :request do
-
   describe '#create' do
-
     before :each do
       post api_labwares_locations_path, params: { barcodes: barcodes }
       @body = JSON.parse(response.body, symbolize_names: true)
@@ -19,7 +19,6 @@ describe Api::Labwares::LocationsController, type: :request do
       it 'returns an empty Location list' do
         expect(@body[:locations]).to be_instance_of(Array)
       end
-
     end
 
     context 'when barcodes are provided' do
@@ -38,22 +37,22 @@ describe Api::Labwares::LocationsController, type: :request do
       it 'returns a Location list for Labware found in ordered locations' do
         location.coordinates.each do |coordinate|
           expect(@body[:locations]).to include(
-                                           id: coordinate.location.id,
-                                           labware_barcode: coordinate.labware.barcode,
-                                           row: coordinate.row,
-                                           column: coordinate.column
-                                       )
+            id: coordinate.location.id,
+            labware_barcode: coordinate.labware.barcode,
+            row: coordinate.row,
+            column: coordinate.column
+          )
         end
       end
 
       it 'returns a Location list for Labware found in unordered locations' do
         location_with_labware.labwares.each do |labware|
           expect(@body[:locations]).to include(
-                                           id: labware.location_id,
-                                           labware_barcode: labware.barcode,
-                                           row: nil,
-                                           column: nil
-                                       )
+            id: labware.location_id,
+            labware_barcode: labware.barcode,
+            row: nil,
+            column: nil
+          )
         end
       end
 
@@ -61,10 +60,6 @@ describe Api::Labwares::LocationsController, type: :request do
         labware_barcodes = @body[:locations].map { |location| location[:labware_barcode] }
         expect(labware_barcodes).not_to include(labware.barcode)
       end
-
     end
-
   end
-
 end
-

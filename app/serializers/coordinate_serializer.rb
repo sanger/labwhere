@@ -1,5 +1,6 @@
+# frozen_string_literal: true
+
 class CoordinateSerializer < ActiveModel::V08::Serializer
-  
   attributes :id, :position, :row, :column, :labware, :location
 
   # the labware barcode of the coordinate
@@ -11,5 +12,4 @@ class CoordinateSerializer < ActiveModel::V08::Serializer
   def location
     object.location.barcode
   end
-
 end

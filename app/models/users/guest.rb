@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # A Guest is a user that doesn't exist useful for authentication.
 #
@@ -9,7 +11,6 @@
 #
 # Most of the important methods are overriden.
 class Guest < User
-
   include Permissions
 
   ##
@@ -35,5 +36,4 @@ class Guest < User
   def team_id
     1
   end
-  
 end

@@ -1,5 +1,5 @@
-class Printers::AuditsController < ApplicationController
+# frozen_string_literal: true
 
+class Printers::AuditsController < ApplicationController
   include Auditing
-  
 end

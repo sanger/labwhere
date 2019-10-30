@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ParentWhiteListValidator < ActiveModel::Validator
   def validate(record)
     unless record.parent.present? and record.parent.location_type.in?(options[:location_types])

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe CoordinatesForm, type: :model do
-
   let(:user) { create(:scientist) }
   let(:coordinates) { create_list(:coordinate, 3) }
   let(:labwares) { create_list(:labware, 3) }
@@ -25,7 +26,6 @@ RSpec.describe CoordinatesForm, type: :model do
       expect(@result).to be_falsey
       expect(coordinates_form).to_not be_valid
     end
-
   end
 
   context 'when a coordinate\'s location is reserved by another team' do
@@ -38,13 +38,10 @@ RSpec.describe CoordinatesForm, type: :model do
       expect(@result).to be_falsey
       expect(coordinates_form).to_not be_valid
     end
-
   end
 
   describe '#submit' do
-
     context 'when all params are valid' do
-
       it 'returns true' do
         expect(@result).to be_truthy
       end
@@ -56,14 +53,13 @@ RSpec.describe CoordinatesForm, type: :model do
       it 'creates an audit record for each coordinate' do
         coordinates.each { |c| expect(c.audits).to_not be_empty }
       end
-
     end
 
     context 'when a param is not valid' do
       let(:coordinates_params) do
         {
-            coordinates: coordinates.map.with_index { |c, i| { id: c.id, labware_barcode: labwares[i].barcode } }
-                          .push({ id: create(:coordinate) }) # Missing labware_barcode
+          coordinates: coordinates.map.with_index { |c, i| { id: c.id, labware_barcode: labwares[i].barcode } }
+                                  .push({ id: create(:coordinate) }) # Missing labware_barcode
         }
       end
 
@@ -72,14 +68,12 @@ RSpec.describe CoordinatesForm, type: :model do
       end
 
       it 'does not update any coordinates' do
-        coordinates.each.with_index { |c, i| expect(c.reload.labware).to be_instance_of(NullLabware) }
+        coordinates.each.with_index { |c, _i| expect(c.reload.labware).to be_instance_of(NullLabware) }
       end
 
       it 'does not create an audit records' do
         coordinates.each { |c| expect(c.audits).to be_empty }
       end
-
     end
-
   end
 end

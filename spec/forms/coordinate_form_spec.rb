@@ -1,13 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe CoordinateForm, type: :model do
-
   let(:coordinate) { create(:coordinate) }
   let(:user) { create(:administrator) }
   let(:labware) { create(:labware) }
 
   let(:coordinate_form) { CoordinateForm.new(coordinate) }
-  let(:controller_args) { { controller: "locations/coordinates", action: "update"} }
+  let(:controller_args) { { controller: "locations/coordinates", action: "update" } }
   let(:user_args) { { user_code: user.login } }
   let(:labware_args) { { labware_barcode: labware.barcode } }
 
@@ -35,7 +36,6 @@ RSpec.describe CoordinateForm, type: :model do
   end
 
   describe '#submit' do
-
     context 'when labware barcode is not nil' do
       it 'sets the labware\'s coordinate' do
         result = coordinate_form.submit(params)
@@ -66,9 +66,6 @@ RSpec.describe CoordinateForm, type: :model do
       it 'creates an audit' do
         expect { coordinate_form.submit(params) }.to change { Audit.count }.by(1)
       end
-
     end
-
   end
-
 end

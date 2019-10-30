@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LocationReleaseValidator < ActiveModel::Validator
   def validate(record)
     if record.model.team_id_changed?
