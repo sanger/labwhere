@@ -37,7 +37,7 @@ deploy:
   on:
     repo: sanger/labwhere
     all_branches: true
-    condition: "$TRAVIS_BRANCH =~ ^uat|master$"
+    condition: "$TRAVIS_BRANCH =~ ^devel|master$"
 notifications:
   slack:
     secure: iKQj0jnqYe3Gf9Ky3+7wuP/5EiFo0bnUfl+7UjWbEUwxQj+eBHeb1I3ytNfH/Gre8ATLBNTUSFg5DOU+MxEJHhoFFanMa/ECgl9qh3j5NIQnztDVj2sdR7HWHvbMJerDJJ4vYa1MsnNpFTTtSkW2/05GoSAW+KIyQsy8aBECLqs=
