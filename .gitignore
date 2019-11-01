@@ -47,3 +47,6 @@ bower.json
 .idea
 .generators
 .rakeTasks
+
+# IDE
+.vscode
