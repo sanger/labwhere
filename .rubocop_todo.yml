@@ -40,7 +40,7 @@ Lint/UselessAssignment:
     - 'app/models/concerns/searchable.rb'
     - 'app/models/label_printer.rb'
     - 'lib/cgap/cgap/migrate_top_level_locations.rb'
-    - 'lib/validators/maximum_records_validator.rb'
+    - 'app/lib/validators/maximum_records_validator.rb'
     - 'spec/api/locations_spec.rb'
     - 'spec/features/locations_spec.rb'
     - 'spec/features/printers_spec.rb'
@@ -86,7 +86,7 @@ Naming/AccessorMethodName:
     - 'app/forms/coordinates_form.rb'
     - 'app/models/concerns/subclass_checker.rb'
     - 'lib/cgap/cgap/load_data.rb'
-    - 'lib/utils/hash_attributes.rb'
+    - 'app/lib/utils/hash_attributes.rb'
 
 # Offense count: 1
 # Configuration parameters: EnforcedStyleForLeadingUnderscores.
@@ -117,7 +117,7 @@ Naming/UncommunicativeMethodParamName:
     - 'app/models/concerns/available_coordinates.rb'
     - 'app/models/coordinate.rb'
     - 'app/models/search_result.rb'
-    - 'lib/active_model/v08/serializer.rb'
+    - 'app/lib/active_model/v08/serializer.rb'
 
 # Offense count: 32
 # Configuration parameters: EnforcedStyle.
@@ -186,7 +186,7 @@ Rails/EnumHash:
 # Cop supports --auto-correct.
 Rails/EnvironmentComparison:
   Exclude:
-    - 'lib/tasks/api.rake'
+    - 'app/lib/tasks/api.rake'
 
 # Offense count: 17
 # Configuration parameters: EnforcedStyle.
@@ -197,10 +197,10 @@ Rails/FilePath:
     - 'config/initializers/load_cgap_models.rb'
     - 'config/initializers/restrictions.rb'
     - 'lib/cgap/cgap/load_data.rb'
-    - 'lib/tasks/db.rake'
-    - 'lib/tasks/error_pages.rake'
-    - 'lib/tasks/location_creator.rake'
-    - 'lib/tasks/restriction_creator.rake'
+    - 'app/lib/tasks/db.rake'
+    - 'app/lib/tasks/error_pages.rake'
+    - 'app/lib/tasks/location_creator.rake'
+    - 'app/lib/tasks/restriction_creator.rake'
     - 'spec/rails_helper.rb'
     - 'test/location_creator/location_creator_test.rb'
     - 'test/restriction_creator/restriction_creator_test.rb'
@@ -237,7 +237,7 @@ Rails/InverseOf:
 
 # Offense count: 1
 # Configuration parameters: Include.
-# Include: app/**/*.rb, config/**/*.rb, db/**/*.rb, lib/**/*.rb
+# Include: app/**/*.rb, config/**/*.rb, db/**/*.rb, app/lib/**/*.rb
 Rails/Output:
   Exclude:
     - 'lib/cgap/cgap/load_data.rb'
@@ -294,7 +294,7 @@ Rails/Validation:
 Style/Alias:
   Exclude:
     - 'app/models/locations/location.rb'
-    - 'lib/active_model/v08/serializer.rb'
+    - 'app/lib/active_model/v08/serializer.rb'
 
 # Offense count: 8
 # Cop supports --auto-correct.
@@ -303,9 +303,9 @@ Style/Alias:
 Style/AndOr:
   Exclude:
     - 'app/forms/location_form.rb'
-    - 'lib/utils/dependent_loader.rb'
-    - 'lib/validators/parent_black_list_validator.rb'
-    - 'lib/validators/parent_white_list_validator.rb'
+    - 'app/lib/utils/dependent_loader.rb'
+    - 'app/lib/validators/parent_black_list_validator.rb'
+    - 'app/lib/validators/parent_white_list_validator.rb'
 
 # Offense count: 7
 # Configuration parameters: AllowedChars.
@@ -351,7 +351,7 @@ Style/BracesAroundHashParameters:
     - 'app/controllers/api/labwares/locations_controller.rb'
     - 'app/models/concerns/soft_deletable.rb'
     - 'app/models/users/user.rb'
-    - 'lib/validators/location_validator.rb'
+    - 'app/lib/validators/location_validator.rb'
     - 'spec/form_object/form_variables_spec.rb'
     - 'spec/forms/coordinates_form_spec.rb'
     - 'spec/utils/hash_attributes_spec.rb'
@@ -361,7 +361,7 @@ Style/BracesAroundHashParameters:
 Style/CaseEquality:
   Exclude:
     - 'config/initializers/02_proc.rb'
-    - 'lib/validators/location_release_validator.rb'
+    - 'app/lib/validators/location_release_validator.rb'
 
 # Offense count: 31
 # Cop supports --auto-correct.
@@ -383,7 +383,7 @@ Style/ClassCheck:
 Style/ColonMethodCall:
   Exclude:
     - 'config/initializers/restrictions.rb'
-    - 'lib/tasks/restriction_creator.rake'
+    - 'app/lib/tasks/restriction_creator.rake'
     - 'test/restriction_creator/restriction_creator_test.rb'
 
 # Offense count: 1
@@ -459,10 +459,10 @@ Style/GuardClause:
 # SupportedStyles: ruby19, hash_rockets, no_mixed_keys, ruby19_no_mixed_keys
 Style/HashSyntax:
   Exclude:
-    - 'lib/tasks/db.rake'
-    - 'lib/tasks/invalid_locations.rake'
-    - 'lib/tasks/location_creator.rake'
-    - 'lib/tasks/restriction_creator.rake'
+    - 'app/lib/tasks/db.rake'
+    - 'app/lib/tasks/invalid_locations.rake'
+    - 'app/lib/tasks/location_creator.rake'
+    - 'app/lib/tasks/restriction_creator.rake'
     - 'lib/utils/deployed_version.rb'
 
 # Offense count: 16
@@ -482,13 +482,13 @@ Style/Lambda:
 Style/MethodMissingSuper:
   Exclude:
     - 'config/initializers/02_proc.rb'
-    - 'lib/active_model/v08/serializer.rb'
+    - 'app/lib/active_model/v08/serializer.rb'
 
 # Offense count: 2
 Style/MissingRespondToMissing:
   Exclude:
     - 'config/initializers/02_proc.rb'
-    - 'lib/active_model/v08/serializer.rb'
+    - 'app/lib/active_model/v08/serializer.rb'
 
 # Offense count: 2
 Style/MixinUsage:
@@ -530,7 +530,7 @@ Style/NestedParenthesizedCalls:
 # SupportedStyles: skip_modifier_ifs, always
 Style/Next:
   Exclude:
-    - 'lib/tasks/invalid_locations.rake'
+    - 'app/lib/tasks/invalid_locations.rake'
 
 # Offense count: 4
 # Cop supports --auto-correct.
@@ -566,7 +566,7 @@ Style/ParallelAssignment:
 # Configuration parameters: AllowSafeAssignment, AllowInMultilineConditions.
 Style/ParenthesesAroundCondition:
   Exclude:
-    - 'lib/validators/location_validator.rb'
+    - 'app/lib/validators/location_validator.rb'
 
 # Offense count: 7
 # Cop supports --auto-correct.
@@ -666,9 +666,9 @@ Style/StringLiteralsInInterpolation:
   Exclude:
     - 'app/models/search_result.rb'
     - 'lib/cgap/cgap/load_data.rb'
-    - 'lib/validators/either_or_validator.rb'
-    - 'lib/validators/parent_black_list_validator.rb'
-    - 'lib/validators/parent_white_list_validator.rb'
+    - 'app/lib/validators/either_or_validator.rb'
+    - 'app/lib/validators/parent_black_list_validator.rb'
+    - 'app/lib/validators/parent_white_list_validator.rb'
     - 'spec/forms/authentication_form_spec.rb'
     - 'spec/forms/scan_form_spec.rb'
 
@@ -689,8 +689,8 @@ Style/SymbolProc:
     - 'app/controllers/locations_controller.rb'
     - 'app/models/concerns/available_coordinates.rb'
     - 'app/models/coordinate.rb'
-    - 'lib/tasks/db.rake'
-    - 'lib/utils/barcode_utilities.rb'
+    - 'app/lib/tasks/db.rake'
+    - 'app/lib/utils/barcode_utilities.rb'
     - 'spec/api/labwares/locations_spec.rb'
     - 'spec/factories/labware_collections.rb'
 
@@ -698,7 +698,7 @@ Style/SymbolProc:
 # Cop supports --auto-correct.
 Style/UnlessElse:
   Exclude:
-    - 'lib/validators/location_validator.rb'
+    - 'app/lib/validators/location_validator.rb'
 
 # Offense count: 695
 # Cop supports --auto-correct.
