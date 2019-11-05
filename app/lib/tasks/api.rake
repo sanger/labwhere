@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if Rails.env == "development"
+if Rails.env.development?
 
   namespace :docs do
     desc "generate the api docs"
