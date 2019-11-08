@@ -30,13 +30,13 @@ module Labwhere
     # redirect errors to errors controller
     config.exceptions_app = self.routes
 
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W(#{config.root}/app/lib)
 
-    config.autoload_paths += %W(#{config.root}/lib/utils #{config.root}/lib/validators)
+    config.autoload_paths += %W(#{config.root}/app/lib/utils #{config.root}/app/lib/validators)
 
     config.autoload_paths += %W(#{config.root}/app/models/users #{config.root}/app/models/locations #{config.root}/app/models/restrictions)
 
-    config.autoload_paths += %W(#{config.root}/lib/label_printing #{config.root}/app/models/labware_collection)
+    config.autoload_paths += %W(#{config.root}/app/lib/label_printing #{config.root}/app/models/labware_collection)
 
     config.mailer = YAML.load_file("#{Rails.root}/config/mailer.yml")[Rails.env]
 
