@@ -35,6 +35,8 @@ RSpec.describe Auditable, type: :model do
     my_model = MyModel.create(name: "My Model")
     my_model.create_audit(user)
     expect(my_model.audits.last.action).to eq("create")
+    # Need to put the created date into the past because the test is too quick, so that created date and updated date are equal
+    my_model.update_attributes(created_at: DateTime.now - 1)
     my_model.update_attributes(name: "New Name")
     my_model.create_audit(user)
     expect(my_model.audits.last.action).to eq("update")
