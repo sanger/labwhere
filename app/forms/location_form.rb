@@ -141,9 +141,9 @@ class LocationForm
   end
 
   def generate_names(prefix, start_from, end_to)
-    if not start_from.nil? and not end_to.nil?
-      ("#{prefix} #{start_from}".."#{prefix} #{end_to}").each do |name|
-        yield name
+    if start_from.present? and end_to.present?
+      (start_from..end_to).each do |name|
+        yield "#{prefix} #{name}"
       end
     else
       yield prefix
@@ -161,6 +161,7 @@ class LocationForm
       set_team
       locations.push location
     end
+    errors.add(:base, message: "Locations could not be created.") if locations.empty?
     locations
   end
 
