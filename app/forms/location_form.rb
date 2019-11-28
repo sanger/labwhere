@@ -22,10 +22,6 @@ class LocationForm
     assign_attributes(params)
     if valid?
       locations = create_locations(params)
-      if locations.empty?
-        errors.add(:base, message: "Locations could not be created.")
-        return false
-      end
       run_transaction do
         locations.each do |new_location|
           @location = new_location
@@ -145,9 +141,9 @@ class LocationForm
   end
 
   def generate_names(prefix, start_from, end_to)
-    if not start_from.nil? and not end_to.nil?
-      ("#{start_from}".."#{end_to}").each do |name|
-        yield name
+    if start_from.present? and end_to.present?
+      (start_from..end_to).each do |name|
+        yield "#{prefix} #{name}"
       end
     else
       yield prefix
@@ -158,13 +154,14 @@ class LocationForm
     locations = []
     prefix = params[:location][:name]
     generate_names(prefix, start_from, end_to) do |name|
-      params[:location][:name] = "#{prefix} #{name}"
+      params[:location][:name] = name
       @location = Location.new
       location.assign_attributes(location_attrs(params))
       transform_location
       set_team
       locations.push location
     end
+    errors.add(:base, message: "Locations could not be created.") if locations.empty?
     locations
   end
 
