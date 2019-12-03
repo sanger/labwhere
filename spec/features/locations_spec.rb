@@ -105,6 +105,22 @@ RSpec.describe "Locations", type: :feature do
     expect(page).to have_content("Location(s) successfully created")
   end
 
+  it "Allows a user to add multiple locations spanning an order of magnitude" do
+    location = build(:location)
+    visit locations_path
+    click_link "Add new location"
+    expect {
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "Name", with: location.name
+      fill_in "Start", with: "99"
+      fill_in "End", with: "101"
+      check "Container"
+      click_button "Create Location"
+    }.to change(Location, :count).by(3)
+    expect(Location.last.reserved?).to eq(false)
+    expect(page).to have_content("Location(s) successfully created")
+  end
+
   # rubocop:todo Lint/BooleanSymbol
   describe "with coordinates", js: :true do
     # rubocop:enable Lint/BooleanSymbol
