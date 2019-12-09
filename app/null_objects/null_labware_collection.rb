@@ -1,5 +1,6 @@
-class NullLabwareCollection
+# frozen_string_literal: true
 
+class NullLabwareCollection
   def count
     0
   end
@@ -19,5 +20,4 @@ class NullLabwareCollection
   def original_location_names
     ""
   end
-  
 end

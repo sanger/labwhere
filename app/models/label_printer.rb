@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Print barcode for a particular location
 # The object will create a request from a printer_id and location_ids.
@@ -16,19 +18,19 @@ class LabelPrinter
     @labels = Label.new(locations * copies)
   end
 
-  def printer=(printer)
+  def printer=(printer) # rubocop:todo Lint/DuplicateMethods
     @printer = Printer.find(printer)
   end
 
-  def locations=(locations)
+  def locations=(locations) # rubocop:todo Lint/DuplicateMethods
     @locations = Location.find(Array(locations))
   end
 
-  def copies
+  def copies # rubocop:todo Lint/DuplicateMethods
     @copies || 1
   end
 
-  def locations
+  def locations # rubocop:todo Lint/DuplicateMethods
     @locations || []
   end
 
@@ -44,6 +46,7 @@ class LabelPrinter
   # Will return false if there is either an unexpected error or a server error
   def post
     return unless valid?
+
     begin
       PMB::PrintJob.execute(printer_name: printer.name, label_template_id: label_template_id, labels: labels.to_h)
       @response_ok = true
@@ -55,5 +58,4 @@ class LabelPrinter
   def response_ok?
     @response_ok ||= false
   end
-
 end

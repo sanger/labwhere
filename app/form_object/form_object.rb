@@ -1,5 +1,6 @@
-module FormObject
+# frozen_string_literal: true
 
+module FormObject
   extend ActiveSupport::Concern
   include ActiveModel::Model
   include ActiveModel::Serialization
@@ -18,7 +19,7 @@ module FormObject
   # specific validations that are added. It will then save the model if it is valid.
   # The after_validate method allows you to change which actions are carried out post validation.
   # The after_submit callback allows you to specify actions which can be carried out after a successful submit.
-  # Each form object will automatically assign controller and action variables if the paramters come from a controller and will
+  # Each form object will automatically assign controller and action variables if the parameters come from a controller and will
   # also assign the parameters to an instance variable.
   # Each object will also have an attribute called model which relates to the underlying model this is also aliased to the name of the model.
   # e.g. if model is called MyModel there will an attribute called my_model.
@@ -65,8 +66,7 @@ module FormObject
   #
 
   included do
-
-    _model = self.to_s.gsub("Form","")
+    _model = self.to_s.gsub("Form", "")
 
     class_attribute :form_variables
     self.form_variables = FormObject::FormVariables.new(self, _model.underscore.to_sym, [:controller, :action])
@@ -74,7 +74,7 @@ module FormObject
     validate :check_for_errors
 
     define_singleton_method :model_name do
-       ActiveModel::Name.new(_model.constantize)
+      ActiveModel::Name.new(_model.constantize)
     end
 
     attr_reader :model
@@ -86,20 +86,16 @@ module FormObject
     define_model_callbacks :submit, only: :after
     define_model_callbacks :save_model, only: :after
     define_model_callbacks :assigning_model_variables, only: :after
-
   end
 
   module ClassMethods
-
     # Set the whitelist of attributes that will be assigned to the model.
     def set_attributes(*attributes)
-
       delegate *attributes, to: :model
 
       define_method :model_attributes do
         attributes
       end
-
     end
 
     # Set the list of form variables which will be assigned on submit.
@@ -160,7 +156,7 @@ module FormObject
     end
   end
 
-private
+  private
 
   def check_for_errors
     add_errors unless model.valid?
@@ -186,5 +182,4 @@ private
       false
     end
   end
-
 end

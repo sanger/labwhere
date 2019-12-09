@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Based loosely on the GoRails tutorial
 # Adds soft deletable capability to an ActiveRecord model.
@@ -16,31 +18,27 @@
 # if implemented when you soft delete these associations will be set to nil.
 #
 module SoftDeletable
-
   extend ActiveSupport::Concern
 
   included do
-
-    scope :deleted, ->{ where.not(deleted_at: nil) }
-    scope :without_deleted, ->{ where(deleted_at: nil) }
-    scope :with_deleted, ->{ all }
+    scope :deleted, -> { where.not(deleted_at: nil) }
+    scope :without_deleted, -> { where(deleted_at: nil) }
+    scope :with_deleted, -> { all }
 
     define_singleton_method :modifiable_attributes do
-      {deleted_at: Time.zone.now}
+      { deleted_at: Time.zone.now }
     end
   end
- 
-  module ClassMethods
 
+  module ClassMethods
     def removable_associations(*associations)
       define_singleton_method :modifiable_attributes do
-        associations.inject({deleted_at: Time.zone.now}) do |result, item|
+        associations.inject({ deleted_at: Time.zone.now }) do |result, item|
           result[item] = nil
           result
         end
       end
     end
-
   end
 
   ##
@@ -66,5 +64,4 @@ module SoftDeletable
   def deleted?
     deleted_at?
   end
-  
 end

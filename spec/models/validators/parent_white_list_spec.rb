@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe ParentWhiteListValidator, type: :model do
-
   let(:valid_parent_types) { create_list(:location_type, 3) }
 
   let(:validator) do
@@ -28,5 +29,4 @@ RSpec.describe ParentWhiteListValidator, type: :model do
       expect(model_with_invalid_parent.errors).to_not be_empty
     end
   end
-
 end

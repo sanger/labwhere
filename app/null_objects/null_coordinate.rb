@@ -1,6 +1,7 @@
- # Null object for a coordinate
- class NullCoordinate
+# frozen_string_literal: true
 
+# Null object for a coordinate
+class NullCoordinate
   # Always set the name to null
   def name
     "null"
@@ -19,6 +20,16 @@
   def flush
   end
 
+  def row
+  end
+
+  def column
+  end
+
   def position
+  end
+
+  def marked_for_destruction?
+    false
   end
 end

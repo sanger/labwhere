@@ -1,9 +1,8 @@
+# frozen_string_literal: true
+
 # Serializer for Location
 # includes created_at and updated_at
-class LocationSerializer < ActiveModel::Serializer
-  
-  self.root = false
-
+class LocationSerializer < ActiveModel::V08::Serializer
   attributes :id, :name, :parent, :container, :status, :location_type_id, :audits, :barcode, :rows, :columns, :parentage
 
   include SerializerDates
@@ -12,10 +11,10 @@ class LocationSerializer < ActiveModel::Serializer
   # If the parent is not valid return its name
   # otherwise return a link to the parent
   def parent
-    unless object.parent.empty? || object.parent.unknown?
-      api_location_path(object.parent.barcode)
+    if object.internal_parent.nil? || object.internal_parent.unknown?
+      NullLocation.new.name
     else
-      object.parent.name
+      api_location_path(object.internal_parent.barcode)
     end
   end
 
@@ -24,5 +23,4 @@ class LocationSerializer < ActiveModel::Serializer
   def audits
     api_location_audits_path(object.barcode)
   end
-
 end

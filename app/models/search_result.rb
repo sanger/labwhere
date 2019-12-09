@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 ##
 # Used by Search
 # An object which will be returned by the search or the api.
 class SearchResult
-
+  extend ActiveModel::Naming
   include Enumerable
   include ActiveModel::Serialization
   include ActionView::Helpers::TextHelper
@@ -21,7 +23,7 @@ class SearchResult
   # The number of results the search is limited to
   attr_accessor :limit
 
-  delegate [], :empty?, to: :results
+  delegate :[], :empty?, to: :results
 
   ##
   # If the results are passed will add them to SearchResult otherwise create an empty result.
@@ -36,7 +38,7 @@ class SearchResult
   end
 
   ##
-  # 
+  #
   #  search_result = SearchResult.new(results)
   #  search_result.each do |search|
   #   ...
@@ -49,8 +51,9 @@ class SearchResult
   # Add an object to the results hash with key k unless it is empty.
   # result with key will be replaced.
   # if adding result exceeds the limit then only spare capacity will be added.
-  def add(k,v)
+  def add(k, v)
     return if adjusted_count >= limit
+
     unless v.empty?
       if adjusted_count + v.length > limit
         @results[k] = v.take(limit - adjusted_count)
@@ -67,7 +70,7 @@ class SearchResult
   # If the number of results exceeds the limit state the limit and the actual number of results.
   def message
     return "Your search returned #{pluralize(count, "result")}." if count <= limit
+
     "Your search returned #{pluralize(count, "result")}. It has been limited to #{pluralize(limit, "result")}. Please refine your search."
   end
-  
 end

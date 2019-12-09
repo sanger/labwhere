@@ -1,7 +1,6 @@
-# Serializer for Search Result
-class SearchResultSerializer < ActiveModel::Serializer
+# frozen_string_literal: true
 
-  self.root = false
-  
+# Serializer for Search Result
+class SearchResultSerializer < ActiveModel::V08::Serializer
   attributes :count, :results
 end

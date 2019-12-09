@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe SubclassChecker, type: :model do
-
   class Potato
-
     include SubclassChecker
     has_subclasses :baked, :roast, suffix: true
     def type
@@ -46,7 +46,6 @@ RSpec.describe SubclassChecker, type: :model do
   end
 
   context "Potato - with a suffix" do
-
     it "Potato should not be Baked or Roasted" do
       expect(Potato.new).to_not be_baked
       expect(Potato.new).to_not be_roast
@@ -64,7 +63,6 @@ RSpec.describe SubclassChecker, type: :model do
   end
 
   context "Person - without a suffix" do
-
     it "Person should not be Child or Parent" do
       expect(Person.new).to_not be_child
       expect(Person.new).to_not be_parent
@@ -82,7 +80,6 @@ RSpec.describe SubclassChecker, type: :model do
   end
 
   context "Xmas Songs - underscored" do
-
     it "XmasSongs should not be JingleBells or XmasTree" do
       expect(XmasSongs.new).to_not be_jingle
       expect(XmasSongs.new).to_not be_xmas
@@ -97,10 +94,5 @@ RSpec.describe SubclassChecker, type: :model do
       expect(XmasTree.new).to_not be_jingle
       expect(XmasTree.new).to be_xmas
     end
-  
   end
-
-
-
-
 end

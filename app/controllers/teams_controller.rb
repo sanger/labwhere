@@ -1,5 +1,6 @@
-class TeamsController < ApplicationController
+# frozen_string_literal: true
 
+class TeamsController < ApplicationController
   before_action :teams, only: [:index]
 
   def index
@@ -37,9 +38,9 @@ class TeamsController < ApplicationController
 
   helper_method :teams
 
-private
+  private
 
-   def current_resource
+  def current_resource
     @current_resource ||= Team.find(params[:id]) if params[:id]
   end
 end

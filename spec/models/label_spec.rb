@@ -1,22 +1,20 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.shared_examples 'a label' do
-
   describe '#body' do
     it 'creates the body from the location(s)' do
       expect(subject.body).to be_kind_of Array
     end
   end
-
 end
 
 RSpec.describe Label, type: :model do
-
   let!(:location) { create(:location) }
   let!(:locations) { create_list(:location, 3) }
 
   context 'with one location' do
-
     subject { Label.new(location) }
 
     it_behaves_like 'a label'
@@ -28,11 +26,9 @@ RSpec.describe Label, type: :model do
       expect(subject.body[0][:location][:parent_location]).to eql(location.parent.name)
       expect(subject.body[0][:location][:location]).to eql(location.name)
     end
-
   end
 
   context 'with many locations' do
-
     subject { Label.new(locations) }
 
     it_behaves_like 'a label'
@@ -47,5 +43,4 @@ RSpec.describe Label, type: :model do
       end
     end
   end
-
 end

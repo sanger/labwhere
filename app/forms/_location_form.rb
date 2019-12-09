@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 ##
 # Form object for a Location
 class LocationForm
-
   include AuthenticationForm
   include Auditor
 
@@ -26,6 +27,7 @@ class LocationForm
   def destroy(params)
     self.form_variables.assign(self, params)
     return false unless valid?
+
     location.destroy
     if location.destroyed?
       true
@@ -35,8 +37,7 @@ class LocationForm
     end
   end
 
-
-private
+  private
 
   def transform_location
     @model = location.transform if location.new_record?
@@ -48,11 +49,11 @@ private
 
   def only_same_team_can_release_location
     return unless params.has_key? :location
+
     LocationReleaseValidator.new(team_id: current_user.team_id).validate(self) if !reserve_param?
   end
 
   def reserve_param?
     params.fetch(:location).fetch(:reserve, "0") == "1"
   end
-
 end

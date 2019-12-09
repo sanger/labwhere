@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-
   it "should not be valid without a login" do
     expect(build(:user, login: nil)).to_not be_valid
   end
@@ -47,7 +48,6 @@ RSpec.describe User, type: :model do
     user = build(:user, swipe_card_id: nil, barcode: nil)
     expect(user).to_not be_valid
     expect(user.errors.full_messages).to include("Swipe card or Barcode must be completed")
-
   end
 
   describe "User Types" do
@@ -75,14 +75,14 @@ RSpec.describe User, type: :model do
     it "Scientist user should be allowed to create a scan" do
       expect(build(:scientist)).to allow_permission(:scans, :create)
     end
-
   end
 
-  it "#find_by_code should be able to find user by swipe card id or barcode" do
+  it "#find_by_code should be able to find user by swipe card id or barcode or login" do
     users = create_list(:user, 4)
     user = build(:user)
     expect(User.find_by_code(users.first.swipe_card_id)).to eq(users.first)
     expect(User.find_by_code(users.first.barcode)).to eq(users.first)
+    expect(User.find_by_code(users.first.login)).to eq(users.first)
     expect(User.find_by_code(user.swipe_card_id)).to be_guest
   end
 
@@ -110,5 +110,4 @@ RSpec.describe User, type: :model do
     expect(user.reload.swipe_card_id).to be_present
     expect(user.barcode).to be_present
   end
-
 end

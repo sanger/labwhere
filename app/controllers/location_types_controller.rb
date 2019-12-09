@@ -1,5 +1,6 @@
-class LocationTypesController < ApplicationController
+# frozen_string_literal: true
 
+class LocationTypesController < ApplicationController
   before_action :location_types, only: [:index]
   before_action :set_location_type, except: [:index]
 
@@ -43,12 +44,12 @@ class LocationTypesController < ApplicationController
         flash_keep "Location type successfully deleted"
         format.js { render js: "window.location.pathname='#{location_types_path}'" }
       else
-        format.js 
+        format.js
       end
     end
   end
 
-protected
+  protected
 
   def location_types
     @location_type ||= LocationType.ordered
@@ -60,10 +61,9 @@ protected
 
   helper_method :location_types
 
-private
+  private
 
   def current_resource
     @current_resource ||= LocationType.find(params[:id]) if params[:id]
   end
-
 end

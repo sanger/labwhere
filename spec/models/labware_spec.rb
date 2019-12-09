@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Labware, type: :model do
@@ -62,7 +64,6 @@ RSpec.describe Labware, type: :model do
     expect(json["coordinate_id"]).to be_nil
     expect(json["deleted_at"]).to be_nil
     expect(json["previous_location_id"]).to be_nil
-
   end
 
   it "#flush_coordinate should remove coordinate" do
@@ -98,9 +99,9 @@ RSpec.describe Labware, type: :model do
   end
 
   it 'should have a full path string' do
-    location_1 = build(:location, name: 'Location_1')
-    location_2 = build(:location, name: 'Location_2', parent: location_1)
-    location_3 = build(:location, name: 'Location_3', parent: location_2)
+    location_1 = create(:location, name: 'Location_1')
+    location_2 = create(:location, name: 'Location_2', parent: location_1)
+    location_3 = create(:location, name: 'Location_3', parent: location_2)
 
     expect(create(:labware, location: location_3).full_path).to eq('Location_1 > Location_2 > Location_3')
   end

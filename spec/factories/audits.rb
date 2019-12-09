@@ -1,4 +1,6 @@
-FactoryGirl.define do
+# frozen_string_literal: true
+
+FactoryBot.define do
   factory :audit do
     transient do
       location { create(:location) }
@@ -9,5 +11,4 @@ FactoryGirl.define do
     auditable_id { location.id }
     user
   end
-
 end

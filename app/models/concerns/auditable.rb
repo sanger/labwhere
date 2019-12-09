@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 ##
 # This will add two methods in any class which includes it
 # to build or create an associated audit record.
 # Any class using this must belong to user and have many audits as auditable.
 module Auditable
-
   extend ActiveSupport::Concern
 
   included do
@@ -20,16 +21,16 @@ module Auditable
   ##
   # Convert the dates to human readable uk format for the audit record.
   def uk_dates
-    { "created_at" => created_at.to_s(:uk), "updated_at" => updated_at.to_s(:uk)}
+    { "created_at" => created_at.to_s(:uk), "updated_at" => updated_at.to_s(:uk) }
   end
 
-private
+  private
 
   def create_action(action)
     return action if action.present?
     return "destroy" if self.destroyed?
     return "create" if self.created_at == self.updated_at
+
     "update"
   end
-  
 end

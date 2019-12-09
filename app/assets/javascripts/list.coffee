@@ -99,6 +99,7 @@ class @List
       buttons:
         Cancel: -> $(this).dialog("close")
 
-jQuery ->
+$(document).on("turbolinks:load", ->
   for list in $("[data-behavior$=-list]")
     new List list
+)

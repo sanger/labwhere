@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class MigrateLabwaresTest < ActiveSupport::TestCase
-
   def setup
     Cgap::MigrateTopLevelLocations.run!("test/fixtures")
     Cgap::MigrateLocations.run!("test/fixtures")
@@ -45,5 +46,4 @@ class MigrateLabwaresTest < ActiveSupport::TestCase
     Cgap::Location.delete_all
     Cgap::Labware.delete_all
   end
-  
 end

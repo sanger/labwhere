@@ -1,18 +1,19 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
-Dir[File.join(Rails.root,"lib","location_creator","*.rb")].each { |f| require f }
+Dir[File.join(Rails.root, "lib", "location_creator", "*.rb")].each { |f| require f }
 
 class LocationCreatorTest < ActiveSupport::TestCase
-
   def setup
     site = LocationType.create(name: "Site")
     building = LocationType.create(name: "Building")
     UnorderedLocation.create(name: "Sanger", location_type: site)
-    location_creator = LocationCreator.new( "Site" => {location: "Sanger"}, 
-                                            "Building" => {location: "Ogilvie"},
-                                            "Room" => {location: "AA315"},
-                                            "Shelf" => {location: "Shelf", number: 2},
-                                            "Tray" => {location: "Tray", number: 50})
+    location_creator = LocationCreator.new("Site" => { location: "Sanger" },
+                                           "Building" => { location: "Ogilvie" },
+                                           "Room" => { location: "AA315" },
+                                           "Shelf" => { location: "Shelf", number: 2 },
+                                           "Tray" => { location: "Tray", number: 50 })
     location_creator.run!
   end
 

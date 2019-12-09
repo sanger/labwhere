@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe HasActive, type: :model do
-
   with_model :TestModel do
     table do |t|
       t.string :name
@@ -13,7 +14,6 @@ RSpec.describe HasActive, type: :model do
     model do
       include HasActive
     end
-    
   end
 
   let!(:model) { TestModel.create(name: "Test Model") }
@@ -34,5 +34,4 @@ RSpec.describe HasActive, type: :model do
     expect(model).to be_active
     expect(model.deactivated_at).to be_nil
   end
-
 end

@@ -1,11 +1,12 @@
-#(l1) As a SM manager (Admin) I want to create new locations to enable RAS's track labware whereabouts.
+# frozen_string_literal: true
+
+# (l1) As a SM manager (Admin) I want to create new locations to enable RAS's track labware whereabouts.
 
 require 'rails_helper'
 
 RSpec.describe "Locations", type: :feature do
-
-  let!(:user) { create(:administrator)}
-  let!(:scientist) { create(:scientist)}
+  let!(:user) { create(:administrator) }
+  let!(:scientist) { create(:scientist) }
 
   it "Allows a user to add a new location type" do
     location_type = build(:location_type)
@@ -41,7 +42,6 @@ RSpec.describe "Locations", type: :feature do
   end
 
   describe "deleting", js: true do
-
     it "Allows a user to delete an existing location type" do
       location_type = create(:location_type)
       visit location_types_path
@@ -62,7 +62,6 @@ RSpec.describe "Locations", type: :feature do
       }.to_not change(LocationType, :count)
       expect(page).to have_content("error prohibited this record from being saved")
     end
-
   end
 
   it "Should not be able to destroy a location type with an association location" do
@@ -73,9 +72,8 @@ RSpec.describe "Locations", type: :feature do
     end
   end
 
-  let!(:location_types)   { create_list(:location_type, 4)}
-  let!(:parent_location)  { create(:unordered_location)}
-
+  let!(:location_types)   { create_list(:location_type, 4) }
+  let!(:parent_location)  { create(:unordered_location) }
 
   it "Allows a user to add a new location" do
     location = build(:location)
@@ -107,7 +105,25 @@ RSpec.describe "Locations", type: :feature do
     expect(page).to have_content("Location(s) successfully created")
   end
 
+  it "Allows a user to add multiple locations spanning an order of magnitude" do
+    location = build(:location)
+    visit locations_path
+    click_link "Add new location"
+    expect {
+      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "Name", with: location.name
+      fill_in "Start", with: "99"
+      fill_in "End", with: "101"
+      check "Container"
+      click_button "Create Location"
+    }.to change(Location, :count).by(3)
+    expect(Location.last.reserved?).to eq(false)
+    expect(page).to have_content("Location(s) successfully created")
+  end
+
+  # rubocop:todo Lint/BooleanSymbol
   describe "with coordinates", js: :true do
+    # rubocop:enable Lint/BooleanSymbol
     it "Allows a user to add a new location with coordinates" do
       location = build(:ordered_location)
       visit locations_path
@@ -115,9 +131,9 @@ RSpec.describe "Locations", type: :feature do
       expect {
         fill_in "User swipe card id/barcode", with: user.swipe_card_id
         fill_in "Name", with: location.name
+        check "Has Co-ordinates"
         select parent_location.id, from: "Parent"
         select location_types.first.name, from: "Location type"
-        check "Has Co-ordinates"
         fill_in "Rows", with: location.rows
         fill_in "Columns", with: location.columns
         click_button "Create Location"
@@ -136,9 +152,9 @@ RSpec.describe "Locations", type: :feature do
       expect {
         fill_in "User swipe card id/barcode", with: user.swipe_card_id
         fill_in "Name", with: location.name
+        check "Reserve?"
         select parent_location.id, from: "Parent"
         select location_types.first.name, from: "Location type"
-        check "Reserve?"
         click_button "Create Location"
       }.to change(Location, :count).by(1)
 
@@ -301,7 +317,6 @@ RSpec.describe "Locations", type: :feature do
   end
 
   describe "audits", js: true do
-
     it "allows a user to view associated audits for a location type" do
       location_type = create(:location_type_with_audits)
       visit location_types_path
@@ -328,14 +343,12 @@ RSpec.describe "Locations", type: :feature do
   end
 
   describe "info", js: true do
-
     it "allows a user to view further information for a location" do
       location = create(:location)
       visit location_path(location)
       find(:data_id, location.id).click_link "Further information"
       expect(find(:data_id, location.id).find(:data_output, "info-text")).to have_content(location.location_type.name)
     end
-
   end
 
   describe 'delete', js: true do
@@ -390,7 +403,7 @@ RSpec.describe "Locations", type: :feature do
   end
 
   describe 'print', js: true do
-    let!(:printer)  { create(:printer)}
+    let!(:printer)  { create(:printer) }
 
     before(:each) do
       allow_any_instance_of(LabelPrinter).to receive(:post).and_return(true)

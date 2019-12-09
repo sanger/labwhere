@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
-RSpec.describe Guest, type: :model do 
-
+RSpec.describe Guest, type: :model do
   it "should have a login" do
     expect(build(:guest).login).to eq("Guest")
   end

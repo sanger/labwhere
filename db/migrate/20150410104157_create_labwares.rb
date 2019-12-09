@@ -1,4 +1,4 @@
-class CreateLabwares < ActiveRecord::Migration
+class CreateLabwares < ActiveRecord::Migration[4.2]
   def change
     create_table :labwares do |t|
       t.string :barcode

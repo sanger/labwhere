@@ -1,9 +1,10 @@
-#(l1) As a SM manager (Admin) I want to create new locations to enable RAS's track labware whereabouts.
+# frozen_string_literal: true
+
+# (l1) As a SM manager (Admin) I want to create new locations to enable RAS's track labware whereabouts.
 
 require 'rails_helper'
 
 RSpec.describe Location, type: :model do
-
   it "is invalid without a name" do
     expect(build(:location, name: nil)).to_not be_valid
   end
@@ -22,7 +23,6 @@ RSpec.describe Location, type: :model do
   end
 
   context "when location type has empty parent restriction" do
-
     before(:each) do
       restriction = create(:restriction, validator: EmptyParentValidator)
       @location_type = create(:location_type)
@@ -41,7 +41,6 @@ RSpec.describe Location, type: :model do
   end
 
   context "when location type has enforced parent types" do
-
     before(:each) do
       @restriction = create(:parentage_restriction, validator: ParentWhiteListValidator)
       @location_type = create(:location_type)
@@ -49,14 +48,14 @@ RSpec.describe Location, type: :model do
     end
 
     it "is valid with a parent that is one of the enforced types" do
-      parent_location = build(:location, location_type: @restriction.location_types.first)
+      parent_location = create(:location, location_type: @restriction.location_types.first)
       location = build(:location, parent: parent_location, location_type: @location_type)
 
       expect(location).to be_valid
     end
 
     it "is invalid with a parent that is not one of the enforced location types" do
-      parent_location = build(:location)
+      parent_location = create(:location)
       location = build(:location, parent: parent_location, location_type: @location_type)
 
       expect(location).to_not be_valid
@@ -64,7 +63,6 @@ RSpec.describe Location, type: :model do
   end
 
   context "when location type has restricted parent types" do
-
     before(:each) do
       @restriction = create(:parentage_restriction, validator: ParentBlackListValidator)
       @location_type = create(:location_type)
@@ -77,7 +75,7 @@ RSpec.describe Location, type: :model do
     end
 
     it "is invalid when parent is a restricted type" do
-      parent_location = build(:location, location_type: @restriction.location_types.first)
+      parent_location = create(:location, location_type: @restriction.location_types.first)
       location = build(:location, location_type: @location_type, parent: parent_location)
       expect(location).to_not be_valid
     end
@@ -86,9 +84,9 @@ RSpec.describe Location, type: :model do
   it "#without_location should return a list of locations without a specified location" do
     locations         = create_list(:location, 3)
     inactive_location = create(:location, status: Location.statuses[:inactive])
-    expect(Location.without(locations.last).count).to eq(2)
-    expect(Location.without(locations.last)).to_not include(locations.last)
-    expect(Location.without(locations.last)).to_not include(inactive_location)
+    expect(Location.without_location(locations.last).count).to eq(2)
+    expect(Location.without_location(locations.last)).to_not include(locations.last)
+    expect(Location.without_location(locations.last)).to_not include(inactive_location)
   end
 
   it "#without_unknown should return all locations without UnknownLocation" do
@@ -115,9 +113,9 @@ RSpec.describe Location, type: :model do
   end
 
   it "name should not be valid if it is more than 60 characters long" do
-    expect(build(:location, name: "l"*59)).to be_valid
-    expect(build(:location, name: "l"*60)).to be_valid
-    expect(build(:location, name: "l"*61)).to_not be_valid
+    expect(build(:location, name: "l" * 59)).to be_valid
+    expect(build(:location, name: "l" * 60)).to be_valid
+    expect(build(:location, name: "l" * 61)).to_not be_valid
   end
 
   it "should be valid with brackets" do
@@ -165,7 +163,6 @@ RSpec.describe Location, type: :model do
     expect(location_3.reload.parentage).to eq(location_2.name)
     expect(location_4.reload.parentage).to eq("#{location_2.name} / #{location_3.name}")
     expect(location_5.reload.parentage).to eq("#{location_2.name} / #{location_3.name} / #{location_4.name}")
-
   end
 
   it "#coordinateable? should determine if location has rows and columns" do
@@ -182,7 +179,7 @@ RSpec.describe Location, type: :model do
     expect(location_2).to be_ordered
   end
 
-  it "#available_coordinates should be emtpy" do
+  it "#available_coordinates should be empty" do
     location = create(:location)
     expect(location.available_coordinates(5, 10)).to be_empty
   end
@@ -194,7 +191,6 @@ RSpec.describe Location, type: :model do
   end
 
   it '#should allow the same name with different parents' do
-
     parent_1 = create(:location, name: "Building1")
     parent_2 = create(:location, name: "Building2")
 
@@ -252,22 +248,70 @@ RSpec.describe Location, type: :model do
       end
     end
   end
+
   describe 'destroying locations' do
     it 'success' do
       location = create(:location)
       location.destroy
       expect(location).to be_destroyed
     end
-    it 'failure' do
-      location = create(:unordered_location_with_children)
-      location.destroy
-      expect(location).to_not be_destroyed
-      location = create(:unordered_location_with_labwares)
-      location.destroy
-      expect(location).to_not be_destroyed
-      location = create(:location_with_audits)
-      location.destroy
-      expect(location).to_not be_destroyed
+
+    context 'when location has children' do
+      it 'fails' do
+        location = create(:unordered_location_with_children)
+        location.destroy
+        expect(location).to_not be_destroyed
+      end
+    end
+
+    context 'when location has labwares' do
+      it 'fails' do
+        location = create(:unordered_location_with_labwares)
+        location.destroy
+        expect(location).to_not be_destroyed
+      end
+    end
+
+    context 'when location has audits' do
+      it 'fails' do
+        location = create(:location_with_audits)
+        location.destroy
+        expect(location).to_not be_destroyed
+      end
+    end
+  end
+
+  describe '#children=' do
+    before do
+      @parent = create(:location)
+      @children = create_list(:location, 3)
+      @parent.children = @children
+    end
+
+    it 'sets itself as each child\'s parent' do
+      expect(@parent.children).to include(*@children)
+      @children.each do |child|
+        expect(child.parent).to eql(@parent)
+      end
+    end
+
+    it 'sets the children_count' do
+      expect(@parent.children_count).to eql(@children.length)
+    end
+  end
+
+  context 'when parent is updated' do
+    before do
+      @original_parent = create(:location)
+      @new_parent = create(:location)
+      @location = create(:location, parent: @original_parent)
+    end
+
+    it 'updates the internal_parent_id column' do
+      expect(@location.internal_parent).to eq(@original_parent)
+      @location.parent = @new_parent
+      @location.save
+      expect(@location.internal_parent).to eq(@new_parent)
     end
   end
 end

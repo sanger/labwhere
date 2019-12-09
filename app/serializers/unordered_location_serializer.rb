@@ -1,5 +1,6 @@
-class UnorderedLocationSerializer < LocationSerializer
+# frozen_string_literal: true
 
+class UnorderedLocationSerializer < LocationSerializer
   attributes :labwares, :children
 
   # #
@@ -13,5 +14,4 @@ class UnorderedLocationSerializer < LocationSerializer
   def children
     api_location_children_path(object.barcode)
   end
-  
 end

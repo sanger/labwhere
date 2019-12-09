@@ -1,5 +1,6 @@
-class Api::LocationTypesController < ApiController
+# frozen_string_literal: true
 
+class Api::LocationTypesController < ApiController
   def index
     render json: LocationType.all
   end
@@ -18,7 +19,7 @@ class Api::LocationTypesController < ApiController
     process_location_type
   end
 
-private
+  private
 
   def current_resource
     LocationType.find(params[:id]) if params[:id]
@@ -28,8 +29,7 @@ private
     if @location_type.submit(params)
       render json: @location_type, serializer: LocationTypeSerializer
     else
-      render json: { errors: @location_type.errors.full_messages}, status: :unprocessable_entity
+      render json: { errors: @location_type.errors.full_messages }, status: :unprocessable_entity
     end
   end
-
 end

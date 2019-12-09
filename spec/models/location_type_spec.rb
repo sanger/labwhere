@@ -1,9 +1,10 @@
-#(l1) As a SM manager (Admin) I want to create new locations to enable RAS's track labware whereabouts.
+# frozen_string_literal: true
+
+# (l1) As a SM manager (Admin) I want to create new locations to enable RAS's track labware whereabouts.
 
 require 'rails_helper'
 
 RSpec.describe LocationType, type: :model do
-
   it "is invalid without a name" do
     expect(build(:location_type, name: nil)).to_not be_valid
   end
@@ -50,5 +51,4 @@ RSpec.describe LocationType, type: :model do
     expect(location_type).to_not be_destroyed
     expect(location_type.errors).to_not be_empty
   end
-
 end

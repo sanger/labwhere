@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe "Teams", type: :feature do
-
-  let!(:user) { create(:administrator)}
+  let!(:user) { create(:administrator) }
 
   it "Allows a user to create a new team" do
     team = build(:team)
     visit teams_path
     click_link "Add new team"
-    expect{
+    expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: team.name
       fill_in "Number", with: team.number
@@ -22,11 +23,11 @@ RSpec.describe "Teams", type: :feature do
     new_team = build(:team)
     visit teams_path
     find(:data_id, team.id).click_link "Edit"
-    expect{
+    expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: new_team.name
       click_button "Update Team"
-    }.to change {team.reload.name}.to(new_team.name)
+    }.to change { team.reload.name }.to(new_team.name)
     expect(page).to have_content("Team successfully updated")
   end
 
@@ -35,7 +36,7 @@ RSpec.describe "Teams", type: :feature do
     team = build(:team)
     visit teams_path
     click_link "Add new team"
-    expect{
+    expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Name", with: existing_team.name
       fill_in "Number", with: team.number
@@ -49,7 +50,7 @@ RSpec.describe "Teams", type: :feature do
     team = build(:team)
     visit teams_path
     click_link "Add new team"
-    expect{
+    expect {
       fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
       fill_in "Name", with: team.name
       fill_in "Number", with: team.number
@@ -59,13 +60,11 @@ RSpec.describe "Teams", type: :feature do
   end
 
   describe "audits", js: true do
-
     it "allows a user to view associated audits for a team" do
       team = create(:team_with_audits)
       visit teams_path
       find(:data_id, team.id).find(:data_behavior, "drilldown").click
       expect(find(:data_id, team.id)).to have_css("article", count: 5)
     end
-
   end
 end

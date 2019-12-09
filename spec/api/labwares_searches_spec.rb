@@ -1,16 +1,17 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe Api::Labwares::SearchesController, type: :request do
-
-  let!(:location) { create(:location_with_parent)}
-  let!(:labwares) { create_list(:labware, 5, location: location)}
+  let!(:location) { create(:location_with_parent) }
+  let!(:labwares) { create_list(:labware, 5, location: location) }
 
   before(:each) do
-    post api_labwares_searches_path, barcodes: Labware.pluck(:barcode)
+    post api_labwares_searches_path, params: { barcodes: Labware.pluck(:barcode) }
   end
 
   it "should be a success" do
-    expect(response).to be_success
+    expect(response).to be_successful
   end
 
   it "should return the labwares" do

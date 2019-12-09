@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe Permissions::ScientistPermission, type: :model do
-
-  let(:permissions) { Permissions.permission_for(build(:scientist))}
+  let(:permissions) { Permissions.permission_for(build(:scientist)) }
 
   it "should allow access to create a scan" do
     expect(permissions).to allow_permission(:scans, :create)
@@ -10,6 +11,14 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
 
   it "should allow access to create a scan through the api" do
     expect(permissions).to allow_permission("api/scans", :create)
+  end
+
+  it "should allow access to update a coordinate" do
+    expect(permissions).to allow_permission("api/locations/coordinates", :update)
+  end
+
+  it "should allow access to bulk update coordinates" do
+    expect(permissions).to allow_permission("api/coordinates", :update)
   end
 
   it "should not allow access to create or modify a location" do
@@ -31,5 +40,4 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
     expect(permissions).to_not allow_permission(:teams, :create)
     expect(permissions).to_not allow_permission(:teams, :update)
   end
-
 end

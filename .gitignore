@@ -42,3 +42,11 @@ bower.json
 
 #ignore cgap data
 /lib/cgap/data
+
+.byebug_history
+.idea
+.generators
+.rakeTasks
+
+# IDE
+.vscode

@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class LoadDataTest < ActiveSupport::TestCase
-
   def setup
   end
 
   test "should load all of the top location data" do
     data = Cgap::LoadData.new("locations_top", "test/fixtures")
     data.load!
-    assert_operator data.file.length, :>, 0 
+    assert_operator data.file.length, :>, 0
     assert_operator Cgap::Location.all.count, :>, 0
     assert_equal data.file.length, Cgap::Location.all.count
     assert_equal 1000002, Cgap::Location.minimum(:id)
@@ -25,13 +26,12 @@ class LoadDataTest < ActiveSupport::TestCase
     location = Cgap::Location.find_by(id: 1000103)
     assert_equal "2000000001029", location.barcode
     assert_equal "Underbench fridge Liebherr", location.name
-
   end
 
-  test "should load all of the sub location data" do 
+  test "should load all of the sub location data" do
     data = Cgap::LoadData.new("locations_sub", "test/fixtures")
     data.load!
-    assert_operator data.file.length, :>, 0 
+    assert_operator data.file.length, :>, 0
     assert_operator Cgap::Location.all.count, :>, 0
     assert_equal data.file.length, Cgap::Location.all.count
     assert_equal 2, Cgap::Location.minimum(:id)
@@ -44,7 +44,7 @@ class LoadDataTest < ActiveSupport::TestCase
     assert_equal 0, location.columns
 
     location = Cgap::Location.find_by(id: 217066)
-    assert_equal "Stack 1", location.name 
+    assert_equal "Stack 1", location.name
     assert_equal 1000143, location.parent_id
     assert_equal 17, location.rows
     assert_equal 1, location.columns
@@ -54,13 +54,12 @@ class LoadDataTest < ActiveSupport::TestCase
     assert_equal 184, location.parent_id
     assert_equal 10, location.rows
     assert_equal 10, location.columns
-
   end
 
   test "should load all of the labware data" do
     data = Cgap::LoadData.new("labwares", "test/fixtures")
     data.load!
-    assert_operator data.file.length, :>, 0 
+    assert_operator data.file.length, :>, 0
     assert_operator Cgap::Labware.all.count, :>, 0
     assert_equal data.file.length, Cgap::Labware.all.count
     assert_equal "2000000124506", Cgap::Labware.minimum(:barcode)
@@ -95,5 +94,4 @@ class LoadDataTest < ActiveSupport::TestCase
     Cgap::Location.delete_all
     Cgap::Labware.delete_all
   end
-
 end

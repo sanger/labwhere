@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # maintains the allowed actions for a Permission object
 # usage:
@@ -13,10 +15,9 @@
 #
 module Permissions
   class BasePermission
-
     ##
     # create an empty allowed action object
-    def initialize(user)
+    def initialize(_user)
       @allowed_actions = {}
     end
 
@@ -34,7 +35,7 @@ module Permissions
     end
 
     ##
-    # force the permission can allow anything 
+    # force the permission can allow anything
     def allow_all
       @allow_all = true
     end
@@ -55,9 +56,8 @@ module Permissions
       end
     end
 
-  private
+    private
 
     attr_reader :allowed_actions
-
   end
 end

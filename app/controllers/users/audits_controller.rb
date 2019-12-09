@@ -1,5 +1,5 @@
-class Users::AuditsController < ApplicationController
+# frozen_string_literal: true
 
+class Users::AuditsController < ApplicationController
   include Auditing
-  
 end

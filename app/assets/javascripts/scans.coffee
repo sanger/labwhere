@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$(document).ready ->
+$(document).on("turbolinks:load", ->
   $(".notice").fade 10000
   $(".alert").fade 15000
   $('nav li ul').hide()
@@ -10,4 +10,4 @@ $(document).ready ->
     -> $('ul', this).stop().slideDown(100),
     -> $('ul', this).stop().slideUp(100)
     )
-  return
+)
