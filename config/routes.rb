@@ -37,6 +37,8 @@ Rails.application.routes.draw do
 
   resources :scans, only: [:new, :create]
 
+  resources :location_scans, only: [:new, :create]
+
   resources :searches, only: [:new, :create, :show]
 
   resources :users do
