@@ -298,6 +298,19 @@ RSpec.describe Location, type: :model do
     it 'sets the children_count' do
       expect(@parent.children_count).to eql(@children.length)
     end
+
+    context 'with existing children' do
+      it 'doesnt kill any existing children' do
+        @parent = create(:unordered_location_with_children)
+        @number_of_children = @parent.children_count
+        @parent.children = @children
+        expect(@parent.children_count).to eql(@children.length + @number_of_children)
+      end
+
+    end
+
+   
+
   end
 
   context 'when parent is updated' do
