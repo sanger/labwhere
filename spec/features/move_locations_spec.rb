@@ -4,13 +4,13 @@
 
 require 'rails_helper'
 
-RSpec.describe "LocationScans", type: :feature do
+RSpec.describe "MoveLocations", type: :feature do
   let!(:user)             { create(:scientist) }
   let!(:parent_location)  { create(:location_with_parent)}
   let!(:child_locations)  { create_list(:location_with_parent, 5)}
 
   it "allows a user to move locations" do
-    visit new_location_scan_path
+    visit new_move_location_path
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Parent location barcode", with: parent_location.barcode
@@ -21,7 +21,7 @@ RSpec.describe "LocationScans", type: :feature do
   end
 
   it "reports an error if one of the locations is invalid" do
-    visit new_location_scan_path
+    visit new_move_location_path
     expect {
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "Parent location barcode", with: parent_location.barcode

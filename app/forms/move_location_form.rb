@@ -3,14 +3,18 @@
 ##
 # This will create a persisted scan.
 # It can be used from a view or elsewhere.
-class LocationScanForm
+class MoveLocationForm
   include ActiveModel::Model
 
   attr_reader :current_user, :user_code, :controller, :action, :parent_location_barcode, :child_location_barcodes, :parent_location, :child_locations, :params
 
   validate :check_user, :check_parent_location, :check_child_locations
 
-  def initialize()
+  def initialize
+  end
+
+  def form_name
+    :move_location_form
   end
 
   def submit(params)
@@ -28,9 +32,9 @@ class LocationScanForm
   def assign_params
     @controller = params[:controller]
     @action = params[:action]
-    @user_code = params[:location_scan_form][:user_code]
-    @parent_location_barcode =  params[:location_scan_form][:parent_location_barcode]
-    @child_location_barcodes =  params[:location_scan_form][:child_location_barcodes]
+    @user_code = params[form_name][:user_code]
+    @parent_location_barcode =  params[form_name][:parent_location_barcode]
+    @child_location_barcodes =  params[form_name][:child_location_barcodes]
   end
 
   def assign_attributes
@@ -48,7 +52,7 @@ class LocationScanForm
   end
 
   def child_locations=(child_location_barcodes)
-    @child_locations = (child_location_barcodes.split("\n") || []).collect { |barcode|  Location.find_by(barcode: barcode.strip) || barcode.strip }
+    @child_locations = (child_location_barcodes.split("\n") || []).collect(&:strip).collect { |barcode|  Location.find_by(barcode: barcode) || barcode }
   end
   
   private

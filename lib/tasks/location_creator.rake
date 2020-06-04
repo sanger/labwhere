@@ -2,6 +2,7 @@
 
 Dir[File.join(Rails.root, "lib", "location_creator", "*.rb")].each { |f| require f }
 
+desc "locations"
 namespace :locations do
   desc "create some locations"
   task :create => :environment do |_t|
