@@ -11,6 +11,7 @@ module Permissions
       allow "api/scans", [:create]
       allow "api/coordinates", [:update]
       allow "api/locations/coordinates", [:update]
+      allow :move_locations, [:create]
     end
   end
 end
