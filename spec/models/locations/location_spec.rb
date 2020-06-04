@@ -306,11 +306,7 @@ RSpec.describe Location, type: :model do
         @parent.children = @children
         expect(@parent.children_count).to eql(@children.length + @number_of_children)
       end
-
     end
-
-   
-
   end
 
   context 'when parent is updated' do
