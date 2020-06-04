@@ -10,8 +10,7 @@ class MoveLocationForm
 
   validate :check_user, :check_parent_location, :check_child_locations
 
-  def initialize
-  end
+  def initialize; end
 
   def form_name
     :move_location_form
@@ -52,9 +51,9 @@ class MoveLocationForm
   end
 
   def child_locations=(child_location_barcodes)
-    @child_locations = (child_location_barcodes.split("\n") || []).collect(&:strip).collect { |barcode|  Location.find_by(barcode: barcode) || barcode }
+    @child_locations = (child_location_barcodes.split("\n") || []).collect(&:strip).collect { |barcode| Location.find_by(barcode: barcode) || barcode }
   end
-  
+
   private
 
   def check_user
@@ -63,14 +62,15 @@ class MoveLocationForm
 
   def check_parent_location
     return if parent_location.present?
+
     errors.add(:parent_location, I18n.t("errors.messages.existence"))
   end
 
   def check_child_locations
     child_locations.each do |location|
       next if location.is_a?(Location)
+
       errors.add(:base, "Location with barcode #{location} #{I18n.t('errors.messages.existence')}")
     end
   end
-
 end

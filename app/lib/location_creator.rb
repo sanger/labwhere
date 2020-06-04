@@ -41,5 +41,4 @@ class LocationCreator
       l.location_type = location_type
     end
   end
-
 end
