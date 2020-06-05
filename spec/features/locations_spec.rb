@@ -427,4 +427,25 @@ RSpec.describe "Locations", type: :feature do
       expect(page).to have_content(I18n.t('printing.success'))
     end
   end
+
+  # describe 'remove locations', js: true do
+
+  #   it 'cannot be removed without the remove labwares link' do
+  #     location = create(:unordered_location_with_children_and_labwares)
+  #     visit locations_path
+
+  #     expect(find(:data_id, location.id)).to_not have_link("Remove all labwares")
+  #   end
+
+  #   it('can be removed if valid') do
+
+  #     location = create(:unordered_location_with_labwares)
+
+  #     visit locations_path
+  #     find(:data_id, location2.id).click_link 'Remove all labwares'
+
+  #     expect(page).to have_content('Successfu')
+  #   end
+
+  # end
 end

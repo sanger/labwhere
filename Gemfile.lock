@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/sanger/pmb-client.git
+  remote: https://github.com/sanger/pmb-client.git
   revision: 016f151a3bde84448ed64e528259c3511282dcdb
   specs:
     pmb-client (0.1.0)
@@ -400,4 +400,4 @@ DEPENDENCIES
   with_model
 
 BUNDLED WITH
-   1.12.5
+   2.1.4
