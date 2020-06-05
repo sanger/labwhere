@@ -6,11 +6,11 @@
         <%= render "user_code", object: f %>
       </li>
       <li>
-        <div><%= f.label :parent_location_barcode, 'Parent location barcode*' %> </div>
+        <div><%= f.label :parent_location_barcode, 'New location barcode (Parent location)*' %> </div>
         <div><%= f.text_field :parent_location_barcode %></div>
       </li>
       <li>
-        <div><%= f.label :child_location_barcodes, 'Child location barcodes*' %></div>
+        <div><%= f.label :child_location_barcodes, 'Location barcodes to be moved (Child location)*' %></div>
         <div class="pr-5"><%= f.text_area :child_location_barcodes %></div>
       </li>
       <li>
