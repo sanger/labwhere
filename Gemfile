@@ -23,6 +23,8 @@ gem 'therubyracer'
 gem 'turbolinks' # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'uglifier', '>= 1.3.0' # Use Uglifier as compressor for JavaScript assets
 
+gem 'codemirror-rails'
+
 group :development do
   gem 'apiaryio', '~> 0.11'
   gem 'listen'
