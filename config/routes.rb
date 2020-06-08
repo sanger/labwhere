@@ -29,6 +29,10 @@ Rails.application.routes.draw do
       resources :children, only: [:index]
       resources :labwares, only: [:index]
     end
+
+    member do
+      post 'remove_all_labware'
+    end
   end
 
   resources :labwares, only: [:show] do

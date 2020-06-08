@@ -45,4 +45,9 @@
       <%= link_to image_tag("delete.png", alt: "Delete", title: "Delete"), [:delete, location.morph], remote: true %>
     </div>
     <% end %>
+     <% location.emptiable do %>
+    <div>
+      <%= link_to 'Remove all labware', remove_all_labware_location_path(location.morph), method: :post, remote: true %>
+    </div>
+    <% end %>
 </article>
