@@ -30,9 +30,6 @@ Rails.application.routes.draw do
       resources :labwares, only: [:index]
     end
 
-    member do
-      post 'remove_all_labware'
-    end
   end
 
   resources :labwares, only: [:show] do
@@ -42,6 +39,7 @@ Rails.application.routes.draw do
   resources :scans, only: [:new, :create]
 
   resources :move_locations, only: [:new, :create]
+  resources :empty_locations, only: [:new, :create]
 
   resources :searches, only: [:new, :create, :show]
 

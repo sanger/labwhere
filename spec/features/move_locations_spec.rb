@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# (l2) As a Sample Management RA I want to scan labware into and out of a location to avoid misplacing biomaterial and delaying pipeline processing
-
 require 'rails_helper'
 
 RSpec.describe "MoveLocations", type: :feature do

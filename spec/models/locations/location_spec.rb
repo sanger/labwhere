@@ -325,7 +325,6 @@ RSpec.describe Location, type: :model do
   end
 
   describe '#remove_labwares' do
-
     it 'if it has some child locations will not remove anything' do
       location =  create(:unordered_location_with_labwares_and_children)
       expect(location.remove_all_labwares).to be_falsey
@@ -337,6 +336,5 @@ RSpec.describe Location, type: :model do
       expect(location.remove_all_labwares).to be_truthy
       expect(location.labwares).to be_empty
     end
-
   end
 end

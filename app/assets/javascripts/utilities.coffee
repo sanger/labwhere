@@ -15,3 +15,7 @@ $.fn.addDialog = (partial, title) ->
     open: -> $(this).html(partial)
     buttons:
       Cancel: -> $(this).dialog("close")
+
+this.removeAllLabwares = removeAllLabwares = (id) -> 
+  alert("remove all labwares for" + id)
+  $("#remove-all-labwares-form").addDialog("<%= escape_javascript(render('remove_all_labwares')) %>", "Remove all Labware")

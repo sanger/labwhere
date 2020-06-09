@@ -112,12 +112,6 @@ class Location < ActiveRecord::Base
     end
   end
 
-  def emptiable
-    unless has_child_locations?
-      yield if block_given?
-    end
-  end
-
   # This will transform the location into the correct type of location based on whether it
   # has coordinates.
   def transform
@@ -161,6 +155,7 @@ class Location < ActiveRecord::Base
 
   def remove_all_labwares
     return if has_child_locations?
+
     labwares.delete_all
   end
 
@@ -190,5 +185,4 @@ class Location < ActiveRecord::Base
     errors.add :location, "Has been used"
     throw :abort
   end
-
 end

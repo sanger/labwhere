@@ -416,7 +416,7 @@ RSpec.describe "Locations", type: :feature do
       location2 = create(:unordered_location)
 
       visit locations_path
-      
+
       find(:data_id, location1.id).click_link 'Print Barcode'
       click_button 'Print'
 
@@ -427,30 +427,5 @@ RSpec.describe "Locations", type: :feature do
 
       expect(page).to have_content(I18n.t('printing.success'))
     end
-  end
-
-  describe 'remove locations', js: true do
-
-    it 'cannot be removed without the remove labwares link' do
-      location = create(:unordered_location_with_children)
-      visit location_path(location.id)
-
-      expect(find(:data_id, location.id)).to_not have_link("Remove all labware")
-    end
-
-    it 'can be removed if valid' do
-
-      location = create(:unordered_location_with_labwares)
-
-      visit location_path(location.id)
-      find(:data_id, location.id).click_link 'Remove all labware'
-      fill_in 'User swipe card id/barcode', with: user.swipe_card_id
-      click_button 'Remove all labware'
-
-      expect(page).to have_content('Successfully removed all labware')
-
-      expect(location.reload.labwares).to be_empty
-    end
-
   end
 end
