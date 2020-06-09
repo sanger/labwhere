@@ -22,6 +22,8 @@ class EmptyLocationForm
     assign_attributes
     if valid?
       location.remove_all_labwares
+      location.create_audit(current_user, "removed all labwares")
+      puts location.reload.audits
       true
     else
       false
