@@ -10,8 +10,9 @@ $(document).on("turbolinks:load", ->
     -> $('ul', this).stop().slideDown(100),
     -> $('ul', this).stop().slideUp(100)
     )
-
-  CodeMirror.fromTextArea($('#scan_labware_barcodes')[0], {
-    lineNumbers: true
-  });
+  scannedTextArea = document.getElementById('scan_labware_barcodes')
+  if scannedTextArea
+    CodeMirror.fromTextArea(scannedTextArea, {
+      lineNumbers: true
+    })
 )
