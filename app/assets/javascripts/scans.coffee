@@ -13,6 +13,7 @@ $(document).on("turbolinks:load", ->
   scannedTextArea = document.getElementById('scan_labware_barcodes')
   if scannedTextArea
     CodeMirror.fromTextArea(scannedTextArea, {
-      lineNumbers: true
+      lineNumbers: true,
+      mode: "barcode_reader"
     })
 )
