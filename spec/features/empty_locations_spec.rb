@@ -14,7 +14,7 @@ RSpec.describe "EmptyLocations", type: :feature do
     fill_in "Barcode of location to be emptied", with: location.barcode + "\n"
     click_button "Go!"
     expect(location.reload.labwares).to be_empty
-    expect(page).to have_content("Locations successfully emptied")
+    expect(page).to have_content("Location successfully emptied")
   end
 
   it "reports an error if the location is invalid" do
