@@ -34,10 +34,10 @@ RSpec.describe EmptyLocationForm, type: :model do
   end
 
   context 'when everything is valid' do
-
-    let!(:submitted_form) {  new_form.submit(params.merge(empty_location_form:
-                            { "location_barcode" => location.barcode, "user_code" => user.swipe_card_id }
-                          ))}
+    let!(:submitted_form) do
+      new_form.submit(params.merge(empty_location_form:
+                            { "location_barcode" => location.barcode, "user_code" => user.swipe_card_id }))
+    end
 
     it "will remove all of the labwares from the location" do
       expect(location.reload.labwares).to be_empty
@@ -49,5 +49,4 @@ RSpec.describe EmptyLocationForm, type: :model do
       expect(audit.action).to eq("removed all labwares")
     end
   end
-
 end
