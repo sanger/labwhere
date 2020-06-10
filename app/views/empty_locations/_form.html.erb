@@ -1,0 +1,17 @@
+<%= form_for @empty_location, url: empty_locations_path do |f| %>
+  <fieldset>
+    <legend>Empty Location</legend>
+    <ul>
+      <li>
+        <%= render "user_code", object: f %>
+      </li>
+      <li>
+        <div><%= f.label :location_barcode, 'Barcode of location to be emptied*' %> </div>
+        <div><%= f.text_field :location_barcode %></div>
+      </li>
+      <li>
+          <%= f.submit "Go!", data: {disable_with: "scanning..."} %>
+      </li>
+    </ul>
+  </fieldset>
+<% end %>

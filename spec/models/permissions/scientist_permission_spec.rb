@@ -13,6 +13,10 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
     expect(permissions).to allow_permission(:move_locations, :create)
   end
 
+  it "should allow access to empty a location" do
+    expect(permissions).to allow_permission(:empty_locations, :create)
+  end
+
   it "should allow access to create a scan through the api" do
     expect(permissions).to allow_permission("api/scans", :create)
   end
