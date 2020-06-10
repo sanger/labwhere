@@ -416,6 +416,7 @@ RSpec.describe "Locations", type: :feature do
       location2 = create(:unordered_location)
 
       visit locations_path
+
       find(:data_id, location1.id).click_link 'Print Barcode'
       click_button 'Print'
 

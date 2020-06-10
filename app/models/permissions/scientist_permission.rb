@@ -12,6 +12,7 @@ module Permissions
       allow "api/coordinates", [:update]
       allow "api/locations/coordinates", [:update]
       allow :move_locations, [:create]
+      allow :empty_locations, [:create]
     end
   end
 end
