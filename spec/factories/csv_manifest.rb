@@ -32,7 +32,7 @@ FactoryBot.define do
     transient do
       locations { create_list(:location, 5) }
       labware_prefix { 'RNA'}
-      number_of_labwares { 5 }
+      number_of_labwares { 1 }
     end
 
     initialize_with { new(locations: locations, labware_prefix: labware_prefix, number_of_labwares: number_of_labwares).generate_csv }
