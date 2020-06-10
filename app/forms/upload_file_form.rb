@@ -15,6 +15,8 @@ class UploadFileForm
     @current_user = User.find_by_code(@user_code)
 
     if valid?
+      # TODO: uploader = ManifestUploader.new(@file)
+      # TODO: uploader.run
       true
     else
       false
