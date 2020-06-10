@@ -26,9 +26,9 @@ RSpec.describe "Scans", type: :feature do
     visit new_scan_path
     fill_in "User swipe card id/barcode", with: user.swipe_card_id
     fill_in "Location barcode", with: location.barcode
-    expect(page.html).not_to have_content(34)
+    expect(page.all('.CodeMirror-linenumber').count).to eq(1)
     page.find('.scanArea').send_keys(labwares.join_barcodes)
-    expect(page.html).to have_content(34)
+    expect(page.all('.CodeMirror-linenumber').count).to eq(34)
   end
 
   it "allows a user to scan is some labware to a location with coordinates" do
