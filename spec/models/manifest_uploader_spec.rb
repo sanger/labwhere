@@ -4,22 +4,20 @@ require 'rails_helper'
 RSpec.describe ManifestUploader, type: :model do
 
   let!(:locations)        { create_list(:unordered_location_with_parent, 10) }
-  let(:new_location)      { build(:unordered_location) }
+  let(:new_location)      { build(:unordered_location, barcode: 'unknown') }
   let(:labware_prefix)    { 'RNA' }
-  let!(:manifest)         { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix )}
-  let(:manifest_uploader) { ManifestUploader.new(start_row: 2)}
   let!(:scientist)        { create(:scientist) }
+  let(:manifest_uploader) { ManifestUploader.new(user: scientist)}
 
-  it 'will have a start row' do
-    expect(manifest_uploader.start_row).to eq(2)
-  end
+  context 'with locations that all exist' do
 
-  describe 'valid' do
+    let!(:manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix )}
 
     attr_reader :data
 
     before(:each) do
-      @data = CSV.parse(manifest)
+      manifest_uploader.file = manifest
+      manifest_uploader.run
     end
 
     it 'will create all of the labwares' do
@@ -28,10 +26,42 @@ RSpec.describe ManifestUploader, type: :model do
     end
 
     it 'will add all of the labwares to the locations' do
+      locations.each do |location|
+        expect(location.labwares.count).to eq(5)
+      end
     end
 
     it 'will create audit records for the labwares' do
+      labwares = Labware.where("barcode LIKE '%#{labware_prefix}%'")
+      expect(labwares.first.audits.last.action).to eq("Uploaded from manifest")
+      expect(labwares.last.audits.last.action).to eq("Uploaded from manifest")
     end
 
+  end
+
+  context 'when there is a location that is not valid' do
+
+    let!(:manifest) { build(:csv_manifest, locations: locations + [new_location], number_of_labwares: 5, labware_prefix: labware_prefix )}
+
+    attr_reader :data
+
+    before(:each) do
+      manifest_uploader.file = manifest
+    end
+
+    it 'will not be valid' do
+      expect(manifest_uploader).to_not be_valid
+    end
+
+    it 'will show an error' do
+      manifest_uploader.run
+      expect(manifest_uploader.errors.full_messages).to include("location(s) with barcode #{new_location.barcode} do not exist")
+    end
+
+    it 'will not create any labwares' do
+      manifest_uploader.run
+      labwares = Labware.where("barcode LIKE '%#{labware_prefix}%'")
+      expect(labwares).to be_empty
+    end
   end
 end
