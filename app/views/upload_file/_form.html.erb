@@ -5,6 +5,13 @@
       <li>
         <%= render "user_code", object: f %>
       </li>
+      <li>
+        <div><%= f.label :file, 'Upload a file here*' %></div>
+        <div><%= f.file_field :file %></div>
+      </li>
+      <li>
+        <%= f.submit "Go!", data: {disable_with: "uploading..."} %>
+      </li>
     </ul>
   </fieldset>
 <% end %>
