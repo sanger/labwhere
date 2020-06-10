@@ -1,0 +1,10 @@
+<%= form_for @upload_file, url: upload_file_index_path do |f| %>
+  <fieldset>
+    <legend>Upload File</legend>
+    <ul>
+      <li>
+        <%= render "user_code", object: f %>
+      </li>
+    </ul>
+  </fieldset>
+<% end %>
