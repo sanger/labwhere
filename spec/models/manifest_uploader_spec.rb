@@ -15,11 +15,12 @@ RSpec.describe ManifestUploader, type: :model do
 
   describe 'valid' do
 
-    it 'will create all of the labwares'
+    it 'will create all of the labwares' do
+    end
 
     it 'will add the labwares to the locations'
 
     it 'will create audit records for the labwares'
-    
+
   end
 end
