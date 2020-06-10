@@ -47,7 +47,6 @@ RSpec.describe "Scans", type: :feature do
     expect(page.all('.cm-error').count).to eq(2)
   end
 
-
   it "allows a user to scan is some labware to a location with coordinates" do
     location = create(:ordered_location_with_parent, rows: 5, columns: 5)
     labwares = build_list(:labware, 10)
