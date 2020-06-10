@@ -20,6 +20,17 @@ RSpec.describe "Scans", type: :feature do
     expect(page).to have_content(Scan.first.message)
   end
 
+  it 'displays the line number for scanned labware', js: true do
+    location = create(:location_with_parent)
+    labwares = build_list(:labware, 34)
+    visit new_scan_path
+    fill_in "User swipe card id/barcode", with: user.swipe_card_id
+    fill_in "Location barcode", with: location.barcode
+    expect(page.html).not_to have_content(34)
+    page.find('.scanArea').send_keys(labwares.join_barcodes)
+    expect(page.html).to have_content(34)
+  end
+
   it "allows a user to scan is some labware to a location with coordinates" do
     location = create(:ordered_location_with_parent, rows: 5, columns: 5)
     labwares = build_list(:labware, 10)
