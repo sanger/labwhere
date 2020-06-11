@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'UploadFile', type: :feature do
-  let!(:user)             { create(:scientist) }
+  let!(:user) { create(:scientist) }
 
   it 'allows a user to upload a file' do
     visit new_upload_file_path
