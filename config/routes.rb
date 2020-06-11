@@ -38,7 +38,7 @@ Rails.application.routes.draw do
 
   resources :scans, only: [:new, :create]
 
-  resources :upload_file, only: [:new, :create]
+  resources :upload_labware, only: [:new, :create]
   resources :move_locations, only: [:new, :create]
   resources :empty_locations, only: [:new, :create]
 

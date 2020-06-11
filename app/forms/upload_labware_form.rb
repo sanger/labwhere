@@ -3,7 +3,7 @@
 ##
 # This will upload multiple labware at once into existing locations.
 # It can be used from a view or elsewhere.
-class UploadFileForm
+class UploadLabwareForm
   include ActiveModel::Model
 
   attr_reader :current_user, :controller, :action, :params
@@ -27,8 +27,8 @@ class UploadFileForm
   def assign_params
     @controller = params[:controller]
     @action = params[:action]
-    @user_code = params[:upload_file_form][:user_code]
-    @file = params[:upload_file_form][:file]
+    @user_code = params[:upload_labware_form][:user_code]
+    @file = params[:upload_labware_form][:file]
   end
 
   def check_user
@@ -37,7 +37,7 @@ class UploadFileForm
 
   def check_required_params
     params.require([:controller, :action])
-    params.require(:upload_file_form).permit([:user_code, :file]).tap do |form_params|
+    params.require(:upload_labware_form).permit([:user_code, :file]).tap do |form_params|
       form_params.require([:user_code, :file])
     end
   rescue ActionController::ParameterMissing
@@ -45,7 +45,7 @@ class UploadFileForm
   end
 
   def check_file_format
-    the_file = params[:upload_file_form][:file]
+    the_file = params[:upload_labware_form][:file]
     return if the_file.class == ActionDispatch::Http::UploadedFile && the_file.content_type == 'text/csv'
 
     errors.add(:file, 'must be a csv')

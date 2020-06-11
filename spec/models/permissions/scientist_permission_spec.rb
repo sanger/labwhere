@@ -49,7 +49,7 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
     expect(permissions).to_not allow_permission(:teams, :update)
   end
 
-  it "should allow access to upload a file" do
-    expect(permissions).to allow_permission(:upload_file, :create)
+  it "should allow access to upload a labware file" do
+    expect(permissions).to allow_permission(:upload_labware, :create)
   end
 end
