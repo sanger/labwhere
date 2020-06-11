@@ -8,7 +8,7 @@ class UploadFileForm
 
   attr_reader :current_user, :controller, :action, :params
 
-  validate :check_user, :check_required_params
+  validate :check_user, :check_required_params, :check_file_format
 
   def submit(params)
     @params = params
@@ -42,5 +42,12 @@ class UploadFileForm
     end
   rescue ActionController::ParameterMissing
     errors.add(:base, 'The required fields must be filled in')
+  end
+
+  def check_file_format
+    the_file = params[:upload_file_form][:file]
+    return if the_file.class == ActionDispatch::Http::UploadedFile && the_file.content_type == 'text/csv'
+
+    errors.add(:file, 'must be a csv')
   end
 end
