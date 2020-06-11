@@ -40,7 +40,6 @@ RSpec.describe UploadLabwareForm, type: :model do
   it 'will be valid with all its params and a valid user' do
     create_upload_labware.submit(params.merge(upload_labware_form:
       { 'user_code' => user.barcode, 'file' => file_param }))
-    puts "DEBUG: #{create_upload_labware.errors.full_messages}"
     expect(create_upload_labware.valid?).to eq(true)
   end
 end

@@ -12,14 +12,20 @@ class ManifestUploader
   end
 
   def run
-    return unless valid?
+    return false unless valid?
 
-    data.each do |row|
-      labware = Labware.find_or_initialize_by(barcode: row[1])
-      labware.location = locations[row[0]]
-      labware.save
-      labware.create_audit(user, "Uploaded from manifest")
+    ActiveRecord::Base.transaction do
+      data.each do |row|
+        labware = Labware.find_or_initialize_by(barcode: row[1])
+        labware.location = locations[row[0]]
+        labware.save!
+        labware.create_audit!(user, "Uploaded from manifest")
+      end
     end
+    true
+  rescue StandardError => e
+    errors.add(:base, e.message)
+    false
   end
 
   def location_barcodes

@@ -15,13 +15,15 @@ class UploadLabwareForm
     assign_params
     @current_user = User.find_by_code(@user_code)
 
-    if valid?
-      # TODO: uploader = ManifestUploader.new(@file)
-      # TODO: uploader.run
-      true
-    else
-      false
+    return false unless valid?
+
+    uploader = ManifestUploader.new({ file: @file.tempfile, user: current_user })
+
+    unless uploader.valid? && uploader.run
+      uploader.errors.full_messages.each { |error| errors.add(:base, error) }
+      return false
     end
+    true
   end
 
   def assign_params
