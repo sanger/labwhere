@@ -87,6 +87,8 @@ GEM
       timers (~> 4.0.0)
     childprocess (3.0.0)
     cliver (0.3.2)
+    codemirror-rails (5.16.0)
+      railties (>= 3.0, < 6.0)
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -364,6 +366,7 @@ DEPENDENCIES
   bootsnap
   byebug
   capybara
+  codemirror-rails
   coffee-rails (~> 4.2.0)
   database_cleaner
   exception_notification

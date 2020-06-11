@@ -16,4 +16,6 @@
 //= require jquery.turbolinks
 //= require turbolinks
 //= require select2
+//= require codemirror
+
 //= require_tree .

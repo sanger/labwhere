@@ -15,7 +15,7 @@
       </li>
       <li>
         <div><%= f.label :labware_barcodes, 'Labware barcodes*' %></div>
-        <div class="pr-5"><%= f.text_area :labware_barcodes %></div>
+        <div class="pr-5"><div class="scanArea"><%= f.text_area :labware_barcodes %></div></div>
       </li>
       <li>
           <%= f.submit "Go!", data: {disable_with: "scanning..."} %>

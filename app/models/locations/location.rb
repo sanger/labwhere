@@ -153,6 +153,12 @@ class Location < ActiveRecord::Base
     []
   end
 
+  def remove_all_labwares
+    return if has_child_locations?
+
+    labwares.delete_all
+  end
+
   private
 
   ##
