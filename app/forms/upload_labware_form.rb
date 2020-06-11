@@ -17,7 +17,7 @@ class UploadLabwareForm
 
     return false unless valid?
 
-    uploader = ManifestUploader.new({ file: @file.tempfile, user: current_user })
+    uploader = ManifestUploader.new(file: @file.tempfile, user: current_user)
 
     unless uploader.valid? && uploader.run
       uploader.errors.full_messages.each { |error| errors.add(:base, error) }

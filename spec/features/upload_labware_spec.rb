@@ -8,10 +8,10 @@ RSpec.describe 'UploadLabware', type: :feature do
   before do
     location_type = LocationType.create!(name: 'test_location_type')
     parent_location = UnorderedLocation.create!(name: 'parent location', location_type: location_type)
-    box_1 = UnorderedLocation.create!(name: 'box 1', location_type: location_type, parent: parent_location)
-    box_2 = UnorderedLocation.create!(name: 'box 2', location_type: location_type, parent: parent_location)
-    box_1.update!(barcode: 'BX1234')
-    box_2.update!(barcode: 'BX5678')
+    box1 = UnorderedLocation.create!(name: 'box 1', location_type: location_type, parent: parent_location)
+    box2 = UnorderedLocation.create!(name: 'box 2', location_type: location_type, parent: parent_location)
+    box1.update!(barcode: 'BX1234')
+    box2.update!(barcode: 'BX5678')
   end
 
   it 'allows a user to upload a file' do
