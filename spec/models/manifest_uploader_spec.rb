@@ -1,17 +1,16 @@
+# frozen_string_literal: true
 
 require 'rails_helper'
 
 RSpec.describe ManifestUploader, type: :model do
-
   let!(:locations)        { create_list(:unordered_location_with_parent, 10) }
   let(:new_location)      { build(:unordered_location, barcode: 'unknown') }
   let(:labware_prefix)    { 'RNA' }
   let!(:scientist)        { create(:scientist) }
-  let(:manifest_uploader) { ManifestUploader.new(user: scientist)}
+  let(:manifest_uploader) { ManifestUploader.new(user: scientist) }
 
   context 'with locations that all exist' do
-
-    let!(:manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix )}
+    let!(:manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
 
     attr_reader :data
 
@@ -36,12 +35,10 @@ RSpec.describe ManifestUploader, type: :model do
       expect(labwares.first.audits.last.action).to eq("Uploaded from manifest")
       expect(labwares.last.audits.last.action).to eq("Uploaded from manifest")
     end
-
   end
 
   context 'when there is a location that is not valid' do
-
-    let!(:manifest) { build(:csv_manifest, locations: locations + [new_location], number_of_labwares: 5, labware_prefix: labware_prefix )}
+    let!(:manifest) { build(:csv_manifest, locations: locations + [new_location], number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
 
     attr_reader :data
 

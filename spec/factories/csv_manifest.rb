@@ -20,22 +20,20 @@ class CsvManifest
     end
   end
 
-  def pad_number(n)
-    "%06d" % n
+  def pad_number(num)
+    format('%<num>06d', num: num)
   end
-
 end
 
 FactoryBot.define do
   factory :csv_manifest do
-
     transient do
       locations { create_list(:location, 5) }
-      labware_prefix { 'RNA'}
+      labware_prefix { 'RNA' }
       number_of_labwares { 1 }
     end
 
-    initialize_with { new(locations: locations, labware_prefix: labware_prefix, number_of_labwares: number_of_labwares).generate_csv }
+    initialize_with { new(locations: locations, labware_prefix: labware_prefix, number_of_labwares: number_of_labwares) }
 
     skip_create
   end

@@ -1,6 +1,7 @@
-class ManifestUploader
+# frozen_string_literal: true
 
-  include ActiveModel::Model 
+class ManifestUploader
+  include ActiveModel::Model
 
   attr_accessor :file, :user
 
@@ -12,6 +13,7 @@ class ManifestUploader
 
   def run
     return unless valid?
+
     data.each do |row|
       labware = Labware.find_or_initialize_by(barcode: row[1])
       labware.location = locations[row[0]]
@@ -21,11 +23,11 @@ class ManifestUploader
   end
 
   def location_barcodes
-    @location_barcodes ||= data.collect {|item| item.take(1)}.flatten.uniq
+    @location_barcodes ||= data.collect { |item| item.take(1) }.flatten.uniq
   end
 
   def locations
-    @locations ||= Hash.new.tap do |h|
+    @locations ||= {}.tap do |h|
       location_barcodes.each do |barcode|
         h[barcode] = Location.find_by(barcode: barcode)
       end
@@ -33,12 +35,12 @@ class ManifestUploader
   end
 
   def empty_locations
-    @empty_locations ||= locations.select { |k, v| v.nil? }
+    @empty_locations ||= locations.select { |_k, v| v.nil? }
   end
 
   def check_locations
     return if empty_locations.empty?
-    errors.add(:base, "location(s) with barcode #{empty_locations.keys.join(",")} do not exist")
+
+    errors.add(:base, "location(s) with barcode #{empty_locations.keys.join(',')} do not exist")
   end
-  
 end
