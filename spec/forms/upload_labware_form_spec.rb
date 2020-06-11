@@ -10,7 +10,7 @@ RSpec.describe UploadLabwareForm, type: :model do
   let(:tempfile)              { Tempfile.new(['foo', '.csv']) }
 
   before do
-    file_param.content_type = 'text/csv' # doesn't work if set it in the initializer
+    file_param.content_type = 'text/csv' # doesn't work if set in the initializer
   end
 
   it 'will not be valid without the user barcode filled in' do
