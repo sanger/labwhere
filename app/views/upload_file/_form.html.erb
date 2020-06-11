@@ -1,17 +1,28 @@
 <%= form_for @upload_file, url: upload_file_index_path do |f| %>
   <fieldset>
     <legend>Upload File</legend>
-    <ul>
-      <li>
-        <%= render "user_code", object: f %>
-      </li>
-      <li>
-        <div><%= f.label :file, 'Upload a file here*' %></div>
-        <div><%= f.file_field :file %></div>
-      </li>
-      <li>
-        <%= f.submit "Go!", data: {disable_with: "uploading..."} %>
-      </li>
-    </ul>
+    <div class="form-description-box">
+      Upload a csv file with the following columns:
+      <ol>
+        <li>1. Barcodes of the locations you wish to scan into</li>
+        <li>2. Labware barcodes</li>
+      </ol>
+      The file should also have column headers, but it doesn't matter what they are.
+    </div>
+    <br/>
+    <div>
+      <ul>
+        <li>
+          <%= render "user_code", object: f %>
+        </li>
+        <li>
+          <div><%= f.label :file, 'Upload a file here*' %></div>
+          <div><%= f.file_field :file %></div>
+        </li>
+        <li>
+          <%= f.submit "Go!", data: {disable_with: "uploading..."} %>
+        </li>
+      </ul>
+    </div>
   </fieldset>
 <% end %>
