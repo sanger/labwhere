@@ -48,10 +48,15 @@ class UploadLabwareForm
 
   def check_file_format
     the_file = params[:upload_labware_form][:file]
-    return if the_file.class == ActionDispatch::Http::UploadedFile && the_file.content_type == 'text/csv'
+
+    extension = ''
+    if the_file.class == ActionDispatch::Http::UploadedFile
+      extension = File.extname(the_file.original_filename)
+      return if extension == '.csv'
+    end
 
     message = 'must be a csv.'
-    message += "Provided: #{the_file.content_type}" if the_file.respond_to? :content_type
+    message += " Provided: #{extension}" if extension.present?
     errors.add(:file, message)
   end
 end
