@@ -50,6 +50,8 @@ class UploadLabwareForm
     the_file = params[:upload_labware_form][:file]
     return if the_file.class == ActionDispatch::Http::UploadedFile && the_file.content_type == 'text/csv'
 
-    errors.add(:file, 'must be a csv')
+    message = 'must be a csv.'
+    message += "Provided: #{the_file.content_type}" if the_file.respond_to? :content_type
+    errors.add(:file, message)
   end
 end

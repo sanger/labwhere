@@ -34,7 +34,7 @@ RSpec.describe UploadLabwareForm, type: :model do
   it 'will not be valid with the wrong format of file' do
     create_upload_labware.submit(params.merge(upload_labware_form:
       { 'user_code' => user.barcode, 'file' => 'dummy_file' }))
-    expect(create_upload_labware.errors.full_messages).to include('File must be a csv')
+    expect(create_upload_labware.errors.full_messages).to include('File must be a csv.')
   end
 
   it 'will be valid with all its params and a valid user' do
