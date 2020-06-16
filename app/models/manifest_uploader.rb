@@ -8,7 +8,7 @@ class ManifestUploader
   validate :check_locations
 
   def data
-    @data ||= CSV.parse(file).drop(1)
+    @data ||= ::CSV.parse(file).drop(1)
   end
 
   def run
