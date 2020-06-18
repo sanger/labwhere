@@ -9,7 +9,7 @@ namespace :duplicates do
       # Get all the barcodes where there are duplicates
       barcode_to_count = Labware.group(:barcode).count
 
-      barcode_to_count_duped = barcode_to_count.select { |barcode, count| count > 1 } # 7106
+      barcode_to_count_duped = barcode_to_count.select { |_barcode, count| count > 1 } # 7106
       puts "Barcodes with duplicates: #{barcode_to_count_duped.size}"
 
       labs = Labware.where(barcode: barcode_to_count_duped.keys) # 19,240 (between 2 and 3 times above)
@@ -19,12 +19,12 @@ namespace :duplicates do
       barcode_to_labs = labs.group_by(&:barcode)
 
       puts "Deleting duplicates..."
-      barcode_to_labs.each do |barcode, labs|
+      barcode_to_labs.each do |_barcode, labwares|
         # save one of them
-        saved_lab = labs.pop
+        labwares.pop
 
         # delete the rest
-        labs.each do |lab|
+        labwares.each do |lab|
           lab.audits.each(&:destroy)
           lab.delete
         end
