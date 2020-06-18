@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :duplicates do
-  desc "Move the lighthouse boxes to their proper location and delete the rogue labware"
+  desc "De-duplicate labware"
   task delete: :environment do |_t|
     ActiveRecord::Base.transaction do
       puts "Starting de-duping..."
