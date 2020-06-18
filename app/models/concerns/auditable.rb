@@ -18,9 +18,15 @@ module Auditable
     Audit.create(user: user, action: create_action(action), record_data: self, auditable_type: self.class, auditable_id: self.id)
   end
 
+  def create_audit!(user, action = nil)
+    Audit.create!(user: user, action: create_action(action), record_data: self, auditable_type: self.class, auditable_id: self.id)
+  end
+
   ##
   # Convert the dates to human readable uk format for the audit record.
   def uk_dates
+    return {} unless created_at && updated_at
+
     { "created_at" => created_at.to_s(:uk), "updated_at" => updated_at.to_s(:uk) }
   end
 
