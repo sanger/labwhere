@@ -153,7 +153,7 @@ class LocationForm
   def create_locations(params)
     locations = []
     # Remove double spaces and any interloping unfriendly characters
-    prefix = params[:location][:name].gsub('  ', ' ').strip
+    prefix = params[:location][:name].gsub(/\s+/, ' ').strip
     generate_names(prefix, start_from, end_to) do |name|
       params[:location][:name] = name
       @location = Location.new

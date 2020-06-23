@@ -84,6 +84,15 @@ RSpec.describe LocationForm, type: :model do
     expect(location_form).to be_valid
     expect(location_form.location).to be_persisted
     expect(location_form.location.name).to eq('This is a location with a name with double spaces')
+
+    location_form = LocationForm.new
+    res = location_form.submit(
+      controller_params.merge(location: params.merge(name: 'This is a   location with a   name with triple spaces  ', user_code: administrator.barcode))
+    )
+    expect(res).to be_truthy
+    expect(location_form).to be_valid
+    expect(location_form.location).to be_persisted
+    expect(location_form.location.name).to eq('This is a location with a name with triple spaces')
   end
 
   describe "multiple locations creation" do
