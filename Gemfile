@@ -25,6 +25,8 @@ gem 'uglifier', '>= 1.3.0' # Use Uglifier as compressor for JavaScript assets
 
 gem 'codemirror-rails'
 
+gem 'rack-cors'
+
 group :development do
   gem 'apiaryio', '~> 0.11'
   gem 'listen'
