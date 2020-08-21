@@ -55,6 +55,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    amq-protocol (2.3.2)
     ancestry (3.0.7)
       activerecord (>= 3.2.0)
     apiaryio (0.13.0)
@@ -72,6 +73,8 @@ GEM
     bootsnap (1.4.6)
       msgpack (~> 1.0)
     builder (3.2.4)
+    bunny (2.16.1)
+      amq-protocol (~> 2.3, >= 2.3.1)
     byebug (11.0.1)
     capybara (3.32.0)
       addressable
@@ -366,6 +369,7 @@ DEPENDENCIES
   ancestry
   apiaryio (~> 0.11)
   bootsnap
+  bunny
   byebug
   capybara
   codemirror-rails

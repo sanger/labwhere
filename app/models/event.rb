@@ -16,11 +16,11 @@ class Event
     {
       location_barcode: location.barcode,
       location_name: location.name,
-      parentage: location.parentage,
+      location_parentage: location.parentage,
       labware_barcode: labware.barcode,
       action: action,
       user_login: user.login,
-      coordinate: coordinate.try(:position)
+      location_coordinate: coordinate.try(:position)
     }
   end
 

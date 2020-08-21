@@ -39,11 +39,11 @@ RSpec.describe Event, type: :model do
       json = audit.as_json
       expect(json[:location_barcode]).to eq(location.barcode)
       expect(json[:location_name]).to eq(location.name)
-      expect(json[:parentage]).to eq(location.parentage)
+      expect(json[:location_parentage]).to eq(location.parentage)
       expect(json[:labware_barcode]).to eq(labware.barcode)
       expect(json[:action]).to eq(action)
       expect(json[:user_login]).to eq(user.login)
-      expect(json[:coordinates]).to be_nil
+      expect(json[:location_coordinate]).to be_nil
     end
   end
 
@@ -55,7 +55,7 @@ RSpec.describe Event, type: :model do
       audit = Event.new(attributes.merge(labware: coordinate.labware))
       json = audit.as_json
       expect(json[:location_barcode]).to eq(location.barcode)
-      expect(json[:coordinate]).to eq(coordinate.position)
+      expect(json[:location_coordinate]).to eq(coordinate.position)
     end
   end
 end
