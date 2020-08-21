@@ -1,10 +1,11 @@
-class Event
+# frozen_string_literal: true
 
+class Event
   include ActiveModel::Model
 
   attr_accessor :user, :labware, :action
 
-  validates_presence_of :user, :labware, :action
+  validates :user, :labware, :action, presence: true
 
   validate :check_location_exists
 
@@ -26,9 +27,9 @@ class Event
   private
 
   def check_location_exists
-    return unless labware.present?
+    return if labware.blank?
     return if location.present?
+
     errors.add(:location, 'must be present')
   end
-
 end
