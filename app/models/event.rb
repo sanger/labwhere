@@ -14,13 +14,33 @@ class Event
 
   def as_json(*)
     {
-      location_barcode: location.barcode,
-      location_name: location.name,
-      location_parentage: location.parentage,
-      labware_barcode: labware.barcode,
-      action: action,
-      user_login: user.login,
-      location_coordinate: coordinate.try(:position)
+      event: {
+        uuid: 'TODO',
+        event_type: action,
+        occured_at: Time.now,
+        user_identifier: user.login,
+        subjects: [
+          {
+            role_type: 'labware',
+            subject_type: 'labware',
+            friendly_name: labware.barcode,
+            uuid: 'TODO'
+          },
+          {
+            role_type: 'location',
+            subject_type: 'location',
+            friendly_name: location.barcode,
+            uuid: 'TODO'
+          }
+        ],
+        metadata: {
+          location_barcode: location.barcode,
+          location_coordinate: coordinate.try(:position),
+          location_name: location.name,
+          location_parentage: location.parentage,
+        }
+      },
+      lims: 'LABWHERE'
     }
   end
 
