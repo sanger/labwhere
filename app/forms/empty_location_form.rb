@@ -21,7 +21,7 @@ class EmptyLocationForm
     assign_params
     assign_attributes
     if valid?
-      location.remove_all_labwares
+      location.remove_all_labwares(current_user)
       location.create_audit(current_user, "removed all labwares")
       true
     else

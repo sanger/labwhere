@@ -163,8 +163,13 @@ class Location < ActiveRecord::Base
     []
   end
 
-  def remove_all_labwares
+  def remove_all_labwares(current_user)
     return if has_child_locations?
+
+    # loop through labwares and audit
+    labwares.each do |labware|
+      labware.create_audit(current_user, "update after location emptied")
+    end
 
     labwares.delete_all
   end
