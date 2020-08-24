@@ -15,11 +15,13 @@ module Auditable
   # Build and save an associated audit record.
   # The record data will be a json representation of the saved object.
   def create_audit(user, action = nil)
-    Audit.create(user: user, action: create_action(action), record_data: self, auditable_type: self.class, auditable_id: self.id)
+    my_audit = Audit.create(user: user, action: create_action(action), record_data: self, auditable_type: self.class, auditable_id: self.id)
+    write_event(my_audit) if self.respond_to?(:write_event)
   end
 
   def create_audit!(user, action = nil)
-    Audit.create!(user: user, action: create_action(action), record_data: self, auditable_type: self.class, auditable_id: self.id)
+    my_audit = Audit.create!(user: user, action: create_action(action), record_data: self, auditable_type: self.class, auditable_id: self.id)
+    write_event(my_audit) if self.respond_to?(:write_event)
   end
 
   ##

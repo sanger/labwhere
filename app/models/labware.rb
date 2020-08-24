@@ -72,4 +72,9 @@ class Labware < ActiveRecord::Base
   def as_json(options = {})
     super({ except: [:location_id, :coordinate_id, :previous_location_id, :deleted_at] }.merge(options)).merge(uk_dates).merge("location" => location.barcode)
   end
+
+  def write_event(audit_record)
+    e = Event.new(labware: self, user: audit_record.user, action: audit_record.action, audit: audit_record)
+    Messages.publish(e, {})
+  end
 end
