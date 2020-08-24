@@ -3,19 +3,27 @@
 class Event
   include ActiveModel::Model
 
-  attr_accessor :user, :labware, :action
+  attr_accessor :user, :labware, :action, :audit
 
-  validates :user, :labware, :action, presence: true
+  validates :user, :labware, :action, :audit, presence: true
 
   validate :check_location_exists
 
   delegate :coordinate, to: :labware, allow_nil: true
   delegate :location, to: :labware
 
+  def initialize(params)
+    super
+    @user = params[:user]
+    @labware = params[:labware]
+    @action = params[:action]
+    @uuid = params[:audit].uuid
+  end
+
   def as_json(*)
     {
       event: {
-        uuid: SecureRandom.uuid, # reference Audit uuid?
+        uuid: @uuid,
         event_type: action,
         occured_at: Time.zone.now,
         user_identifier: user.login,
