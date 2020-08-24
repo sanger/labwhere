@@ -11,6 +11,8 @@
 #
 # This ensures we know the state of that record when the audit record was created.
 class Audit < ActiveRecord::Base
+  include Uuidable
+
   PAST_TENSES = { "scan" => "Scanned", "destroy" => "Destroyed" }
 
   belongs_to :user

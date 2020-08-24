@@ -15,7 +15,7 @@ class Event
   def as_json(*)
     {
       event: {
-        uuid: '1234',
+        uuid: SecureRandom.uuid, # reference Audit uuid?
         event_type: action,
         occured_at: Time.zone.now,
         user_identifier: user.login,
@@ -24,13 +24,13 @@ class Event
             role_type: 'labware',
             subject_type: 'labware',
             friendly_name: labware.barcode,
-            uuid: '5678'
+            uuid: labware.uuid
           },
           {
             role_type: 'location',
             subject_type: 'location',
             friendly_name: location.barcode,
-            uuid: '9101'
+            uuid: location.uuid
           }
         ],
         metadata: {

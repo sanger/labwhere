@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_13_100133) do
+ActiveRecord::Schema.define(version: 2020_08_24_095014) do
 
   create_table "audits", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "auditable_type"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2019_09_13_100133) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uuid"
     t.index ["auditable_id", "auditable_type"], name: "index_audits_on_auditable_id_and_auditable_type"
     t.index ["auditable_type"], name: "index_audits_on_auditable_type"
     t.index ["user_id"], name: "index_audits_on_user_id"
@@ -42,6 +43,7 @@ ActiveRecord::Schema.define(version: 2019_09_13_100133) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "coordinate_id"
+    t.string "uuid"
     t.index ["coordinate_id"], name: "index_labwares_on_coordinate_id"
     t.index ["location_id"], name: "index_labwares_on_location_id"
   end
@@ -75,6 +77,7 @@ ActiveRecord::Schema.define(version: 2019_09_13_100133) do
     t.integer "team_id"
     t.string "ancestry"
     t.integer "children_count", default: 0, null: false
+    t.string "uuid"
     t.index ["ancestry"], name: "index_locations_on_ancestry"
     t.index ["location_type_id"], name: "index_locations_on_location_type_id"
     t.index ["team_id"], name: "index_locations_on_team_id"

@@ -10,6 +10,7 @@ class Location < ActiveRecord::Base
   include Auditable
   include SubclassChecker
   include Reservable
+  include Uuidable
 
   belongs_to :location_type, optional: true # Optional for UnknownLocation
   belongs_to :team, optional: true
@@ -32,6 +33,7 @@ class Location < ActiveRecord::Base
   end
 
   validates_with ContainerReservationValidator
+  validate :onlyOneUnknown
 
   scope :without_location, ->(location) { active.where.not(id: location.id).order(id: :desc) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
@@ -49,6 +51,14 @@ class Location < ActiveRecord::Base
   has_ancestry counter_cache: true
 
   alias_method :has_child_locations?, :has_children?
+
+  def onlyOneUnknown
+    if type == 'UnknownLocation' && (new_record? || type_changed?)
+      if UnknownLocation.all.count >= 1
+        errors[:base] << "Can't have more than 1 UnknownLocation"
+      end
+    end
+  end
 
   ##
   # It is possible for the parent to be nil

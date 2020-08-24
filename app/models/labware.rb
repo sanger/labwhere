@@ -7,6 +7,7 @@ class Labware < ActiveRecord::Base
   include SoftDeletable
   include Searchable::Client
   include Auditable
+  include Uuidable
 
   belongs_to :location
   belongs_to :coordinate
