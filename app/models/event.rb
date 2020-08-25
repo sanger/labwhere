@@ -12,18 +12,15 @@ class Event
   delegate :coordinate, to: :labware, allow_nil: true
   delegate :location, to: :labware
 
-  def initialize(params)
-    super
-    @user = params[:user]
-    @labware = params[:labware]
-    @action = params[:action]
-    @uuid = params[:audit].uuid
+  def uuid
+    @uuid ||= audit.uuid
   end
 
+  # rubocop:disable Metrics/MethodLength
   def as_json(*)
     {
       event: {
-        uuid: @uuid,
+        uuid: uuid,
         event_type: action,
         occured_at: Time.zone.now,
         user_identifier: user.login,
@@ -51,6 +48,7 @@ class Event
       lims: 'LABWHERE'
     }
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 

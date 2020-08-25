@@ -5,5 +5,6 @@ FactoryBot.define do
     user { create(:user) }
     labware { create(:labware_with_location) }
     action { 'labwhere_scanned_in' }
+    audit { create(:audit) }
   end
 end

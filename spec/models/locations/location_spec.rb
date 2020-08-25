@@ -340,7 +340,7 @@ RSpec.describe Location, type: :model do
       end
 
       it 'will not create audits' do
-        expect { location.remove_all_labwares(user) }.not_to change { Audit.count }
+        expect { location.remove_all_labwares(user) }.not_to(change { Audit.count })
       end
 
       it 'will not send events' do
