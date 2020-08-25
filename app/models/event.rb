@@ -16,13 +16,17 @@ class Event
     @uuid ||= audit.uuid
   end
 
+  def timestamp
+    @timestamp ||= Time.zone.now
+  end
+
   # rubocop:disable Metrics/MethodLength
   def as_json(*)
     {
       event: {
         uuid: uuid,
         event_type: action,
-        occured_at: Time.zone.now,
+        occured_at: timestamp,
         user_identifier: user.login,
         subjects: [
           {

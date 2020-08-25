@@ -75,6 +75,6 @@ class Labware < ActiveRecord::Base
 
   def write_event(audit_record)
     e = Event.new(labware: self, user: audit_record.user, action: audit_record.action, audit: audit_record)
-    Messages.publish(e, {})
+    Messages.publish(e)
   end
 end
