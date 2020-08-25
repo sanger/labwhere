@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Labware, type: :model do
+  it 'has a uuid after creation' do
+    expect(create(:labware).uuid).to be_present
+  end
+
   it "is invalid without a barcode" do
     expect(build(:labware, barcode: nil)).to_not be_valid
   end

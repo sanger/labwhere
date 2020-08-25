@@ -5,6 +5,10 @@
 require 'rails_helper'
 
 RSpec.describe Location, type: :model do
+  it 'has a uuid after creation' do
+    expect(create(:location).uuid).to be_present
+  end
+
   it "is invalid without a name" do
     expect(build(:location, name: nil)).to_not be_valid
   end
