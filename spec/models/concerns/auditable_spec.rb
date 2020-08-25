@@ -18,7 +18,7 @@ RSpec.describe Auditable, type: :model do
 
   it "should be able to create an audit record" do
     my_model = MyModel.create(name: "My Model")
-    my_model.create_audit(user, "create")
+    my_model.create_audit(user, Audit::CREATE_ACTION)
     audit = my_model.audits.first
     expect(audit.user).to eq(user)
     expect(audit.record_data.except("created_at", "updated_at")).to eq(my_model.as_json.except("created_at", "updated_at"))
@@ -34,15 +34,15 @@ RSpec.describe Auditable, type: :model do
   it "should add an action if none is provided" do
     my_model = MyModel.create(name: "My Model")
     my_model.create_audit(user)
-    expect(my_model.audits.last.action).to eq("create")
+    expect(my_model.audits.last.action).to eq(Audit::CREATE_ACTION)
     # Need to put the created date into the past because the test is too quick, so that created date and updated date are equal
     my_model.update_attributes(created_at: DateTime.now - 1)
     my_model.update_attributes(name: "New Name")
     my_model.create_audit(user)
-    expect(my_model.audits.last.action).to eq("update")
+    expect(my_model.audits.last.action).to eq(Audit::UPDATE_ACTION)
     my_model.destroy
     my_model.create_audit(user)
-    expect(my_model.audits.last.action).to eq("destroy")
+    expect(my_model.audits.last.action).to eq(Audit::DESTROY_ACTION)
   end
 
   context 'without write event method' do

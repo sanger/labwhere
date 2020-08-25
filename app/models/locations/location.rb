@@ -161,7 +161,7 @@ class Location < ActiveRecord::Base
 
     # loop through labwares and audit
     labwares.each do |labware|
-      labware.create_audit(current_user, "update after location emptied")
+      labware.create_audit(current_user, Audit::LOCATION_EMPTIED_ACTION)
     end
 
     labwares.delete_all

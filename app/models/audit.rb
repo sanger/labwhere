@@ -13,7 +13,16 @@
 class Audit < ActiveRecord::Base
   include Uuidable
 
-  PAST_TENSES = { "scan" => "Scanned", "destroy" => "Destroyed" }
+  PAST_TENSES = { 'scan' => 'Scanned', 'destroy' => 'Destroyed' }
+
+  # auditable actions
+  # TODO: translate these into event keys in the messaging system - add underscores and a 'lw_' prefix, or similar
+  CREATE_ACTION                        = 'create'
+  UPDATE_ACTION                        = 'update'
+  DESTROY_ACTION                       = 'destroy'
+  MANIFEST_UPLOAD_ACTION               = 'Uploaded from manifest'
+  REMOVED_ALL_ACTION                   = 'removed all labwares'           # auditable_type is location
+  LOCATION_EMPTIED_ACTION              = 'update after location emptied'  # auditable_type is labware
 
   belongs_to :user
 

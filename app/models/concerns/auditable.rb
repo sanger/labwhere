@@ -36,9 +36,9 @@ module Auditable
 
   def create_action(action)
     return action if action.present?
-    return "destroy" if self.destroyed?
-    return "create" if self.created_at == self.updated_at
+    return Audit::DESTROY_ACTION if self.destroyed?
+    return Audit::CREATE_ACTION if self.created_at == self.updated_at
 
-    "update"
+    Audit::UPDATE_ACTION
   end
 end
