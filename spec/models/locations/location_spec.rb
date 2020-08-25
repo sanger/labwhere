@@ -331,16 +331,40 @@ RSpec.describe Location, type: :model do
   describe '#remove_labwares' do
     let(:user) { create(:user) }
 
-    it 'if it has some child locations will not remove anything' do
-      location =  create(:unordered_location_with_labwares_and_children)
-      expect(location.remove_all_labwares(user)).to be_falsey
-      expect(location.labwares).to_not be_empty
+    context 'when location has child locations' do
+      let(:location) { create(:unordered_location_with_labwares_and_children) }
+
+      it 'will not remove the labwares' do
+        expect(location.remove_all_labwares(user)).to be_falsey
+        expect(location.labwares).to_not be_empty
+      end
+
+      it 'will not create audits' do
+        expect { location.remove_all_labwares(user) }.not_to change { Audit.count }
+      end
+
+      it 'will not send events' do
+        expect(Messages).not_to receive(:publish)
+      end
     end
 
-    it 'if it has no child locations will remove all of the labwares' do
-      location = create(:unordered_location_with_labwares)
-      expect(location.remove_all_labwares(user)).to be_truthy
-      expect(location.labwares).to be_empty
+    context 'when location does not have child locations' do
+      let(:location) { create(:unordered_location_with_labwares) }
+      let(:num_labware) { location.labwares.count }
+
+      it 'will remove the labwares' do
+        expect(location.remove_all_labwares(user)).to be_truthy
+        expect(location.labwares).to be_empty
+      end
+
+      it 'will create audits' do
+        expect { location.remove_all_labwares(user) }.to change { Audit.count }.by(num_labware)
+      end
+
+      it 'will send events' do
+        expect(Messages).to receive(:publish).exactly(num_labware).times
+        location.remove_all_labwares(user)
+      end
     end
   end
 end
