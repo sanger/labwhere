@@ -109,4 +109,14 @@ RSpec.describe Labware, type: :model do
 
     expect(create(:labware, location: location_3).full_path).to eq('Location_1 > Location_2 > Location_3')
   end
+
+  describe '#write_event' do
+    it 'publishes a message' do
+      labware = create(:labware)
+      audit = create(:audit)
+
+      expect(Messages).to receive(:publish)
+      labware.write_event(audit)
+    end
+  end
 end
