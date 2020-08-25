@@ -4,6 +4,7 @@
 # A location can store locations or labware
 class Location < ActiveRecord::Base
   UNKNOWN = "UNKNOWN"
+  UNKNOWN_LIMIT_ERROR = "Can't have more than 1 UnknownLocation"
 
   include Searchable::Client
   include HasActive
@@ -33,7 +34,7 @@ class Location < ActiveRecord::Base
   end
 
   validates_with ContainerReservationValidator
-  validate :onlyOneUnknown
+  validate :only_one_unknown
 
   scope :without_location, ->(location) { active.where.not(id: location.id).order(id: :desc) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
@@ -51,14 +52,6 @@ class Location < ActiveRecord::Base
   has_ancestry counter_cache: true
 
   alias_method :has_child_locations?, :has_children?
-
-  def onlyOneUnknown
-    if type == 'UnknownLocation' && (new_record? || type_changed?)
-      if UnknownLocation.all.count >= 1
-        errors[:base] << "Can't have more than 1 UnknownLocation"
-      end
-    end
-  end
 
   ##
   # It is possible for the parent to be nil
@@ -199,5 +192,13 @@ class Location < ActiveRecord::Base
 
     errors.add :location, "Has been used"
     throw :abort
+  end
+
+  def only_one_unknown
+    if type == 'UnknownLocation' && (new_record? || type_changed?)
+      if UnknownLocation.all.count >= 1
+        errors[:base] << UNKNOWN_LIMIT_ERROR
+      end
+    end
   end
 end
