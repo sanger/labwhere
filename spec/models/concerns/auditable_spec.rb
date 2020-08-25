@@ -44,4 +44,26 @@ RSpec.describe Auditable, type: :model do
     my_model.create_audit(user)
     expect(my_model.audits.last.action).to eq("destroy")
   end
+
+  context 'without write event method' do
+    it 'does not write an event when creating an audit' do
+      model_instance = MyModel.create(name: "My Model")
+
+      expect(Messages).not_to receive(:publish)
+      model_instance.create_audit(user)
+    end
+  end
+
+  context 'with write event method' do
+    # Labware is currently the only model that writes to the events warehouse
+    # Tried testing more generically using expect(model_instance).to receive(:write_event)
+    # But setting up the mock actually creates the method
+    # This changes how the create_audit method behaves - respond_to? returns true
+    let(:model_instance) { create(:labware) }
+
+    it 'writes an event when creating an audit' do
+      expect(Messages).to receive(:publish)
+      model_instance.create_audit(user)
+    end
+  end
 end
