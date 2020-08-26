@@ -160,11 +160,19 @@ class Location < ActiveRecord::Base
     return if has_child_locations?
 
     # loop through labwares and audit
+    labwares_copy = []
     labwares.each do |labware|
       labware.create_audit(current_user, Audit::LOCATION_EMPTIED_ACTION)
+      labwares_copy.append(labware)
     end
 
+    # soft delete labwares to disconnect from relationships including location
     labwares.delete_all
+
+    # set the labwares to have location UnknownLocation rather than null
+    labwares_copy.each do |labware|
+      labware.update(location: UnknownLocation.get)
+    end
   end
 
   private
