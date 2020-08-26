@@ -5,10 +5,8 @@ require 'ostruct'
 
 RSpec.describe Messages::Message, type: :model do
   let(:labware) { create(:labware_with_location) }
-  let(:action) { 'scanned' }
   let(:audit) { create(:audit) }
-  let(:user) { create(:user) }
-  let(:object) { Event.new(user: user, labware: labware, action: action, audit: audit) }
+  let(:object) { Event.new(labware: labware, audit: audit) }
 
   describe '#payload' do
     # bit of a dummy test as it just uses the same code as the method
