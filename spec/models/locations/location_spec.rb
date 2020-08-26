@@ -359,17 +359,18 @@ RSpec.describe Location, type: :model do
 
       it 'will set the labware locations to be the Unknown location' do
         labwares_copy = location.labwares.each_with_object([]) do |labware, object|
-                          object.append(labware)
-                        end
+          object.append(labware)
+        end
         location.remove_all_labwares(user)
-        expect(labwares_copy.map {|lw| lw.location}.uniq).to eq([UnknownLocation.get])
+        expect(labwares_copy.map(&:location).uniq).to eq([UnknownLocation.get])
       end
 
-      it 'will create audits for each labware removed' do
-        expect { location.remove_all_labwares(user) }.to change { Audit.count }.by(num_labware)
+      it 'will create audits for the location and each labware removed' do
+        expect { location.remove_all_labwares(user) }.to change { Audit.count }.by(num_labware + 1)
       end
 
       it 'will create events for each labware removed' do
+        # event not written for location removal itself, just labwares
         expect(Messages).to receive(:publish).exactly(num_labware).times
         location.remove_all_labwares(user)
       end

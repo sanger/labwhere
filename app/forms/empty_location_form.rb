@@ -22,7 +22,6 @@ class EmptyLocationForm
     assign_attributes
     if valid?
       location.remove_all_labwares(current_user)
-      location.create_audit(current_user, Audit::REMOVED_ALL_ACTION)
       true
     else
       false
