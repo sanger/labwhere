@@ -16,7 +16,6 @@ class Audit < ActiveRecord::Base
   PAST_TENSES = { 'scan' => 'Scanned', 'destroy' => 'Destroyed' }
 
   # auditable actions
-  # TODO: translate these into event keys in the messaging system - add underscores and a 'lw_' prefix, or similar
   CREATE_ACTION                        = 'create'
   UPDATE_ACTION                        = 'update'
   DESTROY_ACTION                       = 'destroy'

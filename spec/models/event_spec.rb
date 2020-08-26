@@ -3,15 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
-  let(:user) { create(:user) }
   let(:labware) { create(:labware_with_location) }
-  let(:action) { 'scanned' }
   let(:audit) { create(:audit) }
-  let(:attributes) { { user: user, labware: labware, action: action, audit: audit } }
-
-  it 'must have a user' do
-    expect(Event.new(attributes.except(:user))).to_not be_valid
-  end
+  let(:attributes) { { labware: labware, audit: audit } }
 
   it 'must have a piece of labware' do
     expect(Event.new(attributes.except(:labware))).to_not be_valid
@@ -21,14 +15,16 @@ RSpec.describe Event, type: :model do
     expect(Event.new(attributes.merge(labware: create(:labware)))).to_not be_valid
   end
 
-  it 'must have an action' do
-    expect(Event.new(attributes.except(:action))).to_not be_valid
-  end
-
   it 'may have a coordinate' do
     coordinate = create(:coordinate, labware: create(:labware))
     event = Event.new(attributes.merge(labware: coordinate.labware))
     expect(event.coordinate).to be_present
+  end
+
+  describe '#generate_event_type' do
+    it 'adds a prefix and replaces spaces with underscores' do
+      expect(Event.generate_event_type('Uploaded from manifest')).to eq('lw_Uploaded_from_manifest')
+    end
   end
 
   context 'for an unordered location' do
@@ -39,9 +35,9 @@ RSpec.describe Event, type: :model do
       {
         event: {
           uuid: audit.uuid,
-          event_type: action,
+          event_type: "lw_create",
           occured_at: date_time,
-          user_identifier: user.login,
+          user_identifier: audit.user.login,
           subjects: [
             {
               role_type: 'labware',
@@ -70,7 +66,7 @@ RSpec.describe Event, type: :model do
     before { allow(Time.zone).to receive(:now).and_return(date_time) }
 
     it 'will produce the correct json for the message' do
-      event = Event.new(user: user, labware: labware, action: action, audit: audit)
+      event = Event.new(labware: labware, audit: audit)
       json = event.as_json
       expect(json).to eq(expected_json)
     end

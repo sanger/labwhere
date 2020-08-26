@@ -3,9 +3,9 @@
 class Event
   include ActiveModel::Model
 
-  attr_accessor :user, :labware, :action, :audit
+  attr_accessor :labware, :audit
 
-  validates :user, :labware, :action, :audit, presence: true
+  validates :labware, :audit, presence: true
 
   validate :check_location_exists
 
@@ -20,14 +20,22 @@ class Event
     @timestamp ||= Time.zone.now
   end
 
+  def event_type
+    @event_type ||= Event.generate_event_type(audit.action)
+  end
+
+  def self.generate_event_type(audit_action)
+    "lw_#{audit_action.gsub(' ', '_')}"
+  end
+
   # rubocop:disable Metrics/MethodLength
   def as_json(*)
     {
       event: {
         uuid: uuid,
-        event_type: action,
+        event_type: event_type,
         occured_at: timestamp,
-        user_identifier: user.login,
+        user_identifier: audit.user.login,
         subjects: [
           {
             role_type: 'labware',
