@@ -357,11 +357,19 @@ RSpec.describe Location, type: :model do
         expect(location.labwares).to be_empty
       end
 
-      it 'will create audits' do
+      it 'will set the labware locations to be the Unknown location' do
+        labwares_copy = location.labwares.each_with_object([]) do |labware, object|
+                          object.append(labware)
+                        end
+        location.remove_all_labwares(user)
+        expect(labwares_copy.map {|lw| lw.location}.uniq).to eq([UnknownLocation.get])
+      end
+
+      it 'will create audits for each labware removed' do
         expect { location.remove_all_labwares(user) }.to change { Audit.count }.by(num_labware)
       end
 
-      it 'will send events' do
+      it 'will create events for each labware removed' do
         expect(Messages).to receive(:publish).exactly(num_labware).times
         location.remove_all_labwares(user)
       end
