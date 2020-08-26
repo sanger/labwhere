@@ -159,10 +159,12 @@ class Location < ActiveRecord::Base
   def remove_all_labwares(current_user)
     return if has_child_locations?
 
-    # loop through labwares and audit
+    # audit that uer removed the location
+    self.create_audit(current_user, Audit::REMOVED_ALL_ACTION)
+
+    # copy array of labwares to be deleted (labwares will be empty after delete_all)
     labwares_copy = []
     labwares.each do |labware|
-      labware.create_audit(current_user, Audit::LOCATION_EMPTIED_ACTION)
       labwares_copy.append(labware)
     end
 
@@ -172,6 +174,8 @@ class Location < ActiveRecord::Base
     # set the labwares to have location UnknownLocation rather than null
     labwares_copy.each do |labware|
       labware.update(location: UnknownLocation.get)
+      # audit that each labware is now in an unknown location
+      labware.create_audit(current_user, Audit::LOCATION_EMPTIED_ACTION)
     end
   end
 
