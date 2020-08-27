@@ -37,13 +37,12 @@ RSpec.describe Event, type: :model do
   context 'for an unordered location' do
     let(:location) { create(:unordered_location_with_parent) }
     let(:labware) { create(:labware, location: location) }
-    let(:date_time) { Time.zone.now }
     let(:expected_json) do
       {
         event: {
           uuid: audit.uuid,
           event_type: "lw_create",
-          occured_at: date_time,
+          occured_at: audit.created_at,
           user_identifier: audit.user.login,
           subjects: [
             {
@@ -67,8 +66,6 @@ RSpec.describe Event, type: :model do
         lims: 'LABWHERE'
       }
     end
-
-    before { allow(Time.zone).to receive(:now).and_return(date_time) }
 
     it 'will produce the correct json for the message' do
       event = Event.new(labware: labware, audit: audit)

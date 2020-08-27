@@ -16,10 +16,6 @@ class Event
     @uuid ||= audit.uuid
   end
 
-  def timestamp
-    @timestamp ||= Time.zone.now
-  end
-
   def event_type
     @event_type ||= Event.generate_event_type(audit.action)
   end
@@ -38,7 +34,7 @@ class Event
       event: {
         uuid: uuid,
         event_type: event_type,
-        occured_at: timestamp,
+        occured_at: audit.created_at,
         user_identifier: audit.user.login,
         subjects: [
           {
