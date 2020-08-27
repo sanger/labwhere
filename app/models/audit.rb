@@ -21,7 +21,7 @@ class Audit < ActiveRecord::Base
   DESTROY_ACTION                       = 'destroy'
   MANIFEST_UPLOAD_ACTION               = 'Uploaded from manifest'
   REMOVED_ALL_ACTION                   = 'removed all labwares'           # auditable_type is location
-  LOCATION_EMPTIED_ACTION              = 'update after location emptied'  # auditable_type is labware
+  LOCATION_EMPTIED_ACTION              = 'update when location emptied'   # auditable_type is labware
 
   belongs_to :user
 
