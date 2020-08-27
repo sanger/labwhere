@@ -28,6 +28,10 @@ class Event
     "lw_#{audit_action.gsub(' ', '_')}"
   end
 
+  def self.location_info(location)
+    "#{location.parentage} - #{location.name}"
+  end
+
   # rubocop:disable Metrics/MethodLength
   def as_json(*)
     {
@@ -51,10 +55,8 @@ class Event
           }
         ],
         metadata: {
-          location_barcode: location.barcode,
           location_coordinate: coordinate.try(:position),
-          location_name: location.name,
-          location_parentage: location.parentage
+          location_info: Event.location_info(location)
         }
       },
       lims: 'LABWHERE'

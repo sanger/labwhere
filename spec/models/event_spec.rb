@@ -27,6 +27,13 @@ RSpec.describe Event, type: :model do
     end
   end
 
+  describe '#location_info' do
+    it 'concatenates location parentage and name' do
+      location = create(:location_with_parent)
+      expect(Event.location_info(location)).to eq("#{location.parentage} - #{location.name}")
+    end
+  end
+
   context 'for an unordered location' do
     let(:location) { create(:unordered_location_with_parent) }
     let(:labware) { create(:labware, location: location) }
@@ -53,10 +60,8 @@ RSpec.describe Event, type: :model do
             }
           ],
           metadata: {
-            location_barcode: location.barcode,
             location_coordinate: labware.coordinate.position,
-            location_name: location.name,
-            location_parentage: location.parentage
+            location_info: Event.location_info(location)
           }
         },
         lims: 'LABWHERE'
@@ -80,7 +85,7 @@ RSpec.describe Event, type: :model do
       event = Event.new(attributes.merge(labware: coordinate.labware))
       json = event.as_json
 
-      expect(json[:event][:metadata][:location_barcode]).to eq(locn.barcode)
+      expect(json[:event][:subjects][1][:friendly_name]).to eq(locn.barcode)
       expect(json[:event][:metadata][:location_coordinate]).to eq(coordinate.position)
     end
   end
