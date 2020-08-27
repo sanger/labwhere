@@ -22,7 +22,7 @@ RSpec.describe Event, type: :model do
   end
 
   describe '#generate_event_type' do
-    it 'adds a prefix and replaces spaces with underscores' do
+    it 'adds a prefix, replaces spaces with underscores, and changes to lower case' do
       expect(Event.generate_event_type('Uploaded from manifest')).to eq('lw_uploaded_from_manifest')
     end
   end
