@@ -159,7 +159,7 @@ class Location < ActiveRecord::Base
   def remove_all_labwares(current_user)
     return if has_child_locations?
 
-    # audit that uer removed the location
+    # audit that user emptied the location
     self.create_audit(current_user, Audit::REMOVED_ALL_ACTION)
 
     # copy array of labwares to be deleted (labwares will be empty after delete_all)
