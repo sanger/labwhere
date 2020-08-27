@@ -159,14 +159,11 @@ class Location < ActiveRecord::Base
   def remove_all_labwares(current_user)
     return if has_child_locations?
 
-    # audit that uer removed the location
+    # audit that user emptied the location
     self.create_audit(current_user, Audit::REMOVED_ALL_ACTION)
 
     # copy array of labwares to be deleted (labwares will be empty after delete_all)
-    labwares_copy = []
-    labwares.each do |labware|
-      labwares_copy.append(labware)
-    end
+    labwares_copy = labwares.each_with_object([]) { |labware, object| object.append(labware) }
 
     # soft delete labwares to disconnect from relationships including location
     labwares.delete_all
