@@ -23,7 +23,7 @@ RSpec.describe Event, type: :model do
 
   describe '#generate_event_type' do
     it 'adds a prefix, replaces spaces with underscores, and changes to lower case' do
-      expect(Event.generate_event_type('Uploaded from manifest')).to eq('lw_uploaded_from_manifest')
+      expect(Event.generate_event_type('Uploaded from manifest')).to eq('labwhere_uploaded_from_manifest')
     end
   end
 
@@ -41,7 +41,7 @@ RSpec.describe Event, type: :model do
       {
         event: {
           uuid: audit.uuid,
-          event_type: "lw_create",
+          event_type: "labwhere_create",
           occured_at: audit.created_at,
           user_identifier: audit.user.login,
           subjects: [

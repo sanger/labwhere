@@ -3,16 +3,31 @@
 namespace :migration do
   desc "back-fill uuids"
   task create_uuids: :environment do |_t|
-    Labware.all.each do |lab|
-      lab.update!(uuid: SecureRandom.uuid)
+    puts "Updating labwares..."
+    labware_updated = 0
+    Labware.where(uuid: '').each do |lab|
+      lab.uuid = SecureRandom.uuid
+      result = lab.save(validate: false)
+      labware_updated += 1 if result
     end
+    puts "#{labware_updated} labwares updated"
 
-    Location.all.each do |loc|
-      loc.update!(uuid: SecureRandom.uuid)
+    puts "Updating locations..."
+    locations_updated = 0
+    Location.where(uuid: '').each do |loc|
+      loc.uuid = SecureRandom.uuid
+      result = loc.save(validate: false)
+      locations_updated += 1 if result
     end
+    puts "#{locations_updated} locations updated"
 
-    Audit.all.each do |aud|
-      aud.update!(uuid: SecureRandom.uuid)
+    puts "Updating audits..."
+    audits_updated = 0
+    Audit.where(uuid: '').each do |aud|
+      aud.uuid = SecureRandom.uuid
+      result = aud.save(validate: false)
+      audits_updated += 1 if result
     end
+    puts "#{audits_updated} audits updated"
   end
 end
