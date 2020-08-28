@@ -21,7 +21,7 @@ class Event
   end
 
   def self.generate_event_type(audit_action)
-    "lw_#{audit_action.gsub(' ', '_')}".downcase
+    "labwhere_#{audit_action.gsub(' ', '_')}".downcase
   end
 
   def self.location_info(location)
