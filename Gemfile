@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gem 'active_model_serializers'
 gem 'ancestry'
 gem 'bootsnap', require: false # For startup speed
+gem 'bunny'
 gem 'coffee-rails', '~> 4.2.0' # Use CoffeeScript for .coffee assets and views
 gem 'exception_notification' # Exception Notification to send exception emails
 gem 'jbuilder', '~> 2.0' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

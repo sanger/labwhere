@@ -4,12 +4,14 @@
 # A location can store locations or labware
 class Location < ActiveRecord::Base
   UNKNOWN = "UNKNOWN"
+  UNKNOWN_LIMIT_ERROR = "Can't have more than 1 UnknownLocation"
 
   include Searchable::Client
   include HasActive
   include Auditable
   include SubclassChecker
   include Reservable
+  include Uuidable
 
   belongs_to :location_type, optional: true # Optional for UnknownLocation
   belongs_to :team, optional: true
@@ -32,6 +34,7 @@ class Location < ActiveRecord::Base
   end
 
   validates_with ContainerReservationValidator
+  validate :only_one_unknown
 
   scope :without_location, ->(location) { active.where.not(id: location.id).order(id: :desc) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
@@ -153,10 +156,24 @@ class Location < ActiveRecord::Base
     []
   end
 
-  def remove_all_labwares
+  def remove_all_labwares(current_user)
     return if has_child_locations?
 
+    # audit that user emptied the location
+    self.create_audit(current_user, Audit::REMOVED_ALL_ACTION)
+
+    # copy array of labwares to be deleted (labwares will be empty after delete_all)
+    labwares_copy = labwares.each_with_object([]) { |labware, object| object.append(labware) }
+
+    # soft delete labwares to disconnect from relationships including location
     labwares.delete_all
+
+    # set the labwares to have location UnknownLocation rather than null
+    labwares_copy.each do |labware|
+      labware.update(location: UnknownLocation.get)
+      # audit that each labware is now in an unknown location
+      labware.create_audit(current_user, Audit::LOCATION_EMPTIED_ACTION)
+    end
   end
 
   private
@@ -184,5 +201,13 @@ class Location < ActiveRecord::Base
 
     errors.add :location, "Has been used"
     throw :abort
+  end
+
+  def only_one_unknown
+    if type == 'UnknownLocation' && (new_record? || type_changed?)
+      if UnknownLocation.all.count >= 1
+        errors[:base] << UNKNOWN_LIMIT_ERROR
+      end
+    end
   end
 end

@@ -11,7 +11,17 @@
 #
 # This ensures we know the state of that record when the audit record was created.
 class Audit < ActiveRecord::Base
-  PAST_TENSES = { "scan" => "Scanned", "destroy" => "Destroyed" }
+  include Uuidable
+
+  PAST_TENSES = { 'scan' => 'Scanned', 'destroy' => 'Destroyed' }
+
+  # auditable actions
+  CREATE_ACTION                        = 'create'
+  UPDATE_ACTION                        = 'update'
+  DESTROY_ACTION                       = 'destroy'
+  MANIFEST_UPLOAD_ACTION               = 'Uploaded from manifest'
+  REMOVED_ALL_ACTION                   = 'removed all labwares'           # auditable_type is location
+  LOCATION_EMPTIED_ACTION              = 'update when location emptied'   # auditable_type is labware
 
   belongs_to :user
 

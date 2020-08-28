@@ -15,6 +15,7 @@ before_script:
 - export RAILS_ENV=test
 - cp config/database.yml.example config/database.yml
 - cp config/secrets.yml.example config/secrets.yml
+- cp config/bunny.yml.example config/bunny.yml
 - bundle exec rails db:setup
 - bundle exec rails about
 
