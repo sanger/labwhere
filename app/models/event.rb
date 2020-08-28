@@ -25,7 +25,9 @@ class Event
   end
 
   def self.location_info(location)
-    "#{location.parentage} - #{location.name}"
+    return "#{location.parentage} - #{location.name}" if location.parentage.present?
+
+    location.name
   end
 
   # rubocop:disable Metrics/MethodLength

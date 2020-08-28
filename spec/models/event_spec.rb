@@ -32,6 +32,11 @@ RSpec.describe Event, type: :model do
       location = create(:location_with_parent)
       expect(Event.location_info(location)).to eq("#{location.parentage} - #{location.name}")
     end
+
+    it 'returns just the name if the parentage is blank' do
+      location = create(:location)
+      expect(Event.location_info(location)).to eq(location.name)
+    end
   end
 
   context 'for an unordered location' do
