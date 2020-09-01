@@ -8,7 +8,7 @@
 
 a{
   color: black;
-  
+
   &:hover, &:visited{
     color: $red-dark;
   }
@@ -60,7 +60,7 @@ header{
     margin-top: 5px;
     padding: 5px;
   }
-    
+
 }
 
 nav{
@@ -86,7 +86,7 @@ nav{
       }
       ul{
         position: absolute;
-        left: 240px;
+        left: 590px;
         @include rounded-corners(5px);
         @include drop-shadow(2px, gray);
         opacity: 0.9;
@@ -157,7 +157,7 @@ footer{
 
 .errors{
 
-  
+
   border: 1px solid $red-errors;
   border-top: 3px solid $red-errors;
   margin:{
@@ -257,7 +257,7 @@ article{
   padding: 5px 10px 0px 10px;
   width: auto;
 
- 
+
   p{
     &:first-child{
       margin-top: 10px;

@@ -173,11 +173,4 @@ RSpec.describe FormObject, type: :model do |_variable|
     expect(ModelB.count).to eq(1)
   end
 
-  xit "should be able to submit without attributes" do
-    shes_a_model_form = ShesA.new
-    shes_a_model_form.submit(ActionController::Parameters.new(shes_a: { attr_a: "Blinding" }))
-    expect(shes_a_model_form.attr_a).to eq("Blinding")
-    expect(S.count).to eq(1)
-  end
-
 end
