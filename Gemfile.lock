@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/sanger/pmb-client.git
+  remote: https://github.com/sanger/pmb-client.git
   revision: 016f151a3bde84448ed64e528259c3511282dcdb
   specs:
     pmb-client (0.1.0)
@@ -55,6 +55,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    amq-protocol (2.3.2)
     ancestry (3.0.7)
       activerecord (>= 3.2.0)
     apiaryio (0.13.0)
@@ -69,11 +70,13 @@ GEM
     backports (3.17.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    bootsnap (1.4.5)
+    bootsnap (1.4.6)
       msgpack (~> 1.0)
     builder (3.2.4)
+    bunny (2.16.1)
+      amq-protocol (~> 2.3, >= 2.3.1)
     byebug (11.0.1)
-    capybara (3.29.0)
+    capybara (3.32.0)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -87,6 +90,8 @@ GEM
       timers (~> 4.0.0)
     childprocess (3.0.0)
     cliver (0.3.2)
+    codemirror-rails (5.16.0)
+      railties (>= 3.0, < 6.0)
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -179,7 +184,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.14.0)
     mocha (1.11.2)
-    msgpack (1.3.1)
+    msgpack (1.3.3)
     multi_json (1.14.1)
     multipart-post (2.1.1)
     mysql2 (0.5.3)
@@ -206,6 +211,8 @@ GEM
       json
       websocket (~> 1.0)
     rack (2.0.9)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.4.2)
@@ -244,21 +251,21 @@ GEM
     rb-readline (0.5.5)
     rdoc (4.3.0)
     ref (2.0.0)
-    regexp_parser (1.6.0)
+    regexp_parser (1.7.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rspec-core (3.9.0)
-      rspec-support (~> 3.9.0)
-    rspec-expectations (3.9.0)
+    rspec-core (3.9.1)
+      rspec-support (~> 3.9.1)
+    rspec-expectations (3.9.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
-    rspec-mocks (3.9.0)
+    rspec-mocks (3.9.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
-    rspec-rails (3.9.0)
+    rspec-rails (3.9.1)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
@@ -266,7 +273,7 @@ GEM
       rspec-expectations (~> 3.9.0)
       rspec-mocks (~> 3.9.0)
       rspec-support (~> 3.9.0)
-    rspec-support (3.9.0)
+    rspec-support (3.9.2)
     rubocop (0.77.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -362,8 +369,10 @@ DEPENDENCIES
   ancestry
   apiaryio (~> 0.11)
   bootsnap
+  bunny
   byebug
   capybara
+  codemirror-rails
   coffee-rails (~> 4.2.0)
   database_cleaner
   exception_notification
@@ -380,6 +389,7 @@ DEPENDENCIES
   poltergeist
   pry
   puma
+  rack-cors
   rails (~> 5.2.0)
   rails-controller-testing
   rb-readline
@@ -400,4 +410,4 @@ DEPENDENCIES
   with_model
 
 BUNDLED WITH
-   1.12.5
+   2.1.4
