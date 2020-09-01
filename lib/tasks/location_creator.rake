@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-Dir[File.join(Rails.root, "lib", "location_creator", "*.rb")].each { |f| require f }
+Dir[Rails.root.join('lib/location_creator/*.rb')].each { |f| require f }
 
+desc "locations"
 namespace :locations do
   desc "create some locations"
-  task :create => :environment do |_t|
+  task create: :environment do |_t|
     location_creator = LocationCreator.new("Site" => { location: "Sanger" },
                                            "Building" => { location: "Ogilvie" },
                                            "Room" => { location: "AA315" },

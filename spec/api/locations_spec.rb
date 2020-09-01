@@ -7,6 +7,10 @@ require "rails_helper"
 RSpec.describe Api::LocationsController, type: :request do
   let!(:user) { create(:administrator) }
 
+  it 'has a uuid after creation' do
+    expect(create(:location).uuid).to be_present
+  end
+
   it "should retrieve information about locations get /api/locations" do
     location_type = create(:location_type, name: "Building")
     locations = create_list(:location, 5, location_type: location_type)

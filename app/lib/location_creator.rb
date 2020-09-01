@@ -36,12 +36,9 @@ class LocationCreator
   end
 
   def create_location(location, location_type, parent)
-    UnorderedLocation.find_or_create_by(name: location, parent_id: parent_id(parent)) do |l|
+    UnorderedLocation.find_or_create_by(name: location) do |l|
+      l.parent = parent
       l.location_type = location_type
     end
-  end
-
-  def parent_id(parent)
-    parent.respond_to?(:id) ? parent.id : nil
   end
 end

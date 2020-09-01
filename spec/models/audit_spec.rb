@@ -6,6 +6,10 @@ RSpec.describe Audit, type: :model do
   let!(:location)    { create(:location) }
   let!(:user)        { create(:user) }
 
+  it 'has a uuid after creation' do
+    expect(create(:audit).uuid).to be_present
+  end
+
   it "should not be valid without a user" do
     expect(build(:audit, user: nil)).to_not be_valid
   end
