@@ -75,6 +75,26 @@ RSpec.describe LocationForm, type: :model do
     expect(location_form.location.coordinates.count).to eq(create(:ordered_location).coordinates.count)
   end
 
+  it "should remove any double spaces from the location name" do
+    location_form = LocationForm.new
+    res = location_form.submit(
+      controller_params.merge(location: params.merge(name: 'This is a location with a name with double spaces  ', user_code: administrator.barcode))
+    )
+    expect(res).to be_truthy
+    expect(location_form).to be_valid
+    expect(location_form.location).to be_persisted
+    expect(location_form.location.name).to eq('This is a location with a name with double spaces')
+
+    location_form = LocationForm.new
+    res = location_form.submit(
+      controller_params.merge(location: params.merge(name: 'This is a   location with a   name with triple spaces  ', user_code: administrator.barcode))
+    )
+    expect(res).to be_truthy
+    expect(location_form).to be_valid
+    expect(location_form.location).to be_persisted
+    expect(location_form.location.name).to eq('This is a location with a name with triple spaces')
+  end
+
   describe "multiple locations creation" do
     it "should create multiple locations if start and end are not empty" do
       location_form = LocationForm.new
@@ -85,6 +105,16 @@ RSpec.describe LocationForm, type: :model do
       )
       expect(res).to be_truthy
       expect(location_form).to be_valid
+
+      location_form = LocationForm.new
+      res = location_form.submit(
+        controller_params.merge(location: params.merge(name: 'This is a  location with a  name with double spaces ', start_from: "1",
+                                                       end_to: "4",
+                                                       user_code: administrator.barcode))
+      )
+      expect(res).to be_truthy
+      expect(location_form).to be_valid
+      expect(Location.find_by(name: 'This is a location with a name with double spaces 1')).to be_present
     end
 
     it "should not create multiple locations if start is greater than end" do

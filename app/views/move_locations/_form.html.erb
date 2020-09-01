@@ -1,0 +1,21 @@
+<%= form_for @move_locations, url: move_locations_path do |f| %>
+  <fieldset>
+    <legend>Move Locations</legend>
+    <ul>
+      <li>
+        <%= render "user_code", object: f %>
+      </li>
+      <li>
+        <div><%= f.label :parent_location_barcode, 'New location barcode (Parent location)*' %> </div>
+        <div><%= f.text_field :parent_location_barcode %></div>
+      </li>
+      <li>
+        <div><%= f.label :child_location_barcodes, 'Location barcodes to be moved (Child location)*' %></div>
+        <div class="pr-5"><%= f.text_area :child_location_barcodes %></div>
+      </li>
+      <li>
+          <%= f.submit "Go!", data: {disable_with: "scanning..."} %>
+      </li>
+    </ul>
+  </fieldset>
+<% end %>

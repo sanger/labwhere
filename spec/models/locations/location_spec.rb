@@ -5,6 +5,10 @@
 require 'rails_helper'
 
 RSpec.describe Location, type: :model do
+  it 'has a uuid after creation' do
+    expect(create(:location).uuid).to be_present
+  end
+
   it "is invalid without a name" do
     expect(build(:location, name: nil)).to_not be_valid
   end
@@ -298,6 +302,15 @@ RSpec.describe Location, type: :model do
     it 'sets the children_count' do
       expect(@parent.children_count).to eql(@children.length)
     end
+
+    context 'with existing children' do
+      it 'doesnt kill any existing children' do
+        @parent = create(:unordered_location_with_children)
+        @number_of_children = @parent.children_count
+        @parent.children = @children
+        expect(@parent.children_count).to eql(@children.length + @number_of_children)
+      end
+    end
   end
 
   context 'when parent is updated' do
@@ -312,6 +325,55 @@ RSpec.describe Location, type: :model do
       @location.parent = @new_parent
       @location.save
       expect(@location.internal_parent).to eq(@new_parent)
+    end
+  end
+
+  describe '#remove_labwares' do
+    let(:user) { create(:user) }
+
+    context 'when location has child locations' do
+      let(:location) { create(:unordered_location_with_labwares_and_children) }
+
+      it 'will not remove the labwares' do
+        expect(location.remove_all_labwares(user)).to be_falsey
+        expect(location.labwares).to_not be_empty
+      end
+
+      it 'will not create audits' do
+        expect { location.remove_all_labwares(user) }.not_to(change { Audit.count })
+      end
+
+      it 'will not send events' do
+        expect(Messages).not_to receive(:publish)
+      end
+    end
+
+    context 'when location does not have child locations' do
+      let(:location) { create(:unordered_location_with_labwares) }
+      let(:num_labware) { location.labwares.count }
+
+      it 'will remove the labwares' do
+        expect(location.remove_all_labwares(user)).to be_truthy
+        expect(location.labwares).to be_empty
+      end
+
+      it 'will set the labware locations to be the Unknown location' do
+        labwares_copy = location.labwares.each_with_object([]) do |labware, object|
+          object.append(labware)
+        end
+        location.remove_all_labwares(user)
+        expect(labwares_copy.map(&:location).uniq).to eq([UnknownLocation.get])
+      end
+
+      it 'will create audits for the location and each labware removed' do
+        expect { location.remove_all_labwares(user) }.to change { Audit.count }.by(num_labware + 1)
+      end
+
+      it 'will create events for each labware removed' do
+        # event not written for location removal itself, just labwares
+        expect(Messages).to receive(:publish).exactly(num_labware).times
+        location.remove_all_labwares(user)
+      end
     end
   end
 end

@@ -5,11 +5,11 @@ require 'erb'
 namespace :error_pages do
   desc "copy the error pages from the views to the public folder"
   task copy: :environment do |_t|
-    template = create_erb File.join(Rails.root, "app", "views", "layouts", "public_errors.html.erb")
-    files = Dir[File.join(Rails.root, "app", "views", "errors", "*.html.erb")]
+    template = create_erb Rails.root.join('app/views/layouts/public_errors.html.erb')
+    files = Dir[Rails.root.join('app/views/errors/*.html.erb')]
     files.each do |filename|
       error = create_erb filename
-      File.open(File.join(Rails.root, "public", File.basename(filename, ".erb")), "w+") do |f|
+      File.open(Rails.root.join("public", File.basename(filename, ".erb")), "w+") do |f|
         f.write yield_erb(template) { error.result }
       end
     end
