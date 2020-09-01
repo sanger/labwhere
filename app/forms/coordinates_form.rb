@@ -21,7 +21,7 @@ class CoordinatesForm
         Coordinate.update(coordinate_ids, update_params)
 
         coordinates.each do |coordinate|
-          coordinate.create_audit(current_user, "update")
+          coordinate.create_audit(current_user, Audit::UPDATE_ACTION)
         end
       end
       true

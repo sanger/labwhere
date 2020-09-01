@@ -92,7 +92,7 @@ Rails.application.routes.draw do
 
     resources :scans, only: [:create]
 
-    resources :labwares, param: :barcode, only: [:show] do
+    resources :labwares, param: :barcode, only: [:show, :index] do
       concerns :auditable, parent: :labwares
     end
 
