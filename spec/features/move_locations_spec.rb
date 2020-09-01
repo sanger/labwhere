@@ -23,7 +23,7 @@ RSpec.describe "MoveLocations", type: :feature do
     expect do
       fill_in "User swipe card id/barcode", with: user.swipe_card_id
       fill_in "New location barcode (Parent location)", with: parent_location.barcode
-      fill_in "Location barcodes to be moved (Child location)", with: "#{child_locations.join_barcodes} \nlw-no-location-here"
+      fill_in "Location barcodes to be moved (Child location)", with: "#{child_locations.join_barcodes}\nlw-no-location-here"
       click_button "Go!"
     end.to_not change(parent_location.children, :count)
     expect(page).to have_content("error prohibited this record from being saved")
