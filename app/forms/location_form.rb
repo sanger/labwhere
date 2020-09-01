@@ -8,6 +8,7 @@ class LocationForm
 
   validate :check_user, :check_location, :check_range, :only_same_team_can_release_location
   attr_reader :current_user, :controller, :action, :location, :start_from, :end_to
+
   # delegate_missing_to :location # rails 5
   delegate :parent, :internal_parent, :barcode, :parentage, :type, :coordinateable?, :reserved?, :reserved_by, to: :location
   delegate :id, :created_at, :updated_at, :to_json, to: :location
@@ -166,6 +167,7 @@ class LocationForm
     locations
   end
 
+  # rubocop:disable Style/ExplicitBlockArgument
   def run_transaction()
     begin
       ActiveRecord::Base.transaction do
@@ -176,6 +178,7 @@ class LocationForm
       false
     end
   end
+  # rubocop:enable Style/ExplicitBlockArgument
 
   def set_team
     @location.team_id = reserve_param? ? current_user.team_id : nil

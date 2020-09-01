@@ -26,7 +26,7 @@ RSpec.describe LabwareCollection, type: :model do
 
     it "provides a list of the original locations for the labware" do
       labware_collection.push
-      expect(labware_collection.original_location_names).to eq(previous_location_1.name + ", " + previous_location_2.name)
+      expect(labware_collection.original_location_names).to eq("#{previous_location_1.name}, #{previous_location_2.name}")
     end
 
     it "creates an audit record for each labware" do
