@@ -17,6 +17,7 @@ AllCops:
     - 'db/schema.rb'
     - 'db/migrate/*'
     - 'vendor/**/*'
+    - 'config/routes.rb'
 
 # Metrics/LineLength:
 #   Max: 120

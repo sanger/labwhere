@@ -18,7 +18,7 @@ RSpec.describe Auditable, type: :model do
 
   it "should be able to create an audit record" do
     my_model = MyModel.create(name: "My Model")
-    my_model.create_audit(user, "create")
+    my_model.create_audit(user, Audit::CREATE_ACTION)
     audit = my_model.audits.first
     expect(audit.user).to eq(user)
     expect(audit.record_data.except("created_at", "updated_at")).to eq(my_model.as_json.except("created_at", "updated_at"))
@@ -34,14 +34,36 @@ RSpec.describe Auditable, type: :model do
   it "should add an action if none is provided" do
     my_model = MyModel.create(name: "My Model")
     my_model.create_audit(user)
-    expect(my_model.audits.last.action).to eq("create")
+    expect(my_model.audits.last.action).to eq(Audit::CREATE_ACTION)
     # Need to put the created date into the past because the test is too quick, so that created date and updated date are equal
     my_model.update_attributes(created_at: DateTime.now - 1)
     my_model.update_attributes(name: "New Name")
     my_model.create_audit(user)
-    expect(my_model.audits.last.action).to eq("update")
+    expect(my_model.audits.last.action).to eq(Audit::UPDATE_ACTION)
     my_model.destroy
     my_model.create_audit(user)
-    expect(my_model.audits.last.action).to eq("destroy")
+    expect(my_model.audits.last.action).to eq(Audit::DESTROY_ACTION)
+  end
+
+  context 'without write event method' do
+    it 'does not write an event when creating an audit' do
+      model_instance = MyModel.create(name: "My Model")
+
+      expect(Messages).not_to receive(:publish)
+      model_instance.create_audit(user)
+    end
+  end
+
+  context 'with write event method' do
+    # Labware is currently the only model that writes to the events warehouse
+    # Tried testing more generically using expect(model_instance).to receive(:write_event)
+    # But setting up the mock actually creates the method
+    # This changes how the create_audit method behaves - respond_to? returns true
+    let(:model_instance) { create(:labware) }
+
+    it 'writes an event when creating an audit' do
+      expect(Messages).to receive(:publish)
+      model_instance.create_audit(user)
+    end
   end
 end
