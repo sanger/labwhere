@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       resources :children, only: [:index]
       resources :labwares, only: [:index]
     end
+
   end
 
   resources :labwares, only: [:show] do
@@ -36,6 +37,10 @@ Rails.application.routes.draw do
   end
 
   resources :scans, only: [:new, :create]
+
+  resources :upload_labware, only: [:new, :create]
+  resources :move_locations, only: [:new, :create]
+  resources :empty_locations, only: [:new, :create]
 
   resources :searches, only: [:new, :create, :show]
 
@@ -87,7 +92,7 @@ Rails.application.routes.draw do
 
     resources :scans, only: [:create]
 
-    resources :labwares, param: :barcode, only: [:show] do
+    resources :labwares, param: :barcode, only: [:show, :index] do
       concerns :auditable, parent: :labwares
     end
 

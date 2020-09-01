@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gem 'active_model_serializers'
 gem 'ancestry'
 gem 'bootsnap', require: false # For startup speed
+gem 'bunny'
 gem 'coffee-rails', '~> 4.2.0' # Use CoffeeScript for .coffee assets and views
 gem 'exception_notification' # Exception Notification to send exception emails
 gem 'jbuilder', '~> 2.0' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -22,6 +23,10 @@ gem 'select2-rails'
 gem 'therubyracer'
 gem 'turbolinks' # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'uglifier', '>= 1.3.0' # Use Uglifier as compressor for JavaScript assets
+
+gem 'codemirror-rails'
+
+gem 'rack-cors'
 
 group :development do
   gem 'apiaryio', '~> 0.11'
