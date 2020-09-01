@@ -30,7 +30,7 @@ RSpec.describe EmptyLocationForm, type: :model do
 
   it "will strip the location barcode" do
     new_form.submit(params.merge(empty_location_form:
-      { "location_barcode" => location.barcode + "\n", "user_code" => user.swipe_card_id }))
+      { "location_barcode" => "#{location.barcode}\n", "user_code" => user.swipe_card_id }))
     expect(location.reload.labwares).to be_empty
   end
 

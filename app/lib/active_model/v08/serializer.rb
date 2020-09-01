@@ -8,6 +8,7 @@ module ActiveModel
       # AMS 0.8 would delegate method calls from within the serializer to the
       # object.
       def method_missing(*args)
+        super
         method = args.first
         read_attribute_for_serialization(method)
       end

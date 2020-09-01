@@ -21,7 +21,7 @@ class Location < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: { scope: :ancestry, case_sensitive: true }
 
-  validates_format_of :name, with: /\A[\w\-\s\(\)]+\z/
+  validates_format_of :name, with: /\A[\w\-\s()]+\z/
   validates_length_of :name, maximum: 60
 
   with_options unless: :unknown? do

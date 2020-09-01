@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-require_relative '../../lib/utils/deployed_version.rb'
+require_relative '../../lib/utils/deployed_version'

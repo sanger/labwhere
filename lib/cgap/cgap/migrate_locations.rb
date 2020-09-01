@@ -92,7 +92,7 @@ module Cgap
 
     def create_unique_name(cgap_location)
       name = cgap_location.name
-      ::Location.where(["name LIKE ?", name]).present? ? (name + " " + cgap_location.id.to_s) : name
+      ::Location.where(["name LIKE ?", name]).present? ? "#{name} #{cgap_location.id}" : name
     end
   end
 end

@@ -5,6 +5,7 @@ require "rails_helper"
 RSpec.describe HashAttributes, type: :model do
   class TestHashAttributes
     attr_reader :attr_a, :attr_b, :attr_c
+
     include HashAttributes
 
     def initialize(attributes = {})

@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe FormObject::FormVariables, type: :model do
   class ALovelyModel
     def marry
-      "a" + attr_a.to_s
+      "a#{attr_a}"
     end
 
     def pad
