@@ -53,7 +53,7 @@ RSpec.describe FormObject, type: :model do |_variable|
       attr_reader :last
 
       def modify_a
-        "modified " + attr_a.to_s
+        "modified #{attr_a}"
       end
 
       def set_last
@@ -80,6 +80,7 @@ RSpec.describe FormObject, type: :model do |_variable|
       set_attributes :name
 
       attr_reader :duck
+
       validate :duck_quacks
 
       after_assigning_model_variables :set_duck

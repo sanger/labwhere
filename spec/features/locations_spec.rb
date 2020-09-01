@@ -362,7 +362,7 @@ RSpec.describe "Locations", type: :feature do
 
       expect(page).to have_content("Location '#{location.name}' successfully deleted")
 
-      expect(page).to_not have_css('article#location_' + location.id.to_s)
+      expect(page).to_not have_css("article#location_#{location.id}")
 
       expect(Location.find_by(id: location.id)).to be_nil
     end
@@ -385,7 +385,7 @@ RSpec.describe "Locations", type: :feature do
 
       expect(page).to have_content("Location '#{location1.name}' successfully deleted")
 
-      expect(page).to_not have_css('article#location_' + location1.id.to_s)
+      expect(page).to_not have_css("article#location_#{location1.id}")
 
       find(:data_id, location2.id).click_link 'Delete'
       fill_in 'User swipe card id/barcode', with: user.swipe_card_id
@@ -393,9 +393,9 @@ RSpec.describe "Locations", type: :feature do
 
       expect(page).to have_content("Location '#{location2.name}' successfully deleted")
 
-      expect(page).to_not have_css('article#location_' + location2.id.to_s)
+      expect(page).to_not have_css("article#location_#{location2.id}")
 
-      expect(page).to have_css('article#location_' + location3.id.to_s)
+      expect(page).to have_css("article#location_#{location3.id}")
 
       expect(Location.find_by(id: location1.id)).to be_nil
       expect(Location.find_by(id: location2.id)).to be_nil

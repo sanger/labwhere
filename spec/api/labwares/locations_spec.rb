@@ -57,7 +57,7 @@ describe Api::Labwares::LocationsController, type: :request do
       end
 
       it 'does not include labware not found' do
-        labware_barcodes = @body[:locations].map { |location| location[:labware_barcode] }
+        labware_barcodes = @body[:locations].pluck(:labware_barcode)
         expect(labware_barcodes).not_to include(labware.barcode)
       end
     end
