@@ -35,11 +35,7 @@ class ManifestUploader
   end
 
   def locations
-    @locations ||= {}.tap do |h|
-      location_barcodes.each do |barcode|
-        h[barcode] = Location.find_by(barcode: barcode)
-      end
-    end
+    @locations ||= Location.where(barcode: location_barcodes).index_by(&:barcode)
   end
 
   def empty_locations
