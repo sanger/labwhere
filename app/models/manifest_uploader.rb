@@ -18,8 +18,9 @@ class ManifestUploader
 
     ActiveRecord::Base.transaction do
       data.each do |row|
-        labware = Labware.find_or_initialize_by(barcode: row[1])
-        labware.location = locations[row[0]]
+        location_barcode, labware_barcode = row
+        labware = Labware.find_or_initialize_by(barcode: labware_barcode.strip)
+        labware.location = locations[location_barcode.strip]
         labware.save!
         labware.create_audit!(user, Audit::MANIFEST_UPLOAD_ACTION)
       end
@@ -31,7 +32,7 @@ class ManifestUploader
   end
 
   def location_barcodes
-    @location_barcodes ||= data.collect { |item| item.take(1) }.flatten.uniq
+    @location_barcodes ||= data.collect { |item| item.first.strip }.uniq
   end
 
   def locations
@@ -41,7 +42,7 @@ class ManifestUploader
   end
 
   def missing_locations
-    @missing_locations ||= location_barcodes.reject { |barcode| locations.key?(barcode) }
+    @missing_locations ||= location_barcodes.reject { |barcode| locations.key?(barcode.strip) }
   end
 
   def check_locations
