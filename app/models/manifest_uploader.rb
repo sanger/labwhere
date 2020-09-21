@@ -35,16 +35,18 @@ class ManifestUploader
   end
 
   def locations
-    @locations ||= Location.where(barcode: location_barcodes).index_by(&:barcode)
+    @locations ||= Location.where(barcode: location_barcodes)
+                           .include_for_labware_receipt
+                           .index_by(&:barcode)
   end
 
-  def empty_locations
-    @empty_locations ||= locations.select { |_k, v| v.nil? }
+  def missing_locations
+    @missing_locations ||= location_barcodes.reject { |barcode| locations.key?(barcode) }
   end
 
   def check_locations
-    return if empty_locations.empty?
+    return if missing_locations.empty?
 
-    errors.add(:base, "location(s) with barcode #{empty_locations.keys.join(',')} do not exist")
+    errors.add(:base, "location(s) with barcode #{missing_locations.join(',')} do not exist")
   end
 end
