@@ -22,7 +22,7 @@ class Labware < ActiveRecord::Base
 
   searchable_by :barcode
 
-  scope :by_barcode, lambda { |barcodes| where(barcode: barcodes) }
+  scope :by_barcode, lambda { |barcodes| includes(:location).where(barcode: barcodes) }
 
   ##
   # find a Labware by its barcode
