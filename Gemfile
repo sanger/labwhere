@@ -50,6 +50,7 @@ group :development, :test do
   gem 'rb-readline'
   gem 'rspec-rails', '~> 3.1'
   gem 'rubocop', require: false
+  gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'spring', '~> 1.3.6' # Spring speeds up development by keeping your application running in the background.
   gem 'teaspoon-jasmine'

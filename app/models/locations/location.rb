@@ -187,7 +187,7 @@ class Location < ActiveRecord::Base
   ##
   # The barcode is the name downcased with spaces replaced by dashes with the id added again separated by a space.
   def generate_barcode
-    update_column(:barcode, "lw-#{self.name.gsub(' ', '-').downcase}-#{self.id}")
+    update_column(:barcode, "lw-#{self.name.tr(' ', '-').downcase}-#{self.id}")
   end
 
   def apply_restrictions
