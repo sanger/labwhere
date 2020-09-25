@@ -16,9 +16,9 @@ class Header
   # location_types => "Location Types" for the index action.
   # location_types => "New Location Type" if the action is new.
   def to_s
-    return controller.gsub('_', ' ').titleize if action == "index"
+    return controller.tr('_', ' ').titleize if action == "index"
 
-    "#{action.capitalize} #{controller.singularize.gsub('_', ' ').titleize}"
+    "#{action.capitalize} #{controller.singularize.tr('_', ' ').titleize}"
   end
 
   ##
@@ -26,9 +26,9 @@ class Header
   # location_types => "location-types" if action is index.
   # location_types => "new-location-type" if action is new.
   def to_css_class
-    return controller.gsub('_', '-') if action == "index"
+    return controller.tr('_', '-') if action == "index"
 
-    "#{action}-#{controller.singularize.gsub('_', '-')}"
+    "#{action}-#{controller.singularize.tr('_', '-')}"
   end
 
   private
