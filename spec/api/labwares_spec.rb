@@ -125,7 +125,7 @@ RSpec.describe Api::LabwaresController, type: :request do
       it 'should produce some json' do
         expect(@json.length).to eq(6)
 
-        labware = @json.select { |l| l["barcode"] == barcode }.first
+        labware = @json.find { |l| l["barcode"] == barcode }
 
         expect(labware["barcode"]).to be_present
         expect(labware["location_barcode"]).to_not be_present
