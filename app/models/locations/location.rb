@@ -39,6 +39,7 @@ class Location < ActiveRecord::Base
   scope :without_location, ->(location) { active.where.not(id: location.id).order(id: :desc) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
   scope :by_root, -> { without_unknown.roots }
+  scope :include_for_labware_receipt, -> { includes(:internal_parent, location_type: :restrictions) }
 
   before_save :set_parentage
   before_save :set_internal_parent_id
@@ -58,6 +59,11 @@ class Location < ActiveRecord::Base
   # This will ensure we don't get a no method error.
   def parent
     super || NullLocation.new
+  end
+
+  def parent=(new_parent)
+    super
+    self.internal_parent = new_parent
   end
 
   def unknown?
@@ -181,7 +187,7 @@ class Location < ActiveRecord::Base
   ##
   # The barcode is the name downcased with spaces replaced by dashes with the id added again separated by a space.
   def generate_barcode
-    update_column(:barcode, "lw-#{self.name.gsub(' ', '-').downcase}-#{self.id}")
+    update_column(:barcode, "lw-#{self.name.tr(' ', '-').downcase}-#{self.id}")
   end
 
   def apply_restrictions
