@@ -4,7 +4,7 @@ class String
   ##
   # remove tabs, carriage returns and returns from a string
   def remove_control_chars
-    self.gsub(/[\t\r\n]/, '')
+    self.tr("\t\r\n", '')
   end
 
   ##
