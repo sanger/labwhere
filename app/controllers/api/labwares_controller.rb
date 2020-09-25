@@ -31,7 +31,7 @@ class Api::LabwaresController < ApiController
 
   def labwares_by_barcode
     barcodes = params[:barcodes]
-    return unless barcodes
+    return [] unless barcodes
 
     Labware.by_barcode(barcodes)
   end
