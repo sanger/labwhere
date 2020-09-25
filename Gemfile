@@ -31,7 +31,7 @@ gem 'rack-cors'
 group :development do
   gem 'apiaryio', '~> 0.11'
   gem 'listen'
-  gem 'web-console', '~> 2.0' # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'web-console' # Access an IRB console on exception pages or by using <%= console %> in views
 end
 
 group :test do
@@ -50,6 +50,7 @@ group :development, :test do
   gem 'rb-readline'
   gem 'rspec-rails', '~> 3.1'
   gem 'rubocop', require: false
+  gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'spring', '~> 1.3.6' # Spring speeds up development by keeping your application running in the background.
   gem 'teaspoon-jasmine'
