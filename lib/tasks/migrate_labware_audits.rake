@@ -3,7 +3,6 @@
 namespace :labware_audits do
   desc "Move the labware audits to the events warehouse"
   task create: :environment do |_t|
-
     start_date = DateTime.parse("2020-09-02")
 
     # labwares
@@ -13,6 +12,5 @@ namespace :labware_audits do
       puts "creating audit for audit with id=#{audit.id}"
       Messages.publish(audit)
     end
-
   end
 end
