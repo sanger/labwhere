@@ -24,7 +24,7 @@ module Auditable
 
   def create_audit_shared(user, action, throw_exception)
     create_method = throw_exception ? :create! : :create
-    my_audit = Audit.send(create_method, user: user, action: create_action(action), record_data: self, auditable_type: self.class, auditable_id: self.id)
+    my_audit = Audit.send(create_method, user: user, action: create_action(action), record_data: self, auditable: self)
     write_event(my_audit) if self.respond_to?(:write_event)
   end
 

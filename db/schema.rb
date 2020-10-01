@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_24_095014) do
+ActiveRecord::Schema.define(version: 2020_09_23_085334) do
 
   create_table "audits", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "auditable_type"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2020_08_24_095014) do
     t.datetime "updated_at", null: false
     t.integer "coordinate_id"
     t.string "uuid", limit: 36, null: false, comment: "Unique identifier for this Labware. Added to send to Events Warehouse. Doesn't match up with Sequencescape or any other app."
+    t.index ["barcode"], name: "index_labwares_on_barcode", unique: true
     t.index ["coordinate_id"], name: "index_labwares_on_coordinate_id"
     t.index ["location_id"], name: "index_labwares_on_location_id"
   end
@@ -79,6 +80,7 @@ ActiveRecord::Schema.define(version: 2020_08_24_095014) do
     t.integer "children_count", default: 0, null: false
     t.string "uuid", limit: 36, null: false, comment: "Unique identifier for this Location. Added to send to Events Warehouse."
     t.index ["ancestry"], name: "index_locations_on_ancestry"
+    t.index ["barcode"], name: "index_locations_on_barcode", unique: true
     t.index ["location_type_id"], name: "index_locations_on_location_type_id"
     t.index ["team_id"], name: "index_locations_on_team_id"
   end

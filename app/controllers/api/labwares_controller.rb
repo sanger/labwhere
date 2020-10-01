@@ -10,6 +10,10 @@ class Api::LabwaresController < ApiController
     render json: labwares_by_location
   end
 
+  def by_barcode
+    render json: labwares_by_barcode, each_serializer: LabwareLiteSerializer
+  end
+
   private
 
   def current_resource
@@ -23,5 +27,12 @@ class Api::LabwaresController < ApiController
     return unless location_barcodes
 
     Labware.joins(:location).where(locations: { barcode: location_barcodes.split(',') })
+  end
+
+  def labwares_by_barcode
+    barcodes = params[:barcodes]
+    return [] unless barcodes
+
+    Labware.by_barcode(barcodes)
   end
 end

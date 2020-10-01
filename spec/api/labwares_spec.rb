@@ -93,4 +93,43 @@ RSpec.describe Api::LabwaresController, type: :request do
       end
     end
   end
+
+  context 'by_barcode' do
+    let!(:labwares) { create_list(:labware_with_location, 10) }
+    let!(:barcodes) { labwares.pluck(:barcode).sample(5) }
+
+    context 'when all of the labwares have locations' do
+      before(:each) do
+        post api_labwares_by_barcode_path, params: { barcodes: barcodes }
+        @json = ActiveSupport::JSON.decode(response.body)
+      end
+
+      it 'should produce some json' do
+        expect(@json.length).to eq(5)
+
+        labware = @json.first
+        expect(labware["barcode"]).to_not be_empty
+        expect(labware["location_barcode"]).to_not be_empty
+      end
+    end
+
+    context 'when one of the labwares have no location' do
+      let!(:labware) { create(:labware) }
+      let!(:barcode) { labware.barcode }
+
+      before(:each) do
+        post api_labwares_by_barcode_path, params: { barcodes: barcodes + [barcode] }
+        @json = ActiveSupport::JSON.decode(response.body)
+      end
+
+      it 'should produce some json' do
+        expect(@json.length).to eq(6)
+
+        labware = @json.find { |l| l["barcode"] == barcode }
+
+        expect(labware["barcode"]).to be_present
+        expect(labware["location_barcode"]).to_not be_present
+      end
+    end
+  end
 end
