@@ -14,10 +14,11 @@ namespace :labware_events do
 
     events_created = 0
 
-    audits.each do |audit|
+    audits.find_each do |audit|
       event = Event.new(labware: audit.auditable, audit: audit)
       if event.valid?
         Messages.publish(event)
+        Rails.logger.info("LABWHERE EVENTS: Event created for audit with id=#{audit.id}")
         events_created += 1
       else
         Rails.logger.info("LABWHERE EVENTS: Event could not be created for audit with id=#{audit.id}")
