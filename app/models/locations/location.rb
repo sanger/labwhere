@@ -170,6 +170,7 @@ class Location < ActiveRecord::Base
 
     # set the labwares to have location UnknownLocation rather than null
     labwares_copy.each do |labware|
+      labware.update(location: UnknownLocation.get)
       # audit that each labware is now in an unknown location
       labware.create_audit(current_user, Audit::LOCATION_EMPTIED_ACTION)
     end
