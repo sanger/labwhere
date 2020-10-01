@@ -3,6 +3,7 @@
 ##
 # Labware is stored in a location.
 # LabWhere needs to know nothing about it apart from its barcode and where it is.
+# If a labware has no location it's location will be set to unknown automatically
 class Labware < ActiveRecord::Base
   include SoftDeletable
   include Searchable::Client

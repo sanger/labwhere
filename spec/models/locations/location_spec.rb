@@ -358,11 +358,13 @@ RSpec.describe Location, type: :model do
       end
 
       it 'will set the labware locations to be the Unknown location' do
-        labwares_copy = location.labwares.each_with_object([]) do |labware, object|
+        labwares_deleted = location.labwares.each_with_object([]) do |labware, object|
           object.append(labware)
         end
+        barcodes = location.labwares.pluck(:id)
         location.remove_all_labwares(user)
-        expect(labwares_copy.map(&:location).uniq).to eq([UnknownLocation.get])
+        labwares_copy = Labware.find(barcodes)
+        expect(labwares_deleted.all? { |labware| labware.location == UnknownLocation.get }).to be_truthy
       end
 
       it 'will create audits for the location and each labware removed' do
