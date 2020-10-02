@@ -359,20 +359,18 @@ RSpec.describe Location, type: :model do
 
       it 'will not delete the labwares themselves' do
         location # Instantiate the location before out change block below
-                 # otherwise we detect all the labware built by the factory
-        expect { location.remove_all_labwares(user) }.not_to change { Labware.count }
+        # otherwise we detect all the labware built by the factory
+        expect { location.remove_all_labwares(user) }.not_to change(Labware, :count)
       end
 
       it 'will set the labware locations to be the Unknown location' do
-        labwares_copy = location.labwares.each_with_object([]) do |labware, object|
-          object.append(labware)
-        end
+        labwares_copy = location.labwares.to_a
         location.remove_all_labwares(user)
-        expect(labwares_copy.map(&:location).uniq).to eq([UnknownLocation.get])
+        expect(labwares_copy.map(&:location)).to all eq(UnknownLocation.get)
       end
 
       it 'will create audits for the location and each labware removed' do
-        expect { location.remove_all_labwares(user) }.to change { Audit.count }.by(num_labware + 1)
+        expect { location.remove_all_labwares(user) }.to change(Audit, :count).by(num_labware + 1)
       end
 
       it 'will create events for each labware removed' do
@@ -393,25 +391,23 @@ RSpec.describe Location, type: :model do
 
       it 'will not delete the labwares themselves' do
         location # Instantiate the location before out change block below
-                 # otherwise we detect all the labware built by the factory
-        expect { location.remove_all_labwares(user) }.not_to change { Labware.count }
+        # otherwise we detect all the labware built by the factory
+        expect { location.remove_all_labwares(user) }.not_to change(Labware, :count)
       end
 
       it 'will not delete the coordinates themselves' do
         location
-        expect { location.remove_all_labwares(user) }.not_to change { location.coordinates.reload.count }
+        expect { location.remove_all_labwares(user) }.not_to(change { location.coordinates.reload.count })
       end
 
       it 'will set the labware locations to be the Unknown location' do
-        labwares_copy = location.labwares.each_with_object([]) do |labware, object|
-          object.append(labware)
-        end
+        labwares_copy = location.labwares.to_a
         location.remove_all_labwares(user)
-        expect(labwares_copy.map(&:location).uniq).to eq([UnknownLocation.get])
+        expect(labwares_copy.map(&:location)).to all eq(UnknownLocation.get)
       end
 
       it 'will create audits for the location and each labware removed' do
-        expect { location.remove_all_labwares(user) }.to change { Audit.count }.by(num_labware + 1)
+        expect { location.remove_all_labwares(user) }.to change(Audit, :count).by(num_labware + 1)
       end
 
       it 'will create events for each labware removed' do

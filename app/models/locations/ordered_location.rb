@@ -6,18 +6,7 @@
 # Logically it can't have locations as children.
 class OrderedLocation < Location
   has_many :coordinates, foreign_key: "location_id"
-  has_many :labwares, through: :coordinates do
-    # Rails does not provide a functional delete_all for has_many through associations
-    # Here we define our own version, which detaches the labware from their coordinates
-    # We use update_all, which like delete_all, avoids instantiating the records, or
-    # firing callbacks. This allows the operation to proceed quickly.
-    # We reset the association afterwards to ensure it doesn't continue to
-    # report labware if accessed again.
-    def delete_all
-      update_all(coordinate_id: nil)
-      reset
-    end
-  end
+  has_many :labwares, through: :coordinates
 
   before_create :populate_coordinates
 

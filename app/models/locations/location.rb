@@ -166,20 +166,20 @@ class Location < ActiveRecord::Base
     return if has_child_locations?
 
     # audit that user emptied the location
-    self.create_audit(current_user, Audit::REMOVED_ALL_ACTION)
+    create_audit(current_user, Audit::REMOVED_ALL_ACTION)
 
-    # copy array of labwares to be deleted (labwares will be empty after delete_all)
-    labwares_copy = labwares.each_with_object([]) { |labware, object| object.append(labware) }
-
-    # soft delete labwares to disconnect from relationships including location
-    labwares.delete_all
+    unknown_location = UnknownLocation.get
 
     # set the labwares to have location UnknownLocation rather than null
-    labwares_copy.each do |labware|
-      labware.update(location: UnknownLocation.get)
+    labwares.each do |labware|
+      labware.update(location: unknown_location, coordinate: nil)
       # audit that each labware is now in an unknown location
       labware.create_audit(current_user, Audit::LOCATION_EMPTIED_ACTION)
     end
+
+    # Reset the association to ensure it is no-longer populated
+    # with labware
+    labwares.reset
   end
 
   private
