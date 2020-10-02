@@ -20,7 +20,7 @@ gem 'rails', '~> 5.2.0'
 gem 'sass-rails', '~> 5.0' # Use SCSS for stylesheets
 gem 'sdoc', '~> 0.4.0', group: :doc # bundle exec rake doc:rails generates the API under doc/api.
 gem 'select2-rails'
-gem 'therubyracer'
+gem 'mini_racer'
 gem 'turbolinks' # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'uglifier', '>= 1.3.0' # Use Uglifier as compressor for JavaScript assets
 
