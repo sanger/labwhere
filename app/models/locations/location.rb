@@ -171,7 +171,7 @@ class Location < ActiveRecord::Base
     unknown_location = UnknownLocation.get
 
     # set the labwares to have location UnknownLocation rather than null
-    labwares.each do |labware|
+    labwares.find_each do |labware|
       labware.update(location: unknown_location, coordinate: nil)
       # audit that each labware is now in an unknown location
       labware.create_audit(current_user, Audit::LOCATION_EMPTIED_ACTION)
