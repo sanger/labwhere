@@ -357,6 +357,51 @@ RSpec.describe Location, type: :model do
         expect(location.labwares).to be_empty
       end
 
+      it 'will not delete the labwares themselves' do
+        location # Instantiate the location before out change block below
+                 # otherwise we detect all the labware built by the factory
+        expect { location.remove_all_labwares(user) }.not_to change { Labware.count }
+      end
+
+      it 'will set the labware locations to be the Unknown location' do
+        labwares_copy = location.labwares.each_with_object([]) do |labware, object|
+          object.append(labware)
+        end
+        location.remove_all_labwares(user)
+        expect(labwares_copy.map(&:location).uniq).to eq([UnknownLocation.get])
+      end
+
+      it 'will create audits for the location and each labware removed' do
+        expect { location.remove_all_labwares(user) }.to change { Audit.count }.by(num_labware + 1)
+      end
+
+      it 'will create events for each labware removed' do
+        # event not written for location removal itself, just labwares
+        expect(Messages).to receive(:publish).exactly(num_labware).times
+        location.remove_all_labwares(user)
+      end
+    end
+
+    context 'when an ordered location does not have child locations' do
+      let(:location) { create(:ordered_location_with_labwares, rows: 2, columns: 2) }
+      let(:num_labware) { 4 }
+
+      it 'will remove the labwares' do
+        expect(location.remove_all_labwares(user)).to be_truthy
+        expect(location.labwares).to be_empty
+      end
+
+      it 'will not delete the labwares themselves' do
+        location # Instantiate the location before out change block below
+                 # otherwise we detect all the labware built by the factory
+        expect { location.remove_all_labwares(user) }.not_to change { Labware.count }
+      end
+
+      it 'will not delete the coordinates themselves' do
+        location
+        expect { location.remove_all_labwares(user) }.not_to change { location.coordinates.reload.count }
+      end
+
       it 'will set the labware locations to be the Unknown location' do
         labwares_copy = location.labwares.each_with_object([]) do |labware, object|
           object.append(labware)
