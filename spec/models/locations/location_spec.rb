@@ -364,9 +364,10 @@ RSpec.describe Location, type: :model do
       end
 
       it 'will set the labware locations to be the Unknown location' do
-        labwares_copy = location.labwares.to_a
+        deleted_labware_ids = location.labwares.pluck(:id)
         location.remove_all_labwares(user)
-        expect(labwares_copy.map(&:location)).to all eq(UnknownLocation.get)
+        labwares_deleted = Labware.find(deleted_labware_ids)
+        expect(labwares_deleted.map(&:location)).to all eq(UnknownLocation.get)
       end
 
       it 'will create audits for the location and each labware removed' do
@@ -401,11 +402,10 @@ RSpec.describe Location, type: :model do
       end
 
       it 'will set the labware locations to be the Unknown location' do
-        labwares_deleted = location.labwares.to_a
-        barcodes = location.labwares.pluck(:id)
+        deleted_labware_ids = location.labwares.pluck(:id)
         location.remove_all_labwares(user)
-        labwares_copy = Labware.find(barcodes)
-        expect(labwares_copy.map(&:location)).to all eq(UnknownLocation.get)
+        labwares_deleted = Labware.find(deleted_labware_ids)
+        expect(labwares_deleted.map(&:location)).to all eq(UnknownLocation.get)
       end
 
       it 'will create audits for the location and each labware removed' do
