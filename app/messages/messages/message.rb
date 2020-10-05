@@ -10,7 +10,7 @@ module Messages
 
     # Content as json string
     def payload
-      object.as_json.to_json
+      object.to_json
     end
   end
 end

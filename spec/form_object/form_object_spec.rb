@@ -3,6 +3,7 @@
 require "rails_helper"
 
 RSpec.describe FormObject, type: :model do |_variable|
+  # rubocop:disable Lint/ConstantDefinitionInBlock
   with_model :ModelA do
     table do |t|
       t.string :name
@@ -99,6 +100,7 @@ RSpec.describe FormObject, type: :model do |_variable|
 
       set_form_variables :attr_a
     end
+    # rubocop:enable Lint/ConstantDefinitionInBlock
   end
 
   it "should assign the top level attributes attributes" do
