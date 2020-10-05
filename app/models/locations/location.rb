@@ -116,8 +116,8 @@ class Location < ActiveRecord::Base
   end
 
   def destroyable
-    unless used?
-      yield if block_given?
+    unless used? && block_given?
+      yield
     end
   end
 
@@ -210,10 +210,8 @@ class Location < ActiveRecord::Base
   end
 
   def only_one_unknown
-    if type == 'UnknownLocation' && (new_record? || type_changed?)
-      if UnknownLocation.all.count >= 1
-        errors[:base] << UNKNOWN_LIMIT_ERROR
-      end
+    if type == 'UnknownLocation' && (new_record? || type_changed?) && UnknownLocation.all.count >= 1
+      errors[:base] << UNKNOWN_LIMIT_ERROR
     end
   end
 end
