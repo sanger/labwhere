@@ -2,26 +2,26 @@
 
 require "rails_helper"
 
+class TestHashAttributes
+  attr_reader :attr_a, :attr_b, :attr_c
+
+  include HashAttributes
+
+  def initialize(attributes = {})
+    set_attributes(attributes)
+  end
+end
+
+class TestParamsAttributes
+  include HashAttributes
+  attr_reader :controller, :action, :attr_a, :attr_b, :attr_c
+
+  def initialize(attributes = {})
+    set_params_attributes(:nested, attributes)
+  end
+end
+
 RSpec.describe HashAttributes, type: :model do
-  class TestHashAttributes
-    attr_reader :attr_a, :attr_b, :attr_c
-
-    include HashAttributes
-
-    def initialize(attributes = {})
-      set_attributes(attributes)
-    end
-  end
-
-  class TestParamsAttributes
-    include HashAttributes
-    attr_reader :controller, :action, :attr_a, :attr_b, :attr_c
-
-    def initialize(attributes = {})
-      set_params_attributes(:nested, attributes)
-    end
-  end
-
   it "with arguments passed should create instance variables" do
     obj = TestHashAttributes.new({ attr_a: "aaa", attr_b: "bbb", attr_c: "ccc" })
     expect(obj.attr_a).to eq("aaa")

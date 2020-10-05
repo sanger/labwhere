@@ -20,9 +20,7 @@ class LocationType < ActiveRecord::Base
   ##
   # A location type can only be destroyed if it has no locations
   def destroyable
-    unless has_locations?
-      yield if block_given?
-    end
+    yield unless has_locations? && block_given?
   end
 
   ##

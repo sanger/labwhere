@@ -3,6 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Auditor, type: :model do
+  # rubocop:disable Lint/ConstantDefinitionInBlock
   with_model :ModelE do
     table do |t|
       t.string :name
@@ -22,6 +23,7 @@ RSpec.describe Auditor, type: :model do
       set_attributes :name
     end
   end
+  # rubocop:enable Lint/ConstantDefinitionInBlock
 
   let!(:user) { create(:administrator) }
 
