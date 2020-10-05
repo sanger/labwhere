@@ -119,4 +119,23 @@ RSpec.describe Labware, type: :model do
       labware.write_event(audit)
     end
   end
+
+  describe 'audit records' do
+    
+    it ' when a labware is created' do
+      labware = create(:labware)
+      expect(labware.audits.count).to eq(1)
+      expect(labware.audits.first.action).to eq(Audit::CREATE_ACTION)
+    end
+
+    it 'when a labware has already been created but is scanned into the same location' do
+      labware = create(:labware_with_location)
+      location = labware.location
+      labware.update(location: location)
+
+      labware.reload
+      expect(labware.audits.count).to eq(2)
+      expect(labware.audits.last.action).to eq(Audit::UPDATE_ACTION)
+    end
+  end
 end
