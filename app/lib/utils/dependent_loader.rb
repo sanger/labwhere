@@ -34,5 +34,7 @@ class DependentLoader
         end
       end
     end
+  rescue ActiveRecord::NoDatabaseError
+    # Do nothing. We've probably not created the database yet.
   end
 end
