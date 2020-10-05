@@ -12,6 +12,7 @@ gem 'jbuilder', '~> 2.0' # Build JSON APIs with ease. Read more: https://github.
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
+gem 'mini_racer'
 gem 'mysql2'
 gem 'pmb-client', '0.1.0', github: 'sanger/pmb-client'
 gem 'pry'
@@ -20,7 +21,6 @@ gem 'rails', '~> 5.2.0'
 gem 'sass-rails', '~> 5.0' # Use SCSS for stylesheets
 gem 'sdoc', '~> 0.4.0', group: :doc # bundle exec rake doc:rails generates the API under doc/api.
 gem 'select2-rails'
-gem 'therubyracer'
 gem 'turbolinks' # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'uglifier', '>= 1.3.0' # Use Uglifier as compressor for JavaScript assets
 
