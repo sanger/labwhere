@@ -358,6 +358,7 @@ RSpec.describe Location, type: :model do
       end
 
       it 'will not delete the labwares themselves' do
+        
         location # Instantiate the location before out change block below
         # otherwise we detect all the labware built by the factory
         expect { location.remove_all_labwares(user) }.not_to change(Labware, :count)
