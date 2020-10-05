@@ -39,6 +39,7 @@ class Location < ActiveRecord::Base
   scope :without_location, ->(location) { active.where.not(id: location.id).order(id: :desc) }
   scope :without_unknown, -> { where.not(name: UNKNOWN) }
   scope :by_root, -> { without_unknown.roots }
+  scope :include_for_labware_receipt, -> { includes(:internal_parent, location_type: :restrictions) }
 
   before_save :set_parentage
   before_save :set_internal_parent_id
@@ -58,6 +59,11 @@ class Location < ActiveRecord::Base
   # This will ensure we don't get a no method error.
   def parent
     super || NullLocation.new
+  end
+
+  def parent=(new_parent)
+    super
+    self.internal_parent = new_parent
   end
 
   def unknown?
@@ -160,20 +166,20 @@ class Location < ActiveRecord::Base
     return if has_child_locations?
 
     # audit that user emptied the location
-    self.create_audit(current_user, Audit::REMOVED_ALL_ACTION)
+    create_audit(current_user, Audit::REMOVED_ALL_ACTION)
 
-    # copy array of labwares to be deleted (labwares will be empty after delete_all)
-    labwares_copy = labwares.each_with_object([]) { |labware, object| object.append(labware) }
-
-    # soft delete labwares to disconnect from relationships including location
-    labwares.delete_all
+    unknown_location = UnknownLocation.get
 
     # set the labwares to have location UnknownLocation rather than null
-    labwares_copy.each do |labware|
-      labware.update(location: UnknownLocation.get)
+    labwares.find_each do |labware|
+      labware.update(location: unknown_location, coordinate: nil)
       # audit that each labware is now in an unknown location
       labware.create_audit(current_user, Audit::LOCATION_EMPTIED_ACTION)
     end
+
+    # Reset the association to ensure it is no-longer populated
+    # with labware
+    labwares.reset
   end
 
   private
@@ -181,7 +187,7 @@ class Location < ActiveRecord::Base
   ##
   # The barcode is the name downcased with spaces replaced by dashes with the id added again separated by a space.
   def generate_barcode
-    update_column(:barcode, "lw-#{self.name.gsub(' ', '-').downcase}-#{self.id}")
+    update_column(:barcode, "lw-#{self.name.tr(' ', '-').downcase}-#{self.id}")
   end
 
   def apply_restrictions

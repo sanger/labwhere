@@ -21,7 +21,7 @@ class Event
   end
 
   def self.generate_event_type(audit_action)
-    "labwhere_#{audit_action.gsub(' ', '_')}".downcase
+    "labwhere_#{audit_action.tr(' ', '_')}".downcase
   end
 
   def self.location_info(location)
@@ -30,7 +30,6 @@ class Event
     location.name
   end
 
-  # rubocop:disable Metrics/MethodLength
   def as_json(*)
     {
       event: {
@@ -38,29 +37,12 @@ class Event
         event_type: event_type,
         occured_at: audit.created_at,
         user_identifier: audit.user.login,
-        subjects: [
-          {
-            role_type: 'labware',
-            subject_type: 'labware',
-            friendly_name: labware.barcode,
-            uuid: labware.uuid
-          },
-          {
-            role_type: 'location',
-            subject_type: 'location',
-            friendly_name: location.barcode,
-            uuid: location.uuid
-          }
-        ],
-        metadata: {
-          location_coordinate: coordinate.try(:position),
-          location_info: Event.location_info(location)
-        }
+        subjects: subjects,
+        metadata: metadata
       },
       lims: 'LABWHERE'
     }
   end
-  # rubocop:enable Metrics/MethodLength
 
   private
 
@@ -69,5 +51,36 @@ class Event
     return if location.present?
 
     errors.add(:location, 'must be present')
+  end
+
+  def subjects
+    [
+      labware_subject, location_subject
+    ]
+  end
+
+  def labware_subject
+    {
+      role_type: 'labware',
+      subject_type: 'labware',
+      friendly_name: labware.barcode,
+      uuid: labware.uuid
+    }
+  end
+
+  def location_subject
+    {
+      role_type: 'location',
+      subject_type: 'location',
+      friendly_name: location.barcode,
+      uuid: location.uuid
+    }
+  end
+
+  def metadata
+    {
+      location_coordinate: coordinate.try(:position),
+      location_info: Event.location_info(location)
+    }
   end
 end

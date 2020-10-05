@@ -134,11 +134,7 @@ class LocationForm
   end
 
   def pos_int?(value)
-    if /\A\d+\Z/.match(value.to_s)
-      true
-    else
-      false
-    end
+    /\A\d+\Z/.match?(value.to_s)
   end
 
   def generate_names(prefix, start_from, end_to)
