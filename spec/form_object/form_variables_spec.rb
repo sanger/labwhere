@@ -2,17 +2,17 @@
 
 require "rails_helper"
 
-RSpec.describe FormObject::FormVariables, type: :model do
-  class ALovelyModel
-    def marry
-      "a#{attr_a}"
-    end
-
-    def pad
-      attr_a.to_s * 5
-    end
+class ALovelyModel
+  def marry
+    "a#{attr_a}"
   end
 
+  def pad
+    attr_a.to_s * 5
+  end
+end
+
+RSpec.describe FormObject::FormVariables, type: :model do
   let(:form_variables)  { FormObject::FormVariables.new(ALovelyModel, nil, [:controller, :action]) }
 
   let(:params)          { { controller: "controller", action: "action", a_lovely_model: { attr_a: "a", attr_b: "b", attr_d: "d" } } }

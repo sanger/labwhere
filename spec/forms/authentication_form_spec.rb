@@ -2,7 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe AuthenticationForm, type: :model do |_variable|
+RSpec.describe AuthenticationForm, type: :model do
+  # rubocop:disable Lint/ConstantDefinitionInBlock
   with_model :ModelC do
     table do |t|
       t.string :name
@@ -14,7 +15,6 @@ RSpec.describe AuthenticationForm, type: :model do |_variable|
       validates_presence_of :name
     end
   end
-
   before(:all) do
     class ModelCForm
       include AuthenticationForm
@@ -22,6 +22,7 @@ RSpec.describe AuthenticationForm, type: :model do |_variable|
       set_attributes :name
     end
   end
+  # rubocop:enable Lint/ConstantDefinitionInBlock
 
   let(:params) { ActionController::Parameters.new(controller: "controller", action: "action") }
 
