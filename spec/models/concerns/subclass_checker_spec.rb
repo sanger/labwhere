@@ -2,49 +2,49 @@
 
 require "rails_helper"
 
+class Potato
+  include SubclassChecker
+  has_subclasses :baked, :roast, suffix: true
+  def type
+    self.class.to_s
+  end
+end
+
+class BakedPotato < Potato
+end
+
+class RoastPotato < Potato
+end
+
+class Person
+  include SubclassChecker
+  has_subclasses :child, :parent
+  def type
+    self.class.to_s
+  end
+end
+
+class Child < Person
+end
+
+class Parent < Person
+end
+
+class XmasSongs
+  include SubclassChecker
+  has_subclasses :jingle_bells, :xmas_tree
+  def type
+    self.class.to_s
+  end
+end
+
+class JingleBells < XmasSongs
+end
+
+class XmasTree < XmasSongs
+end
+
 RSpec.describe SubclassChecker, type: :model do
-  class Potato
-    include SubclassChecker
-    has_subclasses :baked, :roast, suffix: true
-    def type
-      self.class.to_s
-    end
-  end
-
-  class BakedPotato < Potato
-  end
-
-  class RoastPotato < Potato
-  end
-
-  class Person
-    include SubclassChecker
-    has_subclasses :child, :parent
-    def type
-      self.class.to_s
-    end
-  end
-
-  class Child < Person
-  end
-
-  class Parent < Person
-  end
-
-  class XmasSongs
-    include SubclassChecker
-    has_subclasses :jingle_bells, :xmas_tree
-    def type
-      self.class.to_s
-    end
-  end
-
-  class JingleBells < XmasSongs
-  end
-
-  class XmasTree < XmasSongs
-  end
-
   context "Potato - with a suffix" do
     it "Potato should not be Baked or Roasted" do
       expect(Potato.new).to_not be_baked
