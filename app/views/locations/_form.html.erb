@@ -55,12 +55,16 @@
         </li>
         <div class="coordinate-options" data-behavior="coordinates">
           <li>
-            <%= f.label :rows %>
-            <%= f.text_field :rows %>
-          </li>
-           <li>
-            <%= f.label :columns %>
-            <%= f.text_field :columns %>
+            <div class="table">
+              <div class="table-row">
+                <div class="table-head"><%= f.label :rows %></div>
+                <div class="table-head"><%= f.label :columns %></div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell"><%= f.number_field :rows, min: 1 %></div>
+                <div class="table-cell"><%= f.number_field :columns, min: 0 %></div>
+              </div>
+            </div>
           </li>
         </div>
       </div>
