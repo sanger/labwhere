@@ -56,11 +56,11 @@
         <div class="coordinate-options" data-behavior="coordinates">
           <li>
             <%= f.label :rows %>
-            <%= f.number_field :rows, min: 0 %>
+            <%= f.number_field :rows, min: @location.coordinateable ? 1 : 0 %>
           </li>
           <li>
             <%= f.label :columns %>
-            <%= f.number_field :columns, min: 0 %>
+            <%= f.number_field :columns, min: @location.coordinateable ? 1 : 0 %>
           </li>
         </div>
       </div>
