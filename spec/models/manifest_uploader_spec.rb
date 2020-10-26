@@ -11,7 +11,6 @@ RSpec.describe ManifestUploader, type: :model do
   let(:manifest_uploader)  { ManifestUploader.new(user: scientist) }
 
   context 'with unordered locations that all exist' do
-    
     let!(:manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
 
     attr_reader :data
@@ -75,7 +74,7 @@ RSpec.describe ManifestUploader, type: :model do
     end
 
     it 'will add the labwares to the defined positions' do
-      labwares = Labware.where("coordinate_id IS NOT NULL")
+      labwares = Labware.where.not(coordinate_id: nil)
       expect(labwares.count).to eq(50)
     end
   end
