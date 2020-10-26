@@ -45,6 +45,14 @@ class ManifestUploader
     @missing_locations ||= location_barcodes.reject { |barcode| locations.key?(barcode.strip) }
   end
 
+  def ordered_location_barcodes
+    @ordered_location_barcodes ||= location_barcodes.select { |barcode| locations[barcode.strip].type == "OrderedLocation" }
+  end
+
+  def ordered_location_rows
+    @ordered_location_rows ||= data.select { |item| ordered_location_barcodes.include?(item.first.strip) }
+  end
+
   def check_locations
     return if missing_locations.empty?
 
