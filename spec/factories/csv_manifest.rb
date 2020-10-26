@@ -10,10 +10,14 @@ class CsvManifest
   def generate_csv
     n = 1
     CSV.generate do |csv|
-      csv << ['Box Barcode', 'Plate Barcode']
+      csv << ['Box Barcode', 'Plate Barcode', 'Position']
       locations.each do |location|
-        number_of_labwares.times do
-          csv << [location.barcode, "#{labware_prefix}#{pad_number(n)}"]
+        number_of_labwares.times do |num|
+          if location.type == "UnorderedLocation"
+            csv << [location.barcode, "#{labware_prefix}#{pad_number(n)}"]
+          else
+            csv << [location.barcode, "#{labware_prefix}#{pad_number(n)}", Coordinate.limit(1).offset(num).first.position]
+          end
           n += 1
         end
       end

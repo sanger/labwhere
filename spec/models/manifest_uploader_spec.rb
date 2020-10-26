@@ -3,13 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe ManifestUploader, type: :model do
-  let!(:locations)        { create_list(:unordered_location_with_parent, 10) }
-  let(:new_location)      { build(:unordered_location, barcode: 'unknown') }
-  let(:labware_prefix)    { 'RNA' }
-  let!(:scientist)        { create(:scientist) }
-  let(:manifest_uploader) { ManifestUploader.new(user: scientist) }
+  let!(:locations)         { create_list(:unordered_location_with_parent, 10) }
+  let!(:ordered_locations) { create_list(:ordered_location_with_parent, 10) }
+  let(:new_location)       { build(:unordered_location, barcode: 'unknown') }
+  let(:labware_prefix)     { 'RNA' }
+  let!(:scientist)         { create(:scientist) }
+  let(:manifest_uploader)  { ManifestUploader.new(user: scientist) }
 
-  context 'with locations that all exist' do
+  context 'with unordered locations that all exist' do
+    
     let!(:manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
 
     attr_reader :data
@@ -60,5 +62,27 @@ RSpec.describe ManifestUploader, type: :model do
       labwares = Labware.where("barcode LIKE '%#{labware_prefix}%'")
       expect(labwares).to be_empty
     end
+  end
+
+  context 'with ordered locations which all exist' do
+    let!(:manifest) { build(:csv_manifest, locations: ordered_locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
+
+    attr_reader :data
+
+    before(:each) do
+      manifest_uploader.file = manifest
+      manifest_uploader.run
+    end
+
+    it 'will add the labwares to the defined positions' do
+      labwares = Labware.where("coordinate_id IS NOT NULL")
+      expect(labwares.count).to eq(50)
+    end
+  end
+
+  context 'when there is a position which is already occupied' do
+  end
+
+  context 'when there are duplicate positions entered' do
   end
 end
