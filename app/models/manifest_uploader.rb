@@ -7,7 +7,7 @@ class ManifestUploader
 
   attr_accessor :file, :user
 
-  validate :check_locations, :check_positions_valid
+  validate :check_locations, :check_duplicate_positions, :check_positions_valid
 
   def data
     @data ||= ::CSV.parse(file).drop(1)
@@ -64,6 +64,14 @@ class ManifestUploader
     errors.add(:base, "location(s) with barcode #{missing_locations.join(',')} do not exist")
   end
 
+  def check_duplicate_positions
+    location_groups = ordered_location_rows.group_by { |row| row[0] }
+    location_groups.each do |location, group|
+      positions = group.collect { |ind| ind[2].strip }
+      errors.add(:base, "duplicate target positions for location with barcode #{location}") unless positions.uniq.length == positions.length
+    end
+  end
+
   def check_positions_valid
     ordered_location_rows.each do |row|
       location_barcode, labware_barcode, position = row.collect(&:strip)
@@ -75,7 +83,7 @@ class ManifestUploader
         if coordinate.nil?
           errors.add(:base, "target position #{position} for location with barcode #{location_barcode} does not exist")
         elsif coordinate.filled?
-          errors.add(:base, "target position #{position} for labware with barcode #{labware_barcode} already occupied")
+          errors.add(:base, "target position #{position} for labware with barcode #{labware_barcode} is already occupied")
         else
           stored_coordinates["#{location_barcode.strip}, #{position.strip}"] = coordinate
         end
