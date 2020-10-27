@@ -97,7 +97,7 @@ RSpec.describe ManifestUploader, type: :model do
 
     it 'will show an error' do
       manifest_uploader.run
-      expect(manifest_uploader.errors.full_messages).to include("position not defined for labware with barcode RNA000001")
+      expect(manifest_uploader.errors.full_messages).to include("Line 1: target position not defined for labware with barcode RNA000001")
     end
   end
 
@@ -116,7 +116,7 @@ RSpec.describe ManifestUploader, type: :model do
 
     it 'will show an error' do
       manifest_uploader.run
-      expect(manifest_uploader.errors.full_messages).to include("target position #{invalid_position} for location with barcode #{ordered_location.barcode} does not exist")
+      expect(manifest_uploader.errors.full_messages).to include("Line 1: target position #{invalid_position} for location with barcode #{ordered_location.barcode} does not exist")
     end
   end
 
@@ -135,7 +135,7 @@ RSpec.describe ManifestUploader, type: :model do
 
     it 'will show an error' do
       manifest_uploader.run
-      expect(manifest_uploader.errors.full_messages).to include("duplicate target positions for location with barcode #{ordered_location.barcode}")
+      expect(manifest_uploader.errors.full_messages).to include("Line(s) 1,2: duplicate target positions")
     end
   end
 
@@ -155,7 +155,7 @@ RSpec.describe ManifestUploader, type: :model do
 
     it 'will show an error' do
       manifest_uploader.run
-      expect(manifest_uploader.errors.full_messages).to include("target position 1 for labware with barcode RNA000001 is already occupied")
+      expect(manifest_uploader.errors.full_messages).to include("Line 1: target position 1 for labware with barcode RNA000001 is already occupied")
     end
   end
 

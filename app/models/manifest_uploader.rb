@@ -55,7 +55,7 @@ class ManifestUploader
   end
 
   def ordered_location_rows
-    @ordered_location_rows ||= data.select { |item| ordered_location_barcodes.include?(item.first.strip) }
+    @ordered_location_rows ||= data.collect.with_index { |item, index| [(index + 1).to_s] + item if ordered_location_barcodes.include?(item.first.strip) }.compact
   end
 
   def check_locations
@@ -65,26 +65,26 @@ class ManifestUploader
   end
 
   def check_duplicate_positions
-    location_groups = ordered_location_rows.group_by { |row| row[0] }
+    location_groups = ordered_location_rows.group_by{ |row| [row[1], row[3]]}.values.select{ |group| group.length>1}
 
-    location_groups.each do |location, group|
-      positions = group.collect { |ind| ind[2]&.strip }
-      errors.add(:base, "duplicate target positions for location with barcode #{location}") unless positions.uniq.length == positions.length || positions.nil?
+    location_groups.each do |group|
+      line_numbers = group.map{|row| row[0]}.join(',')
+      errors.add(:base, "Line(s) #{line_numbers}: duplicate target positions") unless line_numbers.nil?
     end
   end
 
   def check_positions_valid
     ordered_location_rows.each do |row|
-      location_barcode, labware_barcode, position = row.collect(&:strip)
+      line_index, location_barcode, labware_barcode, position = row.collect(&:strip)
 
       if position.nil?
-        errors.add(:base, "position not defined for labware with barcode #{labware_barcode}")
+        errors.add(:base, "Line #{line_index}: target position not defined for labware with barcode #{labware_barcode}")
       else
         coordinate = Coordinate.find_by(location_id: locations[location_barcode.strip].id, position: position)
         if coordinate.nil?
-          errors.add(:base, "target position #{position} for location with barcode #{location_barcode} does not exist")
+          errors.add(:base, "Line #{line_index}: target position #{position} for location with barcode #{location_barcode} does not exist")
         elsif coordinate.filled?
-          errors.add(:base, "target position #{position} for labware with barcode #{labware_barcode} is already occupied")
+          errors.add(:base, "Line #{line_index}: target position #{position} for labware with barcode #{labware_barcode} is already occupied")
         else
           stored_coordinates["#{location_barcode.strip}, #{position.strip}"] = coordinate
         end
