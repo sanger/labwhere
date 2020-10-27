@@ -66,9 +66,10 @@ class ManifestUploader
 
   def check_duplicate_positions
     location_groups = ordered_location_rows.group_by { |row| row[0] }
+
     location_groups.each do |location, group|
-      positions = group.collect { |ind| ind[2].strip }
-      errors.add(:base, "duplicate target positions for location with barcode #{location}") unless positions.uniq.length == positions.length
+      positions = group.collect { |ind| ind[2]&.strip }
+      errors.add(:base, "duplicate target positions for location with barcode #{location}") unless positions.uniq.length == positions.length || positions.nil?
     end
   end
 

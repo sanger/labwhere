@@ -3,15 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe ManifestUploader, type: :model do
-  let!(:locations)           { create_list(:unordered_location_with_parent, 10) }
-  let!(:ordered_locations)   { create_list(:ordered_location_with_parent, 10) }
-  let(:new_ordered_location) { build(:ordered_location, barcode: 'unknown') }
-  let(:new_location)         { build(:unordered_location, barcode: 'unknown') }
-  let!(:test_location)       { create_list(:ordered_location_with_parent, 1) }
-  let!(:equal_positions)     { generate_positions(5) }
-  let(:labware_prefix)       { 'RNA' }
-  let!(:scientist)           { create(:scientist) }
-  let(:manifest_uploader)    { ManifestUploader.new(user: scientist) }
+  let!(:locations)         { create_list(:unordered_location_with_parent, 10) }
+  let!(:ordered_locations) { create_list(:ordered_location_with_parent, 10) }
+  let(:new_location)       { build(:unordered_location, barcode: 'unknown') }
+  let(:ordered_location)   { create(:ordered_location_with_parent) }
+  let!(:equal_positions)   { generate_positions(5) }
+  let(:labware_prefix)     { 'RNA' }
+  let!(:scientist)         { create(:scientist) }
+  let(:manifest_uploader)  { ManifestUploader.new(user: scientist) }
+  let(:invalid_position)   { 20 }
 
   context 'with unordered locations that all exist' do
     let!(:manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
@@ -41,7 +41,7 @@ RSpec.describe ManifestUploader, type: :model do
     end
   end
 
-  context 'when there is an ordered location that is not valid' do
+  context 'when there is a location that is not valid' do
     let!(:manifest) { build(:csv_manifest, locations: locations + [new_location], number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
 
     attr_reader :data
@@ -83,12 +83,11 @@ RSpec.describe ManifestUploader, type: :model do
   end
 
   context 'when there is no position defined for an ordered location' do
-    let!(:manifest) { build(:csv_manifest, locations: test_location, number_of_labwares: 1, labware_prefix: labware_prefix, positions: [] ).generate_csv }
+    let!(:manifest) { build(:csv_manifest, locations: [ordered_location], number_of_labwares: 1, labware_prefix: labware_prefix, positions: []).generate_csv }
 
     attr_reader :data
 
     before(:each) do
-      byebug
       manifest_uploader.file = manifest
     end
 
@@ -103,7 +102,7 @@ RSpec.describe ManifestUploader, type: :model do
   end
 
   context 'when a position does not exist' do
-    let!(:manifest) { build(:csv_manifest, locations: test_location, number_of_labwares: 1, labware_prefix: labware_prefix, positions: [20] ).generate_csv }
+    let!(:manifest) { build(:csv_manifest, locations: [ordered_location], number_of_labwares: 1, labware_prefix: labware_prefix, positions: [invalid_position]).generate_csv }
 
     attr_reader :data
 
@@ -117,14 +116,12 @@ RSpec.describe ManifestUploader, type: :model do
 
     it 'will show an error' do
       manifest_uploader.run
-      expect(manifest_uploader.errors.full_messages).to include("target position 20 for location with barcode #{test_location[0].barcode} does not exist")
+      expect(manifest_uploader.errors.full_messages).to include("target position #{invalid_position} for location with barcode #{ordered_location.barcode} does not exist")
     end
   end
-
-
 
   context 'when there are duplicate positions entered' do
-    let!(:manifest) { build(:csv_manifest, locations: test_location, number_of_labwares: 2, labware_prefix: labware_prefix, positions: [1,1] ).generate_csv }
+    let!(:manifest) { build(:csv_manifest, locations: [ordered_location], number_of_labwares: 2, labware_prefix: labware_prefix, positions: [1, 1]).generate_csv }
 
     attr_reader :data
 
@@ -138,11 +135,31 @@ RSpec.describe ManifestUploader, type: :model do
 
     it 'will show an error' do
       manifest_uploader.run
-      expect(manifest_uploader.errors.full_messages).to include("duplicate target positions for location with barcode #{test_location[0].barcode}")
+      expect(manifest_uploader.errors.full_messages).to include("duplicate target positions for location with barcode #{ordered_location.barcode}")
     end
   end
 
-  def generate_positions(n)
-    Array.new(50) {|i| i+1 }
+  context 'when there is a position which is already occupied' do
+    let!(:existing_labware) { create(:labware, location_id: ordered_location.id, coordinate_id: Coordinate.find_by(location_id: ordered_location.id, position: 1).id) }
+    let!(:manifest) { build(:csv_manifest, locations: [ordered_location], number_of_labwares: 1, labware_prefix: labware_prefix, positions: [1]).generate_csv }
+
+    attr_reader :data
+
+    before(:each) do
+      manifest_uploader.file = manifest
+    end
+
+    it 'will not be valid' do
+      expect(manifest_uploader).to_not be_valid
+    end
+
+    it 'will show an error' do
+      manifest_uploader.run
+      expect(manifest_uploader.errors.full_messages).to include("target position 1 for labware with barcode RNA000001 is already occupied")
+    end
+  end
+
+  def generate_positions(num)
+    Array.new(num) { |i| i + 1 }
   end
 end
