@@ -55,7 +55,7 @@ class ManifestUploader
   end
 
   def ordered_location_rows
-    @ordered_location_rows ||= data.collect.with_index { |item, index| [(index + 1).to_s] + item if ordered_location_barcodes.include?(item.first.strip) }.compact
+    @ordered_location_rows ||= data.collect.with_index { |item, index| [(index + 2).to_s] + item if ordered_location_barcodes.include?(item.first.strip) }.compact
   end
 
   def check_locations
@@ -69,7 +69,7 @@ class ManifestUploader
 
     location_groups.each do |group|
       line_numbers = group.map { |row| row[0] }.join(',')
-      errors.add(:base, "Line(s) #{line_numbers}: duplicate target positions") unless line_numbers.nil?
+      errors.add(:base, "Lines #{line_numbers}: duplicate target positions") unless line_numbers.nil?
     end
   end
 
