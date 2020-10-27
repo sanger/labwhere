@@ -65,10 +65,10 @@ class ManifestUploader
   end
 
   def check_duplicate_positions
-    location_groups = ordered_location_rows.group_by{ |row| [row[1], row[3]]}.values.select{ |group| group.length>1}
+    location_groups = ordered_location_rows.group_by { |row| [row[1], row[3]] }.values.select { |group| group.length > 1 }
 
     location_groups.each do |group|
-      line_numbers = group.map{|row| row[0]}.join(',')
+      line_numbers = group.map { |row| row[0] }.join(',')
       errors.add(:base, "Line(s) #{line_numbers}: duplicate target positions") unless line_numbers.nil?
     end
   end

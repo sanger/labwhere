@@ -77,7 +77,7 @@ RSpec.describe ManifestUploader, type: :model do
     end
 
     it 'will add the labwares to the defined positions' do
-      labwares = Labware.where("coordinate_id IS NOT NULL")
+      labwares = Labware.where.not(coordinate_id: nil)
       expect(labwares.count).to eq(50)
     end
   end
