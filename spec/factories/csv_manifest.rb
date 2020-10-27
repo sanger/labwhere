@@ -5,7 +5,7 @@ require 'csv'
 class CsvManifest
   include ActiveModel::Model
 
-  attr_accessor :locations, :labware_prefix, :number_of_labwares
+  attr_accessor :locations, :labware_prefix, :number_of_labwares, :positions
 
   def generate_csv
     n = 1
@@ -16,7 +16,7 @@ class CsvManifest
           csv << if location.type == "UnorderedLocation"
                    [location.barcode, "#{labware_prefix}#{pad_number(n)}"]
                  else
-                   [location.barcode, "#{labware_prefix}#{pad_number(n)}", Coordinate.limit(1).offset(num).first.position]
+                   [location.barcode, "#{labware_prefix}#{pad_number(n)}", positions[num]].compact
                  end
           n += 1
         end
