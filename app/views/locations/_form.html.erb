@@ -50,17 +50,17 @@
           </span>
         </li>
         <li>
-          <%= f.check_box :coordinateable, data: {toggle: "coordinates"} %>
+          <%= f.check_box :coordinateable, data: {toggle: "coordinates"}, disabled: !locals[:can_toggle_coordinates] %>
           <%= f.label :coordinateable, "Has Co-ordinates" %>
         </li>
         <div class="coordinate-options" data-behavior="coordinates">
           <li>
             <%= f.label :rows %>
-            <%= f.text_field :rows %>
+            <%= f.number_field :rows, min: @location.coordinateable ? 1 : 0 %>
           </li>
-           <li>
+          <li>
             <%= f.label :columns %>
-            <%= f.text_field :columns %>
+            <%= f.number_field :columns, min: @location.coordinateable ? 1 : 0 %>
           </li>
         </div>
       </div>
