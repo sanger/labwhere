@@ -82,8 +82,8 @@ RSpec.describe ManifestUploader, type: :model do
     end
   end
 
-  context 'when there is no position defined for an ordered location' do
-    let!(:manifest) { build(:csv_manifest, locations: [ordered_location], number_of_labwares: 1, labware_prefix: labware_prefix, positions: []).generate_csv }
+  context 'when there are invalid positions defined for ordered locations' do
+    let!(:manifest) { build(:csv_manifest, locations: [ordered_location], number_of_labwares: 3, labware_prefix: labware_prefix, positions: ["", 1.5, "string"]).generate_csv }
 
     attr_reader :data
 
@@ -97,7 +97,9 @@ RSpec.describe ManifestUploader, type: :model do
 
     it 'will show an error' do
       manifest_uploader.run
-      expect(manifest_uploader.errors.full_messages).to include("Line 2: target position not defined for labware with barcode RNA000001")
+      expect(manifest_uploader.errors.full_messages).to contain_exactly("Line 2: invalid entry for position. Please specify a positive integer.",
+                                                                        "Line 3: invalid entry for position. Please specify a positive integer.",
+                                                                        "Line 4: invalid entry for position. Please specify a positive integer.")
     end
   end
 

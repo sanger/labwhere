@@ -77,8 +77,8 @@ class ManifestUploader
     ordered_location_rows.each do |row|
       line_index, location_barcode, labware_barcode, position = row.collect(&:strip)
 
-      if position.nil?
-        errors.add(:base, "Line #{line_index}: target position not defined for labware with barcode #{labware_barcode}")
+      if position.nil? || !valid_number?(position)
+        errors.add(:base, "Line #{line_index}: invalid entry for position. Please specify a positive integer.")
       else
         coordinate = Coordinate.find_by(location_id: locations[location_barcode.strip].id, position: position)
         if coordinate.nil?
@@ -89,6 +89,14 @@ class ManifestUploader
           stored_coordinates["#{location_barcode.strip}, #{position.strip}"] = coordinate
         end
       end
+    end
+  end
+
+  def valid_number?(input)
+    if !/\A\d+\z/.match(input)
+      false
+    else
+      Integer(input)
     end
   end
 end
