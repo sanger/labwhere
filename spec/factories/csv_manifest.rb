@@ -5,15 +5,19 @@ require 'csv'
 class CsvManifest
   include ActiveModel::Model
 
-  attr_accessor :locations, :labware_prefix, :number_of_labwares
+  attr_accessor :locations, :labware_prefix, :number_of_labwares, :positions
 
   def generate_csv
     n = 1
     CSV.generate do |csv|
-      csv << ['Box Barcode', 'Plate Barcode']
+      csv << ['Box Barcode', 'Plate Barcode', 'Position']
       locations.each do |location|
         number_of_labwares.times do
-          csv << [location.barcode, "#{labware_prefix}#{pad_number(n)}"]
+          csv << if location.type == "UnorderedLocation"
+                   [location.barcode, "#{labware_prefix}#{pad_number(n)}"]
+                 else
+                   [location.barcode, "#{labware_prefix}#{pad_number(n)}", positions[n - 1]].compact
+                 end
           n += 1
         end
       end
