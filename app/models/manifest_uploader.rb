@@ -51,11 +51,21 @@ class ManifestUploader
   end
 
   def ordered_location_barcodes
-    @ordered_location_barcodes ||= location_barcodes.select { |barcode| locations[barcode.strip].type == "OrderedLocation" unless locations[barcode.strip].nil? }
+    @ordered_location_barcodes ||= location_barcodes.select { |barcode| locations[barcode.strip].type == "OrderedLocation" if locations.include?(barcode.strip) }
   end
 
   def ordered_location_rows
-    @ordered_location_rows ||= data.collect.with_index { |item, index| [(index + 2).to_s] + item if ordered_location_barcodes.include?(item.first.strip) }.compact
+    @ordered_location_rows ||= begin
+      @ordered_location_rows = []
+      data.each_with_index do |row, index|
+        location_barcode = row.first.strip
+        if ordered_location_barcodes.include?(location_barcode)
+          indexed_row = [(index + 2).to_s] + row
+          @ordered_location_rows.push(indexed_row)
+        end
+      end
+      @ordered_location_rows
+    end
   end
 
   def check_locations
