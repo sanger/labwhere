@@ -55,17 +55,19 @@ class ManifestUploader
   end
 
   def ordered_location_rows
-    @ordered_location_rows ||= begin
-      @ordered_location_rows = []
-      data.each_with_index do |row, index|
-        location_barcode = row.first.strip
-        if ordered_location_barcodes.include?(location_barcode)
-          indexed_row = [(index + 2).to_s] + row
-          @ordered_location_rows.push(indexed_row)
-        end
+    @ordered_location_rows ||= find_ordered_location_rows
+  end
+
+  def find_ordered_location_rows
+    rows = []
+    data.each_with_index do |row, index|
+      location_barcode = row.first.strip
+      if ordered_location_barcodes.include?(location_barcode)
+        indexed_row = [(index + 2).to_s] + row
+        rows.push(indexed_row)
       end
-      @ordered_location_rows
     end
+    rows
   end
 
   def check_locations
