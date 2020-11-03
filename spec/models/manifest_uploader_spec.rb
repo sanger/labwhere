@@ -7,7 +7,8 @@ RSpec.describe ManifestUploader, type: :model do
   let!(:ordered_locations) { create_list(:ordered_location_with_parent, 10) }
   let(:new_location)       { build(:unordered_location, barcode: 'unknown') }
   let(:ordered_location)   { create(:ordered_location_with_parent) }
-  let!(:equal_positions)   { generate_positions(5) }
+  let(:unordered_location) { create(:unordered_location_with_parent) }
+  let!(:equal_positions)   { generate_positions(50) }
   let(:labware_prefix)     { 'RNA' }
   let!(:scientist)         { create(:scientist) }
   let(:manifest_uploader)  { ManifestUploader.new(user: scientist) }
@@ -161,7 +162,35 @@ RSpec.describe ManifestUploader, type: :model do
     end
   end
 
+  context 'with both ordered and unordered locations which exist' do
+    let!(:manifest) { build(:csv_manifest, locations: [unordered_location, ordered_location], number_of_labwares: 1, labware_prefix: labware_prefix, positions: ["", 1]).generate_csv }
+
+    attr_reader :data
+
+    before(:each) do
+      manifest_uploader.file = manifest
+      manifest_uploader.run
+    end
+
+    it 'will add the labware to the defined ordered location' do
+      labwares = Labware.where.not(coordinate_id: nil)
+      expect(labwares.count).to eq(1)
+    end
+
+    it 'will add the labware to the defined unordered location' do
+      labwares = Labware.where(coordinate_id: nil)
+      expect(labwares.count).to eq(1)
+    end
+  end
+
   def generate_positions(num)
-    Array.new(num) { |i| i + 1 }
+    n = 1
+    positions = []
+    1.upto(num).each do
+      positions.push(n)
+      n += 1
+      n = 1 if n == 6
+    end
+    positions
   end
 end

@@ -12,11 +12,11 @@ class CsvManifest
     CSV.generate do |csv|
       csv << ['Box Barcode', 'Plate Barcode', 'Position']
       locations.each do |location|
-        number_of_labwares.times do |num|
+        number_of_labwares.times do
           csv << if location.type == "UnorderedLocation"
                    [location.barcode, "#{labware_prefix}#{pad_number(n)}"]
                  else
-                   [location.barcode, "#{labware_prefix}#{pad_number(n)}", positions[num]].compact
+                   [location.barcode, "#{labware_prefix}#{pad_number(n)}", positions[n - 1]].compact
                  end
           n += 1
         end
