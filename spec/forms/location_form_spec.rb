@@ -161,7 +161,7 @@ RSpec.describe LocationForm, type: :model do
       expect(location.children.count).to eq(1)
     end
   end
-  
+
   describe "for ordered locations" do
     it "can be destroyed if it has not been used" do
       controller_params = { controller: "location", action: "create" }
