@@ -1,4 +1,4 @@
 <section class="<%= header.to_css_class %>">
   <%= render "error_messages", target: @location %>
-  <%= render "form" %>
+  <%= render "form", :locals => { :can_toggle_coordinates => true } %>
 </section>

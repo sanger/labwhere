@@ -40,4 +40,12 @@ RSpec.describe OrderedLocation, type: :model do
     location = create(:ordered_location_with_labwares)
     expect(location.child_count).to eq(location.labwares.count)
   end
+
+  describe 'destroying ordered locations' do
+    it 'success' do
+      ordered_location = create(:ordered_location)
+      ordered_location.destroy
+      expect(ordered_location).to be_destroyed
+    end
+  end
 end
