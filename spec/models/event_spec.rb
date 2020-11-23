@@ -108,7 +108,7 @@ RSpec.describe Event, type: :model do
         # preload things
         first_location
         audit
-        # change the location and coordinate on the labware
+        # change the location on the labware
         labware.update!(location: second_location)
       end
 
@@ -129,7 +129,7 @@ RSpec.describe Event, type: :model do
         # preload things
         first_coordinate
         audit
-        # change the location and coordinate on the labware
+        # change the coordinate on the labware
         second_coordinate
         second_audit
       end
