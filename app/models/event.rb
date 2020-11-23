@@ -9,9 +9,6 @@ class Event
 
   validate :check_location_exists
 
-  delegate :coordinate, to: :labware, allow_nil: true
-  delegate :location, to: :labware
-
   def uuid
     @uuid ||= audit.uuid
   end
@@ -28,6 +25,25 @@ class Event
     return "#{location.parentage} - #{location.name}" if location.parentage.present?
 
     location.name
+  end
+
+  def location
+    @location ||= begin
+      location_barcode = audit.record_data['location']
+      Location.find_by(barcode: location_barcode)
+    end
+  end
+
+  def coordinate
+    @coordinate ||= begin
+      if audit.id == labware.audits.last.id
+        # if this is the latest audit for this labware, we can grab the current coordinate from the labware
+        labware.coordinate
+      else
+        # otherwise, we are re-firing an old event and don't know the correct coordinate for the time it occurred
+        nil
+      end
+    end
   end
 
   def as_json(*)
