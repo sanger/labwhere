@@ -5,7 +5,7 @@ require 'ostruct'
 
 RSpec.describe Messages::Message, type: :model do
   let(:labware) { create(:labware_with_location) }
-  let(:audit) { create(:audit) }
+  let(:audit) { create(:audit_of_labware, labware: labware) }
   let(:object) { Event.new(labware: labware, audit: audit) }
 
   describe '#payload' do
