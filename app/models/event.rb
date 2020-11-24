@@ -9,9 +9,7 @@ class Event
 
   validate :check_location_exists
 
-  def uuid
-    @uuid ||= audit.uuid
-  end
+  delegate :uuid, to: :audit
 
   def event_type
     @event_type ||= Event.generate_event_type(audit.action)
@@ -28,10 +26,7 @@ class Event
   end
 
   def location
-    @location ||= begin
-      location_barcode = audit.record_data['location']
-      Location.find_by(barcode: location_barcode)
-    end
+    @location ||= Location.find_by(barcode: audit.record_data['location'])
   end
 
   def coordinate
@@ -39,10 +34,8 @@ class Event
       if audit.id == labware.audits.last.id
         # if this is the latest audit for this labware, we can grab the current coordinate from the labware
         labware.coordinate
-      else
-        # otherwise, we are re-firing an old event and don't know the correct coordinate for the time it occurred
-        nil
       end
+      # otherwise, return nil as we're re-firing an old event & don't know the coordinate for the time it occurred
     end
   end
 
