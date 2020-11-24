@@ -4,21 +4,28 @@ require 'rails_helper'
 
 RSpec.describe Event, type: :model do
   let(:labware) { create(:labware_with_location) }
-  let(:audit) { create(:audit) }
+  let(:audit) { create(:audit_of_labware, labware: labware) }
   let(:attributes) { { labware: labware, audit: audit } }
 
   it 'must have a piece of labware' do
     expect(Event.new(attributes.except(:labware))).to_not be_valid
   end
 
-  it 'must have a location' do
-    expect(Event.new(attributes.merge(labware: create(:labware)))).to_not be_valid
+  context 'without a location' do
+    let(:labware) { create(:labware) }
+
+    it 'is invalid' do
+      expect(Event.new(attributes)).to_not be_valid
+    end
   end
 
-  it 'may have a coordinate' do
-    coordinate = create(:coordinate, labware: create(:labware))
-    event = Event.new(attributes.merge(labware: coordinate.labware))
-    expect(event.coordinate).to be_present
+  context 'with a coordinate' do
+    let!(:coordinate) { create(:coordinate, labware: labware, location: labware.location) }
+
+    it 'returns the coordinate' do
+      event = Event.new(attributes)
+      expect(event.coordinate).to be_present
+    end
   end
 
   describe '#generate_event_type' do
@@ -73,22 +80,66 @@ RSpec.describe Event, type: :model do
     end
 
     it 'will produce the correct json for the message' do
-      event = Event.new(labware: labware, audit: audit)
+      event = Event.new(attributes)
       json = event.as_json
       expect(json).to eq(expected_json)
     end
   end
 
   context 'for an ordered location' do
-    let(:coordinate) { create(:coordinate, labware: create(:labware)) }
+    let!(:coordinate) { create(:coordinate, labware: labware, location: labware.location) }
 
     it 'will produce the correct json for the message' do
-      locn = coordinate.labware.location
-      event = Event.new(attributes.merge(labware: coordinate.labware))
+      locn = labware.location
+      event = Event.new(attributes)
       json = event.as_json
 
       expect(json[:event][:subjects][1][:friendly_name]).to eq(locn.barcode)
       expect(json[:event][:metadata][:location_coordinate]).to eq(coordinate.position)
+    end
+  end
+
+  context 'creating an event for an old audit' do
+    context 'where the location has changed since' do
+      let(:first_location) { labware.location }
+      let(:second_location) { create(:location_with_parent) }
+
+      before do
+        # preload things
+        first_location
+        audit
+        # change the location on the labware
+        labware.update!(location: second_location)
+      end
+
+      it 'uses the location from the time the audit was created' do
+        event = Event.new(attributes)
+
+        expect(first_location.id).to_not eq(second_location.id) # sanity check
+        expect(event.location.id).to eq(first_location.id)
+      end
+    end
+
+    context 'where the coordinate has changed since' do
+      let(:first_coordinate) { create(:coordinate, labware: labware, location: labware.location) }
+      let(:second_coordinate) { create(:coordinate, labware: labware, location: labware.location) }
+      let(:second_audit) { create(:audit_of_labware, labware: labware) }
+
+      before do
+        # preload things
+        first_coordinate
+        audit
+        # change the coordinate on the labware
+        second_coordinate
+        second_audit
+      end
+
+      it 'uses the coordinate from the time the audit was created' do
+        event = Event.new(attributes)
+
+        expect(first_coordinate.id).to_not eq(second_coordinate.id) # sanity check
+        expect(event.coordinate).to eq(nil)
+      end
     end
   end
 end
