@@ -13,14 +13,17 @@ class Event
 
   delegate :uuid, to: :audit
 
-  def event_type
-    @event_type ||= Event.generate_event_type(audit.action)
-  end
-
   def self.generate_event_type(audit_action)
     "labwhere_#{audit_action.tr(' ', '_')}".downcase
   end
 
+  def event_type
+    @event_type ||= Event.generate_event_type(audit.action)
+  end
+
+  # Are we firing an event for a newly created audit,
+  # or re-firing an event for an 'old' audit?
+  # It affects how much data we send in the event - whether we expect it to still be relevant
   def for_old_audit?
     @for_old_audit ||= begin
       # if the labware record no longer exists, this is an old audit
@@ -31,6 +34,14 @@ class Event
     end
   end
 
+  def location
+    # may return nil if the location has been deleted since the audit was created
+    @location ||= Location.find_by(barcode: location_barcode)
+  end
+
+  def location_barcode
+    @location_barcode ||= audit.record_data['location']
+  end
 
   # human readable string containing as much information as we have about the location
   def location_info
@@ -40,13 +51,8 @@ class Event
     location.name
   end
 
-  def location_barcode
-    @location_barcode ||= audit.record_data['location']
-  end
-
-  def location
-    # may return nil if the Location has been deleted since the Audit was created
-    @location ||= Location.find_by(barcode: location_barcode)
+  def labware
+    @labware ||= Labware.find_by(barcode: labware_barcode)
   end
 
   def labware_barcode
@@ -61,20 +67,17 @@ class Event
     end
   end
 
-  def labware
-    @labware ||= Labware.find_by(barcode: labware_barcode)
-  end
-
   def coordinate
     @coordinate ||= begin
-      if audit.id == labware.audits.last.id
-        # if this is the latest audit for this labware, we can grab the current coordinate from the labware
+      unless for_old_audit?
+        # if we are firing an event for a newly created audit, we can grab the current coordinate from the labware
         labware.coordinate
       end
       # otherwise, return nil as we're re-firing an old event & don't know the coordinate for the time it occurred
     end
   end
 
+  # hash which will get sent as the event body to the warehouse
   def as_json(*)
     {
       event: {
@@ -93,14 +96,14 @@ class Event
 
   # validation methods
   def check_location_information_exists
-    return if audit.blank?
+    return if audit.blank? # validation is neater with this check here
     return if location_barcode.present?
 
     errors.add(:base, "The location barcode must be present in 'record_data'")
   end
 
   def check_labware_information_exists
-    return if audit.blank?
+    return if audit.blank? # validation is neater with this check here
     return if labware.present?
     return if audit.record_data['barcode'].present?
 
@@ -111,7 +114,7 @@ class Event
   def subjects
     [
       labware_subject, location_subject
-    ].compact
+    ].compact # in case location is nil
   end
 
   def labware_subject
