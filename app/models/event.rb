@@ -22,7 +22,7 @@ class Event
     @event_type ||= Event.generate_event_type(audit.action)
   end
 
-  #  Are we firing an event for a newly created audit,
+  # Are we firing an event for a newly created audit,
   # or re-firing an event for an 'old' audit?
   # It affects how much data we send in the event - whether we expect it to still be relevant
   def for_old_audit?
