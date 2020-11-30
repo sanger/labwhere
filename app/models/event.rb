@@ -8,6 +8,7 @@ class Event
 
   validates :audit, presence: true
 
+  validate :check_audit_is_labware_type
   validate :check_location_information_exists
   validate :check_labware_information_exists
 
@@ -21,7 +22,7 @@ class Event
     @event_type ||= Event.generate_event_type(audit.action)
   end
 
-  # Are we firing an event for a newly created audit,
+  #  Are we firing an event for a newly created audit,
   # or re-firing an event for an 'old' audit?
   # It affects how much data we send in the event - whether we expect it to still be relevant
   def for_old_audit?
@@ -45,7 +46,7 @@ class Event
 
   # human readable string containing as much information as we have about the location
   def location_info
-    return location_barcode unless location.present?
+    return location_barcode if location.blank?
     return "#{location.parentage} - #{location.name}" if location.parentage.present?
 
     location.name
@@ -95,6 +96,13 @@ class Event
   private
 
   # validation methods
+  def check_audit_is_labware_type
+    return if audit.blank? # validation is neater with this check here
+    return if audit.auditable_type == 'Labware'
+
+    errors.add(:base, 'Events can only be created for Audits where the auditable type is Labware')
+  end
+
   def check_location_information_exists
     return if audit.blank? # validation is neater with this check here
     return if location_barcode.present?
@@ -127,7 +135,7 @@ class Event
   end
 
   def location_subject
-    return unless location.present?
+    return if location.blank?
 
     {
       role_type: 'location',

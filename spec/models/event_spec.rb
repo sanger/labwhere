@@ -203,6 +203,7 @@ RSpec.describe Event, type: :model do
       it 'fails validation' do
         audit.record_data.delete('location')
         expect(event).to_not be_valid
+        expect(event.errors.full_messages).to include("The location barcode must be present in 'record_data'")
       end
     end
 
@@ -212,6 +213,7 @@ RSpec.describe Event, type: :model do
       it 'fails validation' do
         audit.record_data.delete('barcode')
         expect(event).to_not be_valid
+        expect(event.errors.full_messages).to include("Either the labware attribute, or a labware barcode in 'record_data' must be present")
       end
     end
 
@@ -220,6 +222,17 @@ RSpec.describe Event, type: :model do
 
       it 'fails validation' do
         expect(event).to_not be_valid
+        expect(event.errors.full_messages).to include("Audit can't be blank")
+      end
+    end
+
+    context 'where the audit type is not labware' do
+      let(:audit) { create(:audit) }
+      let(:attributes) { { audit: audit } }
+
+      it 'fails validation' do
+        expect(event).to_not be_valid
+        expect(event.errors.full_messages).to include('Events can only be created for Audits where the auditable type is Labware')
       end
     end
   end
