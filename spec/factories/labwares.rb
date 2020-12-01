@@ -21,5 +21,9 @@ FactoryBot.define do
     factory :labware_with_location do
       location { FactoryBot.create(:location_with_parent) }
     end
+
+    factory :labware_with_ordered_location do
+      location { FactoryBot.create(:ordered_location_with_parent) }
+    end
   end
 end

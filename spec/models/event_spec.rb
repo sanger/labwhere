@@ -6,49 +6,11 @@ RSpec.describe Event, type: :model do
   let(:labware) { create(:labware_with_location) }
   let(:audit) { create(:audit_of_labware, labware: labware) }
   let(:attributes) { { labware: labware, audit: audit } }
+  let(:event) { Event.new(attributes) }
 
-  it 'must have a piece of labware' do
-    expect(Event.new(attributes.except(:labware))).to_not be_valid
-  end
+  # FOR A NEW AUDIT - NORMAL SCENARIO
 
-  context 'without a location' do
-    let(:labware) { create(:labware) }
-
-    it 'is invalid' do
-      expect(Event.new(attributes)).to_not be_valid
-    end
-  end
-
-  context 'with a coordinate' do
-    let!(:coordinate) { create(:coordinate, labware: labware, location: labware.location) }
-
-    it 'returns the coordinate' do
-      event = Event.new(attributes)
-      expect(event.coordinate).to be_present
-    end
-  end
-
-  describe '#generate_event_type' do
-    it 'adds a prefix, replaces spaces with underscores, and changes to lower case' do
-      expect(Event.generate_event_type('Uploaded from manifest')).to eq('labwhere_uploaded_from_manifest')
-    end
-  end
-
-  describe '#location_info' do
-    it 'concatenates location parentage and name' do
-      location = create(:location_with_parent)
-      expect(Event.location_info(location)).to eq("#{location.parentage} - #{location.name}")
-    end
-
-    it 'returns just the name if the parentage is blank' do
-      location = create(:location)
-      expect(Event.location_info(location)).to eq(location.name)
-    end
-  end
-
-  context 'for an unordered location' do
-    let(:location) { create(:unordered_location_with_parent) }
-    let(:labware) { create(:labware, location: location) }
+  context 'for a new audit' do
     let(:expected_json) do
       {
         event: {
@@ -66,79 +28,211 @@ RSpec.describe Event, type: :model do
             {
               role_type: 'location',
               subject_type: 'location',
-              friendly_name: location.barcode,
-              uuid: location.uuid
+              friendly_name: labware.location.barcode,
+              uuid: labware.location.uuid
             }
           ],
           metadata: {
             location_coordinate: labware.coordinate.position,
-            location_info: Event.location_info(location)
+            location_info: event.location_info
           }
         },
         lims: 'LABWHERE'
       }
     end
 
-    it 'will produce the correct json for the message' do
-      event = Event.new(attributes)
-      json = event.as_json
-      expect(json).to eq(expected_json)
+    it 'is valid' do
+      expect(event).to be_valid
+    end
+
+    it 'creates a json with all the relevant bits of info' do
+      expect(event.as_json).to eq(expected_json)
+    end
+
+    describe '#coordinate' do
+      it 'returns a null coordinate' do
+        expect(event.coordinate.class).to eq(NullCoordinate)
+      end
+    end
+
+    context 'for an ordered location' do
+      let!(:coordinate) { create(:coordinate, labware: labware, location: labware.location) }
+
+      it 'is valid' do
+        expect(event).to be_valid
+      end
+
+      it 'creates a json with all the relevant bits of info' do
+        expect(event.as_json).to eq(expected_json)
+      end
+
+      describe '#coordinate' do
+        it 'returns a coordinate' do
+          expect(event.coordinate.class).to eq(Coordinate)
+          expect(event.coordinate.position).to eq(coordinate.position)
+        end
+      end
+    end
+
+    it 'can tell it is not an old audit' do
+      expect(event.for_old_audit?).to eq(false)
     end
   end
 
-  context 'for an ordered location' do
-    let!(:coordinate) { create(:coordinate, labware: labware, location: labware.location) }
+  # FOR AN OLD AUDIT - MIGRATIONS AND DATA PATCHES
 
-    it 'will produce the correct json for the message' do
-      locn = labware.location
-      event = Event.new(attributes)
-      json = event.as_json
+  context 'for an old audit' do
+    let(:location_1) { labware.location }
+    let(:location_2) { create(:location_with_parent) }
+    let(:audit_2) { create(:audit_of_labware, labware: labware) }
 
-      expect(json[:event][:subjects][1][:friendly_name]).to eq(locn.barcode)
-      expect(json[:event][:metadata][:location_coordinate]).to eq(coordinate.position)
+    before do
+      # record the first location
+      location_1
+      # insert an audit for the labware
+      audit
+      # update location on labware
+      labware.update!(location: location_2)
+      # insert another audit for the labware
+      audit_2
+    end
+
+    it 'is valid' do
+      expect(event).to be_valid
+    end
+
+    it 'can tell it is an old audit' do
+      expect(event.for_old_audit?).to eq(true)
+    end
+
+    context 'for an ordered location' do
+      let!(:coordinate) { create(:coordinate, labware: labware, location: labware.location) }
+
+      describe '#coordinate' do
+        it 'does not return a coordinate as it is unknown' do
+          expect(event.coordinate).to eq(nil)
+        end
+      end
+    end
+
+    context 'where the location still exists' do
+      let(:expected_subject) do
+        {
+          role_type: 'location',
+          subject_type: 'location',
+          friendly_name: location_1.barcode,
+          uuid: location_1.uuid
+        }
+      end
+
+      it 'includes a location subject' do
+        expect(event.as_json[:event][:subjects][1]).to eq(expected_subject)
+      end
+
+      it 'includes the parentage in the location info' do
+        expect(event.location_info).to eq("#{location_1.parentage} - #{location_1.name}")
+      end
+    end
+
+    context 'where the location has been deleted' do
+      let!(:location_barcode) { location_1.barcode }
+
+      before do
+        location_1.destroy!
+      end
+
+      it 'is valid' do
+        expect(event).to be_valid
+      end
+
+      it 'does not include a location subject as there is no uuid' do
+        expect(event.as_json[:event][:subjects].length).to eq(1)
+      end
+
+      it 'just puts the barcode in the location info' do
+        expect(event.location_info).to eq(location_barcode)
+      end
+    end
+
+    context 'where the labware still exists' do
+      let(:expected_subject) do
+        {
+          role_type: 'labware',
+          subject_type: 'labware',
+          friendly_name: labware.barcode,
+          uuid: labware.uuid
+        }
+      end
+
+      it 'includes a labware subject' do
+        expect(event.as_json[:event][:subjects][0]).to eq(expected_subject)
+      end
+    end
+
+    context 'where the labware has been deleted' do
+      let!(:labware_barcode) { labware.barcode }
+      let(:attributes) { { audit: audit } }
+
+      let(:expected_subject) do
+        {
+          role_type: 'labware',
+          subject_type: 'labware',
+          friendly_name: labware.barcode,
+          uuid: labware.uuid
+        }
+      end
+
+      before do
+        labware.destroy!
+      end
+
+      it 'is valid' do
+        expect(event).to be_valid
+      end
+
+      it 'includes a labware subject' do
+        expect(event.as_json[:event][:subjects][0]).to eq(expected_subject)
+      end
     end
   end
 
-  context 'creating an event for an old audit' do
-    context 'where the location has changed since' do
-      let(:first_location) { labware.location }
-      let(:second_location) { create(:location_with_parent) }
+  # FAILURE STATES
 
-      before do
-        # preload things
-        first_location
-        audit
-        # change the location on the labware
-        labware.update!(location: second_location)
-      end
-
-      it 'uses the location from the time the audit was created' do
-        event = Event.new(attributes)
-
-        expect(first_location.id).to_not eq(second_location.id) # sanity check
-        expect(event.location.id).to eq(first_location.id)
+  context 'where required data is missing' do
+    context 'where the location info is missing completely' do
+      it 'fails validation' do
+        audit.record_data.delete('location')
+        expect(event).to_not be_valid
+        expect(event.errors.full_messages).to include("The location barcode must be present in 'record_data'")
       end
     end
 
-    context 'where the coordinate has changed since' do
-      let(:first_coordinate) { create(:coordinate, labware: labware, location: labware.location) }
-      let(:second_coordinate) { create(:coordinate, labware: labware, location: labware.location) }
-      let(:second_audit) { create(:audit_of_labware, labware: labware) }
+    context 'where the labware info is missing completely' do
+      let(:attributes) { { audit: audit } }
 
-      before do
-        # preload things
-        first_coordinate
-        audit
-        # change the coordinate on the labware
-        second_coordinate
-        second_audit
+      it 'fails validation' do
+        audit.record_data.delete('barcode')
+        expect(event).to_not be_valid
+        expect(event.errors.full_messages).to include("Either the labware attribute, or a labware barcode in 'record_data' must be present")
       end
+    end
 
-      it 'uses the coordinate from the time the audit was created' do
-        event = Event.new(attributes)
+    context 'where the audit is missing' do
+      let(:attributes) { { labware: labware } }
 
-        expect(first_coordinate.id).to_not eq(second_coordinate.id) # sanity check
-        expect(event.coordinate).to eq(nil)
+      it 'fails validation' do
+        expect(event).to_not be_valid
+        expect(event.errors.full_messages).to include("Audit can't be blank")
+      end
+    end
+
+    context 'where the audit type is not labware' do
+      let(:audit) { create(:audit) }
+      let(:attributes) { { audit: audit } }
+
+      it 'fails validation' do
+        expect(event).to_not be_valid
+        expect(event.errors.full_messages).to include('Events can only be created for Audits where the auditable type is Labware')
       end
     end
   end
