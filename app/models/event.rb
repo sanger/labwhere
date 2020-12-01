@@ -27,10 +27,13 @@ class Event
   # It affects how much data we send in the event - whether we expect it to still be relevant
   def for_old_audit?
     @for_old_audit ||= begin
-      # if the labware record no longer exists, this is an old audit
+      # The labware record shouldn't be missing,
+      # but if it is, treat this as an 'old' audit
       return true if labware.blank?
 
-      # if this audit is not the latest for this labware, it is old
+      # if this audit is not the latest for this labware,
+      # we shouldn't expect current info on the labware to be
+      # relevant to the time the audit was created
       audit.id != labware.audits.last.id
     end
   end
