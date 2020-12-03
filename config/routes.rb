@@ -65,7 +65,7 @@ Rails.application.routes.draw do
 
   class KnownLocationsConstraint
     def matches?(request)
-      request.query_parameters["known"] == "true"
+      request.params["known"] == "true"
     end
   end
 
