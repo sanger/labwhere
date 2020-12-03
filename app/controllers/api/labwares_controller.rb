@@ -11,11 +11,11 @@ class Api::LabwaresController < ApiController
   end
 
   def by_barcode
-    render json: labwares_by_barcode, each_serializer: LabwareLiteSerializer
-  end
-
-  def by_barcode_known
-    render json: labwares_by_barcode_known, each_serializer: LabwareLiteSerializer
+    if request.params["known"] == "true"
+      render json: labwares_by_barcode_known_locations, each_serializer: LabwareLiteSerializer
+    else
+      render json: labwares_by_barcode, each_serializer: LabwareLiteSerializer
+    end
   end
 
   private
@@ -40,10 +40,10 @@ class Api::LabwaresController < ApiController
     Labware.by_barcode(barcodes)
   end
 
-  def labwares_by_barcode_known
+  def labwares_by_barcode_known_locations
     barcodes = params[:barcodes]
     return [] unless barcodes
 
-    Labware.by_barcode_known(barcodes)
+    Labware.by_barcode_known_locations(barcodes)
   end
 end
