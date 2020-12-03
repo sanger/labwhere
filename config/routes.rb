@@ -63,13 +63,20 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'scans#new'
 
+  class KnownLocationsConstraint
+    def matches?(request)
+      request.query_parameters["known"] == "true"
+    end
+  end
+
   namespace :api do
     get 'docs', to: 'docs#index'
     post 'labwares/searches', to: 'labwares/searches#create'
     post 'labwares/locations', to: 'labwares/locations#create'
 
     # This needs to be a post due to the number of barcodes that will be passed which is not possible with a get
-    post 'labwares_by_barcode', to: 'labwares#by_barcode'
+    post 'labwares_by_barcode', to: 'labwares#by_barcode', :constraints => lambda { |request| request.params[:known] == nil }
+    post 'labwares_by_barcode', to: 'labwares#by_barcode_known', :constraints => KnownLocationsConstraint.new
     root 'docs#index'
 
     put 'coordinates', to: 'coordinates#update'
