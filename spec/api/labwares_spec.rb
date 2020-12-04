@@ -131,5 +131,31 @@ RSpec.describe Api::LabwaresController, type: :request do
         expect(labware["location_barcode"]).to_not be_present
       end
     end
+
+    context 'when known locations query parameter set' do
+      let!(:labware_unknown_location) { create(:labware, location: UnknownLocation.get) }
+      let!(:labware_null_location) { create(:labware, location: nil) }
+      let!(:barcode_unknown_location) { labware_unknown_location.barcode }
+      let!(:barcode_null_location) { labware_null_location.barcode }
+
+      before(:each) do
+        post api_labwares_by_barcode_path, params: { barcodes: barcodes + [barcode_null_location, barcode_unknown_location], known: "true" }
+        @json = ActiveSupport::JSON.decode(response.body)
+      end
+
+      it 'should produce some json' do
+        expect(@json.length).to eq(5)
+      end
+
+      it 'should not return labwares at the unknown location' do
+        labware = @json.find { |l| l["barcode"] == barcode_unknown_location }
+        expect(labware).to be_falsy
+      end
+
+      it 'should not return labwares with null locations' do
+        labware = @json.find { |l| l["barcode"] == barcode_null_location }
+        expect(labware).to be_falsy
+      end
+    end
   end
 end
