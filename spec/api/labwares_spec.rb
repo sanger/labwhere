@@ -149,13 +149,11 @@ RSpec.describe Api::LabwaresController, type: :request do
 
       it 'should not return labwares at the unknown location' do
         labware = @json.find { |l| l["barcode"] == barcode_unknown_location }
-
         expect(labware).to be_falsy
       end
 
       it 'should not return labwares with null locations' do
         labware = @json.find { |l| l["barcode"] == barcode_null_location }
-
         expect(labware).to be_falsy
       end
     end
