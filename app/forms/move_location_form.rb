@@ -22,6 +22,14 @@ class MoveLocationForm
     assign_attributes
     if valid?
       parent_location.children = child_locations
+
+      # Add an audit record for each of the labwares in the location.
+      location_type = parent_location.location_type.name
+      child_locations.each do |location|
+        location.labwares.in_batches.each_record do |labware|
+          labware.create_audit(current_user, "moved to #{location_type}")
+        end
+      end
       true
     else
       false
