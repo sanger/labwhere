@@ -61,7 +61,7 @@ RSpec.describe LocationForm, type: :model do
     location_form = LocationForm.new(location)
     res = location_form.destroy(params.merge(user_code: administrator.barcode))
     expect(res).to be_truthy
-    
+
     audits = Audit.where(auditable_id: location.id)
     expect(audits.count).to eq 1
     expect(audits[0].action).to eq(Audit::DESTROY_ACTION)
@@ -127,8 +127,8 @@ RSpec.describe LocationForm, type: :model do
       expect(res).to be_truthy
       expect(location_form).to be_valid
       expect(Location.find_by(name: 'This is a location with a name with double spaces 1')).to be_present
-      
-      Location.all.map { |l| l.id }.each do |location_id|
+
+      Location.all.map(&:id).each do |location_id|
         audits = Audit.where(auditable_id: location_id)
         expect(audits.count).to eq 1
         expect(audits[0].action).to eq(Audit::CREATE_ACTION)

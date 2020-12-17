@@ -41,9 +41,7 @@ class LocationForm
     assign_attributes(params)
     if valid?
       run_transaction do
-        if location.save
-          location.create_audit(current_user, Audit::UPDATE_ACTION)
-        end
+        location.create_audit(current_user, Audit::UPDATE_ACTION) if location.save
       end
     else
       false
