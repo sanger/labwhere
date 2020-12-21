@@ -40,6 +40,15 @@ RSpec.describe MoveLocationForm, type: :model do
   describe 'audit records' do
     let!(:locations_with_labwares) { create_list(:unordered_location_with_labwares, 5) }
 
+    it "will be added for the child locations" do
+      create_move_location.submit(params.merge(move_location_form:
+        { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => child_locations.join_barcodes, "user_code" => user.swipe_card_id }))
+      child_locations.each do |location|
+        location.reload
+        expect(location.audits.first.action).to eq("moved to #{parent_location.location_type.name}")
+      end
+    end
+
     it "will be added for the labwares in the location" do
       create_move_location.submit(params.merge(move_location_form:
         { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => locations_with_labwares.join_barcodes, "user_code" => user.swipe_card_id }))
