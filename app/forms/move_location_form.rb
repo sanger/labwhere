@@ -21,16 +21,7 @@ class MoveLocationForm
     assign_params
     assign_attributes
     if valid?
-      parent_location.children = child_locations
-
-      # Add an audit record for each of the labwares in the location.
-      location_type = parent_location.location_type.name
-      child_locations.each do |location|
-        location.create_audit(current_user, "moved to #{location_type}")
-        location.labwares.in_batches.each_record do |labware|
-          labware.create_audit(current_user, "moved to #{location_type}")
-        end
-      end
+      create_audits
       true
     else
       false
@@ -80,6 +71,18 @@ class MoveLocationForm
       next if location.is_a?(Location)
 
       errors.add(:base, "Location with barcode #{location} #{I18n.t('errors.messages.existence')}")
+    end
+  end
+
+  def create_audits
+    # Add an audit record for each child location, and labwares in each child location
+    parent_location.children = child_locations
+    location_type = parent_location.location_type.name
+    child_locations.each do |location|
+      location.create_audit(current_user, "moved to #{location_type}")
+      location.labwares.in_batches.each_record do |labware|
+        labware.create_audit(current_user, "moved to #{location_type}")
+      end
     end
   end
 end
