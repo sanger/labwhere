@@ -31,6 +31,10 @@ RSpec.describe LocationForm, type: :model do
     expect(res).to be_truthy
     expect(location_form).to be_valid
     expect(location_form.location).to be_persisted
+
+    audits = Audit.where(auditable_id: location_form.location.id)
+    expect(audits.count).to eq 1
+    expect(audits[0].action).to eq(Audit::CREATE_ACTION)
   end
 
   it "can be edited if exists" do
@@ -44,6 +48,10 @@ RSpec.describe LocationForm, type: :model do
     )
     expect(res).to be_truthy
     expect(location.name).to eq(new_location.name)
+
+    audits = Audit.where(auditable_id: location.id)
+    expect(audits.count).to eq 1
+    expect(audits[0].action).to eq(Audit::UPDATE_ACTION)
   end
 
   it "can be destroyed if it has not been used" do
@@ -53,6 +61,10 @@ RSpec.describe LocationForm, type: :model do
     location_form = LocationForm.new(location)
     res = location_form.destroy(params.merge(user_code: administrator.barcode))
     expect(res).to be_truthy
+
+    audits = Audit.where(auditable_id: location.id)
+    expect(audits.count).to eq 1
+    expect(audits[0].action).to eq(Audit::DESTROY_ACTION)
   end
 
   it "should create the correct type of location dependent on the attributes" do
@@ -115,6 +127,12 @@ RSpec.describe LocationForm, type: :model do
       expect(res).to be_truthy
       expect(location_form).to be_valid
       expect(Location.find_by(name: 'This is a location with a name with double spaces 1')).to be_present
+
+      Location.all.map(&:id).each do |location_id|
+        audits = Audit.where(auditable_id: location_id)
+        expect(audits.count).to eq 1
+        expect(audits[0].action).to eq(Audit::CREATE_ACTION)
+      end
     end
 
     it "should not create multiple locations if start is greater than end" do
