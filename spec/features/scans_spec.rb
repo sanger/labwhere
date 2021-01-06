@@ -145,15 +145,19 @@ RSpec.describe "Scans", type: :feature do
   end
 end
 
+# This is necessary as the labware barcodes textarea is not visible
 def fill_in_labware_barcodes(text)
   within ".CodeMirror" do
     # Click makes CodeMirror element active:
     current_scope.click
-
+  
     # Find the hidden textarea:
     field = current_scope.find("textarea", visible: false)
-
+  
     # Mimic user typing the text:
     field.send_keys text
   end
 end
+
+
+
