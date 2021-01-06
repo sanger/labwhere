@@ -89,22 +89,9 @@ RSpec.configure do |config|
     xpath { |id| XPath.css("[data-output='#{id}']") }
   end
 
+  # copied from Sequencescape but removed the extra bits not needed currently.
   Capybara.register_driver :headless_chrome do |app|
-    driver = Capybara.drivers[:selenium_chrome_headless].call(app)
-
-    configure_window_size(driver)
-    enable_chrome_headless_downloads(driver)
-  end
-
-  def configure_window_size(driver)
-    # links in header disappear if window is too small, then capybara can't click on them
-    driver.options[:options].add_argument('--window-size=1600,3200')
-  end
-
-  def enable_chrome_headless_downloads(driver)
-    driver.options[:options].add_preference(:download, default_directory: Capybara.save_path)
-    driver.browser.download_path = Capybara.save_path
-    driver
+    Capybara.drivers[:selenium_chrome_headless].call(app)
   end
 
   Capybara.register_driver :chrome do |app|
@@ -113,5 +100,5 @@ RSpec.configure do |config|
   end
 
   Capybara.default_max_wait_time = 10
-  Capybara.javascript_driver = ENV.fetch('JS_DRIVER', 'headless_chrome').to_sym
+  Capybara.javascript_driver = :headless_chrome
 end
