@@ -50,9 +50,7 @@ Rails.application.configure do
                         email: {
                           email_prefix: "[PREFIX] ",
                           sender_address: %("Projects Exception Notifier" <#{Rails.configuration.mailer['smtp']['sender']}>),
-                          # rubocop:todo Lint/InterpolationCheck
                           exception_recipients: %w(#{Rails.configuration.mailer['smtp']['recipient']})
-                          # rubocop:enable Lint/InterpolationCheck
                         }
 
   # Print My Barcode api base

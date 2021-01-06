@@ -21,9 +21,9 @@ AllCops:
     - 'vendor/**/*'
     - 'config/routes.rb'
 
-# Metrics/LineLength:
-#   Max: 120
-
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
+
+Naming/MemoizedInstanceVariableName:
+  Enabled: false

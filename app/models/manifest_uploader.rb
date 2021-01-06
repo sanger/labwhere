@@ -105,10 +105,10 @@ class ManifestUploader
   end
 
   def valid_number?(input)
-    if !/\A\d+\z/.match(input)
-      false
-    else
+    if /\A\d+\z/.match?(input)
       Integer(input)
+    else
+      false
     end
   end
 end

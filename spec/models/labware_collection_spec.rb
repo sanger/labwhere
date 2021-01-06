@@ -3,12 +3,12 @@
 require "rails_helper"
 
 RSpec.describe LabwareCollection, type: :model do
-  let!(:previous_location_1)    { create(:location_with_parent) }
-  let!(:previous_location_2)    { create(:location_with_parent) }
-  let!(:labwares_1)             { create_list(:labware, 5, location: previous_location_1) }
-  let!(:labwares_2)             { create_list(:labware, 5, location: previous_location_2) }
+  let!(:previous_location1)    { create(:location_with_parent) }
+  let!(:previous_location2)    { create(:location_with_parent) }
+  let!(:labwares1)             { create_list(:labware, 5, location: previous_location1) }
+  let!(:labwares2)             { create_list(:labware, 5, location: previous_location2) }
   let(:new_labwares)            { build_list(:labware, 5) }
-  let(:labwares)                { labwares_1 + labwares_2 + new_labwares }
+  let(:labwares)                { labwares1 + labwares2 + new_labwares }
   let!(:user)                   { create(:administrator) }
 
   describe 'adding to an unordered location' do
@@ -26,7 +26,7 @@ RSpec.describe LabwareCollection, type: :model do
 
     it "provides a list of the original locations for the labware" do
       labware_collection.push
-      expect(labware_collection.original_location_names).to eq("#{previous_location_1.name}, #{previous_location_2.name}")
+      expect(labware_collection.original_location_names).to eq("#{previous_location1.name}, #{previous_location2.name}")
     end
 
     it "creates an audit record for each labware" do

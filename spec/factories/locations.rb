@@ -84,7 +84,6 @@ FactoryBot.define do
       end
     end
 
-    factory :unknown_location, class: "UnknownLocation" do
-    end
+    factory :unknown_location, class: "UnknownLocation"
   end
 end

@@ -29,12 +29,14 @@ class Event
     @for_old_audit ||= begin
       # The labware record shouldn't be missing,
       # but if it is, treat this as an 'old' audit
-      return true if labware.blank?
-
-      # if this audit is not the latest for this labware,
-      # we shouldn't expect current info on the labware to be
-      # relevant to the time the audit was created
-      audit.id != labware.audits.last.id
+      if labware.blank?
+        true
+      else
+        # if this audit is not the latest for this labware,
+        # we shouldn't expect current info on the labware to be
+        # relevant to the time the audit was created
+        audit.id != labware.audits.last.id
+      end
     end
   end
 
@@ -65,9 +67,11 @@ class Event
 
   def labware_uuid
     @labware_uuid ||= begin
-      return labware.uuid if labware.present?
-
-      audit.record_data['uuid']
+      if labware.present?
+        labware.uuid
+      else
+        audit.record_data['uuid']
+      end
     end
   end
 
