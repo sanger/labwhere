@@ -3,9 +3,6 @@
 module SubclassChecker
   extend ActiveSupport::Concern
 
-  included do
-  end
-
   module ClassMethods
     def has_subclasses(*classes)
       options = classes.extract_options!

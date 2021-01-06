@@ -43,13 +43,13 @@ RSpec.describe Api::LabwaresController, type: :request do
 
   describe '#index' do
     let!(:location_multiple_labware) { location }
-    let!(:labware_2) { create(:labware_with_audits, location: location_multiple_labware) }
-    let!(:labware_3) { create(:labware_with_audits, location: location_multiple_labware) }
+    let!(:labware2) { create(:labware_with_audits, location: location_multiple_labware) }
+    let!(:labware3) { create(:labware_with_audits, location: location_multiple_labware) }
 
     let!(:location_empty) { create(:location_with_parent) }
 
     let!(:location_single_labware) { create(:location_with_parent) }
-    let!(:labware_4) { create(:labware_with_audits, location: location_single_labware) }
+    let!(:labware4) { create(:labware_with_audits, location: location_single_labware) }
 
     let!(:location_barcodes_params) do
       {

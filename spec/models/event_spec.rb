@@ -82,19 +82,19 @@ RSpec.describe Event, type: :model do
   # FOR AN OLD AUDIT - MIGRATIONS AND DATA PATCHES
 
   context 'for an old audit' do
-    let(:location_1) { labware.location }
-    let(:location_2) { create(:location_with_parent) }
-    let(:audit_2) { create(:audit_of_labware, labware: labware) }
+    let(:location1) { labware.location }
+    let(:location2) { create(:location_with_parent) }
+    let(:audit2) { create(:audit_of_labware, labware: labware) }
 
     before do
       # record the first location
-      location_1
+      location1
       # insert an audit for the labware
       audit
       # update location on labware
-      labware.update!(location: location_2)
+      labware.update!(location: location2)
       # insert another audit for the labware
-      audit_2
+      audit2
     end
 
     it 'is valid' do
@@ -120,8 +120,8 @@ RSpec.describe Event, type: :model do
         {
           role_type: 'location',
           subject_type: 'location',
-          friendly_name: location_1.barcode,
-          uuid: location_1.uuid
+          friendly_name: location1.barcode,
+          uuid: location1.uuid
         }
       end
 
@@ -130,15 +130,15 @@ RSpec.describe Event, type: :model do
       end
 
       it 'includes the parentage in the location info' do
-        expect(event.location_info).to eq("#{location_1.parentage} - #{location_1.name}")
+        expect(event.location_info).to eq("#{location1.parentage} - #{location1.name}")
       end
     end
 
     context 'where the location has been deleted' do
-      let!(:location_barcode) { location_1.barcode }
+      let!(:location_barcode) { location1.barcode }
 
       before do
-        location_1.destroy!
+        location1.destroy!
       end
 
       it 'is valid' do

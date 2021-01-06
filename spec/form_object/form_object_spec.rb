@@ -21,8 +21,6 @@ RSpec.describe FormObject, type: :model do |_variable|
       t.timestamps null: false
     end
 
-    model do
-    end
   end
 
   with_model :ModelDuck do
@@ -31,8 +29,6 @@ RSpec.describe FormObject, type: :model do |_variable|
       t.timestamps null: false
     end
 
-    model do
-    end
   end
 
   with_model :ShesA do
@@ -41,8 +37,6 @@ RSpec.describe FormObject, type: :model do |_variable|
       t.timestamps null: false
     end
 
-    model do
-    end
   end
   before(:all) do
     class ModelAForm
