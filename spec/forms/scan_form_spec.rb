@@ -136,4 +136,23 @@ RSpec.describe ScanForm, type: :model do
       expect(Scan.all).to be_empty
     end
   end
+
+  context "trying to scan a location into a location" do
+    let!(:location) { create(:unordered_location_with_parent) }
+    let!(:another_location)  { create(:unordered_location_with_parent) }
+
+    it "should show an error that it is a location not labwares" do
+      create_scan.submit(params.merge(scan:
+        { "location_barcode" => location.barcode, "labware_barcodes" => another_location.barcode, user_code: user.swipe_card_id }))
+      expect(create_scan.errors.full_messages).to include(I18n.t("errors.messages.not_labware_html", { url: new_move_location_path }))
+      expect(Scan.all).to be_empty
+    end
+
+    it "should show an error if there is a mixture of locations and labwares" do
+      create_scan.submit(params.merge(scan:
+        { "location_barcode" => location.barcode, "labware_barcodes" => "#{another_location.barcode}\n#{new_labware.join_barcodes}", user_code: user.swipe_card_id }))
+      expect(create_scan.errors.full_messages).to include(I18n.t("errors.messages.not_labware_html", { url: new_move_location_path }))
+      expect(Scan.all).to be_empty
+    end
+  end
 end

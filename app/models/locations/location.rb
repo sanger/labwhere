@@ -5,6 +5,7 @@
 class Location < ActiveRecord::Base
   UNKNOWN = "UNKNOWN"
   UNKNOWN_LIMIT_ERROR = "Can't have more than 1 UnknownLocation"
+  BARCODE_PREFIX = "lw-"
 
   include Searchable::Client
   include HasActive
@@ -187,7 +188,7 @@ class Location < ActiveRecord::Base
   ##
   # The barcode is the name downcased with spaces replaced by dashes with the id added again separated by a space.
   def generate_barcode
-    update_column(:barcode, "lw-#{self.name.tr(' ', '-').downcase}-#{self.id}")
+    update_column(:barcode, "#{BARCODE_PREFIX}#{self.name.tr(' ', '-').downcase}-#{self.id}")
   end
 
   def apply_restrictions
