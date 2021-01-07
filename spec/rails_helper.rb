@@ -6,7 +6,8 @@ require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'with_model'
-require 'capybara/poltergeist'
+require 'webdrivers/chromedriver'
+require 'selenium/webdriver'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -53,8 +54,6 @@ RSpec.configure do |config|
 
   config.extend WithModel
 
-  Capybara.javascript_driver = :poltergeist
-
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
   end
@@ -89,4 +88,17 @@ RSpec.configure do |config|
   Capybara.add_selector(:data_output) do
     xpath { |id| XPath.css("[data-output='#{id}']") }
   end
+
+  # copied from Sequencescape but removed the extra bits not needed currently.
+  Capybara.register_driver :headless_chrome do |app|
+    Capybara.drivers[:selenium_chrome_headless].call(app)
+  end
+
+  Capybara.register_driver :chrome do |app|
+    options = Selenium::WebDriver::Chrome::Options.new
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  end
+
+  Capybara.default_max_wait_time = 10
+  Capybara.javascript_driver = :headless_chrome
 end
