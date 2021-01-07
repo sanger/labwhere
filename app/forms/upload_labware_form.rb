@@ -50,7 +50,7 @@ class UploadLabwareForm
     the_file = params[:upload_labware_form][:file]
 
     extension = ''
-    if the_file.class == ActionDispatch::Http::UploadedFile
+    if the_file.instance_of?(ActionDispatch::Http::UploadedFile)
       extension = File.extname(the_file.original_filename)
       return if extension == '.csv'
     end

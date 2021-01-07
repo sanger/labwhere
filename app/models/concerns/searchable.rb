@@ -37,9 +37,6 @@ module Searchable
   module Client
     extend ActiveSupport::Concern
 
-    included do
-    end
-
     module ClassMethods
       ##
       # Create a search method signified by the attributes.

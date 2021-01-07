@@ -13,7 +13,13 @@
 class Audit < ActiveRecord::Base
   include Uuidable
 
-  PAST_TENSES = { 'scan' => 'Scanned', 'destroy' => 'Destroyed' }
+  PAST_TENSES = {
+    'scan' => 'Scanned',
+    'destroy' => 'Destroyed',
+    'Uploaded from manifest' => 'Uploaded from manifest',
+    'removed all labwares' => 'Removed all labwares',
+    'update when location emptied' => 'Update when location emptied'
+  }
 
   # auditable actions
   CREATE_ACTION                        = 'create'

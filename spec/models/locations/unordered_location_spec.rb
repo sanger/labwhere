@@ -4,27 +4,27 @@ require "rails_helper"
 
 RSpec.describe UnorderedLocation, type: :model do
   context "modifying status" do
-    let!(:location_1) { create(:unordered_location) }
-    let!(:location_2) { create(:unordered_location, parent: location_1) }
-    let!(:location_3) { create(:unordered_location, parent: location_1) }
-    let!(:location_4) { create(:unordered_location, parent: location_2) }
-    let!(:location_5) { create(:unordered_location, parent: location_3) }
+    let!(:location1) { create(:unordered_location) }
+    let!(:location2) { create(:unordered_location, parent: location1) }
+    let!(:location3) { create(:unordered_location, parent: location1) }
+    let!(:location4) { create(:unordered_location, parent: location2) }
+    let!(:location5) { create(:unordered_location, parent: location3) }
 
     it "deactivating should deactivate the whole family" do
-      location_1.deactivate
-      expect(location_2.reload).to be_inactive
-      expect(location_3.reload).to be_inactive
-      expect(location_4.reload).to be_inactive
-      expect(location_5.reload).to be_inactive
+      location1.deactivate
+      expect(location2.reload).to be_inactive
+      expect(location3.reload).to be_inactive
+      expect(location4.reload).to be_inactive
+      expect(location5.reload).to be_inactive
     end
 
     it "activating a location should activate the whole family" do
-      location_1.deactivate
-      location_1.activate
-      expect(location_2.reload).to be_active
-      expect(location_3.reload).to be_active
-      expect(location_4.reload).to be_active
-      expect(location_5.reload).to be_active
+      location1.deactivate
+      location1.activate
+      expect(location2.reload).to be_active
+      expect(location3.reload).to be_active
+      expect(location4.reload).to be_active
+      expect(location5.reload).to be_active
     end
   end
 
