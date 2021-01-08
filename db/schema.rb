@@ -26,12 +26,6 @@ ActiveRecord::Schema.define(version: 2020_11_16_084153) do
     t.index ["user_id"], name: "index_audits_on_user_id"
   end
 
-  create_table "barcodes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "prefix"
-    t.integer "counter"
-    t.index ["counter"], name: "index_barcodes_on_counter"
-  end
-
   create_table "coordinates", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "position"
     t.integer "row"
