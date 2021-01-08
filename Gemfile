@@ -31,6 +31,7 @@ gem 'rack-cors'
 group :development do
   gem 'apiaryio', '~> 0.11'
   gem 'listen'
+  gem 'rails-erd'
   gem 'web-console' # Access an IRB console on exception pages or by using <%= console %> in views
 end
 
