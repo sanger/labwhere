@@ -1,6 +1,6 @@
 # Labwhere
 
-[![Build Status](https://travis-ci.org/sanger/labwhere.svg?branch=devel)](https://travis-ci.org/sanger/labwhere)
+[![Build Status](https://travis-ci.com/sanger/labwhere.svg?branch=develop)](https://travis-ci.com/sanger/labwhere)
 
 A tool for tracking uniquely barcoded labware
 
@@ -18,7 +18,7 @@ Make sure you have `ruby-2.5.6` installed. e.g. `rvm install ruby-2.5.6`.
 
 1. Install the dependencies: `bundle install`
 1. Set up the local database
-The local database uses `sqlite`.
+The local database uses `mysql`.
 
     ```bash
     bundle exec rails db:environment:set
@@ -42,3 +42,41 @@ The documentation is written in [API Blueprint](https://apiblueprint.org/) and c
 using the [Apiary CLI client](https://github.com/apiaryio/apiary-client) gem.
 
 The documentation will be available at `/api`.
+
+## Creating some dummy data
+
+`bundle exec rails db:reload`
+
+This will create a user, location types and locations in a nested structure similar to the live setup.
+
+## Removing all of the data
+
+`bundle exec rails db:clear`
+
+This will remove all of the existing data without resetting the database.
+
+## Creating some dummy labwares
+
+`bundle exec rails labwares:create_barcodes[num]`
+
+num = number of labwares that will be created.
+
+This will create a number of labware barcodes that can then be scanned into the scan page.
+
+## Pages
+
+* **Scan In/Out (home page):** Scan labwares into a Location
+
+* **Upload Labware:** Upload Labwares into a location
+
+* **Move Locations:** Move any number of locations from one place to another (all child locations will also be moved)
+
+* **Empty Location:** Remove all labwares from a location
+
+* **Configure:** Administrator permissions are required but these pages allow you to create/update/deactivate Location Types, Locations, Users, Teams and Printers
+
+### ERD
+
+An ERD was created using the `rails-erd` gem by executing: `bundle exec erd`
+
+![ERD](erd.jpg "ERD")
