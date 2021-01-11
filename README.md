@@ -23,7 +23,7 @@ The local database uses `mysql`.
     ```bash
     bundle exec rails db:environment:set
     bundle exec rails db:create
-    bundle exec rails db:migrate
+    bundle exec rails db:schema:load
     ```
 
 ## Running The Specs
