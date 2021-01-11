@@ -27,7 +27,7 @@ RSpec.describe "Scans", type: :feature do
     fill_in "User swipe card id/barcode", with: user.swipe_card_id
     fill_in "Location barcode", with: location.barcode
     expect(page.all('.CodeMirror-linenumber').count).to eq(1)
-    page.find('.scanArea').send_keys(labwares.join_barcodes)
+    fill_in_labware_barcodes(labwares.join_barcodes)
     expect(page.all('.CodeMirror-linenumber').count).to eq(34)
   end
 
@@ -37,13 +37,13 @@ RSpec.describe "Scans", type: :feature do
     fill_in "User swipe card id/barcode", with: user.swipe_card_id
     fill_in "Location barcode", with: location.barcode
     expect(page.all('.cm-error').count).to eq(0)
-    page.find('.scanArea').send_keys("1234\n")
+    fill_in_labware_barcodes("1234\n")
     expect(page.all('.cm-error').count).to eq(0)
-    page.find('.scanArea').send_keys("4567\n")
+    fill_in_labware_barcodes("4567\n")
     expect(page.all('.cm-error').count).to eq(0)
-    page.find('.scanArea').send_keys("1234\n")
+    fill_in_labware_barcodes("1234\n")
     expect(page.all('.cm-error').count).to eq(1)
-    page.find('.scanArea').send_keys("4567\n")
+    fill_in_labware_barcodes("4567\n")
     expect(page.all('.cm-error').count).to eq(2)
   end
 
@@ -142,5 +142,19 @@ RSpec.describe "Scans", type: :feature do
 
       expect(page).to have_content("errors prohibited this record from being saved")
     end
+  end
+end
+
+# This is necessary as the labware barcodes textarea is not visible
+def fill_in_labware_barcodes(text)
+  within ".CodeMirror" do
+    # Click makes CodeMirror element active:
+    current_scope.click
+
+    # Find the hidden textarea:
+    field = current_scope.find("textarea", visible: false)
+
+    # Mimic user typing the text:
+    field.send_keys text
   end
 end
