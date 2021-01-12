@@ -5,6 +5,8 @@
 require 'rails_helper'
 
 RSpec.describe "Scans", type: :feature do
+  include_context "shared helpers"
+
   let!(:user) { create(:scientist) }
 
   it "allows a user to scan in some labware with a location" do
@@ -142,19 +144,5 @@ RSpec.describe "Scans", type: :feature do
 
       expect(page).to have_content("errors prohibited this record from being saved")
     end
-  end
-end
-
-# This is necessary as the labware barcodes textarea is not visible
-def fill_in_labware_barcodes(text)
-  within ".CodeMirror" do
-    # Click makes CodeMirror element active:
-    current_scope.click
-
-    # Find the hidden textarea:
-    field = current_scope.find("textarea", visible: false)
-
-    # Mimic user typing the text:
-    field.send_keys text
   end
 end

@@ -16,4 +16,11 @@ $(document).on("turbolinks:load", ->
       lineNumbers: true,
       mode: "barcode_reader"
     })
+
+  moveLocationTextArea = document.getElementById('move_location_form_child_location_barcodes')
+  if moveLocationTextArea
+    CodeMirror.fromTextArea(moveLocationTextArea, {
+      lineNumbers: true,
+      mode: "barcode_reader"
+    })
 )
