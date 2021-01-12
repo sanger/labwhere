@@ -7,6 +7,7 @@ class ScanForm
   include FormObject
   include AuthenticationForm
   include StorageValidator
+  include Rails.application.routes.url_helpers
 
   set_form_variables :labware_barcodes, :location_barcode, :start_position, location: :find_location
 
@@ -16,6 +17,7 @@ class ScanForm
   end
 
   validate :check_available_coordinates, if: proc { |l| l.start_position.present? && l.location.present? }
+  validate :check_if_any_barcodes_are_locations
 
   delegate :message, :created_at, :updated_at, to: :scan
 
@@ -37,5 +39,11 @@ class ScanForm
 
   def labwares
     @labwares ||= labware_barcodes.split("\n")
+  end
+
+  def check_if_any_barcodes_are_locations
+    if labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
+      errors.add(:base, I18n.t("errors.messages.not_labware", { url: new_move_location_path }))
+    end
   end
 end

@@ -9,6 +9,7 @@ namespace :locations do
     location_creator = LocationCreator.new("Site" => { location: "Sanger" },
                                            "Building" => { location: "Ogilvie" },
                                            "Room" => { location: "AA315" },
+                                           "Freezer" => { location: "Freezer1" },
                                            "Shelf" => { location: "Shelf", number: 2 },
                                            "Tray" => { location: "Tray", number: 208 })
     location_creator.run!

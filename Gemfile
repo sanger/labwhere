@@ -31,21 +31,21 @@ gem 'rack-cors'
 group :development do
   gem 'apiaryio', '~> 0.11'
   gem 'listen'
+  gem 'rails-erd'
   gem 'web-console' # Access an IRB console on exception pages or by using <%= console %> in views
 end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-selenium'
   gem 'database_cleaner'
   gem 'mocha'
-  gem 'selenium-webdriver'
+  gem 'webdrivers'
 end
 
 group :development, :test do
   gem 'byebug' # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 4.8.0'
-  gem 'phantomjs', require: 'phantomjs/poltergeist' # Headless browser testing
-  gem 'poltergeist'
   gem 'rails-controller-testing'
   gem 'rb-readline'
   gem 'rspec-rails', '~> 3.1'

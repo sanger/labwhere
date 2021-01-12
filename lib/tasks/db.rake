@@ -11,11 +11,20 @@ namespace :db do
   desc "reload data. Will clear all data out first"
   task reload: :environment do |_t|
     Rake::Task["db:clear"].execute
+
+    # create some location types
     location_types = YAML.load_file(Rails.root.join('config/location_types.yml'))
     location_types.each do |_k, v|
       LocationType.create(v)
     end
+
+    # create a team
     team = Team.create(name: "Team1", number: 1)
+
+    # create an admin user.
     Administrator.create(login: "admin", swipe_card_id: "1234", barcode: "admin-1", team: team)
+
+    # create some locations
+    Rake::Task["locations:create"].invoke
   end
 end
