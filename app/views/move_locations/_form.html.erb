@@ -11,7 +11,7 @@
       </li>
       <li>
         <div><%= f.label :child_location_barcodes, 'Location barcodes to be moved (Child location)*' %></div>
-        <div class="pr-5"><%= f.text_area :child_location_barcodes %></div>
+        <div class="pr-5"><div class="scanArea"><%= f.text_area :child_location_barcodes %></div></div>
       </li>
       <li>
           <%= f.submit "Go!", data: {disable_with: "scanning..."} %>
