@@ -9,6 +9,8 @@ class ManifestUploader
 
   validate :check_locations, :check_for_ordered_locations, :check_for_missing_or_invalid_data
 
+  MIMIMUM_CELL_LENGTH = 5
+
   def data
     @data ||= formatted_data
   end
@@ -53,7 +55,7 @@ class ManifestUploader
   def check_locations
     return if missing_locations.empty?
 
-    errors.add(:base, "location(s) with barcode #{missing_locations.join(',')} do not exist")
+    errors.add(:base, "location(s) with barcode '#{missing_locations.join(',')}' do not exist")
   end
 
   # If a location has coordinates it will cause all sorts of problems and should fail
@@ -69,8 +71,8 @@ class ManifestUploader
   # 5 is an aribitrary number which could be changed if we find it is too lax.
   def check_for_missing_or_invalid_data
     data.each do |row|
-      row.each do |cell|
-        if cell.blank? || cell.length < 5
+      break unless row.each do |cell|
+        if cell.blank? || cell.length < MIMIMUM_CELL_LENGTH
           errors.add(:base, "It looks like there is some missing or invalid data. Please review and remove anything that shouldn't be there.")
           break
         end

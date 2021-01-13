@@ -55,7 +55,7 @@ RSpec.describe ManifestUploader, type: :model do
 
     it 'will show an error' do
       manifest_uploader.run
-      expect(manifest_uploader.errors.full_messages).to include("location(s) with barcode #{new_location.barcode} do not exist")
+      expect(manifest_uploader.errors.full_messages).to include("location(s) with barcode '#{new_location.barcode}' do not exist")
     end
 
     it 'will not create any labwares' do
@@ -105,9 +105,9 @@ RSpec.describe ManifestUploader, type: :model do
       end
     end
 
-    context 'when there is invalid data' do
+    context 'when there is invalid data (length of cell string is < 5)' do
       before(:each) do
-        manifest.concat("x,abcd\n")
+        manifest.concat("#{new_location.barcode},abcd\n")
         manifest_uploader.file = manifest
       end
 
@@ -118,6 +118,40 @@ RSpec.describe ManifestUploader, type: :model do
       it 'will show an error' do
         manifest_uploader.run
         expect(manifest_uploader.errors.full_messages).to include("It looks like there is some missing or invalid data. Please review and remove anything that shouldn't be there.")
+      end
+    end
+
+    context 'when there are multiple empty cells' do
+      before(:each) do
+        manifest.concat("#{unordered_location.barcode},,\n")
+        manifest.concat("#{unordered_location.barcode},,\n")
+        manifest_uploader.file = manifest
+      end
+
+      it 'will not be valid' do
+        expect(manifest_uploader).to_not be_valid
+      end
+
+      it 'will only show one error' do
+        manifest_uploader.run
+        expect(manifest_uploader.errors.full_messages).to eq(["It looks like there is some missing or invalid data. Please review and remove anything that shouldn't be there."])
+      end
+    end
+  end
+
+  context 'when the data is valid' do
+    let!(:manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
+
+    attr_reader :data
+
+    context 'when there is valid data (length of cell string is >= 5)' do
+      before(:each) do
+        manifest.concat("#{unordered_location.barcode},abcde\n")
+        manifest_uploader.file = manifest
+      end
+
+      it 'will not be valid' do
+        expect(manifest_uploader).to be_valid
       end
     end
   end
