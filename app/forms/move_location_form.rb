@@ -61,7 +61,10 @@ class MoveLocationForm
   end
 
   def check_parent_location
-    return if parent_location.present?
+    if parent_location.present?
+      errors.add(:parent_location, "is not a container") unless parent_location.container
+      return
+    end
 
     errors.add(:parent_location, I18n.t("errors.messages.existence"))
   end
