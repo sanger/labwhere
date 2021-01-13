@@ -21,18 +21,16 @@ RSpec.describe MoveLocationForm, type: :model do
     expect(create_move_location.errors.full_messages).to include("Parent location #{I18n.t('errors.messages.existence')}")
   end
 
-  it "will not be valid if the location is a building" do
-    location_type = create(:location_type, name: "Building")
-    building_location = create(:location, location_type: location_type)
+  it "will not be valid if the location is not a container" do
+    building_location = create(:location, container: false)
 
     create_move_location.submit(params.merge(move_location_form:
       { "parent_location_barcode" => building_location.barcode, "child_location_barcodes" => child_locations.join_barcodes, "user_code" => user.swipe_card_id }))
-    expect(create_move_location.errors.full_messages).to include("Parent location cannot be a building")
+    expect(create_move_location.errors.full_messages).to include("Parent location is not a container")
   end
 
-  it "will be valid if the location is not a building" do
-    location_type = create(:location_type, name: "Shelf")
-    building_location = create(:location, location_type: location_type)
+  it "will be valid if the location is a container" do
+    building_location = create(:location, container: true)
 
     create_move_location.submit(params.merge(move_location_form:
       { "parent_location_barcode" => building_location.barcode, "child_location_barcodes" => child_locations.join_barcodes, "user_code" => user.swipe_card_id }))

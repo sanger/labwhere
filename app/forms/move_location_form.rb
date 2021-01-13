@@ -62,7 +62,7 @@ class MoveLocationForm
 
   def check_parent_location
     if parent_location.present?
-      errors.add(:parent_location, "cannot be a building") if parent_location.location_type.name == "Building"
+      errors.add(:parent_location, "is not a container") unless parent_location.container
       return
     end
 
