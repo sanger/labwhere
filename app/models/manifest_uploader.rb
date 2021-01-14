@@ -7,7 +7,8 @@ class ManifestUploader
 
   attr_accessor :file, :user
 
-  validate :check_locations, :check_for_ordered_locations, :check_for_missing_or_invalid_data
+  validate :check_locations, :check_for_ordered_locations,
+           :check_for_missing_or_invalid_data, :check_if_any_labwares_are_locations
 
   MIMIMUM_CELL_LENGTH = 5
 
@@ -18,6 +19,10 @@ class ManifestUploader
   def formatted_data
     parsed = ::CSV.parse(file).drop(1)
     parsed.collect { |row| row.collect { |cell| cell.try(:strip) } }
+  end
+
+  def labwares
+    @labwares ||= data.collect(&:last).uniq
   end
 
   def run
@@ -77,6 +82,12 @@ class ManifestUploader
           break
         end
       end
+    end
+  end
+
+  def check_if_any_labwares_are_locations
+    if labwares.compact.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
+      errors.add(:base, "Labware barcodes cannot be the same as an existing location barcode. Please review and remove incorrect labware barcodes")
     end
   end
 end
