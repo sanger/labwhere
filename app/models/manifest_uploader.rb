@@ -22,7 +22,7 @@ class ManifestUploader
   end
 
   def labwares
-    @labwares ||= data.collect(&:last).uniq
+    @labwares ||= data.collect { |row| row.second }.uniq
   end
 
   def run
@@ -86,7 +86,8 @@ class ManifestUploader
   end
 
   def check_if_any_labwares_are_locations
-    if labwares.compact.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
+    return unless errors.blank?
+    if labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
       errors.add(:base, "Labware barcodes cannot be the same as an existing location barcode. Please review and remove incorrect labware barcodes")
     end
   end
