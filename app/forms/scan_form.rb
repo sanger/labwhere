@@ -38,7 +38,7 @@ class ScanForm
   end
 
   def labwares
-    @labwares ||= labware_barcodes.split("\n").collect(&:strip)
+    @labwares ||= labware_barcodes.split("\n").uniq.collect(&:strip)
   end
 
   def check_if_any_barcodes_are_locations

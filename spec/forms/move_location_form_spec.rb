@@ -75,4 +75,17 @@ RSpec.describe MoveLocationForm, type: :model do
       end
     end
   end
+
+  describe 'duplicate child location barcodes' do
+    it 'will remove duplication child location barcodes' do
+      location = create(:location_with_parent)
+      duplicate_barcodes = [location, location].join_barcodes
+      create_move_location.submit(params.merge(move_location_form:
+      { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => duplicate_barcodes, "user_code" => user.swipe_card_id }))
+
+      location.reload
+      expect(location.labwares.all? { |labware| labware.audits.count == 1 }).to be_truthy
+      expect(location.audits.first.action).to eq("moved to #{parent_location.location_type.name}")
+    end
+  end
 end
