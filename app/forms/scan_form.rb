@@ -12,7 +12,10 @@ class ScanForm
   set_form_variables :labware_barcodes, :location_barcode, :start_position, location: :find_location
 
   after_validate do
-    scan.add_attributes_from_collection(LabwareCollection.open(location: location, user: current_user, coordinates: available_coordinates, labwares: labware_barcodes).push)
+    unique_labware_barcodes = labware_barcodes.split("\n")
+                                              .uniq
+                                              .join("\n")
+    scan.add_attributes_from_collection(LabwareCollection.open(location: location, user: current_user, coordinates: available_coordinates, labwares: unique_labware_barcodes).push)
     scan.save
   end
 

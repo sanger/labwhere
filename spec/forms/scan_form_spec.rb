@@ -155,4 +155,18 @@ RSpec.describe ScanForm, type: :model do
       expect(Scan.all).to be_empty
     end
   end
+
+  context "trying to scan duplicate labware barcodes in" do
+    let!(:location) { create(:unordered_location_with_parent) }
+
+    it 'will remove duplication labware barcodes from the audit trail' do
+      create_scan.submit(params.merge(scan:
+      { "location_barcode" => location.barcode, "labware_barcodes" => "#{new_labware.join_barcodes}\n#{new_labware.join_barcodes}", user_code: user.swipe_card_id }))
+      location.reload
+
+      expect(location.labwares.length).to eq(4)
+      expect(location.labwares.all? { |labware| labware.audits.count == 1 }).to be_truthy
+      expect(location.labwares.first.audits.first.action).to eq("create")
+    end
+  end
 end
