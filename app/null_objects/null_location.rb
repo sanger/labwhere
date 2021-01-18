@@ -29,8 +29,8 @@ class NullLocation
 
   def defined?; true end
 
-  def ==(o)
-    o.class == self.class && o.state == self.state
+  def ==(other)
+    other.class == self.class && other.state == state
   end
 
   protected

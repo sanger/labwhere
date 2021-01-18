@@ -13,17 +13,15 @@ def create_csv(labwares)
 end
 
 RSpec.describe LocationFinder, type: :model do
-
-  let!(:labwares)                  { create_list(:labware_with_location, 10) }
-  let!(:labware_with_no_location ) { create(:labware) }
-  let(:null_location)              { NullLocation.new }
+  let!(:labwares) { create_list(:labware_with_location, 10) }
+  let!(:labware_with_no_location) { create(:labware) }
+  let(:null_location) { NullLocation.new }
 
   it 'will work' do
     expect(true).to be_truthy
   end
 
   describe 'when everything is valid' do
-
     let(:csv) { create_csv(labwares) }
     let(:location_finder) { LocationFinder.new(file: csv) }
 
@@ -47,7 +45,6 @@ RSpec.describe LocationFinder, type: :model do
   end
 
   describe 'when one of the labwares does not have a location' do
-
     let(:csv) { create_csv(labwares + [labware_with_no_location]) }
     let(:location_finder) { LocationFinder.new(file: csv) }
 
@@ -56,7 +53,6 @@ RSpec.describe LocationFinder, type: :model do
     end
 
     it 'should have some data to signify it is an empty location' do
-      
       null_location = NullLocation.new
 
       labware = location_finder.results[labware_with_no_location.barcode]
@@ -66,8 +62,7 @@ RSpec.describe LocationFinder, type: :model do
   end
 
   describe 'when one of the labwares does not exist' do
-    
-    let(:dodgy_labware) {build(:labware) }
+    let(:dodgy_labware) { build(:labware) }
     let(:csv) { create_csv(labwares + [dodgy_labware]) }
     let(:location_finder) { LocationFinder.new(file: csv) }
     let(:null_labware) { NullLabware.new }
@@ -82,7 +77,6 @@ RSpec.describe LocationFinder, type: :model do
   end
 
   describe 'when there is dodgy data' do
-    
     it 'when there are blank lines' do
       csv = create_csv(labwares)
       csv.concat("\n")
@@ -98,5 +92,4 @@ RSpec.describe LocationFinder, type: :model do
       expect(location_finder.results.length).to eq(labwares.length)
     end
   end
-
 end

@@ -32,5 +32,4 @@ class LocationFinder
       results[barcode] = Labware.includes(:location).find_by(barcode: barcode) || NullLabware.new
     end
   end
-
 end
