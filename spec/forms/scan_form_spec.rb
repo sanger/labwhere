@@ -51,6 +51,19 @@ RSpec.describe ScanForm, type: :model do
       expect(scan.location.labwares.all? { |labware| labware.location == location }).to be_truthy
     end
 
+    it "strips whitespace from input labware barcodes" do
+      labwares = new_labware + existing_labware
+      labware_barcodes = labwares.collect(&:barcode)
+      labware_barcodes_whitespace = labware_barcodes.map { |barcode| " #{barcode} " }.join("\n")
+      create_scan.submit(params.merge(scan:
+        { "location_barcode" => location.barcode, "labware_barcodes" => labware_barcodes_whitespace, user_code: user.swipe_card_id }))
+      scan = Scan.first
+      expect(scan.location).to eq(location)
+      expect(scan.location.labwares.count).to eq(8)
+      expect(scan.location.labwares.all? { |labware| labware.location == location }).to be_truthy
+      expect(scan.location.labwares.all? { |labware| labware_barcodes.include?(labware.barcode) }).to be_truthy
+    end
+
     it "should produce an audit record for each labware" do
       create_scan.submit(params.merge(scan:
        { "location_barcode" => location.barcode, "labware_barcodes" => new_labware.join_barcodes, user_code: user.swipe_card_id }))
