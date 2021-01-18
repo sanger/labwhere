@@ -137,6 +137,22 @@ RSpec.describe ManifestUploader, type: :model do
         expect(manifest_uploader.errors.full_messages).to eq(["It looks like there is some missing or invalid data. Please review and remove anything that shouldn't be there."])
       end
     end
+
+    context 'when there are labwares with the same barcode as an existing location' do
+      before(:each) do
+        manifest.concat("#{unordered_location.barcode},#{unordered_location.barcode}\n")
+        manifest_uploader.file = manifest
+      end
+
+      it 'will not be valid' do
+        expect(manifest_uploader).to_not be_valid
+      end
+
+      it 'will only show one error' do
+        manifest_uploader.run
+        expect(manifest_uploader.errors.full_messages).to eq(["Labware barcodes cannot be the same as an existing location barcode. Please review and remove incorrect labware barcodes"])
+      end
+    end
   end
 
   context 'when the data is valid' do
