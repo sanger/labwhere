@@ -11,4 +11,20 @@ class NullLabware
   def empty?
     true
   end
+
+  def location
+    NullLocation.new
+  end
+
+  def defined?; true end
+
+  def ==(o)
+    o.class == self.class && o.state == self.state
+  end
+
+  protected
+
+  def state
+    [barcode, location]
+  end
 end
