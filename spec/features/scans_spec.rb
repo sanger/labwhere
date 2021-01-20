@@ -7,7 +7,7 @@ require 'rails_helper'
 RSpec.describe "Scans", type: :feature do
   include_context "shared helpers"
 
-  let!(:user) { create(:technician) }
+  let!(:user) { create(:scientist) }
 
   it "allows a user to scan in some labware with a location" do
     location = create(:location_with_parent)

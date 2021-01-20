@@ -45,7 +45,7 @@ RSpec.describe "Teams", type: :feature do
     expect(page).to have_content("error prohibited this record from being saved")
   end
 
-  it "Does not allow an unauthorised user to modify teams" do
+  it "Does not allow an unauthorised user (technician) to modify teams" do
     technician = create(:technician)
     team = build(:team)
     visit teams_path
@@ -57,6 +57,22 @@ RSpec.describe "Teams", type: :feature do
       click_button "Create Team"
     }.to_not change(Team, :count)
     expect(page).to have_content("error prohibited this record from being saved")
+    expect(page).to have_content("User is not authorised")
+  end
+
+  it "Does not allow an unauthorised user to modify teams" do
+    scientist = create(:scientist)
+    team = build(:team)
+    visit teams_path
+    click_link "Add new team"
+    expect {
+      fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
+      fill_in "Name", with: team.name
+      fill_in "Number", with: team.number
+      click_button "Create Team"
+    }.to_not change(Team, :count)
+    expect(page).to have_content("error prohibited this record from being saved")
+    expect(page).to have_content("User is not authorised")
   end
 
   describe "audits", js: true do

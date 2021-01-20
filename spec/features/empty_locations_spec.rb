@@ -6,6 +6,7 @@ require 'rails_helper'
 
 RSpec.describe "EmptyLocations", type: :feature do
   let!(:user)      { create(:technician) }
+  let!(:scientist) { create(:scientist) }
   let!(:location)  { create(:unordered_location_with_labwares) }
 
   it "allows a user to empty locations" do
@@ -24,5 +25,14 @@ RSpec.describe "EmptyLocations", type: :feature do
     click_button "Go!"
     expect(page).to have_content("error prohibited this record from being saved")
     expect(page).to have_content('Location with barcode lw-no-location-here')
+  end
+
+  it "Prevents a user from emptying an location if they are not authorised" do
+    visit new_empty_location_path
+    fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
+    fill_in "Barcode of location to be emptied", with: "#{location.barcode}\n"
+    click_button "Go!"
+    expect(page).to have_content("error prohibited this record from being saved")
+    expect(page).to have_content('User is not authorised')
   end
 end

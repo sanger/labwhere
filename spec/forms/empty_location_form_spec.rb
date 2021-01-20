@@ -5,6 +5,7 @@ require "rails_helper"
 RSpec.describe EmptyLocationForm, type: :model do
   let(:new_form)                    { EmptyLocationForm.new }
   let!(:user)                       { create(:technician) }
+  let!(:scientist)                  { create(:scientist) }
   let(:params)                      { ActionController::Parameters.new(controller: "empty_locations", action: "create") }
   let(:location)                    { create(:unordered_location_with_labwares) }
   let!(:num_labwares)               { location.labwares.count }
@@ -14,6 +15,12 @@ RSpec.describe EmptyLocationForm, type: :model do
     new_form.submit(params.merge(empty_location_form:
       { "location_barcode" => location.barcode }))
     expect(new_form.errors.full_messages).to include("User #{I18n.t('errors.messages.existence')}")
+  end
+
+  it "will not be valid with an authorised user (scientist)" do
+    new_form.submit(params.merge(empty_location_form:
+      { "location_barcode" => 'lw-no-location-here', "user_code" => scientist.swipe_card_id }))
+    expect(new_form.errors.full_messages).to include("Location with barcode lw-no-location-here does not exist")
   end
 
   it "will not be valid without a location" do

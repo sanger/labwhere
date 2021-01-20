@@ -5,6 +5,7 @@ require "rails_helper"
 RSpec.describe MoveLocationForm, type: :model do
   let(:create_move_location)  { MoveLocationForm.new }
   let!(:user)                 { create(:technician) }
+  let!(:scientist)            { create(:scientist) }
   let(:params)                { ActionController::Parameters.new(controller: "move_locations", action: "create") }
   let(:child_locations)       { create_list(:location_with_parent, 5) }
   let!(:parent_location)      { create(:location_with_parent) }
@@ -13,6 +14,12 @@ RSpec.describe MoveLocationForm, type: :model do
     create_move_location.submit(params.merge(move_location_form:
       { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => child_locations.join_barcodes }))
     expect(create_move_location.errors.full_messages).to include("User #{I18n.t('errors.messages.existence')}")
+  end
+
+  it "will not be valid with an unauthorised user (scientist)" do
+    create_move_location.submit(params.merge(move_location_form:
+      { "parent_location_barcode" => 'lw-no-location-here', "child_location_barcodes" => child_locations.join_barcodes, "user_code" => scientist.swipe_card_id }))
+    expect(create_move_location.errors.full_messages).to include("Parent location #{I18n.t('errors.messages.existence')}")
   end
 
   it "will not be valid without a location" do

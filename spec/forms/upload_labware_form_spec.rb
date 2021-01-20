@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe UploadLabwareForm, type: :model do
   let(:create_upload_labware) { UploadLabwareForm.new }
-  let!(:user)                 { create(:technician) }
+  let!(:user)                 { create(:scientist) }
   let(:params)                { ActionController::Parameters.new(controller: 'upload_labware', action: 'create') }
   let(:file_param)            { ActionDispatch::Http::UploadedFile.new(tempfile: tempfile) }
   let(:tempfile)              { Tempfile.new(['foo', '.csv']) }

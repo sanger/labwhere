@@ -65,6 +65,11 @@ RSpec.describe User, type: :model do
       user = create(:user, type: "Guest")
       expect(Guest.all.count).to eq(1)
     end
+
+    it "should be able to create a Scientist" do
+      user = create(:user, type: "Scientist")
+      expect(Scientist.all.count).to eq(1)
+    end
   end
 
   describe 'Permissions' do
@@ -73,7 +78,25 @@ RSpec.describe User, type: :model do
     end
 
     it "Technician user should be allowed to create a scan" do
+      # TODO: add allowed actions
       expect(build(:technician)).to allow_permission(:scans, :create)
+      expect(build(:technician)).to allow_permission(:move_locations, :create)
+      expect(build(:technician)).to allow_permission(:empty_locations, :create)
+      expect(build(:technician)).to allow_permission(:upload_labware, :create)
+    end
+
+    it "Scientist user should be allowed to create a scan" do
+      # allow :scans, [:create]
+      # allow "api/scans", [:create]
+      # allow "api/coordinates", [:update]
+      # allow "api/locations/coordinates", [:update]
+      # allow :upload_labware, [:create]
+      expect(build(:scientist)).to allow_permission(:scans, :create)
+      expect(build(:scientist)).to allow_permission(:upload_labware, :create)
+    end
+
+    it "Guest user should be allowed to do nothing" do
+      # TODO
     end
   end
 

@@ -11,6 +11,8 @@ FactoryBot.define do
 
     factory :technician, class: "Technician"
 
+    factory :scientist, class: "Scientist"
+
     factory :user_with_audits do
       transient do
         user { create(:user) }

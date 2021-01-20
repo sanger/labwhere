@@ -9,8 +9,8 @@ RSpec.describe ManifestUploader, type: :model do
   let(:ordered_location)   { create(:ordered_location_with_parent) }
   let(:unordered_location) { create(:unordered_location_with_parent) }
   let(:labware_prefix)     { 'RNA' }
-  let!(:technician)         { create(:technician) }
-  let(:manifest_uploader)  { ManifestUploader.new(user: technician) }
+  let!(:scientist)         { create(:scientist) }
+  let(:manifest_uploader)  { ManifestUploader.new(user: scientist) }
 
   context 'with unordered locations that all exist' do
     let!(:manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }

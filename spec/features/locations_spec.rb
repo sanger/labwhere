@@ -7,6 +7,7 @@ require 'rails_helper'
 RSpec.describe "Locations", type: :feature do
   let!(:user) { create(:administrator) }
   let!(:technician) { create(:technician) }
+  let!(:scientist) { create(:scientist) }
 
   it "Allows a user to add a new location type" do
     location_type = build(:location_type)
@@ -41,6 +42,7 @@ RSpec.describe "Locations", type: :feature do
     expect(page).to have_content("Location type successfully updated")
   end
 
+  # TODO: refactor below
   describe "deleting", js: true do
     it "Allows a user to delete an existing location type" do
       location_type = create(:location_type)
@@ -61,6 +63,19 @@ RSpec.describe "Locations", type: :feature do
         click_button "Delete"
       }.to_not change(LocationType, :count)
       expect(page).to have_content("error prohibited this record from being saved")
+      expect(page).to have_content("User is not authorised")
+    end
+
+    it "Prevents a user from deleting an existing location type if they are not authorised" do
+      location_type = create(:location_type)
+      visit location_types_path
+      expect {
+        find(:data_id, location_type.id).click_link "Delete"
+        fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
+        click_button "Delete"
+      }.to_not change(LocationType, :count)
+      expect(page).to have_content("error prohibited this record from being saved")
+      expect(page).to have_content("User is not authorised")
     end
   end
 
@@ -291,6 +306,7 @@ RSpec.describe "Locations", type: :feature do
     expect(page).to have_content("Location successfully updated")
   end
 
+  # TODO: refactor below
   it "Allows a user to activate a location" do
     location = create(:location)
     location.deactivate
@@ -314,6 +330,21 @@ RSpec.describe "Locations", type: :feature do
       click_button "Create Location"
     }.to_not change(Location, :count)
     expect(page).to have_content("error prohibited this record from being saved")
+    expect(page).to have_content("User is not authorised")
+  end
+
+  it "Does not allow an unauthorised user to modify locations" do
+    location = build(:location)
+    visit locations_path
+    click_link "Add new location"
+    expect {
+      fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
+      fill_in "Name", with: location.name
+      check "Container"
+      click_button "Create Location"
+    }.to_not change(Location, :count)
+    expect(page).to have_content("error prohibited this record from being saved")
+    expect(page).to have_content("User is not authorised")
   end
 
   describe "audits", js: true do

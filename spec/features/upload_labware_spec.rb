@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'UploadLabware', type: :feature do
-  let!(:user) { create(:technician) }
+  let!(:user) { create(:scientist) }
 
   before do
     location_type = LocationType.create!(name: 'test_location_type')
