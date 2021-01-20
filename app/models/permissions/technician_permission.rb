@@ -6,17 +6,17 @@
 # Allowed to:
 # check printers???
 module Permissions
-  class TechnicianPermission < BasePermission
+  class TechnicianPermission < ScientistPermission
     def initialize(user)
       super
-      allow :scans, [:create]
-      # TODO: check if api is needed and by what
-      allow "api/scans", [:create]
-      allow "api/coordinates", [:update]
-      allow "api/locations/coordinates", [:update]
+      # The commented actions below are inherited from ScientistPermission
+      # allow :scans, [:create]
+      # allow :upload_labware, [:create]
+      # allow "api/scans", [:create]
+      # allow "api/coordinates", [:update]
+      # allow "api/locations/coordinates", [:update]
       allow :move_locations, [:create]
       allow :empty_locations, [:create]
-      allow :upload_labware, [:create]
     end
   end
 end
