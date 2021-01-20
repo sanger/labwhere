@@ -5,7 +5,7 @@
 require 'rails_helper'
 
 RSpec.describe "EmptyLocations", type: :feature do
-  let!(:user)      { create(:scientist) }
+  let!(:user)      { create(:technician) }
   let!(:location)  { create(:unordered_location_with_labwares) }
 
   it "allows a user to empty locations" do

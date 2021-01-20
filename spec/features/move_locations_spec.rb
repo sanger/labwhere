@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe "MoveLocations", type: :feature do
   include_context "shared helpers"
 
-  let!(:user)             { create(:scientist) }
+  let!(:user)             { create(:technician) }
   let!(:parent_location)  { create(:location_with_parent) }
   let!(:child_locations)  { create_list(:location_with_parent, 5) }
 

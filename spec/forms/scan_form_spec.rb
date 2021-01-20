@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe ScanForm, type: :model do
   let(:create_scan) { ScanForm.new }
-  let!(:user) { create(:scientist) }
+  let!(:user) { create(:technician) }
   let(:params)              { ActionController::Parameters.new(controller: "scans", action: "create") }
   let(:new_labware)         { build_list(:labware, 4) }
   let!(:existing_location)  { create(:location_with_parent) }

@@ -9,7 +9,7 @@ FactoryBot.define do
 
     factory :administrator, class: "Administrator"
 
-    factory :scientist, class: "Scientist"
+    factory :technician, class: "Technician"
 
     factory :user_with_audits do
       transient do

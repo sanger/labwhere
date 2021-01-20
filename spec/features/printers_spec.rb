@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe "Printers", type: :feature do
   let!(:administrator) { create(:administrator) }
-  let!(:scientist) { create(:scientist) }
+  let!(:technician) { create(:technician) }
 
   it "Should allow a user to create a new printer" do
     printer = build(:printer)
@@ -47,7 +47,7 @@ RSpec.describe "Printers", type: :feature do
     visit printers_path
     click_link "Add new printer"
     expect {
-      fill_in "User swipe card id/barcode", with: scientist.barcode
+      fill_in "User swipe card id/barcode", with: technician.barcode
       fill_in "Name", with: printer.name
       click_button "Create Printer"
     }.to_not change(Printer, :count)
@@ -62,7 +62,7 @@ RSpec.describe "Printers", type: :feature do
       within("#printer_#{printer.id}") do
         click_link "Edit"
       end
-      fill_in "User swipe card id/barcode", with: scientist.barcode
+      fill_in "User swipe card id/barcode", with: technician.barcode
       fill_in "Name", with: new_printer.name
       click_button "Update Printer"
     }.to_not change(Printer, :count)

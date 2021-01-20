@@ -56,9 +56,9 @@ RSpec.describe User, type: :model do
       expect(Administrator.all.count).to eq(1)
     end
 
-    it "should be able to create a Scientist" do
-      user = create(:user, type: "Scientist")
-      expect(Scientist.all.count).to eq(1)
+    it "should be able to create a Technician" do
+      user = create(:user, type: "Technician")
+      expect(Technician.all.count).to eq(1)
     end
 
     it "should be able to create a Guest" do
@@ -72,8 +72,8 @@ RSpec.describe User, type: :model do
       expect(build(:administrator)).to allow_permission(:any, :thing)
     end
 
-    it "Scientist user should be allowed to create a scan" do
-      expect(build(:scientist)).to allow_permission(:scans, :create)
+    it "Technician user should be allowed to create a scan" do
+      expect(build(:technician)).to allow_permission(:scans, :create)
     end
   end
 

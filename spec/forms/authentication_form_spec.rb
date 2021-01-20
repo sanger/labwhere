@@ -43,7 +43,7 @@ RSpec.describe AuthenticationForm, type: :model do
   end
 
   it "should not create the record if the user is not authorised" do
-    user = create(:scientist)
+    user = create(:technician)
     model_c_form = ModelCForm.new
     expect {
       model_c_form.submit(params.merge(model_c: { name: "name", user_code: user.swipe_card_id }))

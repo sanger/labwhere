@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe MoveLocationForm, type: :model do
   let(:create_move_location)  { MoveLocationForm.new }
-  let!(:user)                 { create(:scientist) }
+  let!(:user)                 { create(:technician) }
   let(:params)                { ActionController::Parameters.new(controller: "move_locations", action: "create") }
   let(:child_locations)       { create_list(:location_with_parent, 5) }
   let!(:parent_location)      { create(:location_with_parent) }

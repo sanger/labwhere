@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 ##
-# Permissions for a Standard User
-# Allowed to create a scan in the user interface and the api.
+# Permissions for a Technician
+# TODO: check below
+# Allowed to:
+#
 module Permissions
-  class ScientistPermission < BasePermission
+  class TechnicianPermission < BasePermission
     def initialize(user)
       super
       allow :scans, [:create]

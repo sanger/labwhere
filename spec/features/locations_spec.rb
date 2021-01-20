@@ -6,7 +6,7 @@ require 'rails_helper'
 
 RSpec.describe "Locations", type: :feature do
   let!(:user) { create(:administrator) }
-  let!(:scientist) { create(:scientist) }
+  let!(:technician) { create(:technician) }
 
   it "Allows a user to add a new location type" do
     location_type = build(:location_type)
@@ -57,7 +57,7 @@ RSpec.describe "Locations", type: :feature do
       visit location_types_path
       expect {
         find(:data_id, location_type.id).click_link "Delete"
-        fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
+        fill_in "User swipe card id/barcode", with: technician.swipe_card_id
         click_button "Delete"
       }.to_not change(LocationType, :count)
       expect(page).to have_content("error prohibited this record from being saved")
@@ -308,7 +308,7 @@ RSpec.describe "Locations", type: :feature do
     visit locations_path
     click_link "Add new location"
     expect {
-      fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
+      fill_in "User swipe card id/barcode", with: technician.swipe_card_id
       fill_in "Name", with: location.name
       check "Container"
       click_button "Create Location"

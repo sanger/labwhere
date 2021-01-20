@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe EmptyLocationForm, type: :model do
   let(:new_form)                    { EmptyLocationForm.new }
-  let!(:user)                       { create(:scientist) }
+  let!(:user)                       { create(:technician) }
   let(:params)                      { ActionController::Parameters.new(controller: "empty_locations", action: "create") }
   let(:location)                    { create(:unordered_location_with_labwares) }
   let!(:num_labwares)               { location.labwares.count }

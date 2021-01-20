@@ -46,12 +46,12 @@ RSpec.describe "Teams", type: :feature do
   end
 
   it "Does not allow an unauthorised user to modify teams" do
-    scientist = create(:scientist)
+    technician = create(:technician)
     team = build(:team)
     visit teams_path
     click_link "Add new team"
     expect {
-      fill_in "User swipe card id/barcode", with: scientist.swipe_card_id
+      fill_in "User swipe card id/barcode", with: technician.swipe_card_id
       fill_in "Name", with: team.name
       fill_in "Number", with: team.number
       click_button "Create Team"

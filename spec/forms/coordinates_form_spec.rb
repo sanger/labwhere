@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CoordinatesForm, type: :model do
-  let(:user) { create(:scientist) }
+  let(:user) { create(:technician) }
   let(:coordinates) { create_list(:coordinate, 3) }
   let(:labwares) { create_list(:labware, 3) }
   let(:coordinates_form) { CoordinatesForm.new }
