@@ -5,7 +5,7 @@
 require 'rails_helper'
 
 RSpec.describe "Locations", type: :feature do
-  let!(:user) { create(:administrator) }
+  let!(:administrator) { create(:administrator) }
   let!(:technician) { create(:technician) }
   let!(:scientist) { create(:scientist) }
 
@@ -14,7 +14,7 @@ RSpec.describe "Locations", type: :feature do
     visit location_types_path
     click_link "Add new location type"
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Name", with: location_type.name
       click_button "Create Location type"
     }.to change(LocationType, :count).by(1)
@@ -24,7 +24,7 @@ RSpec.describe "Locations", type: :feature do
   it "Reports an error if user adds a location type with invalid attributes" do
     visit new_location_type_path
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       click_button "Create Location type"
     }.to_not change(LocationType, :count)
     expect(page.text).to match("error prohibited this record from being saved")
@@ -35,7 +35,7 @@ RSpec.describe "Locations", type: :feature do
     visit location_types_path
     expect {
       find(:data_id, location_type.id).click_link "Edit"
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Name", with: "Updated location type"
       click_button "Update Location type"
     }.to change { location_type.reload.name }.to("Updated location type")
@@ -48,7 +48,7 @@ RSpec.describe "Locations", type: :feature do
       location_type = create(:location_type)
       visit location_types_path
       find(:data_id, location_type.id).click_link "Delete"
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       click_button "Delete"
       expect(page).to have_content("Location type successfully deleted")
       expect(LocationType.find_by(id: location_type.id)).to be_nil
@@ -95,7 +95,7 @@ RSpec.describe "Locations", type: :feature do
     visit locations_path
     click_link "Add new location"
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Name", with: location.name
       check "Container"
       click_button "Create Location"
@@ -109,7 +109,7 @@ RSpec.describe "Locations", type: :feature do
     visit locations_path
     click_link "Add new location"
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Name", with: location.name
       fill_in "Start", with: "1"
       fill_in "End", with: "3"
@@ -125,7 +125,7 @@ RSpec.describe "Locations", type: :feature do
     visit locations_path
     click_link "Add new location"
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Name", with: location.name
       fill_in "Start", with: "99"
       fill_in "End", with: "101"
@@ -144,7 +144,7 @@ RSpec.describe "Locations", type: :feature do
       visit locations_path
       click_link "Add new location"
       expect {
-        fill_in "User swipe card id/barcode", with: user.swipe_card_id
+        fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
         fill_in "Name", with: location.name
         check "Has Co-ordinates"
         select parent_location.id, from: "Parent"
@@ -165,7 +165,7 @@ RSpec.describe "Locations", type: :feature do
       click_link "Add new location"
 
       expect {
-        fill_in "User swipe card id/barcode", with: user.swipe_card_id
+        fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
         fill_in "Name", with: location.name
         check "Reserve?"
         select parent_location.id, from: "Parent"
@@ -173,7 +173,7 @@ RSpec.describe "Locations", type: :feature do
         click_button "Create Location"
       }.to change(Location, :count).by(1)
 
-      expect(Location.last.team).to eq(user.team)
+      expect(Location.last.team).to eq(administrator.team)
       expect(page).to have_content("Location(s) successfully created")
     end
   end
@@ -183,7 +183,7 @@ RSpec.describe "Locations", type: :feature do
     visit locations_path
     click_link "Add new location"
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Name", with: location.name
       select parent_location.id, from: "Parent"
       select location_types.first.name, from: "Location type"
@@ -196,7 +196,7 @@ RSpec.describe "Locations", type: :feature do
   it "Reports an error if user adds a location with invalid attributes" do
     visit new_location_path
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       select location_types.first.name, from: "Location type"
       click_button "Create Location"
     }.to_not change(Location, :count)
@@ -207,7 +207,7 @@ RSpec.describe "Locations", type: :feature do
     create(:location, name: "Test Location 2")
     visit new_location_path
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Name", with: "Test Location"
       fill_in "Start", with: "1"
       fill_in "End", with: "3"
@@ -221,7 +221,7 @@ RSpec.describe "Locations", type: :feature do
     location = create(:location)
     visit edit_location_path(location)
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Name", with: "An updated location name"
       click_button "Update Location"
     }.to change { location.reload.name }.to("An updated location name")
@@ -234,21 +234,21 @@ RSpec.describe "Locations", type: :feature do
     visit edit_location_path(location)
 
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       check "Reserve?"
       click_button "Update Location"
-    }.to change { location.reload.team }.to(user.team)
+    }.to change { location.reload.team }.to(administrator.team)
 
     expect(page).to have_content("Location successfully updated")
   end
 
   it "Allows a user to release a Location" do
-    location = create(:location, team: user.team)
+    location = create(:location, team: administrator.team)
 
     visit edit_location_path(location)
 
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       uncheck "Reserve?"
       click_button "Update Location"
     }.to change { location.reload.team }.to(nil)
@@ -261,7 +261,7 @@ RSpec.describe "Locations", type: :feature do
 
     visit edit_location_path(reserved_location)
 
-    fill_in "User swipe card id/barcode", with: user.swipe_card_id
+    fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
     uncheck "Reserve?"
     click_button "Update Location"
 
@@ -272,7 +272,7 @@ RSpec.describe "Locations", type: :feature do
     location_parent = create(:unordered_location)
     location_child = create(:location)
     visit edit_location_path(location_child)
-    fill_in "User swipe card id/barcode", with: user.swipe_card_id
+    fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
     select location_parent.barcode, from: "Parent"
     click_button "Update Location"
     expect(location_child.reload.parent).to eq(location_parent)
@@ -299,7 +299,7 @@ RSpec.describe "Locations", type: :feature do
     location = create(:location)
     visit edit_location_path(location)
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       uncheck "Active"
       click_button "Update Location"
     }.to change { location.reload.active? }.from(true).to(false)
@@ -312,7 +312,7 @@ RSpec.describe "Locations", type: :feature do
     location.deactivate
     visit edit_location_path(location)
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       check "Active"
       click_button "Update Location"
     }.to change { location.reload.active? }.from(false).to(true)
@@ -388,7 +388,7 @@ RSpec.describe "Locations", type: :feature do
       location = create(:unordered_location)
       visit locations_path
       find(:data_id, location.id).click_link 'Delete'
-      fill_in 'User swipe card id/barcode', with: user.swipe_card_id
+      fill_in 'User swipe card id/barcode', with: administrator.swipe_card_id
       click_button 'Delete'
 
       expect(page).to have_content("Location '#{location.name}' successfully deleted")
@@ -411,7 +411,7 @@ RSpec.describe "Locations", type: :feature do
       location3 = create(:unordered_location)
       visit locations_path
       find(:data_id, location1.id).click_link 'Delete'
-      fill_in 'User swipe card id/barcode', with: user.swipe_card_id
+      fill_in 'User swipe card id/barcode', with: administrator.swipe_card_id
       click_button 'Delete'
 
       expect(page).to have_content("Location '#{location1.name}' successfully deleted")
@@ -419,7 +419,7 @@ RSpec.describe "Locations", type: :feature do
       expect(page).to_not have_css("article#location_#{location1.id}")
 
       find(:data_id, location2.id).click_link 'Delete'
-      fill_in 'User swipe card id/barcode', with: user.swipe_card_id
+      fill_in 'User swipe card id/barcode', with: administrator.swipe_card_id
       click_button 'Delete'
 
       expect(page).to have_content("Location '#{location2.name}' successfully deleted")

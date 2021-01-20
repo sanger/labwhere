@@ -3,14 +3,14 @@
 require "rails_helper"
 
 RSpec.describe "Teams", type: :feature do
-  let!(:user) { create(:administrator) }
+  let!(:administrator) { create(:administrator) }
 
   it "Allows a user to create a new team" do
     team = build(:team)
     visit teams_path
     click_link "Add new team"
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Name", with: team.name
       fill_in "Number", with: team.number
       click_button "Create Team"
@@ -24,7 +24,7 @@ RSpec.describe "Teams", type: :feature do
     visit teams_path
     find(:data_id, team.id).click_link "Edit"
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Name", with: new_team.name
       click_button "Update Team"
     }.to change { team.reload.name }.to(new_team.name)
@@ -37,7 +37,7 @@ RSpec.describe "Teams", type: :feature do
     visit teams_path
     click_link "Add new team"
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: administrator.swipe_card_id
       fill_in "Name", with: existing_team.name
       fill_in "Number", with: team.number
       click_button "Create Team"

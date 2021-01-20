@@ -4,12 +4,12 @@ require 'rails_helper'
 
 RSpec.describe CoordinateForm, type: :model do
   let(:coordinate) { create(:coordinate) }
-  let(:user) { create(:administrator) }
+  let(:administrator) { create(:administrator) }
   let(:labware) { create(:labware) }
 
   let(:coordinate_form) { CoordinateForm.new(coordinate) }
   let(:controller_args) { { controller: "locations/coordinates", action: "update" } }
-  let(:user_args) { { user_code: user.login } }
+  let(:user_args) { { user_code: administrator.login } }
   let(:labware_args) { { labware_barcode: labware.barcode } }
 
   let(:param_args) { controller_args.merge(user_args).merge(labware_args) }

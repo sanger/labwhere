@@ -43,12 +43,12 @@ RSpec.describe Api::CoordinatesController, type: :request do
       }
     end
     let(:location) { create(:ordered_location_with_parent) }
-    let(:user) { create(:administrator) }
+    let(:administrator) { create(:administrator) }
     let(:params) do
       {
         coordinate: {
           labware_barcode: labware_barcode,
-          user_code: user.login
+          user_code: administrator.login
         }
       }
     end
@@ -61,7 +61,7 @@ RSpec.describe Api::CoordinatesController, type: :request do
     context "when no barcode is provided" do
       let(:params) {
         { coordinate: {
-          user_code: user.login
+          user_code: administrator.login
         } }
       }
 
@@ -103,7 +103,7 @@ RSpec.describe Api::CoordinatesController, type: :request do
   describe "bulk #update" do
     let(:coordinates) { create_list(:coordinate, 5) }
     let(:coordinate_params) { coordinates.map.with_index { |coordinate, i| { id: coordinate.id, labware_barcode: labwares[i].barcode } } }
-    let(:user) { create(:administrator) }
+    let(:administrator) { create(:administrator) }
     let(:labwares) { create_list(:labware, 5) }
 
     before :each do
@@ -112,7 +112,7 @@ RSpec.describe Api::CoordinatesController, type: :request do
     end
 
     context "when all inputs are valid" do
-      let(:params) { { user_code: user.login, coordinates: coordinate_params } }
+      let(:params) { { user_code: administrator.login, coordinates: coordinate_params } }
 
       it "is successful" do
         expect(response).to be_successful
@@ -125,7 +125,7 @@ RSpec.describe Api::CoordinatesController, type: :request do
 
     context "when any inputs are invalid" do
       let(:bad_param) { { id: 99999999, labware_barcode: "ledzep" } }
-      let(:params) { { user_code: user.login, coordinates: coordinate_params.push(bad_param) } }
+      let(:params) { { user_code: administrator.login, coordinates: coordinate_params.push(bad_param) } }
 
       it "is unsuccessful" do
         expect(response).to_not be_successful

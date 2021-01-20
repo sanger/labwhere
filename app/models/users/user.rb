@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 
   validates_with EitherOrValidator, fields: [:swipe_card_id, :barcode], on: :create
 
-  has_subclasses :administrator, :technician, :guest, :scientist
+  has_subclasses :administrator, :technician, :scientist, :guest
 
   before_update :check_password_fields
 
