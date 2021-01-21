@@ -26,6 +26,10 @@ class UploadLabwareForm
     true
   end
 
+  def form_sym
+    :upload_labware_form
+  end
+
   def assign_params
     @controller = params[:controller]
     @action = params[:action]
