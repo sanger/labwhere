@@ -8,8 +8,8 @@ module Permissions
     def initialize(user)
       super
       allow :scans, [:create]
+      # Check if Scientists should be able to upload labware
       allow :upload_labware, [:create]
-      # Below is used from Sequencescape labware reception
       allow "api/scans", [:create]
       allow "api/coordinates", [:update]
       allow "api/locations/coordinates", [:update]

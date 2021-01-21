@@ -18,19 +18,6 @@ RSpec.describe Api::ScansController, type: :request do
     expect(json["location"]["id"]).to eq(location.id)
   end
 
-  # it "should be able to scan some labware in using attributes via post api/scans" do
-  #   location = create(:ordered_location_with_parent)
-  #   labwares = [{position: location.coordinates.first.position, barcode: new_labware.first.barcode},
-  #               {position: location.coordinates.last.position, barcode: new_labware.last.barcode}]
-
-  #   post api_scans_path, scan: { location_barcode: location.barcode, labwares: labwares, user_code: scientist.swipe_card_id }
-  #   expect(response).to be_successful
-  #   json = ActiveSupport::JSON.decode(response.body)
-  #   expect(json["message"]).to eq(Scan.first.message)
-  #   expect(json["location"]["coordinates"].first["labware"]).to eq(new_labware.first.barcode)
-  #   expect(json["location"]["coordinates"].last["labware"]).to eq(new_labware.last.barcode)
-  # end
-
   it "should return an error if the scan is incorrect" do
     post api_scans_path, params: { scan: { location_barcode: "999999:1", labware_barcodes: new_labware.join_barcodes, user_code: scientist.swipe_card_id } }
     expect(response).to have_http_status(:unprocessable_entity)
