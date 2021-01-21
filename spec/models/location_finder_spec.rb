@@ -5,7 +5,6 @@ require 'csv'
 
 def create_csv(labwares)
   CSV.generate do |csv|
-    # csv << ['Labware']
     labwares.each do |labware|
       csv << [labware.barcode]
     end
@@ -21,21 +20,30 @@ RSpec.describe LocationFinder, type: :model do
     expect(true).to be_truthy
   end
 
+  it 'will only be valid if there is a single column' do
+    dodgy_csv = "bish,bash,bosh\n#{create_csv(labwares)}"
+    location_finder = LocationFinder.new(file: dodgy_csv)
+    expect(location_finder).to_not be_valid
+  end
+
   describe 'when everything is valid' do
     let(:csv) { create_csv(labwares) }
     let(:location_finder) { LocationFinder.new(file: csv) }
 
     it 'should have the correct number of locations' do
+      location_finder.run
       expect(location_finder.results.length).to eq(10)
     end
 
     it 'should have the barcode for each labware' do
+      location_finder.run
       keys = location_finder.results.keys
       expect(keys.first).to eq(labwares.first.barcode)
       expect(keys.last).to eq(labwares.last.barcode)
     end
 
     it 'should have the correct labwares' do
+      location_finder.run
       labware = location_finder.results[labwares.first.barcode]
       expect(labware).to eq(labwares.first)
 
@@ -49,10 +57,12 @@ RSpec.describe LocationFinder, type: :model do
     let(:location_finder) { LocationFinder.new(file: csv) }
 
     it 'should still have a record for the empty location' do
+      location_finder.run
       expect(location_finder.results.length).to eq(11)
     end
 
     it 'should have some data to signify it is an empty location' do
+      location_finder.run
       null_location = NullLocation.new
 
       labware = location_finder.results[labware_with_no_location.barcode]
@@ -68,10 +78,12 @@ RSpec.describe LocationFinder, type: :model do
     let(:null_labware) { NullLabware.new }
 
     it 'should still have a record' do
+      location_finder.run
       expect(location_finder.results[dodgy_labware.barcode]).to be_defined
     end
 
     it 'should show the labware as empty' do
+      location_finder.run
       expect(location_finder.results[dodgy_labware.barcode]).to eq(null_labware)
     end
   end
@@ -82,6 +94,7 @@ RSpec.describe LocationFinder, type: :model do
       csv.concat("\n")
 
       location_finder = LocationFinder.new(file: csv)
+      location_finder.run
 
       expect(location_finder.results.length).to eq(labwares.length)
     end
@@ -89,6 +102,7 @@ RSpec.describe LocationFinder, type: :model do
     it 'when there are duplicate barcodes' do
       csv = create_csv(labwares + [labwares.last])
       location_finder = LocationFinder.new(file: csv)
+      location_finder.run
       expect(location_finder.results.length).to eq(labwares.length)
     end
   end
