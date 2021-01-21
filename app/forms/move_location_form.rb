@@ -85,11 +85,11 @@ class MoveLocationForm
   def create_audits
     # Add an audit record for each child location, and labwares in each child location
     parent_location.children = child_locations
-    location_type = parent_location.location_type.name
+    location_name = parent_location.name
     child_locations.each do |location|
-      location.create_audit(current_user, "moved to #{location_type}")
+      location.create_audit(current_user, "moved to #{location_name}")
       location.labwares.in_batches.each_record do |labware|
-        labware.create_audit(current_user, "moved to #{location_type}")
+        labware.create_audit(current_user, "moved to #{location_name}")
       end
     end
   end

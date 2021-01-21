@@ -61,7 +61,7 @@ RSpec.describe MoveLocationForm, type: :model do
         { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => child_locations.join_barcodes, "user_code" => user.swipe_card_id }))
       child_locations.each do |location|
         location.reload
-        expect(location.audits.first.action).to eq("moved to #{parent_location.location_type.name}")
+        expect(location.audits.first.action).to eq("moved to #{parent_location.name}")
       end
     end
 
@@ -71,7 +71,7 @@ RSpec.describe MoveLocationForm, type: :model do
       locations_with_labwares.each do |location|
         location.reload
         expect(location.labwares.all? { |labware| labware.audits.count == 1 }).to be_truthy
-        expect(location.labwares.first.audits.first.action).to eq("moved to #{parent_location.location_type.name}")
+        expect(location.labwares.first.audits.first.action).to eq("moved to #{parent_location.name}")
       end
     end
   end
@@ -85,7 +85,7 @@ RSpec.describe MoveLocationForm, type: :model do
 
       location.reload
       expect(location.labwares.all? { |labware| labware.audits.count == 1 }).to be_truthy
-      expect(location.audits.first.action).to eq("moved to #{parent_location.location_type.name}")
+      expect(location.audits.first.action).to eq("moved to #{parent_location.name}")
     end
   end
 end
