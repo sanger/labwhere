@@ -51,7 +51,12 @@ class MoveLocationForm
   end
 
   def child_locations=(child_location_barcodes)
-    @child_locations = (child_location_barcodes.split("\n") || []).collect(&:strip).collect { |barcode| Location.find_by(barcode: barcode) || barcode }
+    @child_locations = (child_location_barcodes.split("\n") || [])
+                       .uniq
+                       .collect(&:strip)
+                       .collect do |barcode|
+      Location.find_by(barcode: barcode) || barcode
+    end
   end
 
   private
