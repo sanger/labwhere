@@ -106,4 +106,13 @@ RSpec.describe LocationFinder, type: :model do
       expect(location_finder.results.length).to eq(labwares.length)
     end
   end
+
+  describe 'creating the csv' do
+    it 'should have the correct number of rows'
+
+    it 'should have the original labware barcode'
+
+    it 'should have the returned labware barcode or empty if it does not exist'
+
+  end
 end
