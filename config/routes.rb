@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   resources :upload_labware, only: [:new, :create]
   resources :move_locations, only: [:new, :create]
   resources :empty_locations, only: [:new, :create]
-
+  resources :location_finder, only: [:new, :create]
   resources :searches, only: [:new, :create, :show]
 
   resources :users do
@@ -109,4 +109,7 @@ Rails.application.routes.draw do
   match 'test_exception_notifier', controller: 'application', action: 'test_exception_notifier', via: :get
 
   match '/about', to: 'about#show', via: :get
+
+  
+  
 end
