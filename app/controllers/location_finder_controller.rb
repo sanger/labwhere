@@ -8,7 +8,9 @@ class LocationFinderController < ApplicationController
   def create
     @location_finder = LocationFinderForm.new
     if @location_finder.submit(params)
-      render :create
+      send_data @location_finder.csv,
+                type: 'text/csv; charset=utf-8; header=present',
+                disposition: 'attachment; filename=locations.csv'
     else
       render :new
     end

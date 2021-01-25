@@ -12,7 +12,10 @@ RSpec.describe 'LocationFinder', type: :feature do
     visit new_location_finder_path
     attach_file('Upload a file here', csv_file.path)
     click_button 'Go!'
-    expect(page).to have_content('Locations successfully found')
+    expect(page.response_headers['Content-Type']).to include("text/csv")
+    header = page.response_headers['Content-Disposition']
+    expect(header).to match(/^attachment/)
+    expect(header).to match(/filename=locations.csv$/)
   end
 
   it 'reports an error if there is something wrong' do

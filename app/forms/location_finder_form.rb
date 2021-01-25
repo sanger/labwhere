@@ -5,6 +5,8 @@ class LocationFinderForm
 
   attr_reader :params, :file, :location_finder
 
+  delegate :csv, to: :location_finder
+
   validate :check_required_params, :check_file_format, :check_location_finder
 
   def submit(params)
