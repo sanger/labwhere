@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'UploadLabware', type: :feature do
-  let!(:scientist) { create(:scientist) }
+  let!(:sci_swipe_card_id) { "SwipeCardId:11" }
+  let!(:scientist) { create(:scientist, swipe_card_id: sci_swipe_card_id) }
 
   before do
     location_type = LocationType.create!(name: 'test_location_type')
@@ -16,7 +17,7 @@ RSpec.describe 'UploadLabware', type: :feature do
 
   it 'allows a user to upload a file' do
     visit new_upload_labware_path
-    fill_in 'User swipe card id/barcode', with: scientist.swipe_card_id
+    fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
     attach_file('Upload a file here', Rails.root.join('spec/data/to_upload.csv'))
     click_button 'Go!'
     expect(page).to have_content('Labware successfully uploaded')
@@ -24,7 +25,7 @@ RSpec.describe 'UploadLabware', type: :feature do
 
   it 'reports an error if the file is the wrong format' do
     visit new_upload_labware_path
-    fill_in 'User swipe card id/barcode', with: scientist.swipe_card_id
+    fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
     attach_file('Upload a file here', Rails.root.join('spec/data/to_upload_wrong_format.txt'))
     click_button 'Go!'
     expect(page).to have_content("error prohibited this record from being saved")

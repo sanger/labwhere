@@ -33,8 +33,7 @@ RSpec.describe User, type: :model do
 
   it "should not be valid without a unique swipe card" do
     user = create(:user)
-    hashed_swipe_card_id = Digest::SHA1.hexdigest(user.swipe_card_id)
-    expect(build(:user, swipe_card_id: hashed_swipe_card_id)).to_not be_valid
+    expect(build(:user, swipe_card_id: user.swipe_card_id)).to_not be_valid
   end
 
   it "should not be valid without a unique barcode" do
@@ -118,8 +117,10 @@ RSpec.describe User, type: :model do
 
   it "#find_by_code should be able to find user by swipe card id or barcode or login" do
     users = create_list(:user, 4)
+    swipe_card_id = "SwipeCardId:12"
+    users.push(create(:user, swipe_card_id: swipe_card_id))
     user = build(:user)
-    expect(User.find_by_code(users.first.swipe_card_id)).to eq(users.first)
+    expect(User.find_by_code(swipe_card_id)).to eq(users.last)
     expect(User.find_by_code(users.first.barcode)).to eq(users.first)
     expect(User.find_by_code(users.first.login)).to eq(users.first)
     expect(User.find_by_code(user.swipe_card_id)).to be_guest
