@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe CoordinatesForm, type: :model do
-  let(:user) { create(:scientist) }
+  let(:technician) { create(:technician) }
   let(:coordinates) { create_list(:coordinate, 3) }
   let(:labwares) { create_list(:labware, 3) }
   let(:coordinates_form) { CoordinatesForm.new }
 
   let(:params) { ActionController::Parameters.new(param_args) }
   let(:param_args) { { controller: "api/coordinates", action: "update" }.merge(user_params).merge(coordinates_params) }
-  let(:user_params) { { user_code: user.login } }
+  let(:user_params) { { user_code: technician.login } }
   let(:coordinates_params) do
     { coordinates: coordinates.map.with_index { |c, i| { id: c.id, labware_barcode: labwares[i].barcode } } }
   end

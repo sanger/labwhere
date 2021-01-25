@@ -9,6 +9,8 @@ FactoryBot.define do
 
     factory :administrator, class: "Administrator"
 
+    factory :technician, class: "Technician"
+
     factory :scientist, class: "Scientist"
 
     factory :user_with_audits do

@@ -5,7 +5,7 @@
 require "rails_helper"
 
 RSpec.describe Api::LocationsController, type: :request do
-  let!(:user) { create(:administrator) }
+  let!(:administrator) { create(:administrator) }
 
   it 'has a uuid after creation' do
     expect(create(:location).uuid).to be_present
@@ -104,7 +104,7 @@ RSpec.describe Api::LocationsController, type: :request do
   end
 
   it "should create a new location" do
-    post api_locations_path, params: { location: attributes_for(:location).merge(user_code: user.swipe_card_id) }
+    post api_locations_path, params: { location: attributes_for(:location).merge(user_code: administrator.swipe_card_id) }
     expect(response).to be_successful
     location = Location.first
     json = ActiveSupport::JSON.decode(response.body)
@@ -113,7 +113,7 @@ RSpec.describe Api::LocationsController, type: :request do
   end
 
   it "should return an error if the location has invalid attributes" do
-    post api_locations_path, params: { location: attributes_for(:location).except(:name).merge(user_code: user.swipe_card_id) }
+    post api_locations_path, params: { location: attributes_for(:location).except(:name).merge(user_code: administrator.swipe_card_id) }
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end
@@ -127,7 +127,7 @@ RSpec.describe Api::LocationsController, type: :request do
   it "should update an existing location" do
     location = create(:location_with_parent)
     location_parent = create(:location)
-    patch api_location_path(location.barcode), params: { location: { user_code: user.swipe_card_id, parent_id: location_parent.id } }
+    patch api_location_path(location.barcode), params: { location: { user_code: administrator.swipe_card_id, parent_id: location_parent.id } }
     expect(response).to be_successful
     expect(location.reload.parent).to eq(location_parent)
   end
@@ -135,7 +135,7 @@ RSpec.describe Api::LocationsController, type: :request do
   it "should return an error if the updated location has invalid attributes" do
     location = create(:location_with_parent)
     location_parent = create(:location)
-    patch api_location_path(location.barcode), params: { location: { user_code: user.swipe_card_id, name: nil } }
+    patch api_location_path(location.barcode), params: { location: { user_code: administrator.swipe_card_id, name: nil } }
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)["errors"]).not_to be_empty
   end

@@ -58,14 +58,19 @@ RSpec.describe User, type: :model do
       expect(Administrator.all.count).to eq(1)
     end
 
-    it "should be able to create a Scientist" do
-      user = create(:user, type: "Scientist")
-      expect(Scientist.all.count).to eq(1)
+    it "should be able to create a Technician" do
+      user = create(:user, type: "Technician")
+      expect(Technician.all.count).to eq(1)
     end
 
     it "should be able to create a Guest" do
       user = create(:user, type: "Guest")
       expect(Guest.all.count).to eq(1)
+    end
+
+    it "should be able to create a Scientist" do
+      user = create(:user, type: "Scientist")
+      expect(Scientist.all.count).to eq(1)
     end
   end
 
@@ -74,8 +79,40 @@ RSpec.describe User, type: :model do
       expect(build(:administrator)).to allow_permission(:any, :thing)
     end
 
+    it "Technician user should be allowed to create a scan" do
+      expect(build(:technician)).to allow_permission(:scans, :create)
+      expect(build(:technician)).to allow_permission(:upload_labware, :create)
+      expect(build(:technician)).to allow_permission("api/scans", :create)
+      expect(build(:technician)).to allow_permission("api/coordinates", :update)
+      expect(build(:technician)).to allow_permission("api/locations/coordinates", :update)
+      expect(build(:technician)).to allow_permission(:move_locations, :create)
+      expect(build(:technician)).to allow_permission(:empty_locations, :create)
+      expect(build(:technician)).not_to allow_permission(:teams, :create)
+      expect(build(:technician)).not_to allow_permission(:users, :create)
+    end
+
     it "Scientist user should be allowed to create a scan" do
       expect(build(:scientist)).to allow_permission(:scans, :create)
+      expect(build(:scientist)).to allow_permission(:upload_labware, :create)
+      expect(build(:scientist)).to allow_permission("api/scans", :create)
+      expect(build(:scientist)).to allow_permission("api/coordinates", :update)
+      expect(build(:scientist)).to allow_permission("api/locations/coordinates", :update)
+      expect(build(:scientist)).not_to allow_permission(:move_locations, :create)
+      expect(build(:scientist)).not_to allow_permission(:empty_locations, :create)
+      expect(build(:technician)).not_to allow_permission(:teams, :create)
+      expect(build(:technician)).not_to allow_permission(:users, :create)
+    end
+
+    it "Guest user should be allowed to do nothing" do
+      expect(build(:guest)).not_to allow_permission(:scans, :create)
+      expect(build(:guest)).not_to allow_permission(:upload_labware, :create)
+      expect(build(:guest)).not_to allow_permission("api/scans", :create)
+      expect(build(:guest)).not_to allow_permission("api/coordinates", :update)
+      expect(build(:guest)).not_to allow_permission("api/locations/coordinates", :update)
+      expect(build(:scientist)).not_to allow_permission(:move_locations, :create)
+      expect(build(:scientist)).not_to allow_permission(:empty_locations, :create)
+      expect(build(:technician)).not_to allow_permission(:teams, :create)
+      expect(build(:technician)).not_to allow_permission(:users, :create)
     end
   end
 

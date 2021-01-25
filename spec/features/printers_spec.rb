@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe "Printers", type: :feature do
   let!(:administrator) { create(:administrator) }
+  let!(:technician) { create(:technician) }
   let!(:scientist) { create(:scientist) }
 
   it "Should allow a user to create a new printer" do
@@ -42,7 +43,36 @@ RSpec.describe "Printers", type: :feature do
     expect(page).to have_content("error prohibited this record from being saved")
   end
 
-  it "Prevents a user from adding a printer if they are not authorised" do
+  it "Prevents technicians from adding a printer as they are not authorised" do
+    printer = build(:printer)
+    visit printers_path
+    click_link "Add new printer"
+    expect {
+      fill_in "User swipe card id/barcode", with: technician.barcode
+      fill_in "Name", with: printer.name
+      click_button "Create Printer"
+    }.to_not change(Printer, :count)
+    expect(page).to have_content("error prohibited this record from being saved")
+    expect(page).to have_content("User is not authorised")
+  end
+
+  it "Prevents technicians from editing an existing printer as they are not authorised" do
+    printer = create(:printer)
+    new_printer = build(:printer)
+    visit printers_path
+    expect {
+      within("#printer_#{printer.id}") do
+        click_link "Edit"
+      end
+      fill_in "User swipe card id/barcode", with: technician.barcode
+      fill_in "Name", with: new_printer.name
+      click_button "Update Printer"
+    }.to_not change(Printer, :count)
+    expect(page).to have_content("error prohibited this record from being saved")
+    expect(page).to have_content("User is not authorised")
+  end
+
+  it "Prevents scientists from adding a printer as they are not authorised" do
     printer = build(:printer)
     visit printers_path
     click_link "Add new printer"
@@ -52,9 +82,10 @@ RSpec.describe "Printers", type: :feature do
       click_button "Create Printer"
     }.to_not change(Printer, :count)
     expect(page).to have_content("error prohibited this record from being saved")
+    expect(page).to have_content("User is not authorised")
   end
 
-  it "Prevents a user from editing an existing printer if they are not authorised" do
+  it "Prevents scientists from editing an existing printer as they are not authorised" do
     printer = create(:printer)
     new_printer = build(:printer)
     visit printers_path
@@ -67,6 +98,7 @@ RSpec.describe "Printers", type: :feature do
       click_button "Update Printer"
     }.to_not change(Printer, :count)
     expect(page).to have_content("error prohibited this record from being saved")
+    expect(page).to have_content("User is not authorised")
   end
 
   describe "audits", js: true do

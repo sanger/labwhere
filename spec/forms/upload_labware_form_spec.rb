@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe UploadLabwareForm, type: :model do
   let(:create_upload_labware) { UploadLabwareForm.new }
-  let!(:user)                 { create(:scientist) }
+  let!(:scientist) { create(:scientist) }
   let(:params)                { ActionController::Parameters.new(controller: 'upload_labware', action: 'create') }
   let(:file_param)            { ActionDispatch::Http::UploadedFile.new(tempfile: tempfile) }
   let(:tempfile)              { Tempfile.new(['foo', '.csv']) }
@@ -22,7 +22,7 @@ RSpec.describe UploadLabwareForm, type: :model do
 
   it 'will not be valid without a file selected' do
     create_upload_labware.submit(params.merge(upload_labware_form:
-      { 'user_code' => user.barcode }))
+      { 'user_code' => scientist.barcode }))
     expect(create_upload_labware.errors.full_messages).to include('The required fields must be filled in')
   end
 
@@ -34,13 +34,13 @@ RSpec.describe UploadLabwareForm, type: :model do
 
   it 'will not be valid with the wrong format of file' do
     create_upload_labware.submit(params.merge(upload_labware_form:
-      { 'user_code' => user.barcode, 'file' => 'dummy_file' }))
+      { 'user_code' => scientist.barcode, 'file' => 'dummy_file' }))
     expect(create_upload_labware.errors.full_messages).to include('File must be a csv.')
   end
 
   it 'will be valid with all its params and a valid user' do
     create_upload_labware.submit(params.merge(upload_labware_form:
-      { 'user_code' => user.barcode, 'file' => file_param }))
+      { 'user_code' => scientist.barcode, 'file' => file_param }))
     expect(create_upload_labware.valid?).to eq(true)
   end
 end

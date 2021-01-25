@@ -3,7 +3,7 @@
 ##
 # Base user
 # Used for auditing, authentication and authorisation purposes.
-# Inherited by Guest, Admin and Standard.
+# Inherited by Administrator, Technician, Scientist and Guest.
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
 
   validates_with EitherOrValidator, fields: [:swipe_card_id, :barcode], on: :create
 
-  has_subclasses :administrator, :scientist, :guest
+  has_subclasses :administrator, :technician, :scientist, :guest
 
   before_create :encrypt_swipe_card_id
 
@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   ##
   # A list of the different types of inherited user.
   def self.types
-    %w(Scientist Administrator)
+    %w(Technician Administrator Scientist)
   end
 
   ##
