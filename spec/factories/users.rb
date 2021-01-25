@@ -25,8 +25,5 @@ FactoryBot.define do
         end
       end
     end
-
-    # after(:create) { |user| user.swipe_card_id = "SwipeCardId:#{user.login}" }
-    # needed due to swipe card id being hashed on save, sets swipe_card_id to non hashed version
   end
 end

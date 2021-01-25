@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'digest/sha1'
 
 RSpec.describe User, type: :model do
   it "should not be valid without a login" do

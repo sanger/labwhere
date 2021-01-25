@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-require 'digest/sha1'
 
 RSpec.describe AuthenticationForm, type: :model do
   # rubocop:disable Lint/ConstantDefinitionInBlock
