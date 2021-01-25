@@ -21,8 +21,8 @@ Make sure you have `ruby-2.5.6` installed. e.g. `rvm install ruby-2.5.6`.
 The local database uses `mysql`.
 
     ```bash
-    bundle exec rails db:environment:set
     bundle exec rails db:create
+    bundle exec rails db:environment:set
     bundle exec rails db:schema:load
     ```
 
@@ -57,7 +57,7 @@ This will remove all of the existing data without resetting the database.
 
 ## Creating some dummy labwares
 
-`bundle exec rails labwares:create_barcodes[num]`
+`bundle exec rails labwares:generate_barcodes[num]`
 
 num = number of labwares that will be created.
 

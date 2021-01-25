@@ -51,7 +51,12 @@ class MoveLocationForm
   end
 
   def child_locations=(child_location_barcodes)
-    @child_locations = (child_location_barcodes.split("\n") || []).collect(&:strip).collect { |barcode| Location.find_by(barcode: barcode) || barcode }
+    @child_locations = (child_location_barcodes.split("\n") || [])
+                       .uniq
+                       .collect(&:strip)
+                       .collect do |barcode|
+      Location.find_by(barcode: barcode) || barcode
+    end
   end
 
   private
@@ -61,7 +66,10 @@ class MoveLocationForm
   end
 
   def check_parent_location
-    return if parent_location.present?
+    if parent_location.present?
+      errors.add(:parent_location, "is not a container") unless parent_location.container
+      return
+    end
 
     errors.add(:parent_location, I18n.t("errors.messages.existence"))
   end

@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe "MoveLocations", type: :feature do
+  include_context "shared helpers"
+
   let!(:user)             { create(:scientist) }
   let!(:parent_location)  { create(:location_with_parent) }
   let!(:child_locations)  { create_list(:location_with_parent, 5) }
@@ -28,5 +30,18 @@ RSpec.describe "MoveLocations", type: :feature do
     end.to_not change(parent_location.children, :count)
     expect(page).to have_content("error prohibited this record from being saved")
     expect(page).to have_content('Location with barcode lw-no-location-here')
+  end
+
+  it 'displays duplicate barcodes in an error color', js: true do
+    visit new_move_location_path
+    expect(page.all('.cm-error').count).to eq(0)
+    fill_in_labware_barcodes("1234\n")
+    expect(page.all('.cm-error').count).to eq(0)
+    fill_in_labware_barcodes("4567\n")
+    expect(page.all('.cm-error').count).to eq(0)
+    fill_in_labware_barcodes("1234\n")
+    expect(page.all('.cm-error').count).to eq(1)
+    fill_in_labware_barcodes("4567\n")
+    expect(page.all('.cm-error').count).to eq(2)
   end
 end

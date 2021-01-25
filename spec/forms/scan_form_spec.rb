@@ -51,6 +51,19 @@ RSpec.describe ScanForm, type: :model do
       expect(scan.location.labwares.all? { |labware| labware.location == location }).to be_truthy
     end
 
+    it "strips whitespace from input labware barcodes" do
+      labwares = new_labware + existing_labware
+      labware_barcodes = labwares.collect(&:barcode)
+      labware_barcodes_whitespace = labware_barcodes.map { |barcode| " #{barcode} " }.join("\n")
+      create_scan.submit(params.merge(scan:
+        { "location_barcode" => location.barcode, "labware_barcodes" => labware_barcodes_whitespace, user_code: user.swipe_card_id }))
+      scan = Scan.first
+      expect(scan.location).to eq(location)
+      expect(scan.location.labwares.count).to eq(8)
+      expect(scan.location.labwares.all? { |labware| labware.location == location }).to be_truthy
+      expect(scan.location.labwares.all? { |labware| labware_barcodes.include?(labware.barcode) }).to be_truthy
+    end
+
     it "should produce an audit record for each labware" do
       create_scan.submit(params.merge(scan:
        { "location_barcode" => location.barcode, "labware_barcodes" => new_labware.join_barcodes, user_code: user.swipe_card_id }))
@@ -153,6 +166,20 @@ RSpec.describe ScanForm, type: :model do
         { "location_barcode" => location.barcode, "labware_barcodes" => "#{another_location.barcode}\n#{new_labware.join_barcodes}", user_code: user.swipe_card_id }))
       expect(create_scan.errors.full_messages).to include(I18n.t("errors.messages.not_labware", { url: new_move_location_path }))
       expect(Scan.all).to be_empty
+    end
+  end
+
+  context "trying to scan duplicate labware barcodes in" do
+    let!(:location) { create(:unordered_location_with_parent) }
+
+    it 'will remove duplication labware barcodes from the audit trail' do
+      create_scan.submit(params.merge(scan:
+      { "location_barcode" => location.barcode, "labware_barcodes" => "#{new_labware.join_barcodes}\n#{new_labware.join_barcodes}", user_code: user.swipe_card_id }))
+      location.reload
+
+      expect(location.labwares.length).to eq(4)
+      expect(location.labwares.all? { |labware| labware.audits.count == 1 }).to be_truthy
+      expect(location.labwares.first.audits.first.action).to eq("create")
     end
   end
 end

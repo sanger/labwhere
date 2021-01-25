@@ -21,6 +21,22 @@ RSpec.describe MoveLocationForm, type: :model do
     expect(create_move_location.errors.full_messages).to include("Parent location #{I18n.t('errors.messages.existence')}")
   end
 
+  it "will not be valid if the location is not a container" do
+    building_location = create(:location, container: false)
+
+    create_move_location.submit(params.merge(move_location_form:
+      { "parent_location_barcode" => building_location.barcode, "child_location_barcodes" => child_locations.join_barcodes, "user_code" => user.swipe_card_id }))
+    expect(create_move_location.errors.full_messages).to include("Parent location is not a container")
+  end
+
+  it "will be valid if the location is a container" do
+    building_location = create(:location, container: true)
+
+    create_move_location.submit(params.merge(move_location_form:
+      { "parent_location_barcode" => building_location.barcode, "child_location_barcodes" => child_locations.join_barcodes, "user_code" => user.swipe_card_id }))
+    expect(create_move_location.errors.full_messages).to be_empty
+  end
+
   it "will not be valid unless all of the child locations exist" do
     create_move_location.submit(params.merge(move_location_form:
       { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => "#{child_locations.join_barcodes}\nlw-no-location-here", "user_code" => user.swipe_card_id }))
@@ -57,6 +73,19 @@ RSpec.describe MoveLocationForm, type: :model do
         expect(location.labwares.all? { |labware| labware.audits.count == 1 }).to be_truthy
         expect(location.labwares.first.audits.first.action).to eq("moved to #{parent_location.location_type.name}")
       end
+    end
+  end
+
+  describe 'duplicate child location barcodes' do
+    it 'will remove duplication child location barcodes' do
+      location = create(:location_with_parent)
+      duplicate_barcodes = [location, location].join_barcodes
+      create_move_location.submit(params.merge(move_location_form:
+      { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => duplicate_barcodes, "user_code" => user.swipe_card_id }))
+
+      location.reload
+      expect(location.labwares.all? { |labware| labware.audits.count == 1 }).to be_truthy
+      expect(location.audits.first.action).to eq("moved to #{parent_location.location_type.name}")
     end
   end
 end

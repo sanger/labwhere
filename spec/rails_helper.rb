@@ -54,6 +54,8 @@ RSpec.configure do |config|
 
   config.extend WithModel
 
+  config.include_context "shared helpers", include_shared: true
+
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
   end

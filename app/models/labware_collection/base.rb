@@ -37,7 +37,7 @@ module LabwareCollection
     end
 
     def labwares=(labwares) # rubocop:todo Lint/DuplicateMethods
-      @labwares = labwares.split("\n").uniq
+      @labwares = labwares.uniq
     end
 
     private
