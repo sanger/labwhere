@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+require 'digest/sha1'
 
 RSpec.describe AuthenticationForm, type: :model do
   # rubocop:disable Lint/ConstantDefinitionInBlock
@@ -53,10 +54,12 @@ RSpec.describe AuthenticationForm, type: :model do
 
   it "should not create the record if the user is inactive" do
     user = create(:administrator)
+    non_hashed_swipe_card_id = user.swipe_card_id
+    user.swipe_card_id = Digest::SHA1.hexdigest(user.swipe_card_id)
     user.deactivate
     model_c_form = ModelCForm.new
     expect {
-      model_c_form.submit(params.merge(model_c: { name: "name", user_code: user.swipe_card_id }))
+      model_c_form.submit(params.merge(model_c: { name: "name", user_code: non_hashed_swipe_card_id }))
     }.to_not change(ModelC, :count)
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t("errors.messages.active")}")
   end

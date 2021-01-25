@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'digest/sha1'
 
 RSpec.describe User, type: :model do
   it "should not be valid without a login" do
@@ -32,7 +33,8 @@ RSpec.describe User, type: :model do
 
   it "should not be valid without a unique swipe card" do
     user = create(:user)
-    expect(build(:user, swipe_card_id: user.swipe_card_id)).to_not be_valid
+    hashed_swipe_card_id = Digest::SHA1.hexdigest(user.swipe_card_id)
+    expect(build(:user, swipe_card_id: hashed_swipe_card_id)).to_not be_valid
   end
 
   it "should not be valid without a unique barcode" do
