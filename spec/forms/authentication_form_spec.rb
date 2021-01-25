@@ -42,7 +42,17 @@ RSpec.describe AuthenticationForm, type: :model do
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t("errors.messages.existence")}")
   end
 
-  it "should not create the record if the user is not authorised" do
+  # Refactor below
+  it "should not create the record if the user (technician) is not authorised" do
+    user = create(:technician)
+    model_c_form = ModelCForm.new
+    expect {
+      model_c_form.submit(params.merge(model_c: { name: "name", user_code: user.swipe_card_id }))
+    }.to_not change(ModelC, :count)
+    expect(model_c_form.errors.full_messages).to include("User #{I18n.t("errors.messages.authorised")}")
+  end
+
+  it "should not create the record if the user (scientist) is not authorised" do
     user = create(:scientist)
     model_c_form = ModelCForm.new
     expect {
