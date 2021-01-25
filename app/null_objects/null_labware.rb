@@ -20,6 +20,10 @@ class NullLabware
     true
   end
 
+  def exists
+    "No"
+  end
+
   def ==(other)
     other.class == self.class && other.state == state
   end

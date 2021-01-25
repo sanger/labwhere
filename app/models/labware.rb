@@ -57,6 +57,10 @@ class Labware < ActiveRecord::Base
     false
   end
 
+  def exists
+    "Yes"
+  end
+
   def flush_coordinate
     assign_attributes(coordinate: nil)
     self

@@ -1,5 +1,6 @@
+# frozen_string_literal: true
+
 module Helpers
- 
   # create a tempfile, add some data and set the content type.
   def create_temp_file(name, type, content_type, data = "foo")
     temp_file = Tempfile.new([name, type])

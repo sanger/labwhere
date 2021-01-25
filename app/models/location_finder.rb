@@ -36,7 +36,40 @@ class LocationFinder
     find_locations
   end
 
+  def csv
+    @csv ||= create_csv
+  end
+
   private
+
+  def create_csv
+    CSV.generate do |csv|
+      csv << csv_headers
+      results.each do |k, v|
+        csv << create_csv_row(k, v)
+      end
+    end
+  end
+
+  def csv_headers
+    %w[labware_barcode labware_exists location_barcode location_name location_parentage]
+  end
+
+  # produces a row for each record
+  # 0 - labware barcode - original barcode passed from the file
+  # 1 - labware_exists - Yes/No - depending on whether the labware does exist
+  # 2 - location_barcode - barcode of the location where labware is stored - Empty if doesn't exist
+  # 3 - location_name - name of location where labware is stored - Empty of doesn't exist
+  # 4 - Location_parentage - where is the location? - Empty if does not exist
+  def create_csv_row(labware_barcode, labware)
+    [
+      labware_barcode,
+      labware.exists,
+      labware.location.barcode,
+      labware.location.name,
+      labware.location.parentage
+    ]
+  end
 
   def find_locations
     barcodes.each do |barcode|

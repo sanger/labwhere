@@ -3,11 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'LocationFinder', type: :feature do
-
-  let!(:labwares)     { create_list(:labware_with_location, 3)}
-  let(:file_data)     { labwares.collect(&:barcode).join('\n')}
-  let(:csv_file)      { create_temp_file('labwares', '.csv', 'text/csv', file_data)}
-  let(:text_file)     { create_temp_file('labwares', '.txt', 'text/plain', file_data)}
+  let!(:labwares)     { create_list(:labware_with_location, 3) }
+  let(:file_data)     { labwares.collect(&:barcode).join('\n') }
+  let(:csv_file)      { create_temp_file('labwares', '.csv', 'text/csv', file_data) }
+  let(:text_file)     { create_temp_file('labwares', '.txt', 'text/plain', file_data) }
 
   it 'allows a user to find some locations' do
     visit new_location_finder_path

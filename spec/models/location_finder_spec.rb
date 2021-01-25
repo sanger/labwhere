@@ -108,11 +108,104 @@ RSpec.describe LocationFinder, type: :model do
   end
 
   describe 'creating the csv' do
-    it 'should have the correct number of rows'
+    context 'when all of the labwares exist' do
+      let!(:csv)             { create_csv(labwares) }
+      let!(:location_finder) do
+        location_finder = LocationFinder.new(file: csv)
+        location_finder.run
+        location_finder
+      end
+      let!(:csv_output)             { CSV.parse(location_finder.csv) }
+      let(:labware_first)           { labwares.first }
+      let(:labware_last)            { labwares.last }
+      let(:labware_record_first)    { csv_output.select { |row| row[0] == labware_first.barcode }.flatten }
+      let(:labware_record_last)     { csv_output.select { |row| row[0] == labware_last.barcode }.flatten }
 
-    it 'should have the original labware barcode'
+      it 'will have the correct headers' do
+        expect(csv_output[0]).to eq(%w[labware_barcode labware_exists location_barcode location_name location_parentage])
+      end
 
-    it 'should have the returned labware barcode or empty if it does not exist'
+      it 'will have the correct number of rows' do
+        expect(csv_output.length).to eq(11)
+      end
 
+      it 'will have the original labware barcode for each row' do
+        expect(labware_record_first[0]).to eq(labware_first.barcode)
+        expect(labware_record_last[0]).to eq(labware_last.barcode)
+      end
+
+      it 'will indicate whether the labware exists' do
+        expect(labware_record_first[1]).to eq(labware_first.exists)
+        expect(labware_record_last[1]).to eq(labware_last.exists)
+      end
+
+      it 'will have the location barcode for each row' do
+        expect(labware_record_first[2]).to eq(labware_first.location.barcode)
+        expect(labware_record_last[2]).to eq(labware_last.location.barcode)
+      end
+
+      it 'will have the location name for each row' do
+        expect(labware_record_first[3]).to eq(labware_first.location.name)
+        expect(labware_record_last[3]).to eq(labware_last.location.name)
+      end
+
+      it 'will have the location parentage for each row' do
+        expect(labware_record_first[4]).to eq(labware_first.location.parentage)
+        expect(labware_record_last[4]).to eq(labware_last.location.parentage)
+      end
+    end
+
+    context 'when any of the labwares do not exist' do
+      let(:unknown_labware)  { build(:labware) }
+      let(:csv) { create_csv(labwares + [unknown_labware]) }
+      let!(:location_finder) do
+        location_finder = LocationFinder.new(file: csv)
+        location_finder.run
+        location_finder
+      end
+      let(:csv_output)        { CSV.parse(location_finder.csv) }
+      let(:labware_record)    { csv_output.select { |row| row[0] == unknown_labware.barcode }.flatten }
+      let(:null_labware)      { NullLabware.new }
+
+      it 'will have the correct number of rows' do
+        expect(csv_output.length).to eq(12)
+      end
+
+      it 'will have the original labware barcode for each row' do
+        expect(labware_record[0]).to eq(unknown_labware.barcode)
+      end
+
+      it 'will state that the labware is not found for a row where the labware does not exist' do
+        expect(labware_record[1]).to eq(null_labware.exists)
+      end
+
+      it 'will state that the location does not exist where the labware does not exist' do
+        expect(labware_record[2]).to eq(null_labware.location.barcode)
+      end
+    end
+
+    context 'when any of the locations do not exist' do
+      let(:csv) { create_csv(labwares + [labware_with_no_location]) }
+      let!(:location_finder) do
+        location_finder = LocationFinder.new(file: csv)
+        location_finder.run
+        location_finder
+      end
+      let(:csv_output)        { CSV.parse(location_finder.csv) }
+      let(:null_location)     { NullLocation.new }
+      let(:labware_record)    { csv_output.select { |row| row[0] == labware_with_no_location.barcode }.flatten }
+
+      it 'will have the correct number of rows' do
+        expect(csv_output.length).to eq(12)
+      end
+
+      it 'will have the original labware barcode for each row' do
+        expect(labware_record[0]).to eq(labware_with_no_location.barcode)
+      end
+
+      it 'will state that the location does not exist for a row where the labware has not location' do
+        expect(labware_record[2]).to eq(null_location.barcode)
+      end
+    end
   end
 end
