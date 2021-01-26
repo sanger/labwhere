@@ -5,7 +5,7 @@
 require "rails_helper"
 
 RSpec.describe Api::LocationTypesController, type: :request do
-  let!(:admin_swipe_card_id) { "SwipeCardId:10" }
+  let!(:admin_swipe_card_id) { generate(:swipe_card_id) }
   let!(:administrator) { create(:administrator, swipe_card_id: admin_swipe_card_id) }
 
   it "should retrieve information about location types get /api/location_types" do

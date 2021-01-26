@@ -5,7 +5,7 @@ require "rails_helper"
 
 RSpec.describe "Users", type: :feature do
   let!(:teams) { create_list(:team, 2) }
-  let!(:admin_swipe_card_id) { "SwipeCardId:9" }
+  let!(:admin_swipe_card_id) { generate(:swipe_card_id) }
   let!(:administrator) { create(:administrator, swipe_card_id: admin_swipe_card_id) }
 
   it "Allows a user to create a new user" do

@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe "Teams", type: :feature do
-  let!(:admin_swipe_card_id) { "SwipeCardId:9" }
+  let!(:admin_swipe_card_id) { generate(:swipe_card_id) }
   let!(:administrator) { create(:administrator, swipe_card_id: admin_swipe_card_id) }
 
   it "Allows a user to create a new team" do
@@ -47,7 +47,7 @@ RSpec.describe "Teams", type: :feature do
   end
 
   it "Does not allow an unauthorised user (technician) to modify teams" do
-    tech_swipe_card_id = "SwipeCardId:10"
+    tech_swipe_card_id = generate(:swipe_card_id)
     create(:technician, swipe_card_id: tech_swipe_card_id)
     team = build(:team)
     visit teams_path
@@ -63,7 +63,7 @@ RSpec.describe "Teams", type: :feature do
   end
 
   it "Does not allow an unauthorised user to modify teams" do
-    sci_swipe_card_id = "SwipeCardId:11"
+    sci_swipe_card_id = generate(:swipe_card_id)
     create(:scientist, swipe_card_id: sci_swipe_card_id)
     team = build(:team)
     visit teams_path

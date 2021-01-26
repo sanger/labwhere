@@ -5,9 +5,9 @@
 require 'rails_helper'
 
 RSpec.describe "EmptyLocations", type: :feature do
-  let!(:tech_swipe_card_id) { "SwipeCardId:10" }
+  let!(:tech_swipe_card_id) { generate(:swipe_card_id) }
   let!(:technician) { create(:technician, swipe_card_id: tech_swipe_card_id) }
-  let!(:sci_swipe_card_id) { "SwipeCardId: 11" }
+  let!(:sci_swipe_card_id) { generate(:swipe_card_id) }
   let!(:scientist) { create(:scientist, swipe_card_id: sci_swipe_card_id) }
   let!(:location)  { create(:unordered_location_with_labwares) }
 

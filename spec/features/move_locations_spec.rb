@@ -5,9 +5,9 @@ require 'rails_helper'
 RSpec.describe "MoveLocations", type: :feature do
   include_context "shared helpers"
 
-  let!(:tech_swipe_card_id) { "SwipeCardId:10" }
+  let!(:tech_swipe_card_id) { generate(:swipe_card_id) }
   let!(:technician) { create(:technician, swipe_card_id: tech_swipe_card_id) }
-  let!(:sci_swipe_card_id) { "SwipeCardId: 11" }
+  let!(:sci_swipe_card_id) { generate(:swipe_card_id) }
   let!(:scientist) { create(:scientist, swipe_card_id: sci_swipe_card_id) }
   let!(:parent_location)  { create(:location_with_parent) }
   let!(:child_locations)  { create_list(:location_with_parent, 5) }

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'UploadLabware', type: :feature do
-  let!(:sci_swipe_card_id) { "SwipeCardId:11" }
+  let!(:sci_swipe_card_id) { generate(:swipe_card_id) }
   let!(:scientist) { create(:scientist, swipe_card_id: sci_swipe_card_id) }
 
   before do

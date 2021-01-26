@@ -116,7 +116,7 @@ RSpec.describe User, type: :model do
 
   it "#find_by_code should be able to find user by swipe card id or barcode or login" do
     users = create_list(:user, 4)
-    swipe_card_id = "SwipeCardId:12"
+    swipe_card_id = generate(:swipe_card_id)
     users.push(create(:user, swipe_card_id: swipe_card_id))
     user = build(:user)
     expect(User.find_by_code(swipe_card_id)).to eq(users.last)

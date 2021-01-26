@@ -6,7 +6,7 @@ require "rails_helper"
 
 RSpec.describe Api::ScansController, type: :request do
   let(:new_labware) { build_list(:labware, 4) }
-  let!(:sci_swipe_card_id) { "SwipeCardId:10" }
+  let!(:sci_swipe_card_id) { generate(:swipe_card_id) }
   let!(:scientist) { create(:scientist, swipe_card_id: sci_swipe_card_id) }
   let!(:existing_labware) { create(:labware, location: create(:location_with_parent)) }
 

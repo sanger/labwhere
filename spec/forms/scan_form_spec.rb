@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe ScanForm, type: :model do
   let(:create_scan) { ScanForm.new }
-  let!(:sci_swipe_card_id)  { "SwipeCardId:11" }
+  let!(:sci_swipe_card_id)  { generate(:swipe_card_id) }
   let!(:scientist)          { create(:scientist, swipe_card_id: sci_swipe_card_id) }
   let(:params)              { ActionController::Parameters.new(controller: "scans", action: "create") }
   let(:new_labware)         { build_list(:labware, 4) }
