@@ -6,6 +6,7 @@ RSpec.describe 'UploadLabware', type: :feature do
   let!(:scientist) { create(:scientist) }
 
   before do
+    # TODO: should be using factories and before each
     location_type = LocationType.create!(name: 'test_location_type')
     parent_location = UnorderedLocation.create!(name: 'parent location', location_type: location_type)
     box1 = UnorderedLocation.create!(name: 'box 1', location_type: location_type, parent: parent_location)

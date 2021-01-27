@@ -24,4 +24,18 @@ class NullLocation
   def unspecified?; true end
 
   def path; [] end
+
+  def parentage; nil end
+
+  def defined?; true end
+
+  def ==(other)
+    other.class == self.class && other.state == state
+  end
+
+  protected
+
+  def state
+    [name, barcode, parent, path, parentage]
+  end
 end

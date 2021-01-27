@@ -25,6 +25,10 @@ RSpec.describe Labware, type: :model do
     expect(build(:labware, location: UnknownLocation.get)).to be_valid
   end
 
+  it "exists" do
+    expect(create(:labware).exists).to eq("Yes")
+  end
+
   it "is destroyed it will be soft deleted with all associations removed" do
     labware = create(:labware, location: create(:location_with_parent))
     labware.destroy
