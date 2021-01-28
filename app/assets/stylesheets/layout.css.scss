@@ -86,7 +86,7 @@ nav{
       }
       ul{
         position: absolute;
-        left: 590px;
+        left: 750px;
         @include rounded-corners(5px);
         @include drop-shadow(2px, gray);
         opacity: 0.9;
