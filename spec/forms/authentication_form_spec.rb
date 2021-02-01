@@ -27,10 +27,11 @@ RSpec.describe AuthenticationForm, type: :model do
   let(:params) { ActionController::Parameters.new(controller: "controller", action: "action") }
 
   it "should create the record if the user is valid" do
-    user = create(:administrator)
+    admin_swipe_card_id = generate(:swipe_card_id)
+    create(:administrator, swipe_card_id: admin_swipe_card_id)
     model_c_form = ModelCForm.new
     expect {
-      model_c_form.submit(params.merge(model_c: { name: "name", user_code: user.swipe_card_id }))
+      model_c_form.submit(params.merge(model_c: { name: "name", user_code: admin_swipe_card_id }))
     }.to change(ModelC, :count).by(1)
   end
 
@@ -42,21 +43,34 @@ RSpec.describe AuthenticationForm, type: :model do
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t("errors.messages.existence")}")
   end
 
-  it "should not create the record if the user is not authorised" do
-    user = create(:scientist)
+  # Refactor below
+  it "should not create the record if the user (technician) is not authorised" do
+    tech_swipe_card_id = generate(:swipe_card_id)
+    create(:technician, swipe_card_id: tech_swipe_card_id)
     model_c_form = ModelCForm.new
     expect {
-      model_c_form.submit(params.merge(model_c: { name: "name", user_code: user.swipe_card_id }))
+      model_c_form.submit(params.merge(model_c: { name: "name", user_code: tech_swipe_card_id }))
+    }.to_not change(ModelC, :count)
+    expect(model_c_form.errors.full_messages).to include("User #{I18n.t("errors.messages.authorised")}")
+  end
+
+  it "should not create the record if the user (scientist) is not authorised" do
+    sci_swipe_card_id = generate(:swipe_card_id)
+    create(:scientist, swipe_card_id: sci_swipe_card_id)
+    model_c_form = ModelCForm.new
+    expect {
+      model_c_form.submit(params.merge(model_c: { name: "name", user_code: sci_swipe_card_id }))
     }.to_not change(ModelC, :count)
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t("errors.messages.authorised")}")
   end
 
   it "should not create the record if the user is inactive" do
-    user = create(:administrator)
+    admin_swipe_card_id = generate(:swipe_card_id)
+    user = create(:administrator, swipe_card_id: admin_swipe_card_id)
     user.deactivate
     model_c_form = ModelCForm.new
     expect {
-      model_c_form.submit(params.merge(model_c: { name: "name", user_code: user.swipe_card_id }))
+      model_c_form.submit(params.merge(model_c: { name: "name", user_code: admin_swipe_card_id }))
     }.to_not change(ModelC, :count)
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t("errors.messages.active")}")
   end

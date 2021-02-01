@@ -1,0 +1,23 @@
+<%= form_for @location_finder, url: location_finder_index_path do |f| %>
+  <fieldset>
+    <legend>Find Locations for Labware</legend>
+    <div class="form-description-box">
+      Upload a csv file with the following columns:
+      <ol>
+        <li>1. Barcodes of the labwares you wish to find</li>
+      </ol>
+    </div>
+    <br/>
+    <div>
+      <ul>
+        <li>
+          <div><%= f.label :file, 'Upload a file here*' %></div>
+          <div><%= f.file_field :file %></div>
+        </li>
+        <li>
+          <%= f.submit "Go!" %>
+        </li>
+      </ul>
+    </div>
+  </fieldset>
+<% end %>

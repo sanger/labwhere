@@ -7,14 +7,15 @@ require 'rails_helper'
 RSpec.describe "Scans", type: :feature do
   include_context "shared helpers"
 
-  let!(:user) { create(:scientist) }
+  let!(:sci_swipe_card_id) { generate(:swipe_card_id) }
+  let!(:scientist) { create(:scientist, swipe_card_id: sci_swipe_card_id) }
 
   it "allows a user to scan in some labware with a location" do
     location = create(:location_with_parent)
     labwares = build_list(:labware, 10)
     visit new_scan_path
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: sci_swipe_card_id
       fill_in "Location barcode", with: location.barcode
       fill_in "Labware barcodes", with: labwares.join_barcodes
       click_button "Go!"
@@ -26,7 +27,7 @@ RSpec.describe "Scans", type: :feature do
     location = create(:location_with_parent)
     labwares = build_list(:labware, 34)
     visit new_scan_path
-    fill_in "User swipe card id/barcode", with: user.swipe_card_id
+    fill_in "User swipe card id/barcode", with: sci_swipe_card_id
     fill_in "Location barcode", with: location.barcode
     expect(page.all('.CodeMirror-linenumber').count).to eq(1)
     fill_in_labware_barcodes(labwares.join_barcodes)
@@ -36,7 +37,7 @@ RSpec.describe "Scans", type: :feature do
   it 'displays duplicate barcodes in an error color', js: true do
     location = create(:location_with_parent)
     visit new_scan_path
-    fill_in "User swipe card id/barcode", with: user.swipe_card_id
+    fill_in "User swipe card id/barcode", with: sci_swipe_card_id
     fill_in "Location barcode", with: location.barcode
     expect(page.all('.cm-error').count).to eq(0)
     fill_in_labware_barcodes("1234\n")
@@ -54,7 +55,7 @@ RSpec.describe "Scans", type: :feature do
     labwares = build_list(:labware, 10)
     visit new_scan_path
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: sci_swipe_card_id
       fill_in "Location barcode", with: location.barcode
       fill_in "Labware barcodes", with: labwares.join_barcodes
       fill_in "Start position", with: 5
@@ -67,7 +68,7 @@ RSpec.describe "Scans", type: :feature do
     labwares = create_list(:labware, 10, location: create(:location_with_parent))
     visit new_scan_path
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: sci_swipe_card_id
       fill_in "Labware barcodes", with: labwares.join_barcodes
       click_button "Go!"
     }.to change(Scan, :count).by(1)
@@ -79,7 +80,7 @@ RSpec.describe "Scans", type: :feature do
     labwares = build_list(:labware, 10)
     visit new_scan_path
     expect {
-      fill_in "User swipe card id/barcode", with: user.swipe_card_id
+      fill_in "User swipe card id/barcode", with: sci_swipe_card_id
       fill_in "Location barcode", with: location.barcode
       fill_in "Labware barcodes", with: labwares.join_barcodes
       click_button "Go!"
@@ -108,7 +109,7 @@ RSpec.describe "Scans", type: :feature do
       visit new_scan_path
 
       expect {
-        fill_in "User swipe card id/barcode", with: user.swipe_card_id
+        fill_in "User swipe card id/barcode", with: sci_swipe_card_id
         fill_in "Location barcode", with: location.barcode
         fill_in "Labware barcodes", with: labwares.join_barcodes
         click_button "Go!"
@@ -122,7 +123,7 @@ RSpec.describe "Scans", type: :feature do
       visit new_scan_path
 
       expect {
-        fill_in "User swipe card id/barcode", with: user.swipe_card_id
+        fill_in "User swipe card id/barcode", with: sci_swipe_card_id
         fill_in "Labware barcodes", with: labwares.join_barcodes
         click_button "Go!"
       }.to change(Scan, :count).by(0)
@@ -137,7 +138,7 @@ RSpec.describe "Scans", type: :feature do
       visit new_scan_path
 
       expect {
-        fill_in "User swipe card id/barcode", with: user.swipe_card_id
+        fill_in "User swipe card id/barcode", with: sci_swipe_card_id
         fill_in "Labware barcodes", with: labwares.join_barcodes
         click_button "Go!"
       }.to change(Scan, :count).by(0)

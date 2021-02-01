@@ -25,13 +25,14 @@ RSpec.describe Auditor, type: :model do
   end
   # rubocop:enable Lint/ConstantDefinitionInBlock
 
-  let!(:user) { create(:administrator) }
+  let!(:admin_swipe_card_id) { generate(:swipe_card_id) }
+  let!(:administrator) { create(:administrator, swipe_card_id: admin_swipe_card_id) }
 
   it "should add an audit record" do
-    params = ActionController::Parameters.new(controller: 'my_controller', action: 'create', model_e: { user_code: user.swipe_card_id, name: "aname" })
+    params = ActionController::Parameters.new(controller: 'my_controller', action: 'create', model_e: { user_code: admin_swipe_card_id, name: "aname" })
     model_e_form = ModelEForm.new
     model_e_form.submit(params)
     expect(model_e_form.model_e.audits.count).to eq(1)
-    expect(model_e_form.model_e.audits.first.user).to eq(user)
+    expect(model_e_form.model_e.audits.first.user).to eq(administrator)
   end
 end

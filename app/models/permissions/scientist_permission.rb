@@ -1,19 +1,18 @@
 # frozen_string_literal: true
 
 ##
-# Permissions for a Standard User
-# Allowed to create a scan in the user interface and the api.
+# Permissions for a Scientist
+#
 module Permissions
   class ScientistPermission < BasePermission
     def initialize(user)
       super
       allow :scans, [:create]
+      # Check if Scientists should be able to upload labware
+      allow :upload_labware, [:create]
       allow "api/scans", [:create]
       allow "api/coordinates", [:update]
       allow "api/locations/coordinates", [:update]
-      allow :move_locations, [:create]
-      allow :empty_locations, [:create]
-      allow :upload_labware, [:create]
     end
   end
 end

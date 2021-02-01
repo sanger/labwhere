@@ -3,7 +3,9 @@
 ##
 # Base user
 # Used for auditing, authentication and authorisation purposes.
-# Inherited by Guest, Admin and Standard.
+# Inherited by Administrator, Technician, Scientist and Guest.
+require 'digest/sha1'
+
 class User < ActiveRecord::Base
   include HasActive
   include Auditable
@@ -19,14 +21,16 @@ class User < ActiveRecord::Base
 
   validates_with EitherOrValidator, fields: [:swipe_card_id, :barcode], on: :create
 
-  has_subclasses :administrator, :scientist, :guest
+  has_subclasses :administrator, :technician, :scientist, :guest
+
+  before_create :encrypt_swipe_card_id
 
   before_update :check_password_fields
 
   ##
   # A list of the different types of inherited user.
   def self.types
-    %w(Scientist Administrator)
+    %w(Technician Administrator Scientist)
   end
 
   ##
@@ -41,7 +45,9 @@ class User < ActiveRecord::Base
   def self.find_by_code(code)
     return Guest.new if code.blank?
 
-    where("swipe_card_id = :code OR barcode = :code OR login = :code", { code: code }).take || Guest.new
+    encrypted_code = Digest::SHA1.hexdigest(code)
+
+    where("swipe_card_id = :encrypted_code OR barcode = :code OR login = :code", { code: code, encrypted_code: encrypted_code }).take || Guest.new
   end
 
   ##
@@ -51,6 +57,12 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def encrypt_swipe_card_id
+    return if swipe_card_id.blank?
+
+    self.swipe_card_id = Digest::SHA1.hexdigest(swipe_card_id)
+  end
 
   def check_password_fields
     # rubocop:todo Lint/AmbiguousBlockAssociation

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Scientist user
-class Scientist < User
+# Technician user
+class Technician < User
   include Permissions
 end

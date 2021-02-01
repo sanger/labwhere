@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe Permissions::ScientistPermission, type: :model do
-  let(:permissions) { Permissions.permission_for(build(:scientist)) }
+RSpec.describe Permissions::TechnicianPermission, type: :model do
+  let(:permissions) { Permissions.permission_for(build(:technician)) }
 
   it "should allow access to create a scan" do
     expect(permissions).to allow_permission(:scans, :create)

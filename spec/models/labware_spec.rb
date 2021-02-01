@@ -25,6 +25,10 @@ RSpec.describe Labware, type: :model do
     expect(build(:labware, location: UnknownLocation.get)).to be_valid
   end
 
+  it "exists" do
+    expect(create(:labware).exists).to eq("Yes")
+  end
+
   it "is destroyed it will be soft deleted with all associations removed" do
     labware = create(:labware, location: create(:location_with_parent))
     labware.destroy
@@ -121,17 +125,17 @@ RSpec.describe Labware, type: :model do
   end
 
   describe 'audit records' do
-    let(:user) { create(:administrator) }
+    let(:administrator) { create(:administrator) }
 
     it 'when a labware has already been created but is scanned into the same location' do
       labware = create(:labware_with_location)
-      labware.create_audit(user)
+      labware.create_audit(administrator)
       expect(labware.audits.count).to eq(1)
       expect(labware.audits.first.action).to eq(Audit::CREATE_ACTION)
 
       location = labware.location
       labware.update(location: location)
-      labware.create_audit(user)
+      labware.create_audit(administrator)
 
       expect(labware.audits.count).to eq(2)
       expect(labware.audits.last.action).to eq(Audit::UPDATE_ACTION)
