@@ -35,6 +35,8 @@ jobs:
         bundler-cache: true # Runs bundle install and caches gems. See the ruby_test.yml
                             # example if you need more control over bundler.
     - name: Set up environment
+      env:
+        DBPORT: ${{ job.services.mysql.ports[3306] }}
       run: |
         cp config/database.yml.example config/database.yml
         cp config/secrets.yml.example config/secrets.yml
