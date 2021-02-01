@@ -45,6 +45,8 @@ jobs:
         bundle exec rails about
 
     - name: Run tests
+      env:
+        DBPORT: ${{ job.services.mysql.ports[3306] }}
       run: bundle exec rake
 
   lint:
