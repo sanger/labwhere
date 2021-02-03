@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
+require 'net/http'
 ##
 # Print barcode for a particular location
 # The object will create a request from a printer_id and location_ids.
 class LabelPrinter
   include ActiveModel::Model
-  attr_accessor :printer, :locations, :label_template_id, :copies
+  attr_accessor :printer, :locations, :label_template_name, :copies
   attr_reader :labels
 
-  validates_presence_of :printer, :locations, :label_template_id
+  validates_presence_of :printer, :locations, :label_template_name
   validates_numericality_of :copies, greater_than: 0
   ##
   # For a given printer and location create a json request.
@@ -48,9 +49,27 @@ class LabelPrinter
     return unless valid?
 
     begin
-      PMB::PrintJob.execute(printer_name: printer.name, label_template_id: label_template_id, labels: labels.to_h)
-      @response_ok = true
-    rescue JsonApiClient::Errors::ServerError, JsonApiClient::Errors::UnexpectedStatus => e
+      body = {
+        "print_job": {
+          "printer_name": printer.name,
+          "label_template_name": label_template_name,
+          "labels": labels.body,
+          "copies": copies
+        }
+      }
+
+      response = Net::HTTP.post URI(PMB::Base.site + "/print_jobs"),
+                     body.to_json,
+                     'Content-Type' => 'application/json'
+
+      if response.code == "200"
+        @response_ok = true
+        return
+      else
+        throw JSON.parse(response.body)
+      end
+
+    rescue => e
       @response_ok = false
     end
   end
