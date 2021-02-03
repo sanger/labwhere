@@ -36,7 +36,7 @@ class UserForm
   end
 
   def update_user
-    @user = User.find(@params[:id])
+    @user = self.model
     @params[:user][:swipe_card_id] = Digest::SHA1.hexdigest(@params[:user][:swipe_card_id]) if @params[:user][:swipe_card_id].present?
     user.update(@params[:user].permit(:swipe_card_id, :barcode, :status, :team_id, :type, :login))
     return false unless valid?
