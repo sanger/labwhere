@@ -21,7 +21,7 @@ RSpec.describe UserForm, type: :model do
   end
 
   it "if user is authorised and swipe card is not left blank it should be updated" do
-    expect { # rubocop:todo Lint/AmbiguousBlockAssociation
+    expect {
       subject.submit(params.merge(user: { swipe_card_id: '12345', user_code: admin_swipe_card_id }, commit: "Update User", id: technician.id))
     }.to change { technician.reload.swipe_card_id }.to(Digest::SHA1.hexdigest('12345'))
   end
