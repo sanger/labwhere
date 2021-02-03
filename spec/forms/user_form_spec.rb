@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+require 'digest/sha1'
 
 RSpec.describe UserForm, type: :model do
   let!(:sci_swipe_card_id) { generate(:swipe_card_id) }
@@ -15,25 +16,25 @@ RSpec.describe UserForm, type: :model do
 
   it "if user is unauthorised (scientist) then swipe card id should not be updated" do
     expect { # rubocop:todo Lint/AmbiguousBlockAssociation
-      UserForm.new(scientist).submit(params.merge(user: { swipe_card_id: '12345', user_code: sci_swipe_card_id }))
+      UserForm.new(scientist).submit(params.merge(user: { swipe_card_id: '12345', user_code: sci_swipe_card_id }, commit: "Update User", id: scientist.id))
     }.to_not change { technician.reload.swipe_card_id }
   end
 
   it "if user is authorised and swipe card is not left blank it should be updated" do
     expect { # rubocop:todo Lint/AmbiguousBlockAssociation
-      subject.submit(params.merge(user: { swipe_card_id: '12345', user_code: admin_swipe_card_id }))
-    }.to change { technician.reload.swipe_card_id }
+      subject.submit(params.merge(user: { swipe_card_id: '12345', user_code: admin_swipe_card_id }, commit: "Update User", id: technician.id))
+    }.to change { technician.reload.swipe_card_id }.to(Digest::SHA1.hexdigest('12345'))
   end
 
   it "if user is authorised but swipe card id is left blank then swipe card id should not be updated" do
     expect { # rubocop:todo Lint/AmbiguousBlockAssociation
-      subject.submit(params.merge(user: { swipe_card_id: nil, user_code: admin_swipe_card_id }))
+      subject.submit(params.merge(user: { swipe_card_id: nil, user_code: admin_swipe_card_id }, commit: "Update User", id: technician.id))
     }.to_not change { technician.reload.swipe_card_id }
   end
 
   it "if user is authorised but barcode is left blank then barcode should not be updated" do
     expect { # rubocop:todo Lint/AmbiguousBlockAssociation
-      subject.submit(params.merge(user: { barcode: nil, user_code: admin_swipe_card_id }))
+      subject.submit(params.merge(user: { barcode: nil, user_code: admin_swipe_card_id }, commit: "Update User", id: technician.id))
     }.to_not change { technician.reload.barcode }
   end
 end

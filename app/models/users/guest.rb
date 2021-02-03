@@ -16,7 +16,7 @@ class Guest < User
   ##
   # Always set to 0
   def swipe_card_id
-    0
+    "Guest"
   end
 
   ##
