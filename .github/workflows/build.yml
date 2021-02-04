@@ -14,6 +14,12 @@ jobs:
         bundler-cache: true # Runs bundle install and caches gems. See the ruby_test.yml
                             # example if you need more control over bundler.
 
+    - name: Set up environment
+      run: |
+        cp config/database.yml.example config/database.yml
+        cp config/secrets.yml.example config/secrets.yml
+        cp config/bunny.yml.example config/bunny.yml
+
     - name: Compile Build
       run: ./compile-build
 
