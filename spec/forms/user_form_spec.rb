@@ -37,5 +37,4 @@ RSpec.describe UserForm, type: :model do
       subject.submit(params.merge(user: { barcode: nil, user_code: admin_swipe_card_id }, commit: "Update User"))
     }.to_not change { technician.reload.barcode }
   end
-
 end
