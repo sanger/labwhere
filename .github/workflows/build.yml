@@ -23,11 +23,7 @@ jobs:
           ${{ runner.os }}-build-
           ${{ runner.os }}-
     - name: Setup environment
-      env:
-        DBPORT: ${{ job.services.mysql.ports[3306] }}
-      run: |
-        bundle config path vendor/bundle
-        bin/setup
+      run: bundle config path vendor/bundle
 
     - name: Compile Build
       run: ./compile-build
