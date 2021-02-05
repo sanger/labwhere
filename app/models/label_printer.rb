@@ -6,8 +6,9 @@ require 'net/http'
 # The object will create a request from a printer_id and location_ids.
 class LabelPrinter
   include ActiveModel::Model
-  attr_accessor :printer, :locations, :label_template_name, :copies
-  attr_reader :labels
+  attr_writer :copies
+  attr_accessor :label_template_name
+  attr_reader :labels, :printer
 
   validates_presence_of :printer, :locations, :label_template_name
   validates_numericality_of :copies, greater_than: 0
@@ -19,19 +20,19 @@ class LabelPrinter
     @labels = Label.new(locations * copies)
   end
 
-  def printer=(printer) # rubocop:todo Lint/DuplicateMethods
+  def printer=(printer)
     @printer = Printer.find(printer)
   end
 
-  def locations=(locations) # rubocop:todo Lint/DuplicateMethods
+  def locations=(locations)
     @locations = Location.find(Array(locations))
   end
 
-  def copies # rubocop:todo Lint/DuplicateMethods
+  def copies
     @copies || 1
   end
 
-  def locations # rubocop:todo Lint/DuplicateMethods
+  def locations
     @locations || []
   end
 
@@ -42,39 +43,40 @@ class LabelPrinter
   end
 
   ##
-  # Post the request to the barcode service. The label_template_id: 1 refers to the LabWhere label template
+  # Post the request to the barcode service. The label_template_name refers to the LabWhere label template
   # Will return true if successful
   # Will return false if there is either an unexpected error or a server error
   def post
     return unless valid?
 
     begin
-      body = {
-        "print_job": {
-          "printer_name": printer.name,
-          "label_template_name": label_template_name,
-          "labels": labels.body,
-          "copies": copies
-        }
-      }
-
-      response = Net::HTTP.post URI(PMB::Base.site + "/print_jobs"),
-                     body.to_json,
-                     'Content-Type' => 'application/json'
-
+      response = Net::HTTP.post URI("#{Rails.configuration.pmb_api_base}/print_jobs"),
+                                body.to_json,
+                                'Content-Type' => 'application/json'
       if response.code == "200"
         @response_ok = true
-        return
       else
         throw JSON.parse(response.body)
       end
-
-    rescue => e
+    rescue StandardError => e
       @response_ok = false
     end
   end
 
   def response_ok?
     @response_ok ||= false
+  end
+
+  private
+
+  def body
+    @body ||= {
+      "print_job": {
+        "printer_name": printer.name,
+        "label_template_name": label_template_name,
+        "labels": labels.body,
+        "copies": copies
+      }
+    }
   end
 end
