@@ -43,6 +43,7 @@ jobs:
         cp config/bunny.yml.example config/bunny.yml
         bundle exec rails db:setup
         bundle exec rails about
+        bundle exec rails stats
 
     - name: Run tests
       env:
