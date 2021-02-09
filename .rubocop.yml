@@ -25,5 +25,9 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
 
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - "spec/**/*"
+
 Naming/MemoizedInstanceVariableName:
   Enabled: false

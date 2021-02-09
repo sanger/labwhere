@@ -23,7 +23,7 @@
       </li>
       <li>
         <%= f.label :type, 'Type*' %>
-        <%= f.select :type, options_for_select(User.types, @user.type) %>
+        <%= f.select :type, options_for_select(User.types, @user.model.type) %>
       </li>
         <li>
         <%= f.label :status, "Active" %>
