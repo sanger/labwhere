@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Audit, type: :model do
   let!(:location)     { create(:location) }
   let!(:user)         { create(:user) }
-  let(:create_action) { AuditAction.new(AuditAction::CREATE)}
+  let(:create_action) { AuditAction.new(AuditAction::CREATE) }
 
   it 'has a uuid after creation' do
     expect(create(:audit).uuid).to be_present
