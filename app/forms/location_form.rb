@@ -28,7 +28,7 @@ class LocationForm
           @location = new_location
           check_location
           @location.save!
-          @location.create_audit(current_user, Audit::CREATE_ACTION)
+          @location.create_audit(current_user, AuditAction::CREATE)
         end
       end
     else
@@ -41,7 +41,7 @@ class LocationForm
     assign_attributes(params)
     if valid?
       run_transaction do
-        location.create_audit(current_user, Audit::UPDATE_ACTION) if location.save
+        location.create_audit(current_user, AuditAction::UPDATE) if location.save
       end
     else
       false
@@ -56,7 +56,7 @@ class LocationForm
 
     location.destroy
     if location.destroyed?
-      location.create_audit(current_user, Audit::DESTROY_ACTION)
+      location.create_audit(current_user, AuditAction::DESTROY)
       true
     else
       add_location_errors
@@ -119,10 +119,6 @@ class LocationForm
 
   def location_attrs(params)
     params.fetch(:location, {}).except(:start_from, :end_to, :user_code, :reserve, :coordinateable)
-    ## This is more flexible but location's attributes :team_id and :parent_id
-    ## don't match parameters :team and :parent (check locations factory)
-    # attrs = location.attributes.keys.map {|s| s.to_sym}
-    # params.fetch(:location, {}).slice(*attrs)
   end
 
   def add_location_errors

@@ -8,7 +8,8 @@ class CoordinatesForm
 
   validate :check_user, :check_coordinate_reservation
 
-  attr_accessor :coordinates, :controller, :action, :current_user
+  attr_accessor :controller, :action, :current_user
+  attr_writer :coordinates
 
   delegate :to_json, to: :coordinates
 
@@ -21,7 +22,7 @@ class CoordinatesForm
         Coordinate.update(coordinate_ids, update_params)
 
         coordinates.each do |coordinate|
-          coordinate.create_audit(current_user, Audit::UPDATE_ACTION)
+          coordinate.create_audit(current_user, AuditAction::UPDATE)
         end
       end
       true
@@ -30,7 +31,7 @@ class CoordinatesForm
     end
   end
 
-  def coordinates # rubocop:todo Lint/DuplicateMethods
+  def coordinates
     @coordinates ||= Coordinate.find(coordinate_ids)
   end
 

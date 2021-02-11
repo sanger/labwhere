@@ -149,4 +149,11 @@ RSpec.describe User, type: :model do
     expect(user.reload.swipe_card_id).to be_present
     expect(user.barcode).to be_present
   end
+
+  it "can create an audit message" do
+    create_action = AuditAction.new(AuditAction::CREATE)
+    user = create(:user)
+    audit = user.create_audit(create(:user))
+    expect(audit.message).to eq(create_action.display_text)
+  end
 end

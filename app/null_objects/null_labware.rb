@@ -24,6 +24,10 @@ class NullLabware
     "No"
   end
 
+  def breadcrumbs
+    nil
+  end
+
   def ==(other)
     other.class == self.class && other.state == state
   end

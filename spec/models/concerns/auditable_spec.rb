@@ -3,54 +3,38 @@
 require "rails_helper"
 
 RSpec.describe Auditable, type: :model do
-  with_model :my_model do
-    table do |t|
-      t.string :name
-      t.timestamps null: false
-    end
-
-    model do
-      include Auditable
-    end
-  end
-
   let!(:user) { create(:user) }
+  let!(:location) { create(:location) }
+  let!(:parent_location) { create(:location_with_parent) }
+  let!(:location_with_parent) { create(:location_with_parent, parent: parent_location) }
 
   it "should be able to create an audit record" do
-    my_model = MyModel.create(name: "My Model")
-    my_model.create_audit(user, Audit::CREATE_ACTION)
-    audit = my_model.audits.first
+    location.create_audit(user, AuditAction::CREATE)
+    audit = location.audits.first
     expect(audit.user).to eq(user)
-    expect(audit.record_data.except("created_at", "updated_at")).to eq(my_model.as_json.except("created_at", "updated_at"))
-    expect(my_model.reload.audits.count).to eq(1)
+    expect(audit.record_data.except("created_at", "updated_at")).to eq(location.as_json.except("created_at", "updated_at"))
+    expect(location.reload.audits.count).to eq(1)
   end
 
   it "should add a method for converting dates to uk" do
-    my_model = MyModel.create(name: "My Model")
-    expect(my_model.uk_dates["created_at"]).to eq(my_model.created_at.to_s(:uk))
-    expect(my_model.uk_dates["updated_at"]).to eq(my_model.updated_at.to_s(:uk))
+    expect(location.uk_dates["created_at"]).to eq(location.created_at.to_s(:uk))
+    expect(location.uk_dates["updated_at"]).to eq(location.updated_at.to_s(:uk))
   end
 
   it "should add an action if none is provided" do
-    my_model = MyModel.create(name: "My Model")
-    my_model.create_audit(user)
-    expect(my_model.audits.last.action).to eq(Audit::CREATE_ACTION)
+    location.create_audit(user)
+    expect(location.audits.last.action).to eq(AuditAction::CREATE)
     # Need to put the created date into the past because the test is too quick, so that created date and updated date are equal
-    my_model.update_attributes(created_at: DateTime.now - 1)
-    my_model.update_attributes(name: "New Name")
-    my_model.create_audit(user)
-    expect(my_model.audits.last.action).to eq(Audit::UPDATE_ACTION)
-    my_model.destroy
-    my_model.create_audit(user)
-    expect(my_model.audits.last.action).to eq(Audit::DESTROY_ACTION)
+    location.update_attributes(created_at: DateTime.now - 1)
+    location.update_attributes(name: "New Name")
+    location.create_audit(user)
+    expect(location.audits.last.action).to eq(AuditAction::UPDATE)
   end
 
   context 'without write event method' do
     it 'does not write an event when creating an audit' do
-      model_instance = MyModel.create(name: "My Model")
-
       expect(Messages).not_to receive(:publish)
-      model_instance.create_audit(user)
+      location.create_audit(user)
     end
   end
 
