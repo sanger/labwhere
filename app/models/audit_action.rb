@@ -12,29 +12,29 @@ class AuditAction
 
   # a list of all the current actions
   ALL = {
-    'create' => {
+    CREATE => {
       description: 'create',
       display_text: 'Created'
     },
-    'update' => {
+    UPDATE => {
       description: 'update',
       display_text: 'Updated'
     },
-    'destroy' => {
+    DESTROY => {
       description: 'destroy',
       display_text: 'Destroyed'
     },
     # auditable_type is location
-    'remove_all_labwares' => {
+    REMOVE_ALL_LABWARES => {
       description: 'remove all labwares',
       display_text: 'Removed all labwares'
     },
-    'manifest_upload' => {
+    MANIFEST_UPLOAD => {
       description: 'uploaded from manifest',
       display_text: 'Uploaded from manifest'
     },
     # auditable_type is labware
-    'empty_location' => {
+    EMPTY_LOCATION => {
       description: 'update when location emptied',
       display_text: 'Updated when location emptied'
     }
