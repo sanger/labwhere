@@ -1,0 +1,35 @@
+name: Build Project
+on:
+  release:
+    types: published
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true # Runs bundle install and caches gems. See the ruby_test.yml
+                            # example if you need more control over bundler.
+
+    - name: Set up environment
+      run: |
+        cp config/database.yml.example config/database.yml
+        cp config/secrets.yml.example config/secrets.yml
+        cp config/bunny.yml.example config/bunny.yml
+
+    - name: Compile Build
+      run: ./compile-build
+
+    - name: Upload release.gz
+      id: upload-release-gz
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }} # Pull the URL from the event
+        asset_path: ./release.tar.gz
+        asset_name: gh-release.tar.gz
+        asset_content_type: application/gzip
