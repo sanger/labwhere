@@ -63,5 +63,4 @@ Rails.application.configure do
 
   # Print My Barcode api base
   config.pmb_api_base = 'http://localhost:3010/v2'
-  
 end
