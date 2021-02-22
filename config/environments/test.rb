@@ -54,5 +54,5 @@ Rails.application.configure do
                         }
 
   # Print My Barcode api base
-  config.x.pmb_api_base = 'http://pmb.test/api/v1'
+  config.pmb_api_base = 'http://pmb.test/v2'
 end

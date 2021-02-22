@@ -22,9 +22,10 @@ RSpec.describe Label, type: :model do
     it 'creates one label for the body' do
       expect(subject.body.length).to eql(1)
 
-      expect(subject.body[0][:location][:barcode]).to eql(location.barcode)
-      expect(subject.body[0][:location][:parent_location]).to eql(location.parent.name)
-      expect(subject.body[0][:location][:location]).to eql(location.name)
+      expect(subject.body[0][:barcode]).to eql(location.barcode)
+      expect(subject.body[0][:parent_location]).to eql(location.parent.name)
+      expect(subject.body[0][:location]).to eql(location.name)
+      expect(subject.body[0][:label_name]).to eql("location")
     end
   end
 
@@ -37,9 +38,10 @@ RSpec.describe Label, type: :model do
       expect(subject.body.length).to eql(3)
 
       locations.each.with_index do |location, n|
-        expect(subject.body[n][:location][:barcode]).to eql(location.barcode)
-        expect(subject.body[n][:location][:parent_location]).to eql(location.parent.name)
-        expect(subject.body[n][:location][:location]).to eql(location.name)
+        expect(subject.body[n][:barcode]).to eql(location.barcode)
+        expect(subject.body[n][:parent_location]).to eql(location.parent.name)
+        expect(subject.body[n][:location]).to eql(location.name)
+        expect(subject.body[n][:label_name]).to eql('location')
       end
     end
   end

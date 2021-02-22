@@ -16,11 +16,10 @@ class Label
   def body
     locations.map do |location|
       {
-        location: {
-          barcode: location.barcode,
-          parent_location: location.parent.name,
-          location: location.name
-        }
+        barcode: location.barcode,
+        parent_location: location.parent.name,
+        location: location.name,
+        label_name: "location"
       }
     end
   end
