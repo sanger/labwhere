@@ -62,5 +62,6 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Print My Barcode api base
-  config.x.pmb_api_base = 'http://dev.psd.sanger.ac.uk:7462/v1'
+  # config.pmb_api_base = 'http://localhost:3010/v2'
+  config.pmb_api_base = 'http://uat.print-my-barcode.psd.sanger.ac.uk:9292/v2'
 end

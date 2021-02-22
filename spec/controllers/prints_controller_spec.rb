@@ -30,7 +30,7 @@ RSpec.describe PrintsController, type: :controller do
         @location.children = create_list(:location, 3)
 
         expect(LabelPrinter).to receive(:new)
-          .with(printer: @printer.id.to_s, locations: @location.child_ids, label_template_id: 1, copies: 1)
+          .with(printer: @printer.id.to_s, locations: @location.child_ids, label_template_name: 'labwhere_1d', copies: 1)
           .and_return(label_printer_double)
 
         post :create, params: {
@@ -51,7 +51,7 @@ RSpec.describe PrintsController, type: :controller do
     context 'when print_child_barcodes is false' do
       it 'sends the location to the LabelPrinter' do
         expect(LabelPrinter).to receive(:new)
-          .with(printer: @printer.id.to_s, locations: @location.id.to_s, label_template_id: 1, copies: 1)
+          .with(printer: @printer.id.to_s, locations: @location.id.to_s, label_template_name: 'labwhere_1d', copies: 1)
           .and_return(label_printer_double)
 
         post :create, params: {
@@ -71,7 +71,7 @@ RSpec.describe PrintsController, type: :controller do
     context 'when label printer returns error' do
       it 'displays an error message to the user' do
         expect(LabelPrinter).to receive(:new)
-          .with(printer: @printer.id.to_s, locations: @location.id.to_s, label_template_id: 1, copies: 1)
+          .with(printer: @printer.id.to_s, locations: @location.id.to_s, label_template_name: 'labwhere_1d', copies: 1)
           .and_return(label_printer_double_error)
 
         post :create, params: {
