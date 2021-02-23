@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   ##
   # A list of the different types of inherited user.
   def self.types
-    %w(Technician Administrator Scientist)
+    %w(Scientist Technician Administrator)
   end
 
   ##
@@ -59,7 +59,7 @@ class User < ActiveRecord::Base
   private
 
   def encrypt_swipe_card_id
-    return if swipe_card_id.blank?
+    return if swipe_card_id.blank? || swipe_card_id == "Guest" # check for guests or blank
 
     self.swipe_card_id = Digest::SHA1.hexdigest(swipe_card_id)
   end
