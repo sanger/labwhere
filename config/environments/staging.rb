@@ -78,5 +78,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Print My Barcode api base
-  config.x.pmb_api_base = 'http://pmb.staging/api/v1'
+  config.pmb_api_base = 'http://pmb.staging/v2'
 end

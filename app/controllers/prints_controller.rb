@@ -8,10 +8,10 @@ class PrintsController < ApplicationController
   end
 
   def create
-    label_template_id = Rails.configuration.label_templates[params[:barcode_type]]
+    label_template_name = Rails.configuration.label_templates[params[:barcode_type]]
     @print_barcode = LabelPrinter.new(printer: params[:printer_id],
                                       locations: location_ids,
-                                      label_template_id: label_template_id,
+                                      label_template_name: label_template_name,
                                       copies: params[:copies].to_i)
     @print_barcode.post
 
