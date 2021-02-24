@@ -71,11 +71,11 @@ class LabelPrinter
 
   def body
     @body ||= {
-      "print_job": {
-        "printer_name": printer.name,
-        "label_template_name": label_template_name,
-        "labels": labels.body,
-        "copies": copies
+      print_job: {
+        printer_name: printer.name,
+        label_template_name: label_template_name,
+        labels: labels.body,
+        copies: copies
       }
     }
   end
