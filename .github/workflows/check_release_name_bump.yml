@@ -18,7 +18,6 @@ jobs:
     - name: get release-version
       run: |
         echo "RELEASE_VERSION=$(printf '%s\n' $(cat .release-version))" >> $GITHUB_ENV
-        echo "${{ env.RELEASE_VERSION }}"
     
     - name: get latest-release
       id: last_release
@@ -36,8 +35,9 @@ jobs:
         echo "created_at: ${{ steps.last_release.outputs.created_atd }}"
         echo "draft: ${{ steps.last_release.outputs.draft }}"
         echo "prerelease: ${{ steps.last_release.outputs.prerelease }}"
+        echo "release-vesrion contains: ${{ env.RELEASE_VERSION }}"
     
-    - if: ${{ steps.last_release.outputs.name }} == ${{ env.RELEASE_VERSION }}
+    - if: ${{ steps.last_release.outputs.tag_name }} == ${{ env.RELEASE_VERSION }}
       name: "Compare release names"
       run: |
         echo ".release-version file needs to be bumped"
