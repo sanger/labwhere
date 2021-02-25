@@ -16,13 +16,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: get release-version
-      run: echo "RELEASE_VERSION=$(printf '%s\n' $(cat .release-version))" >> $GITHUB_ENV
+      run: |
+        echo "RELEASE_VERSION=$(cat .release-version)" >> $GITHUB_ENV
+        echo "${{ env.RELEASE_VERSION }}"
     
     - name: get latest-release
       id: last_release
       uses: InsonusK/get-latest-release@v1.0.1
       with:
-        myToken: ${{ secrets.GITHUB_TOKEN }}
+        myToken: ${{ github.token }}
         exclude_types: "release"
         view_top: 1
 
