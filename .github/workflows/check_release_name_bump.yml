@@ -35,10 +35,7 @@ jobs:
         echo "created_at: ${{ steps.last_release.outputs.created_atd }}"
         echo "draft: ${{ steps.last_release.outputs.draft }}"
         echo "prerelease: ${{ steps.last_release.outputs.prerelease }}"
-        echo "release-vesrion contains: ${{ env.RELEASE_VERSION }}"
     
-    - if: ${{ steps.last_release.outputs.tag_name }} == ${{ env.RELEASE_VERSION }}
-      name: "Compare release names"
+    - name: "Compare release names"
       run: |
-        echo ".release-version file needs to be bumped"
-        exit 1
+        if [["${{ steps.last_release.outputs.tag_name }}" == "${{ env.RELEASE_VERSION }}"]]; then exit 1
