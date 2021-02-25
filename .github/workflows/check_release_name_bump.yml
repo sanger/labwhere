@@ -1,8 +1,5 @@
 name: Check release bump
 
-env:
-  TZ: Europe/London
-
 on:
   pull_request:
     branches:
@@ -15,9 +12,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: get release-version
-      run: |
-        echo "RELEASE_VERSION=$(printf '%s\n' $(cat .release-version))" >> $GITHUB_ENV
     
     - name: get latest-release
       id: last_release
@@ -38,4 +32,4 @@ jobs:
     
     - name: "Compare release names"
       run: |
-        if [ "${{ steps.last_release.outputs.tag_name }}" = "${{ env.RELEASE_VERSION }}" ]; then exit 1; fi
+        if [ "${{ steps.last_release.outputs.tag_name }}" = "$(printf '%s\n' $(cat .release-version))" ]; then exit 1; fi
