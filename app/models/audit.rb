@@ -61,7 +61,7 @@ class Audit < ActiveRecord::Base
   # they need to know where it is with a more descriptive message if
   # the audit record is for a location or labware
   def create_message
-    new_message = if (auditable.kind_of?(Location) || auditable.instance_of?(Labware)) && auditable.try(:breadcrumbs).present?
+    new_message = if (auditable.is_a?(Location) || auditable.instance_of?(Labware)) && auditable.try(:breadcrumbs).present?
                     "#{action_instance.display_text} and stored in #{auditable.breadcrumbs}"
                   else
                     action_instance.display_text

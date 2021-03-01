@@ -45,12 +45,11 @@ RSpec.describe UnorderedLocation, type: :model do
 
     let!(:user) { create(:user) }
 
-    let!(:location)           { create(:unordered_location_with_parent) }
+    let!(:location) { create(:unordered_location_with_parent) }
 
     it "will create the correct message" do
       audit = location.create_audit(user)
       expect(audit.message).to eq("#{create_action.display_text} and stored in #{location.breadcrumbs}")
     end
-
   end
 end
