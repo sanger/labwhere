@@ -33,6 +33,8 @@ class NullLocation
     other.class == self.class && other.state == state
   end
 
+  def breadcrumbs; nil end
+
   protected
 
   def state

@@ -34,9 +34,10 @@ RSpec.describe ManifestUploader, type: :model do
     end
 
     it 'will create audit records for the labwares' do
+      audit_action = AuditAction.new(AuditAction::MANIFEST_UPLOAD)
       labwares = Labware.where("barcode LIKE '%#{labware_prefix}%'")
-      expect(labwares.first.audits.last.action).to eq("Uploaded from manifest")
-      expect(labwares.last.audits.last.action).to eq("Uploaded from manifest")
+      expect(labwares.first.audits.last.action).to eq(audit_action.key)
+      expect(labwares.last.audits.last.action).to eq(audit_action.key)
     end
   end
 

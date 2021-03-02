@@ -16,7 +16,7 @@ class Scan < ActiveRecord::Base
 
   before_save :set_status, :create_message
 
-  attr_accessor :labwares
+  attr_writer :labwares
 
   # If we are scanning in tell the user how many labwares have been scanned in to the scan location.
   # If we are scanning out tell the user how many labwares have been scanned out of their previous locations.
@@ -28,7 +28,7 @@ class Scan < ActiveRecord::Base
                                                                            end
   end
 
-  def labwares # rubocop:todo Lint/DuplicateMethods
+  def labwares
     @labwares ||= NullLabwareCollection.new
   end
 

@@ -87,4 +87,10 @@ class Labware < ActiveRecord::Base
     e = Event.new(labware: self, audit: audit_record)
     Messages.publish(e)
   end
+
+  def breadcrumbs
+    return if location.empty?
+
+    location.parentage
+  end
 end

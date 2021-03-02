@@ -124,21 +124,67 @@ RSpec.describe Labware, type: :model do
     end
   end
 
+  describe 'breadcrumbs' do
+    it 'when the labware has no location' do
+      labware = create(:labware)
+      expect(labware.breadcrumbs).to be_nil
+    end
+
+    it 'when the labware has an unknown location' do
+      location = create(:unknown_location)
+      labware = create(:labware, location: location)
+      expect(labware.breadcrumbs).to eq(location.parentage)
+    end
+
+    it 'when the labware has a location' do
+      location = create(:location_with_parent)
+      labware = create(:labware, location: location)
+      expect(labware.breadcrumbs).to eq(location.parentage)
+    end
+  end
+
   describe 'audit records' do
     let(:administrator) { create(:administrator) }
+
+    let(:create_action) { AuditAction.new(AuditAction::CREATE) }
+    let(:update_action) { AuditAction.new(AuditAction::UPDATE) }
 
     it 'when a labware has already been created but is scanned into the same location' do
       labware = create(:labware_with_location)
       labware.create_audit(administrator)
       expect(labware.audits.count).to eq(1)
-      expect(labware.audits.first.action).to eq(Audit::CREATE_ACTION)
+      expect(labware.audits.first.action).to eq(AuditAction::CREATE)
 
       location = labware.location
       labware.update(location: location)
       labware.create_audit(administrator)
 
       expect(labware.audits.count).to eq(2)
-      expect(labware.audits.last.action).to eq(Audit::UPDATE_ACTION)
+      expect(labware.audits.last.action).to eq(AuditAction::UPDATE)
+    end
+
+    context "message" do
+      let!(:user) { create(:user) }
+
+      it "when it is new labware" do
+        labware = create(:labware)
+        audit = labware.create_audit(user)
+        expect(audit.message).to eq(create_action.display_text)
+      end
+
+      it "when it is new labware with a location" do
+        labware = create(:labware_with_location)
+        audit = labware.create_audit(user)
+        expect(audit.message).to eq("#{create_action.display_text} and stored in #{labware.breadcrumbs}")
+      end
+
+      it "when it is existing labware with a location" do
+        labware = create(:labware_with_location)
+        labware.create_audit(user)
+        labware.update(location: create(:location_with_parent))
+        audit = labware.create_audit(user)
+        expect(audit.message).to eq("#{update_action.display_text} and stored in #{labware.breadcrumbs}")
+      end
     end
   end
 end

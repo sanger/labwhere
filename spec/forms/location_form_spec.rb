@@ -34,7 +34,7 @@ RSpec.describe LocationForm, type: :model do
 
     audits = Audit.where(auditable_id: location_form.location.id)
     expect(audits.count).to eq 1
-    expect(audits[0].action).to eq(Audit::CREATE_ACTION)
+    expect(audits[0].action).to eq(AuditAction::CREATE)
   end
 
   it "can be edited if exists" do
@@ -51,7 +51,7 @@ RSpec.describe LocationForm, type: :model do
 
     audits = Audit.where(auditable_id: location.id)
     expect(audits.count).to eq 1
-    expect(audits[0].action).to eq(Audit::UPDATE_ACTION)
+    expect(audits[0].action).to eq(AuditAction::UPDATE)
   end
 
   it "can be destroyed if it has not been used" do
@@ -64,7 +64,7 @@ RSpec.describe LocationForm, type: :model do
 
     audits = Audit.where(auditable_id: location.id)
     expect(audits.count).to eq 1
-    expect(audits[0].action).to eq(Audit::DESTROY_ACTION)
+    expect(audits[0].action).to eq(AuditAction::DESTROY)
   end
 
   it "should create the correct type of location dependent on the attributes" do
@@ -131,7 +131,7 @@ RSpec.describe LocationForm, type: :model do
       Location.all.map(&:id).each do |location_id|
         audits = Audit.where(auditable_id: location_id)
         expect(audits.count).to eq 1
-        expect(audits[0].action).to eq(Audit::CREATE_ACTION)
+        expect(audits[0].action).to eq(AuditAction::CREATE)
       end
     end
 

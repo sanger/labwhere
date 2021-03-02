@@ -39,4 +39,17 @@ RSpec.describe UnorderedLocation, type: :model do
     location = create(:unordered_location)
     expect(location.available_coordinates(5, 10)).to be_empty
   end
+
+  describe "audit message" do
+    let(:create_action) { AuditAction.new(AuditAction::CREATE) }
+
+    let!(:user) { create(:user) }
+
+    let!(:location) { create(:unordered_location_with_parent) }
+
+    it "will create the correct message" do
+      audit = location.create_audit(user)
+      expect(audit.message).to eq("#{create_action.display_text} and stored in #{location.breadcrumbs}")
+    end
+  end
 end

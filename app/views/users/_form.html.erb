@@ -19,7 +19,7 @@
       </li>
       <li>
         <%= f.label :team_id, "Team*" %>
-        <%= f.select :team_id, options_from_collection_for_select(Team.all, :id, :name) %>
+        <%= f.select :team_id, options_from_collection_for_select(Team.all, :id, :name, @user.model.team_id) %>
       </li>
       <li>
         <%= f.label :type, 'Type*' %>
