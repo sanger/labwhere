@@ -57,9 +57,9 @@ RSpec.describe EmptyLocationForm, type: :model do
       audits = Audit.last(num_labwares + 1)
       # location
       expect(audits.first.user).to eq(technician)
-      expect(audits.first.action).to eq("removed all labwares")
+      expect(audits.first.action).to eq(AuditAction::REMOVE_ALL_LABWARES)
       # labwares
-      expect(audits.slice(1, num_labwares).map(&:action).uniq).to eq([Audit::LOCATION_EMPTIED_ACTION])
+      expect(audits.slice(1, num_labwares).map(&:action).uniq).to eq([AuditAction::EMPTY_LOCATION])
     end
   end
 end

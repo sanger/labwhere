@@ -167,7 +167,7 @@ class Location < ActiveRecord::Base
     return if has_child_locations?
 
     # audit that user emptied the location
-    create_audit(current_user, Audit::REMOVED_ALL_ACTION)
+    create_audit(current_user, AuditAction::REMOVE_ALL_LABWARES)
 
     unknown_location = UnknownLocation.get
 
@@ -175,12 +175,18 @@ class Location < ActiveRecord::Base
     labwares.find_each do |labware|
       labware.update(location: unknown_location, coordinate: nil)
       # audit that each labware is now in an unknown location
-      labware.create_audit(current_user, Audit::LOCATION_EMPTIED_ACTION)
+      labware.create_audit(current_user, AuditAction::EMPTY_LOCATION)
     end
 
     # Reset the association to ensure it is no-longer populated
     # with labware
     labwares.reset
+  end
+
+  def breadcrumbs
+    return if parent.blank?
+
+    parentage
   end
 
   private

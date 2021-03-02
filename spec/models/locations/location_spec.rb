@@ -418,5 +418,45 @@ RSpec.describe Location, type: :model do
         location.remove_all_labwares(user)
       end
     end
+
+    context 'breadcrumbs' do
+      it 'when the location has no parent' do
+        location = create(:location)
+        expect(location.breadcrumbs).to be_nil
+      end
+
+      it 'when the location has a parent' do
+        location = create(:location_with_parent)
+        expect(location.breadcrumbs).to eq(location.parentage)
+      end
+    end
+  end
+
+  describe "audit message" do
+    let(:create_action) { AuditAction.new(AuditAction::CREATE) }
+    let(:update_action) { AuditAction.new(AuditAction::UPDATE) }
+
+    let!(:user) { create(:user) }
+
+    let!(:location)           { create(:location_with_parent) }
+    let!(:next_location)      { create(:location_with_parent) }
+
+    it "when the location has no parent" do
+      location = create(:location)
+      audit = location.create_audit(user)
+      expect(audit.message).to eq(create_action.display_text)
+    end
+
+    it "when it is a new record with a parent" do
+      audit = location.create_audit(user)
+      expect(audit.message).to eq("#{create_action.display_text} and stored in #{location.breadcrumbs}")
+    end
+
+    it "when it is an existing record with a parent" do
+      location.audits.create(user: user)
+      location.update(parent: next_location)
+      audit = location.create_audit(user)
+      expect(audit.message).to eq("#{update_action.display_text} and stored in #{location.breadcrumbs}")
+    end
   end
 end

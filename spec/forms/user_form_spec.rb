@@ -7,7 +7,7 @@ RSpec.describe UserForm, type: :model do
   let!(:sci_swipe_card_id) { generate(:swipe_card_id) }
   let!(:scientist) { create(:scientist, swipe_card_id: sci_swipe_card_id) }
   let!(:tech_swipe_card_id) { generate(:swipe_card_id) }
-  let!(:technician) { create(:technician, swipe_card_id: tech_swipe_card_id) }
+  let!(:technician) { create(:technician, swipe_card_id: tech_swipe_card_id, team_id: 2) }
   let!(:admin_swipe_card_id) { generate(:swipe_card_id) }
   let!(:administrator) { create(:administrator, swipe_card_id: admin_swipe_card_id) }
   let(:params) { ActionController::Parameters.new(controller: "users", action: "update") }
@@ -36,5 +36,17 @@ RSpec.describe UserForm, type: :model do
     expect {
       subject.submit(params.merge(user: { barcode: nil, user_code: admin_swipe_card_id }, commit: "Update User"))
     }.to_not change { technician.reload.barcode }
+  end
+
+  it "if user is authorised they should be able to update a users team" do
+    expect {
+      subject.submit(params.merge(user: { team_id: 1, user_code: admin_swipe_card_id }, commit: "Update User"))
+    }.to change { technician.reload.team_id }.to(1)
+  end
+
+  it "if no values are entered a user should not change" do
+    expect {
+      subject.submit(params.merge(user: { user_code: admin_swipe_card_id }, commit: "Update User"))
+    }.to_not change { technician.reload }
   end
 end

@@ -34,7 +34,7 @@ class ManifestUploader
         labware = Labware.find_or_initialize_by(barcode: labware_barcode)
         labware.location = locations[location_barcode]
         labware.save!
-        labware.create_audit!(user, Audit::MANIFEST_UPLOAD_ACTION)
+        labware.create_audit!(user, AuditAction::MANIFEST_UPLOAD)
       end
     end
     true

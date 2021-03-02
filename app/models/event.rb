@@ -14,14 +14,6 @@ class Event
 
   delegate :uuid, to: :audit
 
-  def self.generate_event_type(audit_action)
-    "labwhere_#{audit_action.tr(' ', '_')}".downcase
-  end
-
-  def event_type
-    @event_type ||= Event.generate_event_type(audit.action)
-  end
-
   # Are we firing an event for a newly created audit,
   # or re-firing an event for an 'old' audit?
   # It affects how much data we send in the event - whether we expect it to still be relevant
@@ -90,7 +82,7 @@ class Event
     {
       event: {
         uuid: uuid,
-        event_type: event_type,
+        event_type: audit.event_type,
         occured_at: audit.created_at,
         user_identifier: audit.user.login,
         subjects: subjects,

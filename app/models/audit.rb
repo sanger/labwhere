@@ -13,22 +13,6 @@
 class Audit < ActiveRecord::Base
   include Uuidable
 
-  PAST_TENSES = {
-    'scan' => 'Scanned',
-    'destroy' => 'Destroyed',
-    'Uploaded from manifest' => 'Uploaded from manifest',
-    'removed all labwares' => 'Removed all labwares',
-    'update when location emptied' => 'Update when location emptied'
-  }
-
-  # auditable actions
-  CREATE_ACTION                        = 'create'
-  UPDATE_ACTION                        = 'update'
-  DESTROY_ACTION                       = 'destroy'
-  MANIFEST_UPLOAD_ACTION               = 'Uploaded from manifest'
-  REMOVED_ALL_ACTION                   = 'removed all labwares'           # auditable_type is location
-  LOCATION_EMPTIED_ACTION              = 'update when location emptied'   # auditable_type is labware
-
   belongs_to :user
 
   validates :user, existence: true
@@ -39,10 +23,53 @@ class Audit < ActiveRecord::Base
 
   belongs_to :auditable, polymorphic: true, optional: true # Optional in case auditable has been destroyed
 
+  delegate :event_type, to: :action_instance
+
+  before_validation :check_and_set_action, if: proc { |_audit| auditable_present? && action.nil? }
+  before_validation :create_message, if: proc { |_audit| auditable_present? && message.nil? }
+
+  def action_instance
+    @action_instance ||= AuditAction.new(action)
+  end
+
   ##
   # A summary message for the audit record
   # For example created by Wonder Woman on 29 January 1943 at 6:40am
   def summary
-    "#{PAST_TENSES[action] || action.capitalize << 'd'} by #{user.login} on #{created_at.to_s(:uk)}"
+    "#{message || action_instance.display_text} by #{user.login} on #{created_at.to_s(:uk)}"
+  end
+
+  private
+
+  # the action could be empty but that does not mean it is not valid
+  def check_and_set_action
+    new_action = if auditable.destroyed?
+                   AuditAction::DESTROY
+                 # we need to know whether the auditable has just been created or whether it exists already.
+                 # originally using created_at but this is no longer relevant as labwares are sometimes rescanned into the same location which does not change updated at
+                 # If the audits are empty we should be able to assume (not 100%) that the labware has just been created
+                 elsif auditable.audits.empty?
+                   AuditAction::CREATE
+                 else
+                   AuditAction::UPDATE
+                 end
+
+    self[:action] = new_action
+  end
+
+  # users now require more information in the display message
+  # they need to know where it is with a more descriptive message if
+  # the audit record is for a location or labware
+  def create_message
+    new_message = if (auditable.is_a?(Location) || auditable.instance_of?(Labware)) && auditable.try(:breadcrumbs).present?
+                    "#{action_instance.display_text} and stored in #{auditable.breadcrumbs}"
+                  else
+                    action_instance.display_text
+                  end
+    self[:message] = new_message
+  end
+
+  def auditable_present?
+    auditable.present?
   end
 end

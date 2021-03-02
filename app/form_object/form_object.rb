@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: I think this needs to be removed so we can return to simpler times.
 module FormObject
   extend ActiveSupport::Concern
   include ActiveModel::Model
