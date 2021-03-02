@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_08_171251) do
+ActiveRecord::Schema.define(version: 2021_03_02_103249) do
 
   create_table "audits", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "auditable_type"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2021_02_08_171251) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "uuid", limit: 36, null: false, comment: "Unique identifier for this Audit. Added to send to Events Warehouse."
-    t.string "message"
+    t.text "message"
     t.index ["auditable_id", "auditable_type"], name: "index_audits_on_auditable_id_and_auditable_type"
     t.index ["auditable_type"], name: "index_audits_on_auditable_type"
     t.index ["user_id"], name: "index_audits_on_user_id"

@@ -36,16 +36,4 @@ module Auditable
 
     { "created_at" => created_at.to_s(:uk), "updated_at" => updated_at.to_s(:uk) }
   end
-
-  # def create_action(action)
-  #   return action if action.present?
-  #   return Audit::DESTROY_ACTION if self.destroyed?
-
-  #   # we need to know whether the labware has just been created or whether it exists already.
-  #   # originally using created_at but this is no longer relevant as labwares are sometimes rescanned into the same location which does not change updated at
-  #   # If the audits are empty we should be able to assume (not 100%) that the labware has just been created
-  #   return Audit::CREATE_ACTION if audits.empty?
-
-  #   Audit::UPDATE_ACTION
-  # end
 end
