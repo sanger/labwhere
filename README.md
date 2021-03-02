@@ -75,6 +75,14 @@ This will create a number of labware barcodes that can then be scanned into the 
 
 * **Configure:** Administrator permissions are required but these pages allow you to create/update/deactivate Location Types, Locations, Users, Teams and Printers
 
+## Releases
+
+#### UAT
+On merging a pull request into develop, a release will be created with the tag/name `<branch>/<timestamp>`
+
+#### PROD
+Update `.release-version` with major/minor/patch. On merging a pull request into master, a release will be created with the release version as the tag/name 
+
 ### ERD
 
 An ERD was created using the `rails-erd` gem by executing: `bundle exec erd`

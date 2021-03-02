@@ -1,4 +1,4 @@
-name: Build Project
+name: Manual build
 on:
   release:
     types: published
