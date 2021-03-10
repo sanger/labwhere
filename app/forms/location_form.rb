@@ -12,7 +12,7 @@ class LocationForm
   # delegate_missing_to :location # rails 5
   delegate :parent, :internal_parent, :barcode, :parentage, :type, :coordinateable?, :reserved?, :reserved_by, to: :location
   delegate :id, :created_at, :updated_at, :to_json, to: :location
-  delegate :name, :location_type_id, :parent_id, :container, :status, :rows, :columns, to: :location
+  delegate :name, :location_type_id, :parent_id, :container, :protect, :status, :rows, :columns, to: :location
 
   def initialize(location = nil)
     @location = location || Location.new
