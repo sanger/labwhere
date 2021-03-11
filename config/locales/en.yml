@@ -26,6 +26,7 @@ en:
   errors:
     messages:
       existence: "does not exist"
+      protected: "is protected and cannot be moved"
       nested: "does not have a parent"
       container: "is not a container"
       active: "is not active"

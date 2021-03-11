@@ -7,8 +7,7 @@ module Permissions
   class TechnicianPermission < ScientistPermission
     def initialize(user)
       super
-      allow :move_locations, [:create]
-      allow :empty_locations, [:create]
+      allow_all
     end
   end
 end

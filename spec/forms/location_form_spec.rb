@@ -5,7 +5,8 @@ require "rails_helper"
 RSpec.describe LocationForm, type: :model do
   let(:params) { attributes_for(:location) }
   let(:controller_params) { { controller: "location", action: "create" } }
-  let!(:administrator) { create(:administrator) }
+  let!(:admin_swipe_card_id) { generate(:swipe_card_id) }
+  let!(:administrator) { create(:administrator, swipe_card_id: admin_swipe_card_id) }
 
   it "is not valid without an user" do
     location_form = LocationForm.new
@@ -17,7 +18,7 @@ RSpec.describe LocationForm, type: :model do
   it "is not valid unless the location is valid" do
     location_form = LocationForm.new
     res = location_form.submit(
-      controller_params.merge(location: params.except(:name).merge(user_code: administrator.barcode))
+      controller_params.merge(location: params.except(:name).merge(user_code: admin_swipe_card_id))
     )
     expect(res).to be_falsey
     expect(location_form).to_not be_valid
@@ -26,7 +27,7 @@ RSpec.describe LocationForm, type: :model do
   it "is valid creates a new location" do
     location_form = LocationForm.new
     res = location_form.submit(
-      controller_params.merge(location: params.merge(user_code: administrator.barcode))
+      controller_params.merge(location: params.merge(user_code: admin_swipe_card_id))
     )
     expect(res).to be_truthy
     expect(location_form).to be_valid
@@ -43,7 +44,7 @@ RSpec.describe LocationForm, type: :model do
     new_location = build(:location)
     res = location_form.update(
       controller_params.merge(location: { name: new_location.name }
-                                          .merge(user_code: administrator.barcode),
+                                          .merge(user_code: admin_swipe_card_id),
                               action: "update")
     )
     expect(res).to be_truthy
@@ -59,7 +60,7 @@ RSpec.describe LocationForm, type: :model do
     params = ActionController::Parameters.new(controller_params)
     location = create(:location, name: 'Test Location')
     location_form = LocationForm.new(location)
-    res = location_form.destroy(params.merge(user_code: administrator.barcode))
+    res = location_form.destroy(params.merge(user_code: admin_swipe_card_id))
     expect(res).to be_truthy
 
     audits = Audit.where(auditable_id: location.id)
@@ -71,7 +72,7 @@ RSpec.describe LocationForm, type: :model do
     location_form = LocationForm.new
     res = location_form.submit(
       controller_params.merge(location: attributes_for(:unordered_location)
-                                          .merge(user_code: administrator.barcode))
+                                          .merge(user_code: admin_swipe_card_id))
     )
     expect(res).to be_truthy
     expect(location_form.location).to be_unordered
@@ -80,7 +81,7 @@ RSpec.describe LocationForm, type: :model do
     location_form = LocationForm.new
     res = location_form.submit(
       controller_params.merge(location: attributes_for(:ordered_location)
-                                          .merge(user_code: administrator.barcode))
+                                          .merge(user_code: admin_swipe_card_id))
     )
     expect(res).to be_truthy
     expect(location_form.location).to be_ordered
@@ -90,7 +91,7 @@ RSpec.describe LocationForm, type: :model do
   it "should remove any double spaces from the location name" do
     location_form = LocationForm.new
     res = location_form.submit(
-      controller_params.merge(location: params.merge(name: 'This is a location with a name with double spaces  ', user_code: administrator.barcode))
+      controller_params.merge(location: params.merge(name: 'This is a location with a name with double spaces  ', user_code: admin_swipe_card_id))
     )
     expect(res).to be_truthy
     expect(location_form).to be_valid
@@ -99,7 +100,7 @@ RSpec.describe LocationForm, type: :model do
 
     location_form = LocationForm.new
     res = location_form.submit(
-      controller_params.merge(location: params.merge(name: 'This is a   location with a   name with triple spaces  ', user_code: administrator.barcode))
+      controller_params.merge(location: params.merge(name: 'This is a   location with a   name with triple spaces  ', user_code: admin_swipe_card_id))
     )
     expect(res).to be_truthy
     expect(location_form).to be_valid
@@ -113,7 +114,7 @@ RSpec.describe LocationForm, type: :model do
       res = location_form.submit(
         controller_params.merge(location: params.merge(start_from: "1",
                                                        end_to: "4",
-                                                       user_code: administrator.barcode))
+                                                       user_code: admin_swipe_card_id))
       )
       expect(res).to be_truthy
       expect(location_form).to be_valid
@@ -122,7 +123,7 @@ RSpec.describe LocationForm, type: :model do
       res = location_form.submit(
         controller_params.merge(location: params.merge(name: 'This is a  location with a  name with double spaces ', start_from: "1",
                                                        end_to: "4",
-                                                       user_code: administrator.barcode))
+                                                       user_code: admin_swipe_card_id))
       )
       expect(res).to be_truthy
       expect(location_form).to be_valid
@@ -140,7 +141,7 @@ RSpec.describe LocationForm, type: :model do
       res = location_form.submit(
         controller_params.merge(location: params.merge(start_from: "2",
                                                        end_to: "1",
-                                                       user_code: administrator.barcode))
+                                                       user_code: admin_swipe_card_id))
       )
       expect(res).to be_falsey
       expect(location_form).to_not be_valid
@@ -151,7 +152,7 @@ RSpec.describe LocationForm, type: :model do
       res = location_form.submit(
         controller_params.merge(location: params.merge(start_from: "1",
                                                        end_to: "1",
-                                                       user_code: administrator.barcode))
+                                                       user_code: admin_swipe_card_id))
       )
       expect(res).to be_falsey
       expect(location_form).to_not be_valid
@@ -167,7 +168,7 @@ RSpec.describe LocationForm, type: :model do
           start_from: "1",
           end_to: "3",
           parent: parent_location,
-          user_code: administrator.barcode
+          user_code: admin_swipe_card_id
         ))
       )
       expect(res).to be_falsey
@@ -186,7 +187,7 @@ RSpec.describe LocationForm, type: :model do
       params = ActionController::Parameters.new(controller_params)
       location = create(:location, name: 'Test Location', type: 'OrderedLocation')
       location_form = LocationForm.new(location)
-      res = location_form.destroy(params.merge(user_code: administrator.barcode))
+      res = location_form.destroy(params.merge(user_code: admin_swipe_card_id))
       expect(res).to be_truthy
     end
   end

@@ -85,8 +85,8 @@ RSpec.describe User, type: :model do
       expect(build(:technician)).to allow_permission("api/locations/coordinates", :update)
       expect(build(:technician)).to allow_permission(:move_locations, :create)
       expect(build(:technician)).to allow_permission(:empty_locations, :create)
-      expect(build(:technician)).not_to allow_permission(:teams, :create)
-      expect(build(:technician)).not_to allow_permission(:users, :create)
+      expect(build(:technician)).to allow_permission(:teams, :create)
+      expect(build(:technician)).to allow_permission(:users, :create)
     end
 
     it "Scientist user should be allowed to create a scan" do
@@ -95,10 +95,10 @@ RSpec.describe User, type: :model do
       expect(build(:scientist)).to allow_permission("api/scans", :create)
       expect(build(:scientist)).to allow_permission("api/coordinates", :update)
       expect(build(:scientist)).to allow_permission("api/locations/coordinates", :update)
-      expect(build(:scientist)).not_to allow_permission(:move_locations, :create)
-      expect(build(:scientist)).not_to allow_permission(:empty_locations, :create)
-      expect(build(:technician)).not_to allow_permission(:teams, :create)
-      expect(build(:technician)).not_to allow_permission(:users, :create)
+      expect(build(:scientist)).to allow_permission(:move_locations, :create)
+      expect(build(:scientist)).to allow_permission(:empty_locations, :create)
+      expect(build(:scientist)).not_to allow_permission(:teams, :create)
+      expect(build(:scientist)).not_to allow_permission(:users, :create)
     end
 
     it "Guest user should be allowed to do nothing" do
@@ -107,10 +107,10 @@ RSpec.describe User, type: :model do
       expect(build(:guest)).not_to allow_permission("api/scans", :create)
       expect(build(:guest)).not_to allow_permission("api/coordinates", :update)
       expect(build(:guest)).not_to allow_permission("api/locations/coordinates", :update)
-      expect(build(:scientist)).not_to allow_permission(:move_locations, :create)
-      expect(build(:scientist)).not_to allow_permission(:empty_locations, :create)
-      expect(build(:technician)).not_to allow_permission(:teams, :create)
-      expect(build(:technician)).not_to allow_permission(:users, :create)
+      expect(build(:guest)).not_to allow_permission(:move_locations, :create)
+      expect(build(:guest)).not_to allow_permission(:empty_locations, :create)
+      expect(build(:guest)).not_to allow_permission(:teams, :create)
+      expect(build(:guest)).not_to allow_permission(:users, :create)
     end
   end
 

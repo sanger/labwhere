@@ -10,6 +10,8 @@ module Permissions
       allow :scans, [:create]
       # Check if Scientists should be able to upload labware
       allow :upload_labware, [:create]
+      allow :move_locations, [:create]
+      allow :empty_locations, [:create]
       allow "api/scans", [:create]
       allow "api/coordinates", [:update]
       allow "api/locations/coordinates", [:update]

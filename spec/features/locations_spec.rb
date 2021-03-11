@@ -62,18 +62,6 @@ RSpec.describe "Locations", type: :feature do
       visit location_types_path
       expect {
         find(:data_id, location_type.id).click_link "Delete"
-        fill_in "User swipe card id/barcode", with: tech_swipe_card_id
-        click_button "Delete"
-      }.to_not change(LocationType, :count)
-      expect(page).to have_content("error prohibited this record from being saved")
-      expect(page).to have_content("User is not authorised")
-    end
-
-    it "Prevents a user from deleting an existing location type if they are not authorised" do
-      location_type = create(:location_type)
-      visit location_types_path
-      expect {
-        find(:data_id, location_type.id).click_link "Delete"
         fill_in "User swipe card id/barcode", with: sci_swipe_card_id
         click_button "Delete"
       }.to_not change(LocationType, :count)
@@ -320,20 +308,6 @@ RSpec.describe "Locations", type: :feature do
       click_button "Update Location"
     }.to change { location.reload.active? }.from(false).to(true)
     expect(page).to have_content("Location successfully updated")
-  end
-
-  it "Does not allow an unauthorised user to modify locations" do
-    location = build(:location)
-    visit locations_path
-    click_link "Add new location"
-    expect {
-      fill_in "User swipe card id/barcode", with: tech_swipe_card_id
-      fill_in "Name", with: location.name
-      check "Container"
-      click_button "Create Location"
-    }.to_not change(Location, :count)
-    expect(page).to have_content("error prohibited this record from being saved")
-    expect(page).to have_content("User is not authorised")
   end
 
   it "Does not allow an unauthorised user to modify locations" do
