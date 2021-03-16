@@ -7,6 +7,8 @@ RSpec.describe LocationForm, type: :model do
   let(:controller_params) { { controller: "location", action: "create" } }
   let!(:admin_swipe_card_id) { generate(:swipe_card_id) }
   let!(:administrator) { create(:administrator, swipe_card_id: admin_swipe_card_id) }
+  let!(:tech_swipe_card_id) { generate(:swipe_card_id) }
+  let!(:technician) { create(:technician, swipe_card_id: tech_swipe_card_id) }
 
   it "is not valid without an user" do
     location_form = LocationForm.new
@@ -36,6 +38,25 @@ RSpec.describe LocationForm, type: :model do
     audits = Audit.where(auditable_id: location_form.location.id)
     expect(audits.count).to eq 1
     expect(audits[0].action).to eq(AuditAction::CREATE)
+  end
+
+  it "technician's cannot create a protected location" do
+    location_form = LocationForm.new
+    res = location_form.submit(
+      controller_params.merge(location: params.except(:name).merge(user_code: tech_swipe_card_id, protect: "1"))
+    )
+    expect(res).to be_falsey
+    expect(location_form.errors.full_messages).to include("Technician's cannot create/edit protected locations")
+  end
+
+  it "technician's cannot edit a protected location" do
+    location = create(:location)
+    location_form = LocationForm.new(location)
+    res = location_form.update(
+      controller_params.merge(location: params.except(:name).merge(user_code: tech_swipe_card_id, protect: "1"), action: "update")
+    )
+    expect(res).to be_falsey
+    expect(location_form.errors.full_messages).to include("Technician's cannot create/edit protected locations")
   end
 
   it "can be edited if exists" do

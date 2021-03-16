@@ -49,4 +49,21 @@ RSpec.describe UserForm, type: :model do
       subject.submit(params.merge(user: { user_code: admin_swipe_card_id }, commit: "Update User"))
     }.to_not change { technician.reload }
   end
+
+  it "if user is technician they should be able to update a non-admin user" do
+    expect {
+      subject.submit(params.merge(user: { team_id: 1, user_code: tech_swipe_card_id }, commit: "Update User"))
+    }.to change { technician.reload.team_id }.to(1)
+  end
+
+  it "if user is technician they should not be able to update an admin user" do
+    admin = UserForm.new(administrator)
+    admin.submit(params.merge(user: { user_code: tech_swipe_card_id }, commit: "Update User"))
+    expect(admin.errors.full_messages).to include("Technician's cannot edit admin users")
+  end
+
+  it "if user is technician they should not be able to make users an admin user" do
+    subject.submit(params.merge(user: { type: "Administrator", user_code: tech_swipe_card_id }, commit: "Update User"))
+    expect(subject.errors.full_messages).to include("Technician's cannot set user's type to Administrator")
+  end
 end

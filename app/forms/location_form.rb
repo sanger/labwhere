@@ -65,6 +65,7 @@ class LocationForm
   end
 
   def check_user
+    errors.add(:base, "Technician's cannot create/edit protected locations") if @current_user.technician? && @params[:location][:protect] == "1" # protect = true
     UserValidator.new.validate(self)
   end
 
