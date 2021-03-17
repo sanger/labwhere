@@ -51,7 +51,7 @@ RSpec.describe "MoveLocations", type: :feature do
   it "reports an error if one of the locations is protected" do
     visit new_move_location_path
     expect do
-      fill_in "User swipe card id/barcode", with: tech_swipe_card_id
+      fill_in "User swipe card id/barcode", with: sci_swipe_card_id
       fill_in "New location barcode (Parent location)", with: parent_location.barcode
       fill_in "Location barcodes to be moved (Child location)", with: protected_child_location.barcode.to_s
       click_button "Go!"

@@ -46,12 +46,20 @@ RSpec.describe MoveLocationForm, type: :model do
     expect(create_move_location.errors.full_messages).to be_empty
   end
 
-  it "will not be valid if the child location is protected" do
+  it "will not be valid if the child location is protected and user is scientist" do
+    protected_location = create(:location, protect: true)
+
+    create_move_location.submit(params.merge(move_location_form:
+      { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => protected_location.barcode, "user_code" => sci_swipe_card_id }))
+    expect(create_move_location.errors.full_messages).to include("Location with barcode #{protected_location.barcode} #{I18n.t('errors.messages.protected')}")
+  end
+
+  it "will be valid if the child location is protected and user is technician or above" do
     protected_location = create(:location, protect: true)
 
     create_move_location.submit(params.merge(move_location_form:
       { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => protected_location.barcode, "user_code" => tech_swipe_card_id }))
-    expect(create_move_location.errors.full_messages).to include("Location with barcode #{protected_location.barcode} #{I18n.t('errors.messages.protected')}")
+    expect(create_move_location.errors.full_messages).to be_empty
   end
 
   it "will be valid if the child location is not protected" do
