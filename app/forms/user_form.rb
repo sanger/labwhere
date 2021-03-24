@@ -10,50 +10,44 @@ class UserForm
 
   set_form_variables :user_code, current_user: :find_current_user
 
-  delegate :becomes, to: :user
+  delegate :login, :swipe_card_id, :barcode, :team_id, :type, :status, to: :user
+
+  validate :check_user
+
+  def initialize(user = nil)
+    @user = user || User.new
+  end
 
   def submit(params)
     @params = params
-    assign_params
-    @current_user = find_current_user
+    assign_attributes(params)
 
-    case @params[:commit]
-    when "Update User"
-      update_user
-    when "Create User"
-      create_user
-    else
-      false
+    ActiveRecord::Base.transaction do
+      @params[:user][:swipe_card_id] = Digest::SHA1.hexdigest(@params[:user][:swipe_card_id]) if @params[:user][:swipe_card_id].present? && persisted?
+      user.update(@params[:user].permit(:swipe_card_id, :barcode, :status, :team_id, :type, :login))
+      if valid?
+        user.create_audit(current_user)
+        true
+      else
+        raise ActiveRecord::Rollback
+      end
     end
   end
 
-  def assign_params
-    @swipe_card_id = params[:user][:swipe_card_id]
-    @barcode = params[:user][:barcode]
+  def assign_attributes(params)
     @user_code = params[:user][:user_code]
+    @current_user = find_current_user
+    @controller = params[:controller]
+    @action = params[:action]
   end
 
-  def update_user
-    @user = model
-    return false unless check_user
-
-    @params[:user][:swipe_card_id] = Digest::SHA1.hexdigest(@params[:user][:swipe_card_id]) if @params[:user][:swipe_card_id].present?
-    user.update(@params[:user].permit(:swipe_card_id, :barcode, :status, :team_id, :type, :login))
-    return false unless valid?
-
-    user.create_audit(current_user)
-    true
+  def persisted?
+    # checks if it is a new record or existing
+    user.id?
   end
 
-  def create_user
-    @user = User.new
-    return false unless check_user
-
-    user.update(@params[:user].permit(:login, :swipe_card_id, :barcode, :team_id, :type, :status))
-    return false unless valid?
-
-    user.create_audit(current_user)
-    true
+  def model
+    @user
   end
 
   private
@@ -63,12 +57,6 @@ class UserForm
   end
 
   def check_user
-    if current_user.technician? && user.administrator?
-      errors.add(:base, "Technician's cannot edit admin users")
-    elsif current_user.technician? && @params[:user][:type] == "Administrator"
-      errors.add(:base, "Technician's cannot set user's type to Administrator")
-    end
     UserValidator.new.validate(self)
-    errors.blank?
   end
 end
