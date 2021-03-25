@@ -8,13 +8,28 @@ module Permissions
     def initialize(user)
       super
       allow :scans, [:create]
-      # Check if Scientists should be able to upload labware
       allow :upload_labware, [:create]
-      allow :move_locations, [:create]
+      allow :move_locations, [:create] do |record|
+        check_locations(record)
+        # Users cannot move a protected location
+      end
       allow :empty_locations, [:create]
+      allow :users, [:update] do |record|
+        record.user.id == user.id && record.user.type == user.type
+        # Users can update themselves but not change their types
+      end
       allow "api/scans", [:create]
       allow "api/coordinates", [:update]
       allow "api/locations/coordinates", [:update]
+    end
+
+    def check_locations(record)
+      protected_locations = record.child_locations.each(&:protect?)
+      if protected_locations.blank?
+        true
+      else
+        record.errors.add(:base, "Location with barcode #{protected_locations.map(&:barcode).join(', ')} #{I18n.t('errors.messages.protected')}")
+      end
     end
   end
 end

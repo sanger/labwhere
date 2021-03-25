@@ -17,8 +17,20 @@ RSpec.describe UserForm, type: :model do
 
     it "if user is unauthorised (scientist) then swipe card id should not be updated" do
       expect {
-        UserForm.new(scientist).submit(params.merge(user: { swipe_card_id: '12345', user_code: sci_swipe_card_id }))
+        subject.submit(params.merge(user: { swipe_card_id: '12345', user_code: sci_swipe_card_id }))
       }.to_not change { technician.reload.swipe_card_id }
+    end
+
+    it "if user is scientist then they can edit themselves" do
+      expect {
+        UserForm.new(scientist).submit(params.merge(user: { swipe_card_id: '12345', user_code: sci_swipe_card_id }))
+      }.to change { scientist.reload.swipe_card_id }
+    end
+
+    it "if user is scientist then they can edit themselves but not change their type" do
+      expect {
+        UserForm.new(scientist).submit(params.merge(user: { type: "Administrator", user_code: sci_swipe_card_id }))
+      }.to_not change { scientist.reload.type }
     end
 
     it "if user is authorised and swipe card is valid it should be updated" do
