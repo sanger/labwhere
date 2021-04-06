@@ -15,8 +15,7 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
     unprotected_location = create(:location, protect: false)
     params = ActionController::Parameters.new(controller: "move_locations", action: "create",
                                               user: { user_code: sci_swipe_card_id },
-                                              move_location_form: { child_location_barcodes: unprotected_location.barcode, parent_location_barcodes: '1234'
-    })
+                                              move_location_form: { child_location_barcodes: unprotected_location.barcode, parent_location_barcodes: '1234' })
     move_location_form = MoveLocationForm.new
     move_location_form.assign_params(params)
     move_location_form.assign_attributes
@@ -28,8 +27,7 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
     protected_location = create(:location, protect: true)
     params = ActionController::Parameters.new(controller: "move_locations", action: "create",
                                               user: { user_code: sci_swipe_card_id },
-                                              move_location_form: { child_location_barcodes: protected_location.barcode, parent_location_barcodes: '1234'
-    })
+                                              move_location_form: { child_location_barcodes: protected_location.barcode, parent_location_barcodes: '1234' })
     move_location_form = MoveLocationForm.new
     move_location_form.assign_params(params)
     move_location_form.assign_attributes
