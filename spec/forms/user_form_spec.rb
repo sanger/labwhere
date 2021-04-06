@@ -76,8 +76,9 @@ RSpec.describe UserForm, type: :model do
     end
 
     it "if user is technician they should not be able to make users an admin user" do
-      subject.submit(params.merge(user: { type: "Administrator", user_code: tech_swipe_card_id }))
-      expect(subject.errors.full_messages).to include("Technician's cannot set user's type to Administrator")
+      new_user = UserForm.new
+      new_user.submit(params.merge(user: { type: "Administrator", user_code: tech_swipe_card_id }))
+      expect(new_user.errors.full_messages).to include("Technician's cannot set user's type to Administrator")
     end
   end
 

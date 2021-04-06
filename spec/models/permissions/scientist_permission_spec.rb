@@ -3,7 +3,8 @@
 require "rails_helper"
 
 RSpec.describe Permissions::ScientistPermission, type: :model do
-  let!(:scientist) { create(:scientist) }
+  let(:sci_swipe_card_id) { generate(:swipe_card_id) }
+  let(:scientist) { create(:scientist, swipe_card_id: sci_swipe_card_id) }
   let(:permissions) { Permissions.permission_for(scientist) }
 
   it "should allow access to create a scan" do
@@ -12,12 +13,28 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
 
   it "should allow access to move a location" do
     unprotected_location = create(:location, protect: false)
-    expect(permissions).to allow_permission(:move_locations, :create, unprotected_location)
+    params = ActionController::Parameters.new(controller: "move_locations", action: "create",
+                                              user: { user_code: sci_swipe_card_id },
+                                              move_location_form: { child_location_barcodes: unprotected_location.barcode, parent_location_barcodes: '1234'
+    })
+    move_location_form = MoveLocationForm.new
+    move_location_form.assign_params(params)
+    move_location_form.assign_attributes
+
+    expect(permissions).to allow_permission(:move_locations, :create, move_location_form)
   end
 
   it "should not be allowed to move a protected location" do
     protected_location = create(:location, protect: true)
-    expect(permissions).to_not allow_permission(:move_locations, :create, protected_location)
+    params = ActionController::Parameters.new(controller: "move_locations", action: "create",
+                                              user: { user_code: sci_swipe_card_id },
+                                              move_location_form: { child_location_barcodes: protected_location.barcode, parent_location_barcodes: '1234'
+    })
+    move_location_form = MoveLocationForm.new
+    move_location_form.assign_params(params)
+    move_location_form.assign_attributes
+
+    expect(permissions).to_not allow_permission(:move_locations, :create, move_location_form)
   end
 
   it "should allow access to empty a location" do
@@ -51,7 +68,11 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
   end
 
   it "should allow access to modify their own user" do
-    expect(permissions).to allow_permission(:users, :update, scientist)
+    params = ActionController::Parameters.new(controller: "users", action: "update", user: { user_code: sci_swipe_card_id })
+    scientist_form = UserForm.new(scientist)
+    scientist_form.assign_attributes(params)
+
+    expect(permissions).to allow_permission(:users, :update, scientist_form)
   end
 
   it "should not allow access to create or modify a user" do

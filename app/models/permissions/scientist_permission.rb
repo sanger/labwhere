@@ -24,11 +24,12 @@ module Permissions
     end
 
     def check_locations(record)
-      protected_locations = record.child_locations.each(&:protect?)
+      protected_locations = record.child_locations.select(&:protect?)
       if protected_locations.blank?
         true
       else
         record.errors.add(:base, "Location with barcode #{protected_locations.map(&:barcode).join(', ')} #{I18n.t('errors.messages.protected')}")
+        false
       end
     end
   end

@@ -56,7 +56,7 @@ RSpec.describe "MoveLocations", type: :feature do
       fill_in "Location barcodes to be moved (Child location)", with: protected_child_location.barcode.to_s
       click_button "Go!"
     end.to_not change(parent_location.children, :count)
-    expect(page).to have_content("error prohibited this record from being saved")
+    expect(page).to have_content("errors prohibited this record from being saved")
     expect(page).to have_content("Location with barcode #{protected_child_location.barcode} is protected and cannot be moved")
   end
 
