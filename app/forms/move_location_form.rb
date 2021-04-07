@@ -18,7 +18,7 @@ class MoveLocationForm
 
   def submit(params)
     @params = params
-    assign_params(params)
+    assign_params
     assign_attributes
     if valid?
       create_audits
@@ -28,7 +28,7 @@ class MoveLocationForm
     end
   end
 
-  def assign_params(params)
+  def assign_params
     @controller = params[:controller]
     @action = params[:action]
     @user_code = params[form_name][:user_code]

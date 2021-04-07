@@ -23,6 +23,8 @@ module Permissions
       allow "api/locations/coordinates", [:update]
     end
 
+    private
+
     def check_locations(record)
       protected_locations = record.child_locations.select(&:protect?)
       if protected_locations.blank?

@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe LocationForm, type: :model do
   let(:params) { attributes_for(:location) }
-  let(:controller_params) { { controller: "location", action: "create" } }
+  let(:controller_params) { { controller: "locations", action: "create" } }
   let!(:admin_swipe_card_id) { generate(:swipe_card_id) }
   let!(:administrator) { create(:administrator, swipe_card_id: admin_swipe_card_id) }
   let!(:tech_swipe_card_id) { generate(:swipe_card_id) }
@@ -77,7 +77,7 @@ RSpec.describe LocationForm, type: :model do
   end
 
   it "can be destroyed if it has not been used" do
-    controller_params = { controller: "location", action: "create" }
+    controller_params = { controller: "locations", action: "create" }
     params = ActionController::Parameters.new(controller_params)
     location = create(:location, name: 'Test Location')
     location_form = LocationForm.new(location)

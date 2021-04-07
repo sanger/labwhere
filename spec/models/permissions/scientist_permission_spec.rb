@@ -13,24 +13,16 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
 
   it "should allow access to move a location" do
     unprotected_location = create(:location, protect: false)
-    params = ActionController::Parameters.new(controller: "move_locations", action: "create",
-                                              user: { user_code: sci_swipe_card_id },
-                                              move_location_form: { child_location_barcodes: unprotected_location.barcode, parent_location_barcodes: '1234' })
     move_location_form = MoveLocationForm.new
-    move_location_form.assign_params(params)
-    move_location_form.assign_attributes
+    allow(move_location_form).to receive(:child_locations).and_return([unprotected_location])
 
     expect(permissions).to allow_permission(:move_locations, :create, move_location_form)
   end
 
   it "should not be allowed to move a protected location" do
     protected_location = create(:location, protect: true)
-    params = ActionController::Parameters.new(controller: "move_locations", action: "create",
-                                              user: { user_code: sci_swipe_card_id },
-                                              move_location_form: { child_location_barcodes: protected_location.barcode, parent_location_barcodes: '1234' })
     move_location_form = MoveLocationForm.new
-    move_location_form.assign_params(params)
-    move_location_form.assign_attributes
+    allow(move_location_form).to receive(:child_locations).and_return([protected_location])
 
     expect(permissions).to_not allow_permission(:move_locations, :create, move_location_form)
   end
@@ -66,9 +58,8 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
   end
 
   it "should allow access to modify their own user" do
-    params = ActionController::Parameters.new(controller: "users", action: "update", user: { user_code: sci_swipe_card_id })
     scientist_form = UserForm.new(scientist)
-    scientist_form.assign_attributes(params)
+    allow(scientist_form).to receive(:user).and_return(scientist)
 
     expect(permissions).to allow_permission(:users, :update, scientist_form)
   end
