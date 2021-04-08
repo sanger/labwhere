@@ -15,7 +15,7 @@ module Permissions
       end
       allow :empty_locations, [:create]
       allow :users, [:update] do |record|
-        record.user.id == user.id && record.user.type == user.type
+        check_user(record, user)
         # Users can update themselves but not change their types
       end
       allow "api/scans", [:create]
@@ -24,6 +24,15 @@ module Permissions
     end
 
     private
+
+    def check_user(record, user)
+      if record.user.id == user.id && record.user.type != user.type
+        record.errors.add(:base, "You do not have permission to change your user type")
+        false
+      else
+        record.user.id == user.id
+      end
+    end
 
     def check_locations(record)
       protected_locations = record.child_locations.select(&:protect?)

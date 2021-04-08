@@ -28,9 +28,11 @@ RSpec.describe UserForm, type: :model do
     end
 
     it "if user is scientist then they can edit themselves but not change their type" do
+      scientist_form = UserForm.new(scientist)
       expect {
-        UserForm.new(scientist).submit(params.merge(user: { type: "Administrator", user_code: sci_swipe_card_id }))
+        scientist_form.submit(params.merge(user: { type: "Administrator", user_code: sci_swipe_card_id }))
       }.to_not change { scientist.reload.type }
+      expect(scientist_form.errors.full_messages).to include("You do not have permission to change your user type")
     end
 
     it "if user is authorised and swipe card is valid it should be updated" do
@@ -72,13 +74,19 @@ RSpec.describe UserForm, type: :model do
     it "if user is technician they should not be able to update an admin user" do
       admin = UserForm.new(administrator)
       admin.submit(params.merge(user: { user_code: tech_swipe_card_id }))
-      expect(admin.errors.full_messages).to include("Technician's cannot edit admin users")
+      expect(admin.errors.full_messages).to include("Technician's cannot create/edit admin users")
+    end
+
+    it "if user is technician they should not be able to update an admin user's type" do
+      admin = UserForm.new(administrator)
+      admin.submit(params.merge(user: { user_code: tech_swipe_card_id, type: "Technician" }))
+      expect(admin.errors.full_messages).to include("Technician's cannot create/edit admin users")
     end
 
     it "if user is technician they should not be able to make users an admin user" do
       new_user = UserForm.new
       new_user.submit(params.merge(user: { type: "Administrator", user_code: tech_swipe_card_id }))
-      expect(new_user.errors.full_messages).to include("Technician's cannot set user's type to Administrator")
+      expect(new_user.errors.full_messages).to include("Technician's cannot create/edit admin users")
     end
   end
 
@@ -98,12 +106,12 @@ RSpec.describe UserForm, type: :model do
     end
 
     it "if swipe card id is left blank it will error" do
-      expect(subject.submit(params.merge(user: { user_code: tech_swipe_card_id, login: "swipe", swipe_card_id: "", team_id: 1, type: "Technician", status: "active" })))
+      subject.submit(params.merge(user: { user_code: tech_swipe_card_id, login: "swipe", swipe_card_id: "", team_id: 1, type: "Technician", status: "active" }))
       expect(subject.errors.full_messages).to include("Swipe card or Barcode must be completed")
     end
 
     it "if login is left blank it will error" do
-      expect(subject.submit(params.merge(user: { user_code: tech_swipe_card_id, login: "", swipe_card_id: "swipe", team_id: 1, type: "Technician", status: "active" })))
+      subject.submit(params.merge(user: { user_code: tech_swipe_card_id, login: "", swipe_card_id: "swipe", team_id: 1, type: "Technician", status: "active" }))
       expect(subject.errors.full_messages).to include("Login can't be blank")
     end
   end

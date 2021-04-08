@@ -46,6 +46,16 @@ RSpec.describe Permissions::TechnicianPermission, type: :model do
     expect(permissions).to allow_permission(:locations, :update, location_form)
   end
 
+  it "should not be allowed to make an unprotected location protected" do
+    unprotected_location = create(:location, protect: false)
+    action = "update"
+    location_form = LocationForm.new(unprotected_location)
+    location_form.location.protect = true
+    allow(location_form).to receive(:action).and_return(action)
+
+    expect(permissions).to_not allow_permission(:locations, :update, location_form)
+  end
+
   it "should not be allowed to edit a protected location" do
     protected_location = create(:location, protect: true)
     action = "update"
@@ -73,14 +83,44 @@ RSpec.describe Permissions::TechnicianPermission, type: :model do
     expect(permissions).to_not allow_permission(:locations, :create, location_form)
   end
 
+  it "should be allowed to edit a non-admin user" do
+    user = create(:scientist)
+    user_form = UserForm.new(user)
+
+    expect(permissions).to allow_permission(:users, :update, user_form)
+  end
+
+  it "should not be allowed to make a non-admin user an admin" do
+    user = create(:scientist)
+    user_form = UserForm.new(user)
+    user_form.user.type = "Administrator"
+
+    expect(permissions).to_not allow_permission(:users, :update, user_form)
+  end
+
+  it "should not be allowed to edit an admin user" do
+    user = create(:administrator)
+    user_form = UserForm.new(user)
+
+    expect(permissions).to_not allow_permission(:users, :update, user_form)
+  end
+
+  it "should be allowed to create a non-admin user" do
+    user_form = UserForm.new
+    user_form.user.type = "Scientist"
+    expect(permissions).to allow_permission(:users, :create, user_form)
+  end
+
+  it "should not be allowed to create an admin user" do
+    user_form = UserForm.new
+    user_form.user.type = "Administrator"
+
+    expect(permissions).to_not allow_permission(:users, :create, user_form)
+  end
+
   it "should allow access to create or modify a location type" do
     expect(permissions).to allow_permission(:location_types, :create)
     expect(permissions).to allow_permission(:location_types, :update)
-  end
-
-  it "should allow access to create or modify a user" do
-    expect(permissions).to allow_permission(:users, :create)
-    expect(permissions).to allow_permission(:users, :update)
   end
 
   it "should allow access to create or modify a team" do
