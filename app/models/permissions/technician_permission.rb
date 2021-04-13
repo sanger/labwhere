@@ -24,7 +24,7 @@ module Permissions
 
     def check_user(record)
       # If user type is creating an admin or is editing an admin then error
-      if record.user.type == "Administrator" || record.user.instance_of(Administrator)
+      if record.user.type == "Administrator" || record.user.instance_of?(Administrator)
         record.errors.add(:base, "Technician's cannot create/edit admin users")
         false
       else
