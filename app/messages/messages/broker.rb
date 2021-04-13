@@ -40,6 +40,8 @@ module Messages
                               password: bunny_config.broker_password,
                               vhost: bunny_config.vhost
       @connection.start
+    rescue StandardError => e
+      debugger
     end
 
     def open_channel
