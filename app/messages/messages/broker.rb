@@ -61,7 +61,11 @@ module Messages
     end
 
     def publish(message)
-      @exchange&.publish(message.payload, routing_key: bunny_config['routing_key'])
+      begin
+        @exchange&.publish(message.payload, routing_key: bunny_config['routing_key'])
+      rescue StandardError => e
+        ExceptionNotifier.notify_exception(e)
+      end
     end
   end
 end
