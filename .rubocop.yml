@@ -24,6 +24,7 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
+    - 'config/environments/*.rb'
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
