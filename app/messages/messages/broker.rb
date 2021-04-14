@@ -26,16 +26,14 @@ module Messages
     end
 
     def connect!
-      begin
-        start_connection
-        open_channel
-        instantiate_exchange
-        declare_queue
-        bind_queue
-      rescue StandardError => e
-        Rails.logger.error("Cannot connect with RabbitMQ.")
-        ExceptionNotifier.notify_exception(e)
-      end
+      start_connection
+      open_channel
+      instantiate_exchange
+      declare_queue
+      bind_queue
+    rescue StandardError => e
+      Rails.logger.error("Cannot connect with RabbitMQ.")
+      ExceptionNotifier.notify_exception(e)
     end
 
     def start_connection
@@ -64,12 +62,10 @@ module Messages
     end
 
     def publish(message)
-      begin
-        exchange.publish(message.payload, routing_key: bunny_config['routing_key'])
-      rescue StandardError => e
-        Rails.logger.error("Cannot publish to RabbitMQ.")
-        ExceptionNotifier.notify_exception(e)
-      end
+      exchange.publish(message.payload, routing_key: bunny_config['routing_key'])
+    rescue StandardError => e
+      Rails.logger.error("Cannot publish to RabbitMQ.")
+      ExceptionNotifier.notify_exception(e)
     end
   end
 end
