@@ -7,7 +7,7 @@ RSpec.describe Messages::Broker do
 
   let(:bunny_config) do
     {
-      enabled: true,
+      enabled: true
     }
   end
 
