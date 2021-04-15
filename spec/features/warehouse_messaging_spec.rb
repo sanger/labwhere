@@ -45,15 +45,11 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
 
     context 'when we can connect and publish' do
       let(:double_exchange) { double('exchange') }
+
       before do
         allow_any_instance_of(Messages::Broker).to receive(:connect).and_return(true)
         allow_any_instance_of(Messages::Broker).to receive(:exchange).and_return(double_exchange)
         allow(double_exchange).to receive(:publish)
-      end
-
-      it 'connects to the queues' do
-        testing_scenario
-        expect(Messages::Broker).to have_received(:connect).exactly(1).times
       end
 
       it 'publishes in the queues' do
