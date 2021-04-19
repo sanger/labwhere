@@ -14,6 +14,8 @@ module Permissions
       allow :teams, [:create, :update]
       allow :users, [:create, :update] do |record|
         !record.user.administrator? && !record.user.instance_of?(Administrator)
+        # instance_of?(Administrator) checks the user being edited isnt an Administrator
+        # .administrator? checks the type of the user isnt being set as Administrator
       end
       allow :locations, [:create, :update] do |record|
         !record.location.protected_changed?
