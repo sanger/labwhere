@@ -43,20 +43,20 @@ RSpec.describe LocationForm, type: :model do
   it "technician's cannot create a protected location" do
     location_form = LocationForm.new
     res = location_form.submit(
-      controller_params.merge(location: params.except(:name).merge(user_code: tech_swipe_card_id, protect: "1"))
+      controller_params.merge(location: params.merge(user_code: tech_swipe_card_id, protected: "1"))
     )
     expect(res).to be_falsey
-    expect(location_form.errors.full_messages).to include("Technician's cannot create/edit protected locations")
+    expect(location_form.errors.full_messages).to include("User is not authorised")
   end
 
   it "technician's cannot edit a protected location" do
     location = create(:location)
     location_form = LocationForm.new(location)
     res = location_form.update(
-      controller_params.merge(location: params.except(:name).merge(user_code: tech_swipe_card_id, protect: "1"), action: "update")
+      controller_params.merge(location: params.except(:name).merge(user_code: tech_swipe_card_id, protected: "1"), action: "update")
     )
     expect(res).to be_falsey
-    expect(location_form.errors.full_messages).to include("Technician's cannot create/edit protected locations")
+    expect(location_form.errors.full_messages).to include("User is not authorised")
   end
 
   it "can be edited if exists" do

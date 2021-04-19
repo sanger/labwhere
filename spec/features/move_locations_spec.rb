@@ -11,7 +11,7 @@ RSpec.describe "MoveLocations", type: :feature do
   let!(:scientist) { create(:scientist, swipe_card_id: sci_swipe_card_id) }
   let!(:parent_location)  { create(:location_with_parent) }
   let!(:child_locations)  { create_list(:location_with_parent, 5) }
-  let!(:protected_child_location) { create(:location_with_parent, protect: true) }
+  let!(:protected_child_location) { create(:location_with_parent, protected: true) }
 
   # TODO: refactor below
   it "allows a technician user to move locations" do
@@ -56,7 +56,7 @@ RSpec.describe "MoveLocations", type: :feature do
       fill_in "Location barcodes to be moved (Child location)", with: protected_child_location.barcode.to_s
       click_button "Go!"
     end.to_not change(parent_location.children, :count)
-    expect(page).to have_content("errors prohibited this record from being saved")
+    expect(page).to have_content("error prohibited this record from being saved")
     expect(page).to have_content("Location with barcode #{protected_child_location.barcode} is protected and cannot be moved")
   end
 

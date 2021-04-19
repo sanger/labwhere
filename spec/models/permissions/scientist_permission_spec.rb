@@ -11,20 +11,8 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
     expect(permissions).to allow_permission(:scans, :create)
   end
 
-  it "should allow access to move an unprotected location" do
-    unprotected_location = create(:location, protect: false)
-    move_location_form = MoveLocationForm.new
-    allow(move_location_form).to receive(:child_locations).and_return([unprotected_location])
-
-    expect(permissions).to allow_permission(:move_locations, :create, move_location_form)
-  end
-
-  it "should not be allowed to move a protected location" do
-    protected_location = create(:location, protect: true)
-    move_location_form = MoveLocationForm.new
-    allow(move_location_form).to receive(:child_locations).and_return([protected_location])
-
-    expect(permissions).to_not allow_permission(:move_locations, :create, move_location_form)
+  it "should allow access to move locations" do
+    expect(permissions).to allow_permission(:move_locations, :create)
   end
 
   it "should allow access to empty a location" do

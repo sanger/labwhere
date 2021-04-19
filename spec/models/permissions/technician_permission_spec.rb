@@ -3,6 +3,8 @@
 require "rails_helper"
 
 RSpec.describe Permissions::TechnicianPermission, type: :model do
+  let!(:scientist) { create(:scientist) }
+  let!(:administrator) { create(:administrator) }
   let(:permissions) { Permissions.permission_for(build(:technician)) }
 
   it "should allow access to create a scan" do
@@ -14,7 +16,7 @@ RSpec.describe Permissions::TechnicianPermission, type: :model do
   end
 
   it "should be allowed to move a protected location" do
-    protected_location = create(:location, protect: true)
+    protected_location = create(:location, protected: true)
     move_location_form = MoveLocationForm.new
     allow(move_location_form).to receive(:child_locations).and_return([protected_location])
 
@@ -38,7 +40,7 @@ RSpec.describe Permissions::TechnicianPermission, type: :model do
   end
 
   it "should be allowed to edit an unprotected location" do
-    unprotected_location = create(:location, protect: false)
+    unprotected_location = create(:location, protected: false)
     action = "update"
     location_form = LocationForm.new(unprotected_location)
     allow(location_form).to receive(:action).and_return(action)
@@ -47,19 +49,20 @@ RSpec.describe Permissions::TechnicianPermission, type: :model do
   end
 
   it "should not be allowed to make an unprotected location protected" do
-    unprotected_location = create(:location, protect: false)
+    unprotected_location = create(:location, protected: false)
     action = "update"
     location_form = LocationForm.new(unprotected_location)
-    location_form.location.protect = true
+    location_form.location.protected = true
     allow(location_form).to receive(:action).and_return(action)
 
     expect(permissions).to_not allow_permission(:locations, :update, location_form)
   end
 
-  it "should not be allowed to edit a protected location" do
-    protected_location = create(:location, protect: true)
+  it "should not be allowed to make a protected location unprotected" do
+    protected_location = create(:location, protected: true)
     action = "update"
     location_form = LocationForm.new(protected_location)
+    location_form.location.protected = false
     allow(location_form).to receive(:action).and_return(action)
 
     expect(permissions).to_not allow_permission(:locations, :update, location_form)
@@ -68,7 +71,7 @@ RSpec.describe Permissions::TechnicianPermission, type: :model do
   it "should be allowed to create a unprotected location" do
     action = "create"
     location_form = LocationForm.new
-    location_form.location.protect = false
+    location_form.location.protected = false
     allow(location_form).to receive(:action).and_return(action)
 
     expect(permissions).to allow_permission(:locations, :create, location_form)
@@ -77,30 +80,27 @@ RSpec.describe Permissions::TechnicianPermission, type: :model do
   it "should not be allowed to create a protected location" do
     action = "create"
     location_form = LocationForm.new
-    location_form.location.protect = true
+    location_form.location.protected = true
     allow(location_form).to receive(:action).and_return(action)
 
     expect(permissions).to_not allow_permission(:locations, :create, location_form)
   end
 
   it "should be allowed to edit a non-admin user" do
-    user = create(:scientist)
-    user_form = UserForm.new(user)
+    user_form = UserForm.new(scientist)
 
     expect(permissions).to allow_permission(:users, :update, user_form)
   end
 
   it "should not be allowed to make a non-admin user an admin" do
-    user = create(:scientist)
-    user_form = UserForm.new(user)
+    user_form = UserForm.new(scientist)
     user_form.user.type = "Administrator"
 
     expect(permissions).to_not allow_permission(:users, :update, user_form)
   end
 
   it "should not be allowed to edit an admin user" do
-    user = create(:administrator)
-    user_form = UserForm.new(user)
+    user_form = UserForm.new(administrator)
 
     expect(permissions).to_not allow_permission(:users, :update, user_form)
   end

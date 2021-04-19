@@ -7,7 +7,7 @@ namespace :protected_locations do
     Location.all.each do |location|
       if location.location_type_id.present?
         location_type = LocationType.find(location.location_type_id).name
-        location.protect = true if protected_locations.include?(location_type)
+        location.protected = true if protected_locations.include?(location_type)
         location.save
       end
       next

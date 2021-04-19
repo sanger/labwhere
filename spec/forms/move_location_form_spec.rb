@@ -18,12 +18,6 @@ RSpec.describe MoveLocationForm, type: :model do
     expect(create_move_location.errors.full_messages).to include("User #{I18n.t('errors.messages.existence')}")
   end
 
-  it "will not be valid with an unauthorised user (scientist)" do
-    create_move_location.submit(params.merge(move_location_form:
-      { "parent_location_barcode" => 'lw-no-location-here', "child_location_barcodes" => child_locations.join_barcodes, "user_code" => sci_swipe_card_id }))
-    expect(create_move_location.errors.full_messages).to include("Parent location #{I18n.t('errors.messages.existence')}")
-  end
-
   it "will not be valid without a location" do
     create_move_location.submit(params.merge(move_location_form:
       { "parent_location_barcode" => 'lw-no-location-here', "child_location_barcodes" => child_locations.join_barcodes, "user_code" => tech_swipe_card_id }))
@@ -47,7 +41,7 @@ RSpec.describe MoveLocationForm, type: :model do
   end
 
   it "will not be valid if the child location is protected and user is scientist" do
-    protected_location = create(:location, protect: true)
+    protected_location = create(:location, protected: true)
 
     create_move_location.submit(params.merge(move_location_form:
       { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => protected_location.barcode, "user_code" => sci_swipe_card_id }))
@@ -55,7 +49,7 @@ RSpec.describe MoveLocationForm, type: :model do
   end
 
   it "will be valid if the child location is protected and user is technician or above" do
-    protected_location = create(:location, protect: true)
+    protected_location = create(:location, protected: true)
 
     create_move_location.submit(params.merge(move_location_form:
       { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => protected_location.barcode, "user_code" => tech_swipe_card_id }))
@@ -63,7 +57,7 @@ RSpec.describe MoveLocationForm, type: :model do
   end
 
   it "will be valid if the child location is not protected" do
-    protected_location = create(:location, protect: false)
+    protected_location = create(:location, protected: false)
 
     create_move_location.submit(params.merge(move_location_form:
       { "parent_location_barcode" => parent_location.barcode, "child_location_barcodes" => protected_location.barcode, "user_code" => tech_swipe_card_id }))

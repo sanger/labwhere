@@ -9,39 +9,15 @@ module Permissions
       super
       allow :scans, [:create]
       allow :upload_labware, [:create]
-      allow :move_locations, [:create] do |record|
-        check_locations(record)
-        # Users cannot move a protected location
-      end
+      allow :move_locations, [:create]
       allow :empty_locations, [:create]
       allow :users, [:update] do |record|
-        check_user(record, user)
-        # Users can update themselves but not change their types
+        user.id == record.user.id && record.user.type == "Scientist"
+        # Scientists can update themselves but not change their types
       end
       allow "api/scans", [:create]
       allow "api/coordinates", [:update]
       allow "api/locations/coordinates", [:update]
-    end
-
-    private
-
-    def check_user(record, user)
-      if record.user.id == user.id && record.user.type != user.type
-        record.errors.add(:base, "You do not have permission to change your user type")
-        false
-      else
-        record.user.id == user.id
-      end
-    end
-
-    def check_locations(record)
-      protected_locations = record.child_locations.select(&:protect?)
-      if protected_locations.blank?
-        true
-      else
-        record.errors.add(:base, "Location with barcode #{protected_locations.map(&:barcode).join(', ')} #{I18n.t('errors.messages.protected')}")
-        false
-      end
     end
   end
 end

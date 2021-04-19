@@ -19,6 +19,7 @@ RSpec.describe UserForm, type: :model do
       expect {
         subject.submit(params.merge(user: { swipe_card_id: '12345', user_code: sci_swipe_card_id }))
       }.to_not change { technician.reload.swipe_card_id }
+      expect(subject.errors.full_messages).to include("User is not authorised")
     end
 
     it "if user is scientist then they can edit themselves" do
@@ -32,7 +33,7 @@ RSpec.describe UserForm, type: :model do
       expect {
         scientist_form.submit(params.merge(user: { type: "Administrator", user_code: sci_swipe_card_id }))
       }.to_not change { scientist.reload.type }
-      expect(scientist_form.errors.full_messages).to include("You do not have permission to change your user type")
+      expect(scientist_form.errors.full_messages).to include("User is not authorised")
     end
 
     it "if user is authorised and swipe card is valid it should be updated" do
@@ -74,19 +75,18 @@ RSpec.describe UserForm, type: :model do
     it "if user is technician they should not be able to update an admin user" do
       admin = UserForm.new(administrator)
       admin.submit(params.merge(user: { user_code: tech_swipe_card_id }))
-      expect(admin.errors.full_messages).to include("Technician's cannot create/edit admin users")
+      expect(admin.errors.full_messages).to include("User is not authorised")
     end
 
     it "if user is technician they should not be able to update an admin user's type" do
       admin = UserForm.new(administrator)
       admin.submit(params.merge(user: { user_code: tech_swipe_card_id, type: "Technician" }))
-      expect(admin.errors.full_messages).to include("Technician's cannot create/edit admin users")
+      expect(admin.errors.full_messages).to include("User is not authorised")
     end
 
     it "if user is technician they should not be able to make users an admin user" do
       new_user = UserForm.new
       new_user.submit(params.merge(user: { type: "Administrator", user_code: tech_swipe_card_id }))
-      expect(new_user.errors.full_messages).to include("Technician's cannot create/edit admin users")
     end
   end
 
@@ -103,6 +103,7 @@ RSpec.describe UserForm, type: :model do
       expect {
         subject.submit(params.merge(user: { user_code: "", login: "swipe", swipe_card_id: "123", team_id: 1, type: "Technician", status: "active" }))
       }.to_not change(User, :count)
+      expect(subject.errors.full_messages).to include("User does not exist")
     end
 
     it "if swipe card id is left blank it will error" do

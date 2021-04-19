@@ -38,9 +38,9 @@
         <span class="note">(Can store labware)</span>
       </li>
       <li>
-        <%= f.check_box :protect, data: {toggle: "Protected"} %>
-        <%= f.label :protect %>
-        <span class="note">(Cannot be moved)</span>
+        <%= f.check_box :protected, data: {toggle: "Protected"} %>
+        <%= f.label :protected %>
+        <span class="note">(Can only be moved by an Admin)</span>
       </li>
       <div class="container-options" data-behavior="container">
         <li>

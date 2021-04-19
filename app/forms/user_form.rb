@@ -20,7 +20,7 @@ class UserForm
 
   def submit(params)
     @params = params
-    assign_attributes(params)
+    assign_attributes
 
     ActiveRecord::Base.transaction do
       @params[:user][:swipe_card_id] = Digest::SHA1.hexdigest(@params[:user][:swipe_card_id]) if @params[:user][:swipe_card_id].present? && persisted?
@@ -34,11 +34,11 @@ class UserForm
     end
   end
 
-  def assign_attributes(params)
-    @user_code = params[:user][:user_code]
+  def assign_attributes
+    @user_code = @params[:user][:user_code]
     @current_user = find_current_user
-    @controller = params[:controller]
-    @action = params[:action]
+    @controller = @params[:controller]
+    @action = @params[:action]
   end
 
   def persisted?
