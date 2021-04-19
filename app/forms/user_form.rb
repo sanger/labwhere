@@ -41,11 +41,6 @@ class UserForm
     @action = @params[:action]
   end
 
-  def persisted?
-    # checks if it is a new record or existing
-    user.id?
-  end
-
   def model
     @user
   end

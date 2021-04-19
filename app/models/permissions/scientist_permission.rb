@@ -12,7 +12,7 @@ module Permissions
       allow :move_locations, [:create]
       allow :empty_locations, [:create]
       allow :users, [:update] do |record|
-        user.id == record.user.id && record.user.type == "Scientist"
+        user.id == record.user.id && record.user.scientist?
         # Scientists can update themselves but not change their types
       end
       allow "api/scans", [:create]

@@ -13,7 +13,7 @@ module Permissions
       allow :location_types, [:create, :update]
       allow :teams, [:create, :update]
       allow :users, [:create, :update] do |record|
-        record.user.type != "Administrator" && !record.user.instance_of?(Administrator)
+        !record.user.administrator? && !record.user.instance_of?(Administrator)
       end
       allow :locations, [:create, :update] do |record|
         !record.location.protected_changed?
