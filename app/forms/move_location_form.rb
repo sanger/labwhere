@@ -76,9 +76,11 @@ class MoveLocationForm
 
   def check_child_locations
     child_locations.each do |location|
-      next if location.is_a?(Location)
-
-      errors.add(:base, "Location with barcode #{location} #{I18n.t('errors.messages.existence')}")
+      if location.is_a?(Location)
+        errors.add(:base, "Location with barcode #{location.barcode} #{I18n.t('errors.messages.protected')}") if location.protected && current_user.scientist?
+      else
+        errors.add(:base, "Location with barcode #{location} #{I18n.t('errors.messages.existence')}")
+      end
     end
   end
 
