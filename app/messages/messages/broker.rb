@@ -32,7 +32,7 @@ module Messages
       declare_queue
       bind_queue
     rescue StandardError => e
-      Rails.logger.error("Cannot connect with RabbitMQ.")
+      Rails.logger.error("Cannot connect with RabbitMQ: #{e.message}")
       ExceptionNotifier.notify_exception(e)
     end
 
@@ -64,7 +64,7 @@ module Messages
     def publish(message)
       exchange.publish(message.payload, routing_key: bunny_config['routing_key'])
     rescue StandardError => e
-      Rails.logger.error("Cannot publish to RabbitMQ.")
+      Rails.logger.error("Cannot publish to RabbitMQ: #{e.message}")
       ExceptionNotifier.notify_exception(e)
     end
   end
