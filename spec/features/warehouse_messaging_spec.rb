@@ -21,7 +21,8 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
 
   context 'when using RabbitMQ' do
     before do
-      Rails.configuration.bunny['enabled'] = true
+      bunny_config = { 'enabled' => true, 'broker_port' => 'xxxx', 'broker_host' => 'localhost' }
+      allow(Rails.configuration).to receive(:bunny).and_return(bunny_config)
 
       Object.send(:remove_const, :Broker) if Module.const_defined?(:Broker)
       load 'broker.rb'
@@ -30,6 +31,15 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
     context 'when we cannot connect to RabbitMQ' do
       it 'provides Labware basic functionality without failing' do
         expect { testing_scenario }.not_to raise_error
+        expect(page).to have_content "#{num_plates} labwares scanned in to Location"
+      end
+    end
+
+    context 'when we cannot connect to RabbitMQ' do
+      it 'groups error messages' do
+        allow(ExceptionNotifier).to receive(:notify_exception)
+        testing_scenario
+        expect(ExceptionNotifier).to have_received(:notify_exception).exactly(num_plates).times
       end
     end
 
