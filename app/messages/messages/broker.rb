@@ -13,12 +13,8 @@ module Messages
       @bunny_config = OpenStruct.new(bunny_config)
     end
 
-    def rabbitmq_enabled?
-      @bunny_config.enabled
-    end
-
     def create_connection
-      return false unless rabbitmq_enabled?
+      return false unless @bunny_config.enabled
 
       connected? || connect
     end

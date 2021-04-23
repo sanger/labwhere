@@ -28,12 +28,6 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
       stub_const("Broker::Handle", broker)
     end
 
-    # before do
-    #  allow(Messages::Broker).to receive(:rabbitmq_enabled?).and_return(true)
-    # bunny_config = { 'enabled' => true, 'broker_port' => 'xxxx', 'broker_host' => 'localhost' }
-    # allow(Rails.configuration).to receive(:bunny).and_return(bunny_config)
-    # end
-
     context 'when we cannot connect to RabbitMQ' do
       it 'provides Labware basic functionality without failing' do
         expect { testing_scenario }.not_to raise_error
