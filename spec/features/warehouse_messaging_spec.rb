@@ -23,9 +23,6 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
     before do
       bunny_config = { 'enabled' => true, 'broker_port' => 'xxxx', 'broker_host' => 'localhost' }
       allow(Rails.configuration).to receive(:bunny).and_return(bunny_config)
-
-      Object.send(:remove_const, :Broker) if Module.const_defined?(:Broker)
-      load 'broker.rb'
     end
 
     context 'when we cannot connect to RabbitMQ' do
