@@ -44,9 +44,11 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
     end
 
     context 'when we can connect but not publish to RabbitMQ' do
+      let(:double_exchange) { double('exchange') }
       before do
         allow(broker).to receive(:connect).and_return(true)
-        allow(broker).to receive(:exchange).and_return(true)
+        allow(broker).to receive(:exchange).and_return(double_exchange)
+        allow(double_exchange).to receive(:publish).and_raise('Boom!')
       end
       it 'provides Labware basic functionality without failing' do
         expect { testing_scenario }.not_to raise_error
