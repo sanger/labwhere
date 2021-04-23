@@ -20,19 +20,19 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
   end
 
   context 'when using RabbitMQ' do
-    let(:broker) { 
-      Messages::Broker.new('enabled' => true, 'broker_port' => 'xxxx', 'broker_host' => 'localhost' ) 
-    }
+    let(:broker) do
+      Messages::Broker.new('enabled' => true, 'broker_port' => 'xxxx', 'broker_host' => 'localhost')
+    end
 
     before do
       stub_const("Broker::Handle", broker)
     end
 
-    #before do
+    # before do
     #  allow(Messages::Broker).to receive(:rabbitmq_enabled?).and_return(true)
-      #bunny_config = { 'enabled' => true, 'broker_port' => 'xxxx', 'broker_host' => 'localhost' }
-      #allow(Rails.configuration).to receive(:bunny).and_return(bunny_config)
-    #end
+    # bunny_config = { 'enabled' => true, 'broker_port' => 'xxxx', 'broker_host' => 'localhost' }
+    # allow(Rails.configuration).to receive(:bunny).and_return(bunny_config)
+    # end
 
     context 'when we cannot connect to RabbitMQ' do
       it 'provides Labware basic functionality without failing' do
