@@ -13,7 +13,13 @@ module Messages
       @bunny_config = OpenStruct.new(bunny_config)
     end
 
+    def rabbitmq_enabled?
+      @bunny_config.enabled
+    end
+
     def create_connection
+      return false unless rabbitmq_enabled?
+
       connected? || connect
     end
 
@@ -31,9 +37,11 @@ module Messages
       instantiate_exchange
       declare_queue
       bind_queue
+      true
     rescue StandardError => e
       Rails.logger.error("Cannot connect with RabbitMQ: #{e.message}")
       ExceptionNotifier.notify_exception(e)
+      false
     end
 
     def start_connection
@@ -62,6 +70,12 @@ module Messages
     end
 
     def publish(message)
+      _publish(message) if create_connection
+    end
+
+    private
+
+    def _publish(message)
       exchange.publish(message.payload, routing_key: bunny_config['routing_key'])
     rescue StandardError => e
       Rails.logger.error("Cannot publish to RabbitMQ: #{e.message}")

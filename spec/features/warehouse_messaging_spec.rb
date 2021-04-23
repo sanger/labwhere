@@ -20,10 +20,19 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
   end
 
   context 'when using RabbitMQ' do
+    let(:broker) { 
+      Messages::Broker.new('enabled' => true, 'broker_port' => 'xxxx', 'broker_host' => 'localhost' ) 
+    }
+
     before do
-      bunny_config = { 'enabled' => true, 'broker_port' => 'xxxx', 'broker_host' => 'localhost' }
-      allow(Rails.configuration).to receive(:bunny).and_return(bunny_config)
+      stub_const("Broker::Handle", broker)
     end
+
+    #before do
+    #  allow(Messages::Broker).to receive(:rabbitmq_enabled?).and_return(true)
+      #bunny_config = { 'enabled' => true, 'broker_port' => 'xxxx', 'broker_host' => 'localhost' }
+      #allow(Rails.configuration).to receive(:bunny).and_return(bunny_config)
+    #end
 
     context 'when we cannot connect to RabbitMQ' do
       it 'provides Labware basic functionality without failing' do
@@ -42,8 +51,8 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
 
     context 'when we can connect but not publish to RabbitMQ' do
       before do
-        allow_any_instance_of(Messages::Broker).to receive(:connect).and_return(true)
-        allow_any_instance_of(Messages::Broker).to receive(:exchange).and_return(true)
+        allow(broker).to receive(:connect).and_return(true)
+        allow(broker).to receive(:exchange).and_return(true)
       end
       it 'provides Labware basic functionality without failing' do
         expect { testing_scenario }.not_to raise_error
@@ -54,8 +63,8 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
       let(:double_exchange) { double('exchange') }
 
       before do
-        allow_any_instance_of(Messages::Broker).to receive(:connect).and_return(true)
-        allow_any_instance_of(Messages::Broker).to receive(:exchange).and_return(double_exchange)
+        allow(broker).to receive(:connect).and_return(true)
+        allow(broker).to receive(:exchange).and_return(double_exchange)
         allow(double_exchange).to receive(:publish)
       end
 
