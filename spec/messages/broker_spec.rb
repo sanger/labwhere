@@ -7,15 +7,7 @@ RSpec.describe Messages::Broker do
 
   let(:bunny_config) do
     {
-      enabled: true,
-      broker_host: 'broker_host',
-      broker_port: 'broker_port',
-      broker_username: 'broker_username',
-      broker_password: 'broker_password',
-      vhost: 'vhost',
-      exchange: 'exchange',
-      queue_name: 'queue_name',
-      routing_key: 'routing_key'
+      enabled: true
     }
   end
 
@@ -75,6 +67,18 @@ RSpec.describe Messages::Broker do
       expect(broker).to receive(:connect)
       broker.create_connection
     end
+
+    it 'should not raise an exception when fails on connect' do
+      expect(broker).to receive(:start_connection).and_raise('RabbitMQ DOWN')
+      expect { broker.create_connection }.not_to raise_error
+    end
+
+    it 'logs the exception' do
+      allow(ExceptionNotifier).to receive(:notify_exception)
+      expect(broker).to receive(:start_connection).and_raise('RabbitMQ DOWN')
+      broker.create_connection
+      expect(ExceptionNotifier).to have_received(:notify_exception)
+    end
   end
 
   describe '#connected?' do
@@ -112,6 +116,20 @@ RSpec.describe Messages::Broker do
       mock_connection
       allow(exchange).to receive(:publish)
       broker.publish('message')
+    end
+
+    it 'should not raise an exception when fails' do
+      mock_connection
+      allow(exchange).to receive(:publish).and_raise('RabbitMQ DOWN')
+      expect { broker.publish('message') }.not_to raise_error
+    end
+
+    it 'logs the exception' do
+      allow(ExceptionNotifier).to receive(:notify_exception)
+      mock_connection
+      allow(exchange).to receive(:publish).and_raise('RabbitMQ DOWN')
+      broker.publish('message')
+      expect(ExceptionNotifier).to have_received(:notify_exception)
     end
   end
 end

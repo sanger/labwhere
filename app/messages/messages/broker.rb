@@ -14,6 +14,8 @@ module Messages
     end
 
     def create_connection
+      return false unless @bunny_config.enabled
+
       connected? || connect
     end
 
@@ -31,6 +33,11 @@ module Messages
       instantiate_exchange
       declare_queue
       bind_queue
+      true
+    rescue StandardError => e
+      Rails.logger.error("Cannot connect with RabbitMQ: #{e.message}")
+      ExceptionNotifier.notify_exception(e)
+      false
     end
 
     def start_connection
@@ -59,7 +66,16 @@ module Messages
     end
 
     def publish(message)
-      @exchange&.publish(message.payload, routing_key: bunny_config['routing_key'])
+      _publish(message) if create_connection
+    end
+
+    private
+
+    def _publish(message)
+      exchange.publish(message.payload, routing_key: bunny_config['routing_key'])
+    rescue StandardError => e
+      Rails.logger.error("Cannot publish to RabbitMQ: #{e.message}")
+      ExceptionNotifier.notify_exception(e)
     end
   end
 end
