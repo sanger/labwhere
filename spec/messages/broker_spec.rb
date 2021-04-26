@@ -11,6 +11,10 @@ RSpec.describe Messages::Broker do
     }
   end
 
+  let(:message) do
+    double('message', payload: 'some stuff')
+  end
+
   let(:channel) { double('channel') }
   let(:connection) { double('connection') }
   let(:exchange) { double('exchange') }
@@ -112,24 +116,39 @@ RSpec.describe Messages::Broker do
   end
 
   describe '#publish' do
-    it 'should publish the message' do
-      mock_connection
-      allow(exchange).to receive(:publish)
-      broker.publish('message')
+    context 'when not connected' do
+      before do
+        allow(broker).to receive(:connected?).and_return(false)
+      end
+      it 'does nothing' do
+        mock_connection
+        allow(exchange).to receive(:publish)
+        broker.publish(message)
+        expect(exchange).not_to have_received(:publish)
+      end
     end
+    context 'when connnected' do
+      before do
+        mock_connection
+        allow(broker).to receive(:connected?).and_return(true)
+        allow(broker).to receive(:exchange).and_return(exchange)
+      end
+      it 'should publish the message' do
+        expect(exchange).to receive(:publish)
+        broker.publish(message)
+      end
 
-    it 'should not raise an exception when fails' do
-      mock_connection
-      allow(exchange).to receive(:publish).and_raise('RabbitMQ DOWN')
-      expect { broker.publish('message') }.not_to raise_error
-    end
+      it 'should not raise an exception when fails' do
+        allow(exchange).to receive(:publish).and_raise('RabbitMQ DOWN')
+        expect { broker.publish(message) }.not_to raise_error
+      end
 
-    it 'logs the exception' do
-      allow(ExceptionNotifier).to receive(:notify_exception)
-      mock_connection
-      allow(exchange).to receive(:publish).and_raise('RabbitMQ DOWN')
-      broker.publish('message')
-      expect(ExceptionNotifier).to have_received(:notify_exception)
+      it 'logs the exception' do
+        allow(ExceptionNotifier).to receive(:notify_exception)
+        allow(exchange).to receive(:publish).and_raise('RabbitMQ DOWN')
+        broker.publish(message)
+        expect(ExceptionNotifier).to have_received(:notify_exception)
+      end
     end
   end
 end

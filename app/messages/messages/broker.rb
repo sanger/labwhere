@@ -67,7 +67,11 @@ module Messages
     end
 
     def publish(message)
-      _publish(message) if connected?
+      if connected?
+        _publish(message)
+      else
+        Rails.logger.error("Not connected to RabbitMQ not published: #{message}")
+      end
     end
 
     private
