@@ -7,6 +7,9 @@ class UploadLabwareController < ApplicationController
 
   def create
     @upload_labware = UploadLabwareForm.new
+
+    Broker::Handle.create_connection
+    
     if @upload_labware.submit(params)
       redirect_to new_upload_labware_path, notice: "Labware successfully uploaded."
     else
