@@ -38,7 +38,7 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
     context 'when we cannot connect to RabbitMQ' do
       let(:init_connection_count) { 1 }
       let(:publish_msg_count) { num_plates }
-      let(:num_exceptions) { init_connection_count+publish_msg_count }
+      let(:num_exceptions) { init_connection_count + publish_msg_count }
 
       it 'groups error messages' do
         allow(ExceptionNotifier).to receive(:notify_exception)

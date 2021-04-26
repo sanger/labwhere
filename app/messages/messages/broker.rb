@@ -45,7 +45,8 @@ module Messages
                               port: bunny_config.broker_port,
                               username: bunny_config.broker_username,
                               password: bunny_config.broker_password,
-                              vhost: bunny_config.vhost
+                              vhost: bunny_config.vhost,
+                              connection_timeout: 10 # Seconds to wait for connection
       @connection.start
     end
 
