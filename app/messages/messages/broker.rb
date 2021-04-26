@@ -67,6 +67,12 @@ module Messages
     end
 
     def publish(message)
+      _publish(message) if connected?
+    end
+
+    private
+
+    def _publish(message)
       exchange.publish(message.payload, routing_key: bunny_config['routing_key'])
     rescue StandardError => e
       Rails.logger.error("Cannot publish to RabbitMQ: #{e.message}")
