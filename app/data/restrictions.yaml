@@ -160,10 +160,3 @@
   location_type: Tray
   location_types_restrictions:
     - Site
-26:
-  type: ParentageRestriction
-  validator: ParentWhiteListValidator
-  location_type: DELIVERED
-  location_types_restrictions:
-    - Building
-
