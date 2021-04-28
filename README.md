@@ -49,6 +49,12 @@ The documentation will be available at `/api`.
 
 This will create a user, location types and locations in a nested structure similar to the live setup.
 
+## Generate the correct restrictions
+
+`bundle exec rails restrictions:create`
+
+This will limit certain location parentage when creating locations and other restrictions seen in app/data/restrictions
+
 ## Removing all of the data
 
 `bundle exec rails db:clear`
