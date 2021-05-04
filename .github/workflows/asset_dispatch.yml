@@ -1,7 +1,14 @@
-name: Manual build
+# Triggered on dispatching the action
+# Create a release an build
+
+name: Asset - on dispatch; build release and publish
 on:
-  release:
-    types: published
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: Asset Name
+        required: true
+        default: x.y.z-uat.1
     
 jobs:
   build:
@@ -23,13 +30,24 @@ jobs:
     - name: Compile Build
       run: ./compile-build
 
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ github.event.inputs.image_tag }}
+        release_name: ${{ github.event.inputs.image_tag }}
+        draft: false
+        prerelease: true
+
     - name: Upload release.gz
       id: upload-release-gz
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ github.event.release.upload_url }} # Pull the URL from the event
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # Pull the URL from the event
         asset_path: ./release.tar.gz
         asset_name: release.tar.gz
         asset_content_type: application/gzip

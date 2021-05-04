@@ -84,10 +84,12 @@ This will create a number of labware barcodes that can then be scanned into the 
 ## Releases
 
 #### UAT
-On merging a pull request into develop, a release will be created with the tag/name `<branch>/<timestamp>`
 
-#### PROD
-Update `.release-version` with major/minor/patch. On merging a pull request into master, a release will be created with the release version as the tag/name 
+Update `.release-version` with major/minor/patch. On merging a pull request into develop, a release will be created with the release version as the tag/name + -develop 
+
+### PROD
+
+Merging develop into master will create a release with the same name as the latest develop release but without the -develop suffix. You do NOT need to update .release-version
 
 ### ERD
 
