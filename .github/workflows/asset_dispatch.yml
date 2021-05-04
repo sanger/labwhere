@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       image_tag:
-        description: Asset Name
+        description: Release/Asset name
         required: true
         default: x.y.z-uat.1
     
