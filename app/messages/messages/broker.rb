@@ -13,6 +13,25 @@ module Messages
       @bunny_config = OpenStruct.new(bunny_config)
     end
 
+    # This module provides a way of performing the create_connection call only
+    # once when the value is nil. If we want to reset this, we have to
+    # set back connection_checked=nil
+    module ConnectionCheckMemoization
+      attr_writer :connection_checked
+
+      # This method will try to create a new Rabbitmq connection if it has
+      # not been attempted before. It is considered that it has not been
+      # attempted when @connection_checked = nil.
+      # The method will give a boolean value to @connection_checked so
+      # it will not try to connect again in next calls of this method unless
+      # is reset again.
+      def check_connection_and_connect
+        @connection_checked = create_connection if @connection_checked.nil?
+        @connection_checked
+      end
+    end
+    include ConnectionCheckMemoization
+
     def create_connection
       return false unless @bunny_config.enabled
 
@@ -67,7 +86,7 @@ module Messages
     end
 
     def publish(message)
-      if connected?
+      if check_connection_and_connect
         _publish(message)
       else
         Rails.logger.error("Not connected to RabbitMQ")

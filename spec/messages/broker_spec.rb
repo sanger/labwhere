@@ -52,6 +52,32 @@ RSpec.describe Messages::Broker do
     allow(queue).to receive(:subscribe)
   end
 
+  describe 'Broker::ConnectionCheckMemoization' do
+    context '#check_connection_and_connect' do
+      before do
+        mock_connection
+        allow(broker).to receive(:start_connection)
+      end
+      it 'only tries to connect once' do
+        broker.check_connection_and_connect
+        broker.check_connection_and_connect
+        broker.check_connection_and_connect
+        expect(broker).to have_received(:start_connection).exactly(1).times
+      end
+      context 'when resetting the check' do
+        it 'tries to connect again in every reset' do
+          broker.check_connection_and_connect
+          broker.connection_checked = nil
+          broker.check_connection_and_connect
+          broker.check_connection_and_connect
+          broker.connection_checked = nil
+          broker.check_connection_and_connect
+          expect(broker).to have_received(:start_connection).exactly(3).times
+        end
+      end
+    end
+  end
+
   describe '#configuration' do
     it 'will be present' do
       expect(broker.bunny_config.enabled).to eq(bunny_config[:enabled])
@@ -118,7 +144,7 @@ RSpec.describe Messages::Broker do
   describe '#publish' do
     context 'when not connected' do
       before do
-        allow(broker).to receive(:connected?).and_return(false)
+        allow(broker).to receive(:create_connection).and_return(false)
       end
       it 'does nothing' do
         mock_connection
