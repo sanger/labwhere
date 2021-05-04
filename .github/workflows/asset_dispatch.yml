@@ -51,3 +51,4 @@ jobs:
         asset_path: ./release.tar.gz
         asset_name: release.tar.gz
         asset_content_type: application/gzip
+        
