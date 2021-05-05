@@ -33,13 +33,13 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
         expect { testing_scenario }.not_to raise_error
         expect(page).to have_content "#{num_plates} labwares scanned in to Location"
       end
-    end
 
-    context 'when we cannot connect to RabbitMQ' do
-      it 'groups error messages' do
+      it 'notifies the exception' do
         allow(ExceptionNotifier).to receive(:notify_exception)
         testing_scenario
-        expect(ExceptionNotifier).to have_received(:notify_exception).exactly(num_plates).times
+        expect(ExceptionNotifier).to(
+          have_received(:notify_exception).exactly(1).times
+        )
       end
     end
 
@@ -60,6 +60,7 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
 
       before do
         allow(broker).to receive(:connect).and_return(true)
+        allow(broker).to receive(:connected?).and_return(true)
         allow(broker).to receive(:exchange).and_return(double_exchange)
         allow(double_exchange).to receive(:publish)
       end

@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  # Reset the connection check for every request so it will only
+  # try to connect once for every request
+  include RabbitmqConnection
+
   ##
   # Creates a standard header in case no other header is passed.
   def header
