@@ -5,7 +5,7 @@ name: Asset - on dispatch; build release and publish
 on:
   workflow_dispatch:
     inputs:
-      image_tag:
+      release_name:
         description: Release/Asset name
         required: true
         default: x.y.z-uat.1
@@ -33,11 +33,10 @@ jobs:
     - name: Create release and upload release.tar.gz
         uses: softprops/action-gh-release@v1
         with:
-          name: ${{ github.event.inputs.image_tag }}
-          tag_name: v${{ github.event.inputs.image_tag }}
+          name: ${{ github.event.inputs.release_name }}
+          tag_name: v${{ github.event.inputs.release_name }}
           prerelease: true
           files: release.tar.gz
           fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
