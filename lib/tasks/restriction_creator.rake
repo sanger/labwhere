@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Dir[Rails.root.join('lib/restriction_creator/*.rb')].each { |f| require f }
+require Rails.root.join('app/lib/restriction_creator/restriction_creator.rb')
 
 namespace :restrictions do
   desc "create restrictions"

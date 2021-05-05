@@ -10,48 +10,39 @@ class UserForm
 
   set_form_variables :user_code, current_user: :find_current_user
 
+  delegate :login, :swipe_card_id, :barcode, :team_id, :type, :status, to: :user
+
   validate :check_user
 
-  delegate :becomes, to: :user
+  def initialize(user = nil)
+    @user = user || User.new
+  end
 
   def submit(params)
     @params = params
-    assign_params
-    @current_user = find_current_user
+    assign_attributes
 
-    case @params[:commit]
-    when "Update User"
-      update_user
-    when "Create User"
-      create_user
-    else
-      false
+    ActiveRecord::Base.transaction do
+      @params[:user][:swipe_card_id] = Digest::SHA1.hexdigest(@params[:user][:swipe_card_id]) if @params[:user][:swipe_card_id].present? && persisted?
+      user.update(@params[:user].permit(:swipe_card_id, :barcode, :status, :team_id, :type, :login))
+      if valid?
+        user.create_audit(current_user)
+        true
+      else
+        raise ActiveRecord::Rollback
+      end
     end
   end
 
-  def assign_params
-    @swipe_card_id = params[:user][:swipe_card_id]
-    @barcode = params[:user][:barcode]
-    @user_code = params[:user][:user_code]
+  def assign_attributes
+    @user_code = @params[:user][:user_code]
+    @current_user = find_current_user
+    @controller = @params[:controller]
+    @action = @params[:action]
   end
 
-  def update_user
-    @user = model
-    @params[:user][:swipe_card_id] = Digest::SHA1.hexdigest(@params[:user][:swipe_card_id]) if @params[:user][:swipe_card_id].present?
-    user.update(@params[:user].permit(:swipe_card_id, :barcode, :status, :team_id, :type, :login))
-    return false unless valid?
-
-    user.create_audit(current_user)
-    true
-  end
-
-  def create_user
-    @user = User.new
-    user.update(@params[:user].permit(:login, :swipe_card_id, :barcode, :team_id, :type, :status))
-    return false unless valid?
-
-    user.create_audit(current_user)
-    true
+  def model
+    @user
   end
 
   private

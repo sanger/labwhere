@@ -13,7 +13,28 @@ module Messages
       @bunny_config = OpenStruct.new(bunny_config)
     end
 
+    # This module provides a way of performing the create_connection call only
+    # once when the value is nil. If we want to reset this, we have to
+    # set back connection_checked=nil
+    module ConnectionCheckMemoization
+      attr_writer :connection_checked
+
+      # This method will try to create a new Rabbitmq connection if it has
+      # not been attempted before. It is considered that it has not been
+      # attempted when @connection_checked = nil.
+      # The method will give a boolean value to @connection_checked so
+      # it will not try to connect again in next calls of this method unless
+      # is reset again.
+      def check_connection_and_connect
+        @connection_checked = create_connection if @connection_checked.nil?
+        @connection_checked
+      end
+    end
+    include ConnectionCheckMemoization
+
     def create_connection
+      return false unless @bunny_config.enabled
+
       connected? || connect
     end
 
@@ -31,6 +52,11 @@ module Messages
       instantiate_exchange
       declare_queue
       bind_queue
+      true
+    rescue StandardError => e
+      Rails.logger.error("Cannot connect with RabbitMQ: #{e.message}")
+      ExceptionNotifier.notify_exception(e)
+      false
     end
 
     def start_connection
@@ -38,7 +64,8 @@ module Messages
                               port: bunny_config.broker_port,
                               username: bunny_config.broker_username,
                               password: bunny_config.broker_password,
-                              vhost: bunny_config.vhost
+                              vhost: bunny_config.vhost,
+                              connection_timeout: 10 # Seconds to wait for connection
       @connection.start
     end
 
@@ -59,7 +86,21 @@ module Messages
     end
 
     def publish(message)
-      @exchange&.publish(message.payload, routing_key: bunny_config['routing_key'])
+      if check_connection_and_connect
+        _publish(message)
+      else
+        Rails.logger.error("Not connected to RabbitMQ")
+        Rails.logger.error("Message not published: #{message.payload}")
+      end
+    end
+
+    private
+
+    def _publish(message)
+      exchange.publish(message.payload, routing_key: bunny_config['routing_key'])
+    rescue StandardError => e
+      Rails.logger.error("Cannot publish to RabbitMQ: #{e.message}")
+      ExceptionNotifier.notify_exception(e)
     end
   end
 end
