@@ -20,17 +20,6 @@ jobs:
     - name: Set release tag
       run: echo "RELEASE_VERSION=$([ ${GITHUB_REF##*/} = "develop" ] && printf '%s\n' $(cat .release-version)-develop || printf '%s\n' $(cat .release-version))" >> $GITHUB_ENV
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ env.RELEASE_VERSION }}
-        release_name: ${{ env.RELEASE_VERSION }}
-        draft: false
-        prerelease: ${{ !(github.ref == 'refs/heads/master') }}
-
     - name: Set up environment
       run: |
         cp config/database.yml.example config/database.yml
@@ -40,13 +29,13 @@ jobs:
     - name: Compile Build
       run: ./compile-build
 
-    - name: Upload release.gz
-      id: upload-release-gz
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # Pull the URL from the event
-        asset_path: ./release.tar.gz
-        asset_name: release.tar.gz
-        asset_content_type: application/gzip
+    - name: Create release and upload release.tar.gz
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ env.RELEASE_VERSION }}
+          tag_name: v${{ env.RELEASE_VERSION }}
+          prerelease: ${{ !(github.ref == 'refs/heads/master') }}
+          files: release.tar.gz
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

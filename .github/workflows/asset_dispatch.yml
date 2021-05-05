@@ -30,25 +30,14 @@ jobs:
     - name: Compile Build
       run: ./compile-build
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-        tag_name: ${{ github.event.inputs.image_tag }}
-        release_name: ${{ github.event.inputs.image_tag }}
-        draft: false
-        prerelease: true
-
-    - name: Upload release.gz
-      id: upload-release-gz
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # Pull the URL from the event
-        asset_path: ./release.tar.gz
-        asset_name: release.tar.gz
-        asset_content_type: application/gzip
+    - name: Create release and upload release.tar.gz
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ github.event.inputs.image_tag }}
+          tag_name: v${{ github.event.inputs.image_tag }}
+          prerelease: true
+          files: release.tar.gz
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
