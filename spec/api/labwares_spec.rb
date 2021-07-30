@@ -6,8 +6,131 @@
 require "rails_helper"
 
 RSpec.describe Api::LabwaresController, type: :request do
-  let!(:location) { create(:location_with_parent) }
-  let!(:labware) { create(:labware_with_audits, location: location) }
+  let!(:location_no_parent)    { create(:location) }
+  let!(:location)              { create(:location_with_parent) }
+  let!(:labware)               { create(:labware_with_audits, location: location) }
+  let!(:locations)             { create_list(:unordered_location_with_parent, 10) }
+  let!(:labware_barcode_valid) { "TEST123" }
+  let!(:labware_barcode_valid2) { "TEST1234" }
+
+  describe '#create' do
+    let!(:guest_user)    { create(:guest) }
+    let!(:scientist)     { create(:scientist) }
+
+    context "on success" do
+      it "should be a success, when user is valid, location exists and barcode is unique" do
+        payload = {
+          user_code: scientist.barcode,
+          labwares: [
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid },
+            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode_valid2 }
+          ]
+        }
+
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(2)
+
+        expect(response).to be_successful
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["message"]).to eq "successful"
+      end
+    end
+
+    context "on failure" do
+      it 'will not be valid without the user barcode filled in' do
+        payload = {
+          labwares: [
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid }
+          ]
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 1
+        expect(json["errors"][0]).to eq "Validation failed: User must exist, User does not exist"
+      end
+
+      it 'will not be valid when the user doesnt have permission' do
+        payload = {
+          user_code: guest_user.barcode,
+          labwares: [
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid },
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid }
+          ]
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 2
+        expect(json["errors"][0]).to eq "User does not exist"
+        expect(json["errors"][1]).to eq "User is not authorised"
+      end
+
+      it "will no be valid when the location does not exist" do
+        payload = {
+          labwares: [
+            { location_barcode: "a invalid location", labware_barcode: labware_barcode_valid }
+          ]
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 1
+        expect(json["errors"][0]).to eq "location(s) with barcode 'a invalid location' do not exist"
+      end
+
+      it "will no be valid when the location does not have a parent" do
+        payload = {
+          labwares: [
+            { location_barcode: location_no_parent.barcode, labware_barcode: labware_barcode_valid }
+          ]
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 1
+        expect(json["errors"][0]).to eq "Validation failed: Location does not have a parent"
+      end
+
+      it 'will not be valid without a file selected' do
+        # create_upload_labware.submit(params.merge(upload_labware_form:
+        #   { 'user_code' => scientist.barcode }))
+        # expect(create_upload_labware.errors.full_messages).to include('The required fields must be filled in')
+      end
+
+      it 'will not be valid without a valid user' do
+        # create_upload_labware.submit(params.merge(upload_labware_form:
+        #   { 'user_code' => 'dummy_user_code', 'file' => file_param }))
+        # expect(create_upload_labware.errors.full_messages).to include("User #{I18n.t('errors.messages.existence')}")
+      end
+
+      it 'will not be valid with the wrong format of file' do
+        # create_upload_labware.submit(params.merge(upload_labware_form:
+        #   { 'user_code' => scientist.barcode, 'file' => 'dummy_file' }))
+        # expect(create_upload_labware.errors.full_messages).to include('File must be a csv.')
+      end
+
+      # when barcode is not unique
+      # when one barcode in the list fails, duplicate second labware barcode
+    end
+  end
 
   describe '#show' do
     before(:each) do

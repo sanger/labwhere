@@ -7,6 +7,18 @@ class CsvManifest
 
   attr_accessor :locations, :labware_prefix, :number_of_labwares
 
+  def generate_json
+    n = 1
+    list = []
+    locations.map do |location|
+      number_of_labwares.times do
+        list << { location_barcode: location.barcode, labware_barcode: "#{labware_prefix}#{pad_number(n)}" }
+        n += 1
+      end
+    end
+    { labwares: list }
+  end
+
   def generate_csv
     n = 1
     CSV.generate do |csv|

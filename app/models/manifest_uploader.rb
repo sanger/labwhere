@@ -5,10 +5,11 @@ require 'csv'
 class ManifestUploader
   include ActiveModel::Model
 
-  attr_accessor :file, :user
+  attr_accessor :json, :current_user, :controller, :action
 
   validate :check_locations, :check_for_ordered_locations,
-           :check_for_missing_or_invalid_data, :check_if_any_labwares_are_locations
+           :check_for_missing_or_invalid_data, :check_if_any_labwares_are_locations,
+           :check_user
 
   MIMIMUM_CELL_LENGTH = 5
 
@@ -16,9 +17,9 @@ class ManifestUploader
     @data ||= formatted_data
   end
 
+  # returns [["lw-location-1-2", "RNA000001"], ["lw-location-1-2", "RNA000002"]]
   def formatted_data
-    parsed = ::CSV.parse(file).drop(1)
-    parsed.collect { |row| row.collect { |cell| cell.try(:strip) } }
+    json[:labwares].map { |elem| [elem[:location_barcode], elem[:labware_barcode]] }
   end
 
   def labwares
@@ -34,7 +35,7 @@ class ManifestUploader
         labware = Labware.find_or_initialize_by(barcode: labware_barcode)
         labware.location = locations[location_barcode]
         labware.save!
-        labware.create_audit!(user, AuditAction::MANIFEST_UPLOAD)
+        labware.create_audit!(current_user, AuditAction::MANIFEST_UPLOAD)
       end
     end
     true
@@ -91,5 +92,9 @@ class ManifestUploader
     if labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
       errors.add(:base, "Labware barcodes cannot be the same as an existing location barcode. Please review and remove incorrect labware barcodes")
     end
+  end
+
+  def check_user
+    UserValidator.new.validate(self) if current_user
   end
 end

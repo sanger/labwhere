@@ -10,15 +10,15 @@ RSpec.describe ManifestUploader, type: :model do
   let(:unordered_location) { create(:unordered_location_with_parent) }
   let(:labware_prefix)     { 'RNA' }
   let!(:scientist)         { create(:scientist) }
-  let(:manifest_uploader)  { ManifestUploader.new(user: scientist) }
+  let(:manifest_uploader)  { ManifestUploader.new(current_user: scientist, controller: "upload_labware", action: "create") }
 
   context 'with unordered locations that all exist' do
-    let!(:manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
+    let!(:json_manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_json }
 
     attr_reader :data
 
     before(:each) do
-      manifest_uploader.file = manifest
+      manifest_uploader.json = json_manifest
       manifest_uploader.run
     end
 
@@ -42,12 +42,12 @@ RSpec.describe ManifestUploader, type: :model do
   end
 
   context 'when there is a location that is not valid' do
-    let!(:manifest) { build(:csv_manifest, locations: locations + [new_location], number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
+    let!(:json_manifest) { build(:csv_manifest, locations: locations + [new_location], number_of_labwares: 5, labware_prefix: labware_prefix).generate_json }
 
-    attr_reader :data
+    # attr_reader :data
 
     before(:each) do
-      manifest_uploader.file = manifest
+      manifest_uploader.json = json_manifest
     end
 
     it 'will not be valid' do
@@ -67,12 +67,12 @@ RSpec.describe ManifestUploader, type: :model do
   end
 
   context 'when any of the locations are ordered' do
-    let!(:manifest) { build(:csv_manifest, locations: locations + [ordered_location], number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
+    let!(:json_manifest) { build(:csv_manifest, locations: locations + [ordered_location], number_of_labwares: 5, labware_prefix: labware_prefix).generate_json }
 
-    attr_reader :data
+    # attr_reader :data
 
     before(:each) do
-      manifest_uploader.file = manifest
+      manifest_uploader.json = json_manifest
     end
 
     it 'will not be valid' do
@@ -86,14 +86,14 @@ RSpec.describe ManifestUploader, type: :model do
   end
 
   context 'when any of the data is invalid' do
-    let!(:manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
+    let!(:json_manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_json }
 
-    attr_reader :data
+    # attr_reader :data
 
     context 'when there are empty cells' do
       before(:each) do
-        manifest.concat(",\n")
-        manifest_uploader.file = manifest
+        json_manifest[:labwares] << { location_barcode: "", labware_barcode: "" }
+        manifest_uploader.json = json_manifest
       end
 
       it 'will not be valid' do
@@ -108,8 +108,8 @@ RSpec.describe ManifestUploader, type: :model do
 
     context 'when there is invalid data (length of cell string is < 5)' do
       before(:each) do
-        manifest.concat("#{new_location.barcode},abcd\n")
-        manifest_uploader.file = manifest
+        json_manifest[:labwares] << { location_barcode: new_location.barcode.to_s, labware_barcode: "abcd" }
+        manifest_uploader.json = json_manifest
       end
 
       it 'will not be valid' do
@@ -122,11 +122,12 @@ RSpec.describe ManifestUploader, type: :model do
       end
     end
 
+    # Check: move check to form?
     context 'when there are multiple empty cells' do
       before(:each) do
-        manifest.concat("#{unordered_location.barcode},,\n")
-        manifest.concat("#{unordered_location.barcode},,\n")
-        manifest_uploader.file = manifest
+        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: "", "": '' }
+        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: "", "": '' }
+        manifest_uploader.json = json_manifest
       end
 
       it 'will not be valid' do
@@ -141,8 +142,8 @@ RSpec.describe ManifestUploader, type: :model do
 
     context 'when there are labwares with the same barcode as an existing location' do
       before(:each) do
-        manifest.concat("#{unordered_location.barcode},#{unordered_location.barcode}\n")
-        manifest_uploader.file = manifest
+        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: unordered_location.barcode.to_s }
+        manifest_uploader.json = json_manifest
       end
 
       it 'will not be valid' do
@@ -157,14 +158,14 @@ RSpec.describe ManifestUploader, type: :model do
   end
 
   context 'when the data is valid' do
-    let!(:manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
+    let!(:json_manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_json }
 
-    attr_reader :data
+    # attr_reader :data
 
     context 'when there is valid data (length of cell string is >= 5)' do
       before(:each) do
-        manifest.concat("#{unordered_location.barcode},abcde\n")
-        manifest_uploader.file = manifest
+        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: "abcde" }
+        manifest_uploader.json = json_manifest
       end
 
       it 'will not be valid' do
