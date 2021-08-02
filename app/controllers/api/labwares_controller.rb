@@ -10,16 +10,12 @@ class Api::LabwaresController < ApiController
     render json: labwares_by_location
   end
 
-  # We would like the end point to accept a json body
-  # e.g. { labwares: [{ location_barcode: 'loc-1', labware_barcode: 'DN1'},...]}
-  # The call should be performant - to be agreed?
-  # The event that should be triggered is uploaded_from_manifest
+  # TODO: The call should be performant - to be agreed?
   # TODO add to docs
-  # TODO: check PAM user on UAT, and see what type of user they are.
-  # update permissions to allow PAM user type
-  # The call should be authenticated in the body
-  # They will send a user login in the request. We need to check it exists.
-  # It is used for the audit trail so we know who did it. PAM have a standard user.
+  # TODO check audit trails and event uploaded_from_manifest
+  # TODO check on duplicate labware barcode, currently no validation, creates the unique but not the duplicate
+  # It is used for the audit trail so we know who did it. PAM have a technician user.
+  # @param json { labwares: [{ location_barcode: 'loc-1', labware_barcode: 'DN1'},...]}
   def create
     uploader = ManifestUploader.new(json: permitted_params, current_user: current_user, controller: "api/labwares", action: 'create')
 

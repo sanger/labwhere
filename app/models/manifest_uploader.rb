@@ -7,7 +7,7 @@ class ManifestUploader
 
   attr_accessor :json, :current_user, :controller, :action
 
-  validate :check_locations, :check_for_ordered_locations,
+  validate :check_labwares_present, :check_locations, :check_for_ordered_locations,
            :check_for_missing_or_invalid_data, :check_if_any_labwares_are_locations,
            :check_user
 
@@ -17,9 +17,12 @@ class ManifestUploader
     @data ||= formatted_data
   end
 
+  # json = { labwares: [{location_barcode: '', labware_barcode: '' }] }
   # returns [["lw-location-1-2", "RNA000001"], ["lw-location-1-2", "RNA000002"]]
   def formatted_data
-    json[:labwares].map { |elem| [elem[:location_barcode], elem[:labware_barcode]] }
+    return [] unless json[:labwares]
+
+    json[:labwares].map { |elem| [elem[:location_barcode], elem[:labware_barcode]] } || []
   end
 
   def labwares
@@ -96,5 +99,11 @@ class ManifestUploader
 
   def check_user
     UserValidator.new.validate(self) if current_user
+  end
+
+  def check_labwares_present
+    return if errors.present?
+
+    errors.add(:base, "No labwares have been provided") if json[:labwares].blank?
   end
 end

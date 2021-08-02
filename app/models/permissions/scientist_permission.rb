@@ -16,8 +16,6 @@ module Permissions
         # Scientists can update themselves but not change their types
       end
       allow "api/scans", [:create]
-      # TODO: check user type
-      allow "api/labwares", [:create]
       allow "api/coordinates", [:update]
       allow "api/locations/coordinates", [:update]
     end

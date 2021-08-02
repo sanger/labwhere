@@ -17,7 +17,7 @@ class UploadLabwareForm
 
     return false unless valid?
 
-    uploader = ManifestUploader.new(json: format_file_to_json, current_user: current_user, controller: @controller, action: @action)
+    uploader = ManifestUploader.new(json: format_file_to_json, current_user: current_user, controller: controller, action: action)
 
     unless uploader.valid? && uploader.run
       uploader.errors.full_messages.each { |error| errors.add(:base, error) }

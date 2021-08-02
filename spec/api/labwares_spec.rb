@@ -14,13 +14,13 @@ RSpec.describe Api::LabwaresController, type: :request do
   let!(:labware_barcode_valid2) { "TEST1234" }
 
   describe '#create' do
-    let!(:guest_user)    { create(:guest) }
     let!(:scientist)     { create(:scientist) }
+    let!(:technician)    { create(:technician) }
 
     context "on success" do
-      it "should be a success, when user is valid, location exists and barcode is unique" do
+      it "should be a success, when user is a Technician, location exists and barcode is unique" do
         payload = {
-          user_code: scientist.barcode,
+          user_code: technician.barcode,
           labwares: [
             { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid },
             { location_barcode: locations[1].barcode, labware_barcode: labware_barcode_valid2 }
@@ -38,6 +38,26 @@ RSpec.describe Api::LabwaresController, type: :request do
     end
 
     context "on failure" do
+      # TODO: check/ fix
+      # it creates the non duplicate barcodes
+      it "will not be valid when barcode is not unique" do
+        payload = {
+          user_code: technician.barcode,
+          labwares: [
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid },
+            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode_valid }
+          ]
+        }
+
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(1)
+
+        expect(response).to be_successful
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["message"]).to eq "successful"
+      end
+
       it 'will not be valid without the user barcode filled in' do
         payload = {
           labwares: [
@@ -55,9 +75,9 @@ RSpec.describe Api::LabwaresController, type: :request do
         expect(json["errors"][0]).to eq "Validation failed: User must exist, User does not exist"
       end
 
-      it 'will not be valid when the user doesnt have permission' do
+      it 'will not be valid when the user does not have permission i.e is not a Technician' do
         payload = {
-          user_code: guest_user.barcode,
+          user_code: scientist.barcode,
           labwares: [
             { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid },
             { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid }
@@ -70,13 +90,13 @@ RSpec.describe Api::LabwaresController, type: :request do
         expect(response).to have_http_status(:unprocessable_entity)
         json = ActiveSupport::JSON.decode(response.body)
         expect(json["errors"]).not_to be_empty
-        expect(json["errors"].length).to eq 2
-        expect(json["errors"][0]).to eq "User does not exist"
-        expect(json["errors"][1]).to eq "User is not authorised"
+        expect(json["errors"].length).to eq 1
+        expect(json["errors"][0]).to eq "User is not authorised"
       end
 
-      it "will no be valid when the location does not exist" do
+      it "will not be valid when the location does not exist" do
         payload = {
+          user_code: technician.barcode,
           labwares: [
             { location_barcode: "a invalid location", labware_barcode: labware_barcode_valid }
           ]
@@ -92,8 +112,9 @@ RSpec.describe Api::LabwaresController, type: :request do
         expect(json["errors"][0]).to eq "location(s) with barcode 'a invalid location' do not exist"
       end
 
-      it "will no be valid when the location does not have a parent" do
+      it "will not be valid when the location does not have a parent" do
         payload = {
+          user_code: technician.barcode,
           labwares: [
             { location_barcode: location_no_parent.barcode, labware_barcode: labware_barcode_valid }
           ]
@@ -109,26 +130,42 @@ RSpec.describe Api::LabwaresController, type: :request do
         expect(json["errors"][0]).to eq "Validation failed: Location does not have a parent"
       end
 
-      it 'will not be valid without a file selected' do
-        # create_upload_labware.submit(params.merge(upload_labware_form:
-        #   { 'user_code' => scientist.barcode }))
-        # expect(create_upload_labware.errors.full_messages).to include('The required fields must be filled in')
+      it "will not be valid when there is some data missing" do
+        payload = {
+          user_code: technician.barcode,
+          labwares: [
+            { location_barcode: '', labware_barcode: labware_barcode_valid }
+          ]
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 2
+        expect(json["errors"][0]).to eq "location(s) with barcode '' do not exist"
+        expect(json["errors"][1]).to eq "It looks like there is some missing or invalid data. Please review and remove anything that shouldn't be there."
       end
 
-      it 'will not be valid without a valid user' do
-        # create_upload_labware.submit(params.merge(upload_labware_form:
-        #   { 'user_code' => 'dummy_user_code', 'file' => file_param }))
-        # expect(create_upload_labware.errors.full_messages).to include("User #{I18n.t('errors.messages.existence')}")
+      it "will not be valid when no labwares are provided" do
+        payload = {
+          user_code: technician.barcode
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 1
+        expect(json["errors"][0]).to eq "No labwares have been provided"
       end
 
-      it 'will not be valid with the wrong format of file' do
-        # create_upload_labware.submit(params.merge(upload_labware_form:
-        #   { 'user_code' => scientist.barcode, 'file' => 'dummy_file' }))
-        # expect(create_upload_labware.errors.full_messages).to include('File must be a csv.')
-      end
-
-      # when barcode is not unique
-      # when one barcode in the list fails, duplicate second labware barcode
+      # duplication location?
+      # duplication labware?
     end
   end
 
