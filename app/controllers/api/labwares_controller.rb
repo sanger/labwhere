@@ -10,17 +10,11 @@ class Api::LabwaresController < ApiController
     render json: labwares_by_location
   end
 
-  # TODO: the call should be performant - to be agreed?
-  # TODO: add to docs
-  # TODO: check audit trails and event uploaded_from_manifest
-  # TODO: check on duplicate labware barcode, currently no validation, creates the unique but not the duplicate
-  # @param json { labwares: [{ location_barcode: 'loc-1', labware_barcode: 'DN1'}, ...] }
   def create
     uploader = ManifestUploader.new(json: permitted_params, current_user: current_user, controller: "api/labwares", action: "create")
 
     if uploader.run
-      # TODO: successful response
-      render json: { message: "successful" }
+      render json: labwares_by_barcode_known_locations(uploader.labwares), each_serializer: LabwareLiteSerializer
     else
       render json: { errors: uploader.errors.full_messages }, status: :unprocessable_entity
     end
@@ -28,7 +22,7 @@ class Api::LabwaresController < ApiController
 
   def by_barcode
     if request.params["known"] == "true"
-      render json: labwares_by_barcode_known_locations, each_serializer: LabwareLiteSerializer
+      render json: labwares_by_barcode_known_locations(params[:barcodes]), each_serializer: LabwareLiteSerializer
     else
       render json: labwares_by_barcode, each_serializer: LabwareLiteSerializer
     end
@@ -60,8 +54,7 @@ class Api::LabwaresController < ApiController
     Labware.by_barcode(barcodes)
   end
 
-  def labwares_by_barcode_known_locations
-    barcodes = params[:barcodes]
+  def labwares_by_barcode_known_locations(barcodes)
     return [] unless barcodes
 
     Labware.by_barcode_known_locations(barcodes)

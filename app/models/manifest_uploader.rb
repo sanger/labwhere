@@ -18,7 +18,7 @@ class ManifestUploader
   end
 
   # json = { labwares: [{location_barcode: '', labware_barcode: '' }] }
-  # returns [["lw-location-1-2", "RNA000001"], ["lw-location-1-2", "RNA000002"]]
+  # @return [["lw-location-1-2", "RNA000001"], ["lw-location-1-2", "RNA000002"]]
   def formatted_data
     return [] unless json[:labwares]
 

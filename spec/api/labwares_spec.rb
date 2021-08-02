@@ -6,12 +6,13 @@
 require "rails_helper"
 
 RSpec.describe Api::LabwaresController, type: :request do
-  let!(:location_no_parent)    { create(:location) }
-  let!(:location)              { create(:location_with_parent) }
-  let!(:labware)               { create(:labware_with_audits, location: location) }
-  let!(:locations)             { create_list(:unordered_location_with_parent, 10) }
-  let!(:labware_barcode_valid) { "TEST123" }
-  let!(:labware_barcode_valid2) { "TEST1234" }
+  let!(:location_no_parent) { create(:location) }
+  let!(:location)           { create(:location_with_parent) }
+  let!(:labware)            { create(:labware_with_audits, location: location) }
+  let!(:locations)          { create_list(:unordered_location_with_parent, 10) }
+  let!(:labware_barcode1)   { "TEST123a" }
+  let!(:labware_barcode2)   { "TEST123b" }
+  let!(:labware_barcode3)   { "TEST123c" }
 
   describe '#create' do
     let!(:scientist)     { create(:scientist) }
@@ -22,8 +23,8 @@ RSpec.describe Api::LabwaresController, type: :request do
         payload = {
           user_code: technician.barcode,
           labwares: [
-            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid },
-            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode_valid2 }
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 },
+            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode2 }
           ]
         }
 
@@ -33,20 +34,19 @@ RSpec.describe Api::LabwaresController, type: :request do
 
         expect(response).to be_successful
         json = ActiveSupport::JSON.decode(response.body)
-        expect(json["message"]).to eq "successful"
-        # expect(json.length).to eq(2)
+        expect(json.length).to eq(2)
+        expect(json[0]["barcode"]).to eq(labware_barcode1)
+        expect(json[0]["location_barcode"]).to eq(locations[0].barcode)
+        expect(json[1]["barcode"]).to eq(labware_barcode2)
+        expect(json[1]["location_barcode"]).to eq(locations[1].barcode)
       end
-    end
 
-    context "on failure" do
-      # TODO: check/ fix
-      # it creates the non duplicate barcodes
-      it "will not be valid when barcode is not unique" do
+      it "is successful with duplicate labware, as the duplicate is removed and process continued as normal" do
         payload = {
           user_code: technician.barcode,
           labwares: [
-            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid },
-            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode_valid }
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 },
+            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode1 }
           ]
         }
 
@@ -56,13 +56,62 @@ RSpec.describe Api::LabwaresController, type: :request do
 
         expect(response).to be_successful
         json = ActiveSupport::JSON.decode(response.body)
-        expect(json["message"]).to eq "successful"
+        expect(json.length).to eq(1)
+        expect(json[0]["barcode"]).to eq(labware_barcode1)
+        expect(json[0]["location_barcode"]).to eq(locations[1].barcode)
       end
 
+      it "is successful, on reupload" do
+        payload = {
+          user_code: technician.barcode,
+          labwares: [
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 },
+            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode2 }
+          ]
+        }
+
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(2)
+
+        expect(response).to be_successful
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json.length).to eq(2)
+        expect(json[0]["barcode"]).to eq(labware_barcode1)
+        expect(json[0]["location_barcode"]).to eq(locations[0].barcode)
+        expect(json[1]["barcode"]).to eq(labware_barcode2)
+        expect(json[1]["location_barcode"]).to eq(locations[1].barcode)
+
+        expect(Labware.where(barcode: labware_barcode1)[0].location.barcode).to eq locations[0].barcode
+        expect(Labware.where(barcode: labware_barcode2)[0].location.barcode).to eq locations[1].barcode
+
+        updated_payload = {
+          user_code: technician.barcode,
+          labwares: [
+            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode1 },
+            { location_barcode: locations[2].barcode, labware_barcode: labware_barcode3 }
+          ]
+        }
+
+        expect do
+          post api_labwares_path, params: updated_payload
+        end.to change(Labware, :count).by(1)
+
+        updated_json = ActiveSupport::JSON.decode(response.body)
+        expect(updated_json.length).to eq(2)
+        expect(updated_json[0]["barcode"]).to eq(labware_barcode1)
+        expect(updated_json[0]["location_barcode"]).to eq(locations[1].barcode)
+        expect(updated_json[1]["barcode"]).to eq(labware_barcode3)
+        expect(updated_json[1]["location_barcode"]).to eq(locations[2].barcode)
+        expect(Labware.where(barcode: labware_barcode1)[0].location.barcode).to eq locations[1].barcode
+      end
+    end
+
+    context "on failure" do
       it 'will not be valid without the user barcode filled in' do
         payload = {
           labwares: [
-            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid }
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 }
           ]
         }
         expect do
@@ -80,8 +129,8 @@ RSpec.describe Api::LabwaresController, type: :request do
         payload = {
           user_code: scientist.barcode,
           labwares: [
-            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid },
-            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode_valid }
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 },
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 }
           ]
         }
         expect do
@@ -99,7 +148,7 @@ RSpec.describe Api::LabwaresController, type: :request do
         payload = {
           user_code: technician.barcode,
           labwares: [
-            { location_barcode: "a invalid location", labware_barcode: labware_barcode_valid }
+            { location_barcode: "a invalid location", labware_barcode: labware_barcode1 }
           ]
         }
         expect do
@@ -117,7 +166,7 @@ RSpec.describe Api::LabwaresController, type: :request do
         payload = {
           user_code: technician.barcode,
           labwares: [
-            { location_barcode: location_no_parent.barcode, labware_barcode: labware_barcode_valid }
+            { location_barcode: location_no_parent.barcode, labware_barcode: labware_barcode1 }
           ]
         }
         expect do
@@ -135,7 +184,7 @@ RSpec.describe Api::LabwaresController, type: :request do
         payload = {
           user_code: technician.barcode,
           labwares: [
-            { location_barcode: '', labware_barcode: labware_barcode_valid }
+            { location_barcode: '', labware_barcode: labware_barcode1 }
           ]
         }
         expect do

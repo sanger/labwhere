@@ -658,6 +658,57 @@ Scan Labware in or out of a Location
 
 # Group Labwares
 
+
+## Labwares [/labwares]
+
+### Create Labwares [POST]
+
++ Attributes
+    + user_code (string, required) - The swipe card id or barcode of the user creating labware. User must be atleast of type Technician.
+    + labwares (array, fixed)
+        + (object)
+            + location_barcode (string, required) - The barcode of the location for the labware to be scanned in to.
+            + labware_barcode (string, required) - The barcode of the Labware to create or update.
+
++ Request (application/json)
+
+        {
+          "user_code": "23423234",
+          "labwares": [
+            {
+              "location_barcode": "lw-tray-111-123",
+              "labware_barcode": "hippo123"
+            },
+            {
+              "location_barcode": "lw-tray-222-123",
+              "labware_barcode": "pangolin77"
+            }
+          ]
+        }
+
++ Response 201 (application/json)
+
+        [
+          {
+              "barcode": "hippo123",
+              "location_barcode": "lw-tray-111-123"
+          },
+          {
+              "barcode": "pangolin77",
+              "location_barcode": "lw-tray-222-123"
+          }
+        ]
+
++ Response 422 (application/json)
+
+        {
+            "errors": [
+                "User is not authorised"
+                "location(s) with barcode 'xxx' do not exist"
+            ]
+        }
+
+
 ## Labware [/labwares/{barcode}]
 
 ### View Specified Labware [GET]
