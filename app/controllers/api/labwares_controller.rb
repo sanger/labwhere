@@ -10,16 +10,16 @@ class Api::LabwaresController < ApiController
     render json: labwares_by_location
   end
 
-  # TODO: The call should be performant - to be agreed?
-  # TODO add to docs
-  # TODO check audit trails and event uploaded_from_manifest
-  # TODO check on duplicate labware barcode, currently no validation, creates the unique but not the duplicate
-  # It is used for the audit trail so we know who did it. PAM have a technician user.
-  # @param json { labwares: [{ location_barcode: 'loc-1', labware_barcode: 'DN1'},...]}
+  # TODO: the call should be performant - to be agreed?
+  # TODO: add to docs
+  # TODO: check audit trails and event uploaded_from_manifest
+  # TODO: check on duplicate labware barcode, currently no validation, creates the unique but not the duplicate
+  # @param json { labwares: [{ location_barcode: 'loc-1', labware_barcode: 'DN1'}, ...] }
   def create
-    uploader = ManifestUploader.new(json: permitted_params, current_user: current_user, controller: "api/labwares", action: 'create')
+    uploader = ManifestUploader.new(json: permitted_params, current_user: current_user, controller: "api/labwares", action: "create")
 
     if uploader.run
+      # TODO: successful response
       render json: { message: "successful" }
     else
       render json: { errors: uploader.errors.full_messages }, status: :unprocessable_entity

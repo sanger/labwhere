@@ -34,6 +34,7 @@ RSpec.describe Api::LabwaresController, type: :request do
         expect(response).to be_successful
         json = ActiveSupport::JSON.decode(response.body)
         expect(json["message"]).to eq "successful"
+        # expect(json.length).to eq(2)
       end
     end
 
