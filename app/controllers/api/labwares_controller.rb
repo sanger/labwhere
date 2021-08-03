@@ -14,7 +14,7 @@ class Api::LabwaresController < ApiController
     uploader = ManifestUploader.new(json: permitted_params, user_code: params[:user_code], controller: "api/labwares", action: "create")
 
     if uploader.run
-      render json: labwares_by_barcode_known_locations(uploader.labwares), each_serializer: LabwareLiteSerializer
+      render json: Labware.by_barcode_known_locations(uploader.labwares), each_serializer: LabwareLiteSerializer
     else
       render json: { errors: uploader.errors.full_messages }, status: :unprocessable_entity
     end
@@ -22,9 +22,9 @@ class Api::LabwaresController < ApiController
 
   def by_barcode
     if request.params["known"] == "true"
-      render json: labwares_by_barcode_known_locations(params[:barcodes]), each_serializer: LabwareLiteSerializer
+      render json: Labware.by_barcode_known_locations(params[:barcodes]), each_serializer: LabwareLiteSerializer
     else
-      render json: labwares_by_barcode, each_serializer: LabwareLiteSerializer
+      render json: Labware.by_barcode(params[:barcodes]), each_serializer: LabwareLiteSerializer
     end
   end
 
@@ -41,14 +41,6 @@ class Api::LabwaresController < ApiController
     return unless location_barcodes
 
     Labware.by_location_barcode(location_barcodes.split(','))
-  end
-
-  def labwares_by_barcode
-    Labware.by_barcode(params[:barcodes])
-  end
-
-  def labwares_by_barcode_known_locations(barcodes)
-    Labware.by_barcode_known_locations(barcodes)
   end
 
   def permitted_params
