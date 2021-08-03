@@ -112,6 +112,4 @@ Rails.application.routes.draw do
 
   match '/about', to: 'about#show', via: :get
 
-
-
 end

@@ -121,8 +121,9 @@ RSpec.describe Api::LabwaresController, type: :request do
         expect(response).to have_http_status(:unprocessable_entity)
         json = ActiveSupport::JSON.decode(response.body)
         expect(json["errors"]).not_to be_empty
-        expect(json["errors"].length).to eq 1
-        expect(json["errors"][0]).to eq "Validation failed: User must exist, User does not exist"
+        expect(json["errors"].length).to eq 2
+        expect(json["errors"][0]).to eq "User does not exist"
+        expect(json["errors"][1]).to eq "User is not authorised"
       end
 
       it 'will not be valid when the user does not have permission i.e is not a Technician' do
@@ -213,9 +214,6 @@ RSpec.describe Api::LabwaresController, type: :request do
         expect(json["errors"].length).to eq 1
         expect(json["errors"][0]).to eq "No labwares have been provided"
       end
-
-      # duplication location?
-      # duplication labware?
     end
   end
 

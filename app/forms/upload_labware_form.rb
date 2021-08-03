@@ -6,20 +6,19 @@
 class UploadLabwareForm
   include ActiveModel::Model
 
-  attr_reader :file, :current_user, :params
+  attr_reader :file, :params
 
   validate :check_required_params, :check_file_format
 
   def submit(params)
     @params = params
     assign_params
-    @current_user = User.find_by_code(@user_code)
 
     return false unless valid?
 
-    uploader = ManifestUploader.new(json: format_file_to_json, current_user: current_user, controller: params[:controller], action: params[:action])
+    uploader = ManifestUploader.new(json: format_file_to_json, user_code: params[:upload_labware_form][:user_code], controller: params[:controller], action: params[:action])
 
-    unless uploader.valid? && uploader.run
+    unless uploader.run
       uploader.errors.full_messages.each { |error| errors.add(:base, error) }
       return false
     end
@@ -27,7 +26,7 @@ class UploadLabwareForm
   end
 
   # Convert CSV file to json
-  # @return { labwares: [{ location_barcode: '', labware_barcode: ''}, ...] }
+  # @return { labwares: [ { location_barcode: '', labware_barcode: '' }, ... ] }
   def format_file_to_json
     parsed = ::CSV.parse(file.tempfile.open.read).drop(1)
     { labwares: parsed.collect { |row| { location_barcode: row[0], labware_barcode: row[1] } } }
@@ -38,7 +37,6 @@ class UploadLabwareForm
   end
 
   def assign_params
-    @user_code = params[:upload_labware_form][:user_code]
     @file = params[:upload_labware_form][:file]
   end
 

@@ -11,7 +11,7 @@ class Api::LabwaresController < ApiController
   end
 
   def create
-    uploader = ManifestUploader.new(json: permitted_params, current_user: current_user, controller: "api/labwares", action: "create")
+    uploader = ManifestUploader.new(json: permitted_params, user_code: params[:user_code], controller: "api/labwares", action: "create")
 
     if uploader.run
       render json: labwares_by_barcode_known_locations(uploader.labwares), each_serializer: LabwareLiteSerializer
@@ -30,12 +30,8 @@ class Api::LabwaresController < ApiController
 
   private
 
-  def current_user
-    User.find_by_code(params[:user_code]) if params[:user_code]
-  end
-
   def current_resource
-    Labware.find_by_code(params[:barcode]) if params[:barcode]
+    Labware.find_by_barcode(params[:barcode])
   end
 
   def labwares_by_location
@@ -44,19 +40,14 @@ class Api::LabwaresController < ApiController
     location_barcodes = params[:location_barcodes]
     return unless location_barcodes
 
-    Labware.joins(:location).where(locations: { barcode: location_barcodes.split(',') })
+    Labware.by_location_barcode(location_barcodes.split(','))
   end
 
   def labwares_by_barcode
-    barcodes = params[:barcodes]
-    return [] unless barcodes
-
-    Labware.by_barcode(barcodes)
+    Labware.by_barcode(params[:barcodes])
   end
 
   def labwares_by_barcode_known_locations(barcodes)
-    return [] unless barcodes
-
     Labware.by_barcode_known_locations(barcodes)
   end
 

@@ -5,7 +5,7 @@ require 'csv'
 class ManifestUploader
   include ActiveModel::Model
 
-  attr_accessor :json, :current_user, :controller, :action
+  attr_accessor :json, :user_code, :controller, :action, :current_user
 
   validate :check_labwares_present, :check_locations, :check_for_ordered_locations,
            :check_for_missing_or_invalid_data, :check_if_any_labwares_are_locations,
@@ -18,7 +18,7 @@ class ManifestUploader
   end
 
   # json = { labwares: [{location_barcode: '', labware_barcode: '' }] }
-  # @return [["lw-location-1-2", "RNA000001"], ["lw-location-1-2", "RNA000002"]]
+  # @return [[ "lw-location-1-2", "RNA000001" ], [ "lw-location-1-2", "RNA000002" ]]
   def formatted_data
     return [] unless json[:labwares]
 
@@ -98,7 +98,8 @@ class ManifestUploader
   end
 
   def check_user
-    UserValidator.new.validate(self) if current_user
+    @current_user = User.find_by_code(user_code)
+    UserValidator.new.validate(self)
   end
 
   def check_labwares_present
