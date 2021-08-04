@@ -18,18 +18,16 @@ class Event
   # or re-firing an event for an 'old' audit?
   # It affects how much data we send in the event - whether we expect it to still be relevant
   def for_old_audit?
-    @for_old_audit ||= begin
-      # The labware record shouldn't be missing,
-      # but if it is, treat this as an 'old' audit
-      if labware.blank?
-        true
-      else
-        # if this audit is not the latest for this labware,
-        # we shouldn't expect current info on the labware to be
-        # relevant to the time the audit was created
-        audit.id != labware.audits.last.id
-      end
-    end
+    # The labware record shouldn't be missing,
+    # but if it is, treat this as an 'old' audit
+    @for_old_audit ||= if labware.blank?
+                         true
+                       else
+                         # if this audit is not the latest for this labware,
+                         # we shouldn't expect current info on the labware to be
+                         # relevant to the time the audit was created
+                         audit.id != labware.audits.last.id
+                       end
   end
 
   def location
@@ -58,23 +56,19 @@ class Event
   end
 
   def labware_uuid
-    @labware_uuid ||= begin
-      if labware.present?
-        labware.uuid
-      else
-        audit.record_data['uuid']
-      end
-    end
+    @labware_uuid ||= if labware.present?
+                        labware.uuid
+                      else
+                        audit.record_data['uuid']
+                      end
   end
 
   def coordinate
-    @coordinate ||= begin
-      unless for_old_audit?
-        # if we are firing an event for a newly created audit, we can grab the current coordinate from the labware
-        labware.coordinate
-      end
-      # otherwise, return nil as we're re-firing an old event & don't know the coordinate for the time it occurred
-    end
+    @coordinate ||= unless for_old_audit?
+                      # if we are firing an event for a newly created audit, we can grab the current coordinate from the labware
+                      labware.coordinate
+                    end
+    # otherwise, return nil as we're re-firing an old event & don't know the coordinate for the time it occurred
   end
 
   # hash which will get sent as the event body to the warehouse
