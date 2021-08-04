@@ -46,7 +46,7 @@ RSpec.describe Location, type: :model do
 
   context "when location type has enforced parent types" do
     before(:each) do
-      @restriction = create(:parentage_restriction, validator: ParentWhiteListValidator)
+      @restriction = create(:parentage_restriction, validator: ParentAllowListValidator)
       @location_type = create(:location_type)
       @location_type.restrictions << @restriction
     end
@@ -68,7 +68,7 @@ RSpec.describe Location, type: :model do
 
   context "when location type has restricted parent types" do
     before(:each) do
-      @restriction = create(:parentage_restriction, validator: ParentBlackListValidator)
+      @restriction = create(:parentage_restriction, validator: ParentDenyListValidator)
       @location_type = create(:location_type)
       @location_type.restrictions << @restriction
     end

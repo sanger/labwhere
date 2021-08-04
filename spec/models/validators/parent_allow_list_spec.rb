@@ -2,11 +2,11 @@
 
 require "rails_helper"
 
-RSpec.describe ParentWhiteListValidator, type: :model do
+RSpec.describe ParentAllowListValidator, type: :model do
   let(:valid_parent_types) { create_list(:location_type, 3) }
 
   let(:validator) do
-    ParentWhiteListValidator.new(location_types: valid_parent_types)
+    ParentAllowListValidator.new(location_types: valid_parent_types)
   end
 
   let(:model_with_valid_parent) do
