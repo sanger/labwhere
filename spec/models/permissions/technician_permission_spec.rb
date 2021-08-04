@@ -131,4 +131,8 @@ RSpec.describe Permissions::TechnicianPermission, type: :model do
   it "should allow access to upload a labware file" do
     expect(permissions).to allow_permission(:upload_labware, :create)
   end
+
+  it "should allow access to create labwares" do
+    expect(permissions).to allow_permission("api/labwares", :create)
+  end
 end

@@ -29,12 +29,9 @@ class Labware < ActiveRecord::Base
                                          .where(barcode: barcodes)
                                          .where.not(location_id: UnknownLocation.get)
                                      }
-
-  ##
-  # find a Labware by its barcode
-  def self.find_by_code(code)
-    find_by(barcode: code)
-  end
+  scope :by_location_barcode, lambda { |location_barcodes|
+                                joins(:location).where(locations: { barcode: location_barcodes })
+                              }
 
   def self.find_or_initialize_by_barcode(object)
     barcode = object.kind_of?(Hash) ? object[:barcode] : object

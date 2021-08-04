@@ -12,4 +12,8 @@ RSpec.describe Permissions::AdministratorPermission, type: :model do
   it "should be able to modify a resource" do
     expect(permissions).to allow_permission(:location, :create)
   end
+
+  it "should allow access to create labwares" do
+    expect(permissions).to allow_permission("api/labwares", :create)
+  end
 end

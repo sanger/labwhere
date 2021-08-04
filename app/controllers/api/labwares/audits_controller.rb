@@ -8,6 +8,6 @@ class Api::Labwares::AuditsController < ApiController
   private
 
   def current_resource
-    Labware.find_by_code(params[:labware_barcode]).audits if params[:labware_barcode]
+    Labware.find_by_barcode(params[:labware_barcode]).audits if params[:labware_barcode]
   end
 end

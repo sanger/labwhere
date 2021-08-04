@@ -41,14 +41,33 @@ RSpec.describe Labware, type: :model do
     expect(labware.location).to be_empty
   end
 
-  it "#find_by_code should find labware by barcode" do
+  it "#find_by_barcode should find labware by barcode" do
     labware = create(:labware)
-    expect(Labware.find_by_code(labware.barcode)).to eq(labware)
+    expect(Labware.find_by_barcode(labware.barcode)).to eq(labware)
   end
 
   it "#by_barcode should return a list of labwares for the barcodes" do
     create_list(:labware, 5)
     expect(Labware.by_barcode(Labware.pluck(:barcode)).count).to eq(5)
+  end
+
+  it "#by_barcode_known_locations should return a list of labwares for the given 'known' location barcodes" do
+    labwares = []
+    labwares += create_list(:labware, 2)
+    labwares += create_list(:labware_with_location, 2)
+    labwares += create_list(:labware_with_ordered_location, 2)
+    labwares += [create(:labware, location: UnknownLocation.get)]
+    expect(Labware.by_barcode_known_locations(labwares.pluck(:barcode)).count).to eq(4)
+  end
+
+  it "#by_location_barcode should return a list of labwares for the given location barcodes" do
+    labwares = []
+    labwares += create_list(:labware, 2)
+    labwares += create_list(:labware_with_location, 2)
+    labwares += create_list(:labware_with_ordered_location, 2)
+    labwares += [create(:labware, location: UnknownLocation.get)]
+    location_barcodes = labwares.map(&:location).map(&:barcode)
+    expect(Labware.by_location_barcode(location_barcodes).count).to eq(5)
   end
 
   it "#location should always be returned whether labware is attached to a location, coordinate or nothing" do

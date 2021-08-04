@@ -6,24 +6,30 @@
 class UploadLabwareForm
   include ActiveModel::Model
 
-  attr_reader :current_user, :controller, :action, :params
+  attr_reader :file, :params
 
-  validate :check_user, :check_required_params, :check_file_format
+  validate :check_required_params, :check_file_format
 
   def submit(params)
     @params = params
     assign_params
-    @current_user = User.find_by_code(@user_code)
 
     return false unless valid?
 
-    uploader = ManifestUploader.new(file: @file.tempfile, user: current_user)
+    uploader = ManifestUploader.new(json: format_file_to_json, user_code: params[:upload_labware_form][:user_code], controller: params[:controller], action: params[:action])
 
-    unless uploader.valid? && uploader.run
+    unless uploader.run
       uploader.errors.full_messages.each { |error| errors.add(:base, error) }
       return false
     end
     true
+  end
+
+  # Convert CSV file to json
+  # @return { labwares: [ { location_barcode: '', labware_barcode: '' }, ... ] }
+  def format_file_to_json
+    parsed = ::CSV.parse(file.tempfile.open.read).drop(1)
+    { labwares: parsed.collect { |row| { location_barcode: row[0], labware_barcode: row[1] } } }
   end
 
   def form_sym
@@ -31,14 +37,7 @@ class UploadLabwareForm
   end
 
   def assign_params
-    @controller = params[:controller]
-    @action = params[:action]
-    @user_code = params[:upload_labware_form][:user_code]
     @file = params[:upload_labware_form][:file]
-  end
-
-  def check_user
-    UserValidator.new.validate(self)
   end
 
   def check_required_params

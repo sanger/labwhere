@@ -10,18 +10,28 @@ class Api::LabwaresController < ApiController
     render json: labwares_by_location
   end
 
+  def create
+    uploader = ManifestUploader.new(json: permitted_params, user_code: params[:user_code], controller: "api/labwares", action: "create")
+
+    if uploader.run
+      render json: Labware.by_barcode_known_locations(uploader.labwares), each_serializer: LabwareLiteSerializer
+    else
+      render json: { errors: uploader.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   def by_barcode
     if request.params["known"] == "true"
-      render json: labwares_by_barcode_known_locations, each_serializer: LabwareLiteSerializer
+      render json: Labware.by_barcode_known_locations(params[:barcodes]), each_serializer: LabwareLiteSerializer
     else
-      render json: labwares_by_barcode, each_serializer: LabwareLiteSerializer
+      render json: Labware.by_barcode(params[:barcodes]), each_serializer: LabwareLiteSerializer
     end
   end
 
   private
 
   def current_resource
-    Labware.find_by_code(params[:barcode]) if params[:barcode]
+    Labware.find_by_barcode(params[:barcode])
   end
 
   def labwares_by_location
@@ -30,20 +40,10 @@ class Api::LabwaresController < ApiController
     location_barcodes = params[:location_barcodes]
     return unless location_barcodes
 
-    Labware.joins(:location).where(locations: { barcode: location_barcodes.split(',') })
+    Labware.by_location_barcode(location_barcodes.split(','))
   end
 
-  def labwares_by_barcode
-    barcodes = params[:barcodes]
-    return [] unless barcodes
-
-    Labware.by_barcode(barcodes)
-  end
-
-  def labwares_by_barcode_known_locations
-    barcodes = params[:barcodes]
-    return [] unless barcodes
-
-    Labware.by_barcode_known_locations(barcodes)
+  def permitted_params
+    params.permit(:action, :controller, labwares: [:location_barcode, :labware_barcode])
   end
 end
