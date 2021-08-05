@@ -7,7 +7,7 @@ module Messages
   # This class should control connection, exchange, queues and publishing to the broker
   class Broker
     attr_accessor :connection
-    attr_reader :channel, :queue, :exchange, :bunny_config
+    attr_reader :channel, :exchange, :bunny_config
 
     def initialize(bunny_config)
       @bunny_config = OpenStruct.new(bunny_config)
@@ -50,8 +50,6 @@ module Messages
       start_connection
       open_channel
       instantiate_exchange
-      declare_queue
-      bind_queue
       true
     rescue StandardError => e
       Rails.logger.error("Cannot connect with RabbitMQ: #{e.message}")
@@ -75,14 +73,6 @@ module Messages
 
     def instantiate_exchange
       @exchange = @channel.topic(bunny_config.exchange, passive: true)
-    end
-
-    def declare_queue
-      @queue = @channel.queue(bunny_config.queue_name, durable: true)
-    end
-
-    def bind_queue
-      @queue.bind(@exchange, routing_key: bunny_config.routing_key)
     end
 
     def publish(message)

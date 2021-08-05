@@ -18,7 +18,6 @@ RSpec.describe Messages::Broker do
   let(:channel) { double('channel') }
   let(:connection) { double('connection') }
   let(:exchange) { double('exchange') }
-  let(:queue) { double('queue') }
 
   let(:broker) { Messages::Broker.new(bunny_config) }
 
@@ -29,7 +28,6 @@ RSpec.describe Messages::Broker do
   def mock_connection
     mock_connection_setup
     mock_publishing_setup
-    mock_subscribing_setup
   end
 
   # Mock set-up
@@ -38,18 +36,11 @@ RSpec.describe Messages::Broker do
     allow(connection).to receive(:start)
     allow(connection).to receive(:create_channel).and_return(channel)
     allow(channel).to receive(:topic).and_return(exchange)
-    allow(channel).to receive(:queue).and_return(queue)
-    allow(queue).to receive(:bind)
   end
 
   # Mock publishing
   def mock_publishing_setup
     allow(exchange).to receive(:publish)
-  end
-
-  # Mock queue subscription
-  def mock_subscribing_setup
-    allow(queue).to receive(:subscribe)
   end
 
   describe 'Broker::ConnectionCheckMemoization' do
@@ -133,9 +124,6 @@ RSpec.describe Messages::Broker do
       expect(connection).to receive(:start)
       expect(connection).to receive(:create_channel)
       expect(channel).to receive(:topic)
-      expect(channel).to receive(:queue)
-      expect(queue).to receive(:bind)
-      # expect(queue).to receive(:subscribe)
 
       broker.create_connection
     end
