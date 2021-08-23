@@ -95,6 +95,8 @@ Rails.application.routes.draw do
 
     resources :scans, only: [:create]
 
+    resources :labwares, only: [:create]
+
     resources :labwares, param: :barcode, only: [:show, :index] do
       concerns :auditable, parent: :labwares
     end
@@ -110,6 +112,4 @@ Rails.application.routes.draw do
 
   match '/about', to: 'about#show', via: :get
 
-  
-  
 end

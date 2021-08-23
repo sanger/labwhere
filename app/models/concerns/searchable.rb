@@ -74,7 +74,7 @@ module Searchable
         end
 
         define_singleton_method :searchable_models do
-          Hash[models.collect { |model| [model, model.to_s.classify.constantize] }]
+          models.collect { |model| [model, model.to_s.classify.constantize] }.to_h
         end
       end
     end

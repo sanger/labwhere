@@ -20,6 +20,7 @@ module Permissions
       allow :locations, [:create, :update] do |record|
         !record.location.protected_changed?
       end
+      allow "api/labwares", [:create]
     end
   end
 end

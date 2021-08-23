@@ -90,7 +90,7 @@ module FormObject
   end
 
   module ClassMethods
-    # Set the whitelist of attributes that will be assigned to the model.
+    # Set the permitted of attributes that will be assigned to the model.
     def set_attributes(*attributes)
       delegate *attributes, to: :model
 

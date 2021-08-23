@@ -6,8 +6,216 @@
 require "rails_helper"
 
 RSpec.describe Api::LabwaresController, type: :request do
-  let!(:location) { create(:location_with_parent) }
-  let!(:labware) { create(:labware_with_audits, location: location) }
+  let!(:location_no_parent) { create(:location) }
+  let!(:location)           { create(:location_with_parent) }
+  let!(:labware)            { create(:labware_with_audits, location: location) }
+  let!(:locations)          { create_list(:unordered_location_with_parent, 10) }
+  let!(:labware_barcode1)   { "TEST123a" }
+  let!(:labware_barcode2)   { "TEST123b" }
+  let!(:labware_barcode3)   { "TEST123c" }
+
+  describe '#create' do
+    let!(:scientist)     { create(:scientist) }
+    let!(:technician)    { create(:technician) }
+
+    context "on success" do
+      it "should be a success, when user is a Technician, location exists and barcode is unique" do
+        payload = {
+          user_code: technician.barcode,
+          labwares: [
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 },
+            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode2 }
+          ]
+        }
+
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(2)
+
+        expect(response).to be_successful
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json.length).to eq(2)
+        expect(json[0]["barcode"]).to eq(labware_barcode1)
+        expect(json[0]["location_barcode"]).to eq(locations[0].barcode)
+        expect(json[1]["barcode"]).to eq(labware_barcode2)
+        expect(json[1]["location_barcode"]).to eq(locations[1].barcode)
+      end
+
+      it "is successful with duplicate labware, as the duplicate is removed and process continued as normal" do
+        payload = {
+          user_code: technician.barcode,
+          labwares: [
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 },
+            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode1 }
+          ]
+        }
+
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(1)
+
+        expect(response).to be_successful
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json.length).to eq(1)
+        expect(json[0]["barcode"]).to eq(labware_barcode1)
+        expect(json[0]["location_barcode"]).to eq(locations[1].barcode)
+      end
+
+      it "is successful, on reupload" do
+        payload = {
+          user_code: technician.barcode,
+          labwares: [
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 },
+            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode2 }
+          ]
+        }
+
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(2)
+
+        expect(response).to be_successful
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json.length).to eq(2)
+        expect(json[0]["barcode"]).to eq(labware_barcode1)
+        expect(json[0]["location_barcode"]).to eq(locations[0].barcode)
+        expect(json[1]["barcode"]).to eq(labware_barcode2)
+        expect(json[1]["location_barcode"]).to eq(locations[1].barcode)
+
+        expect(Labware.where(barcode: labware_barcode1)[0].location.barcode).to eq locations[0].barcode
+        expect(Labware.where(barcode: labware_barcode2)[0].location.barcode).to eq locations[1].barcode
+
+        updated_payload = {
+          user_code: technician.barcode,
+          labwares: [
+            { location_barcode: locations[1].barcode, labware_barcode: labware_barcode1 },
+            { location_barcode: locations[2].barcode, labware_barcode: labware_barcode3 }
+          ]
+        }
+
+        expect do
+          post api_labwares_path, params: updated_payload
+        end.to change(Labware, :count).by(1)
+
+        updated_json = ActiveSupport::JSON.decode(response.body)
+        expect(updated_json.length).to eq(2)
+        expect(updated_json[0]["barcode"]).to eq(labware_barcode1)
+        expect(updated_json[0]["location_barcode"]).to eq(locations[1].barcode)
+        expect(updated_json[1]["barcode"]).to eq(labware_barcode3)
+        expect(updated_json[1]["location_barcode"]).to eq(locations[2].barcode)
+        expect(Labware.where(barcode: labware_barcode1)[0].location.barcode).to eq locations[1].barcode
+      end
+    end
+
+    context "on failure" do
+      it 'will not be valid without the user barcode filled in' do
+        payload = {
+          labwares: [
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 }
+          ]
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 2
+        expect(json["errors"][0]).to eq "User does not exist"
+        expect(json["errors"][1]).to eq "User is not authorised"
+      end
+
+      it 'will not be valid when the user does not have permission i.e is not a Technician' do
+        payload = {
+          user_code: scientist.barcode,
+          labwares: [
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 },
+            { location_barcode: locations[0].barcode, labware_barcode: labware_barcode1 }
+          ]
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 1
+        expect(json["errors"][0]).to eq "User is not authorised"
+      end
+
+      it "will not be valid when the location does not exist" do
+        payload = {
+          user_code: technician.barcode,
+          labwares: [
+            { location_barcode: "a invalid location", labware_barcode: labware_barcode1 }
+          ]
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 1
+        expect(json["errors"][0]).to eq "location(s) with barcode 'a invalid location' do not exist"
+      end
+
+      it "will not be valid when the location does not have a parent" do
+        payload = {
+          user_code: technician.barcode,
+          labwares: [
+            { location_barcode: location_no_parent.barcode, labware_barcode: labware_barcode1 }
+          ]
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 1
+        expect(json["errors"][0]).to eq "Validation failed: Location does not have a parent"
+      end
+
+      it "will not be valid when there is some data missing" do
+        payload = {
+          user_code: technician.barcode,
+          labwares: [
+            { location_barcode: '', labware_barcode: labware_barcode1 }
+          ]
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 2
+        expect(json["errors"][0]).to eq "location(s) with barcode '' do not exist"
+        expect(json["errors"][1]).to eq "It looks like there is some missing or invalid data. Please review and remove anything that shouldn't be there."
+      end
+
+      it "will not be valid when no labwares are provided" do
+        payload = {
+          user_code: technician.barcode
+        }
+        expect do
+          post api_labwares_path, params: payload
+        end.to change(Labware, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json = ActiveSupport::JSON.decode(response.body)
+        expect(json["errors"]).not_to be_empty
+        expect(json["errors"].length).to eq 1
+        expect(json["errors"][0]).to eq "No labwares have been provided"
+      end
+    end
+  end
 
   describe '#show' do
     before(:each) do

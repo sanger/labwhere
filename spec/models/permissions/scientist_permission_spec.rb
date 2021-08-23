@@ -61,4 +61,8 @@ RSpec.describe Permissions::ScientistPermission, type: :model do
     expect(permissions).to_not allow_permission(:teams, :create)
     expect(permissions).to_not allow_permission(:teams, :update)
   end
+
+  it "should not allow access to create labwares" do
+    expect(permissions).to_not allow_permission(:labwares, :create)
+  end
 end
