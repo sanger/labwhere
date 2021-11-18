@@ -31,7 +31,7 @@ module Permissions
     # attached to particular users.
     def allow?(controller, action, resource = nil)
       allowed = allow_all? || allowed_actions[[controller.to_s, action.to_s]]
-      allowed && (allowed == true || resource && allowed.call(resource))
+      allowed && (allowed == true || (resource && allowed.call(resource)))
     end
 
     ##
