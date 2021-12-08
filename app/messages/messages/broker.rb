@@ -10,7 +10,7 @@ module Messages
     attr_reader :channel, :exchange, :bunny_config
 
     def initialize(bunny_config)
-      @bunny_config = OpenStruct.new(bunny_config)
+      @bunny_config = OpenStruct.new(bunny_config) # rubocop:todo Style/OpenStructUse
     end
 
     # This module provides a way of performing the create_connection call only
