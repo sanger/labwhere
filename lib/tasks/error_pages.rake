@@ -21,5 +21,5 @@ def yield_erb(erb)
 end
 
 def create_erb(file)
-  ERB.new File.new(file).read, nil, "%"
+  ERB.new File.new(file).read, trim_mode: "%"
 end
