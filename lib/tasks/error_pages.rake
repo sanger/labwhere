@@ -9,9 +9,7 @@ namespace :error_pages do
     files = Dir[Rails.root.join('app/views/errors/*.html.erb')]
     files.each do |filename|
       error = create_erb filename
-      File.open(Rails.root.join("public", File.basename(filename, ".erb")), "w+") do |f|
-        f.write yield_erb(template) { error.result }
-      end
+      File.write(Rails.root.join("public", File.basename(filename, ".erb")), yield_erb(template) { error.result })
     end
   end
 end
