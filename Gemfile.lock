@@ -147,7 +147,8 @@ GEM
       domain_name (~> 0.5)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
-    jbuilder (2.11.3)
+    jbuilder (2.11.5)
+      actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jquery-rails (4.4.0)
       rails-dom-testing (>= 1, < 3)
@@ -438,4 +439,4 @@ DEPENDENCIES
   with_model
 
 BUNDLED WITH
-   2.1.4
+   2.3.9
