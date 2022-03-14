@@ -12,7 +12,6 @@ gem 'jbuilder', '~> 2.0' # Build JSON APIs with ease. Read more: https://github.
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
-gem 'mini_racer'
 gem 'mysql2'
 gem 'pmb-client', '0.1.0', github: 'sanger/pmb-client'
 gem 'pry'
