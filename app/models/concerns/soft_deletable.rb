@@ -49,7 +49,7 @@ module SoftDeletable
     if mode == :hard
       super()
     else
-      update_attributes(self.class.modifiable_attributes)
+      update(self.class.modifiable_attributes)
     end
   end
 

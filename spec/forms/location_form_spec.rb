@@ -101,12 +101,12 @@ RSpec.describe LocationForm, type: :model do
 
     location_form = LocationForm.new
     res = location_form.submit(
-      controller_params.merge(location: attributes_for(:ordered_location)
+      controller_params.merge(location: attributes_for(:ordered_location_with_parent)
                                           .merge(user_code: admin_swipe_card_id))
     )
     expect(res).to be_truthy
     expect(location_form.location).to be_ordered
-    expect(location_form.location.coordinates.count).to eq(create(:ordered_location).coordinates.count)
+    expect(location_form.location.coordinates.count).to eq(create(:ordered_location_with_parent).coordinates.count)
   end
 
   it "should remove any double spaces from the location name" do

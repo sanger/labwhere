@@ -164,8 +164,11 @@ module FormObject
   end
 
   def add_errors
-    model.errors.each do |key, value|
-      errors.add key, value
+    # model.errors.each do |key, value|
+    #   errors.add key, value
+    # end
+    model.errors.each do |error|
+      errors.add(error.attribute, error.message)
     end
   end
 
