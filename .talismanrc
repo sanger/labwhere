@@ -1,3 +1,7 @@
 fileignoreconfig:
-- filename: app/messages/messages/broker.rb
-  checksum: d42a212596685bc22dfe1865e7d121536a322b82f0078bfe3d5769b6683ed58d
+- filename: config/environment.rb
+  checksum: d0c1b7ce8bcba5fd87145cbd81982f3ae77f7d653e47c8e1db807cfeb29d0267
+- filename: Gemfile.lock
+  checksum: 914797e9a14a2fdafc6db78ef599721c22d1bc06ed8c9b1c5d200f858536304c
+- filename: yarn.lock
+  checksum: 695b47777caedba88f4030e692a863d623e0174c583775ce5e76f2de54328f8a
