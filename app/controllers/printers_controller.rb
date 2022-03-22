@@ -13,7 +13,7 @@ class PrintersController < ApplicationController
   def create
     @printer = PrinterForm.new
     if @printer.submit(params)
-      redirect_to printers_path, notice: "Printer successfully created"
+      redirect_to printers_path, notice: I18n.t('success.messages.created', resource: 'Printer')
     else
       render :new
     end
@@ -26,7 +26,7 @@ class PrintersController < ApplicationController
   def update
     @printer = PrinterForm.new(current_resource)
     if @printer.submit(params)
-      redirect_to printers_path, notice: "Printer successfully updated"
+      redirect_to printers_path, notice: I18n.t('success.messages.updated', resource: 'Printer')
     else
       render :new
     end

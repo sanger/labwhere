@@ -37,6 +37,16 @@ en:
       not_enough_empty_coordinates: "There are not enough positions available in the coordinates for the labwares."
       not_labware: "It looks like you are trying to scan a location into a location. Maybe you need to be on the <a href=\"%{url}\">move location page</a>"
 
+  success:
+    messages:
+      activated: "%{resource} successfully activated"
+      deactivated: "%{resource} successfully deactivated"
+      created: "%{resource} successfully created"
+      updated: "%{resource} successfully updated"
+      moved: "%{resource} successfully moved"
+      emptied: "%{resource} successfully emptied"
+      uploaded: "%{resource} successfully uploaded"
+
   printing:
     success: "Barcode was successfully printed"
     failure: "Unable to print the barcode"
