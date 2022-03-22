@@ -52,3 +52,5 @@ bower.json
 
 # IDE
 .vscode
+
+.talismanrc
