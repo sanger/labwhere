@@ -32,7 +32,7 @@ class DependentLoader
     else
       block.callback :failure
     end
-  rescue ActiveRecord::NoDatabaseError, Mysql2::Error::ConnectionError
+  rescue ActiveRecord::NoDatabaseError, Mysql2::Error::ConnectionError, ActiveRecord::ConnectionNotEstablished
     # Do nothing. We've probably not created the database yet.
   end
 end
