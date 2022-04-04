@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e
 set -e # Exit immediately if something fails
 export NODE_ENV=production
 export RAILS_ENV=development
