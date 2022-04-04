@@ -21,7 +21,6 @@ gem 'sdoc', group: :doc # bundle exec rake doc:rails generates the API under doc
 gem 'select2-rails'
 gem 'turbolinks' # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 
-
 gem 'rack-cors'
 
 group :development do
@@ -52,6 +51,6 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
   gem 'spring' # Spring speeds up development by keeping your application running in the background.
   gem 'teaspoon-jasmine'
-  gem 'with_model'
   gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
+  gem 'with_model'
 end
