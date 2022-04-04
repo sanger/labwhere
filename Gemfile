@@ -41,6 +41,7 @@ end
 
 group :development, :test do
   gem 'byebug' # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'coffee-rails' # Use CoffeeScript for .coffee assets and views
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
   gem 'rb-readline'
@@ -52,5 +53,4 @@ group :development, :test do
   gem 'spring' # Spring speeds up development by keeping your application running in the background.
   gem 'teaspoon-jasmine'
   gem 'with_model'
-  gem 'coffee-rails' # Use CoffeeScript for .coffee assets and views
 end
