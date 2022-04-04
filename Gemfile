@@ -20,7 +20,7 @@ gem 'sass-rails' # Use SCSS for stylesheets
 gem 'sdoc', group: :doc # bundle exec rake doc:rails generates the API under doc/api.
 gem 'select2-rails'
 gem 'turbolinks' # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
+
 
 gem 'rack-cors'
 
@@ -53,4 +53,5 @@ group :development, :test do
   gem 'spring' # Spring speeds up development by keeping your application running in the background.
   gem 'teaspoon-jasmine'
   gem 'with_model'
+  gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 end
