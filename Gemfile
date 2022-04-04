@@ -6,7 +6,6 @@ gem 'active_model_serializers'
 gem 'ancestry'
 gem 'bootsnap', require: false # For startup speed
 gem 'bunny'
-gem 'coffee-rails' # Use CoffeeScript for .coffee assets and views
 gem 'exception_notification' # Exception Notification to send exception emails
 gem 'jbuilder' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jquery-rails' # Use jquery as the JavaScript library
@@ -53,4 +52,5 @@ group :development, :test do
   gem 'spring' # Spring speeds up development by keeping your application running in the background.
   gem 'teaspoon-jasmine'
   gem 'with_model'
+  gem 'coffee-rails' # Use CoffeeScript for .coffee assets and views
 end
