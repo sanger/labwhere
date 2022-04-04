@@ -25,8 +25,8 @@ RSpec.describe Auditable, type: :model do
     location.create_audit(user)
     expect(location.audits.last.action).to eq(AuditAction::CREATE)
     # Need to put the created date into the past because the test is too quick, so that created date and updated date are equal
-    location.update_attributes(created_at: DateTime.now - 1)
-    location.update_attributes(name: "New Name")
+    location.update(created_at: DateTime.now - 1)
+    location.update(name: "New Name")
     location.create_audit(user)
     expect(location.audits.last.action).to eq(AuditAction::UPDATE)
   end

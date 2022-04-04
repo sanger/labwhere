@@ -43,7 +43,9 @@ RSpec.describe OrderedLocation, type: :model do
 
   describe 'destroying ordered locations' do
     it 'success' do
-      ordered_location = create(:ordered_location)
+      ordered_location = build(:ordered_location_with_parent)
+      puts ordered_location.coordinates
+      ordered_location.coordinates.each { |coordinate| puts coordinate.errors.full_messages }
       ordered_location.destroy
       expect(ordered_location).to be_destroyed
     end

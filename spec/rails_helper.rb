@@ -2,7 +2,6 @@
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
-require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'with_model'
@@ -98,9 +97,10 @@ RSpec.configure do |config|
     Capybara.drivers[:selenium_chrome_headless].call(app)
   end
 
+  # options is deprecated
   Capybara.register_driver :chrome do |app|
     options = Selenium::WebDriver::Chrome::Options.new
-    Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+    Capybara::Selenium::Driver.new(app, browser: :chrome, capabilities: options)
   end
 
   Capybara.default_max_wait_time = 10

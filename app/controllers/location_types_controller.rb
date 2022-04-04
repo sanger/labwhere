@@ -12,7 +12,7 @@ class LocationTypesController < ApplicationController
 
   def create
     if @location_type.submit(params)
-      redirect_to location_types_path, notice: "Location type successfully created"
+      redirect_to location_types_path, notice: I18n.t('success.messages.created', resource: 'Location type')
     else
       render :new
     end
@@ -23,7 +23,7 @@ class LocationTypesController < ApplicationController
 
   def update
     if @location_type.submit(params)
-      redirect_to location_types_path, notice: "Location type successfully updated"
+      redirect_to location_types_path, notice: I18n.t('success.messages.updated', resource: 'Location type')
     else
       render :edit
     end

@@ -131,7 +131,7 @@ RSpec.describe "Locations", type: :feature do
   describe "with coordinates", js: :true do
     # rubocop:enable Lint/BooleanSymbol
     it "Allows a user to add a new location with coordinates" do
-      location = build(:ordered_location)
+      location = build(:ordered_location_with_parent)
       visit locations_path
       click_link "Add new location"
       expect {
@@ -144,7 +144,7 @@ RSpec.describe "Locations", type: :feature do
         fill_in "Columns", with: location.columns
         click_button "Create Location"
       }.to change(Location, :count).by(1)
-      expect(OrderedLocation.first.coordinates.count).to eq(create(:ordered_location).coordinates.length)
+      expect(OrderedLocation.first.coordinates.count).to eq(create(:ordered_location_with_parent).coordinates.length)
       expect(page).to have_content("Location(s) successfully created")
     end
   end
