@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :labware do
     sequence(:barcode) { |n| "Labware:#{n}" }
-    location nil
+    location { nil }
 
     factory :labware_with_audits do
       transient do

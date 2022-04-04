@@ -17,7 +17,7 @@ class LocationsController < ApplicationController
 
   def create
     if @location.submit(permitted_params)
-      redirect_to locations_path, notice: "Location(s) successfully created"
+      redirect_to locations_path, notice: I18n.t('success.messages.created', resource: 'Location(s)')
     else
       render :new
     end
@@ -28,7 +28,7 @@ class LocationsController < ApplicationController
 
   def update
     if @location.update(permitted_params)
-      redirect_to locations_path, notice: "Location successfully updated"
+      redirect_to locations_path, notice: I18n.t('success.messages.updated', resource: 'Location')
     else
       render :edit
     end
@@ -56,13 +56,13 @@ class LocationsController < ApplicationController
   def deactivate
     @location = current_resource
     @location.deactivate
-    redirect_to locations_path, notice: "Location successfully deactivated"
+    redirect_to locations_path, notice: I18n.t('success.messages.deactivated', resource: 'Location')
   end
 
   def activate
     @location = current_resource
     @location.activate
-    redirect_to locations_path, notice: "Location successfully activated"
+    redirect_to locations_path, notice: I18n.t('success.messages.activated', resource: 'Location')
   end
 
   protected

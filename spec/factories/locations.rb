@@ -4,9 +4,9 @@ FactoryBot.define do
   factory :location do
     sequence(:name) { |n| "Location #{n}" }
     location_type_id { create(:location_type).id }
-    internal_parent nil
-    parent nil
-    team nil
+    internal_parent { nil }
+    parent { nil }
+    team { nil }
 
     factory :location_with_parent do
       parent { FactoryBot.create(:location) }
@@ -51,8 +51,8 @@ FactoryBot.define do
     end
 
     factory :ordered_location, class: "OrderedLocation" do
-      rows 4
-      columns 4
+      rows { 4 }
+      columns  { 4 }
 
       factory :ordered_location_with_parent do
         parent { FactoryBot.create(:location) }

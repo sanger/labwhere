@@ -218,7 +218,7 @@ class Location < ActiveRecord::Base
 
   def only_one_unknown
     if type == 'UnknownLocation' && (new_record? || type_changed?) && UnknownLocation.all.count >= 1
-      errors[:base] << UNKNOWN_LIMIT_ERROR
+      errors.add(:base, UNKNOWN_LIMIT_ERROR)
     end
   end
 end

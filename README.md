@@ -16,7 +16,11 @@ Make sure you have `ruby-2.5.6` installed. e.g. `rvm install ruby-2.5.6`.
     gem install bundler
     ```
 
-1. Install the dependencies: `bundle install`
+1. Install dependencies: 
+    ```bash
+    bundle install
+    npm install
+    ```
 1. Set up the local database
 The local database uses `mysql`.
 

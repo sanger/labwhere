@@ -122,8 +122,8 @@ class LocationForm
   end
 
   def add_location_errors
-    location.errors.each do |key, value|
-      errors.add key, value
+    location.errors.each do |error|
+      errors.add error.attribute, error.message
     end
   end
 

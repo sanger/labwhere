@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   def create
     @user = UserForm.new
     if @user.submit(params)
-      redirect_to users_path, notice: "User successfully created"
+      redirect_to users_path, notice: I18n.t('success.messages.created', resource: 'User')
     else
       render :new
     end
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   def update
     @user = UserForm.new(current_resource)
     if @user.submit(params)
-      redirect_to users_path, notice: "User successfully updated"
+      redirect_to users_path, notice: I18n.t('success.messages.updated', resource: 'User')
     else
       render :edit
     end
@@ -35,13 +35,13 @@ class UsersController < ApplicationController
   def deactivate
     @user = current_resource
     @user.deactivate
-    redirect_to users_path, notice: "User successfully deactivated"
+    redirect_to users_path, notice: I18n.t('success.messages.deactivated', resource: 'User')
   end
 
   def activate
     @user = current_resource
     @user.activate
-    redirect_to users_path, notice: "User successfully activated"
+    redirect_to users_path, notice: I18n.t('success.messages.activated', resource: 'User')
   end
 
   def users

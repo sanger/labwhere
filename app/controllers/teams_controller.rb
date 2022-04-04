@@ -13,7 +13,7 @@ class TeamsController < ApplicationController
   def create
     @team = TeamForm.new
     if @team.submit(params)
-      redirect_to teams_path, notice: "Team successfully created"
+      redirect_to teams_path, notice: I18n.t('success.messages.created', resource: 'Team')
     else
       render :new
     end
@@ -26,7 +26,7 @@ class TeamsController < ApplicationController
   def update
     @team = TeamForm.new(current_resource)
     if @team.submit(params)
-      redirect_to teams_path, notice: "Team successfully updated"
+      redirect_to teams_path, notice: I18n.t('success.messages.updated', resource: 'Team')
     else
       render :edit
     end

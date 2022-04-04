@@ -8,7 +8,7 @@ class EmptyLocationsController < ApplicationController
   def create
     @empty_location = EmptyLocationForm.new
     if @empty_location.submit(params)
-      redirect_to new_empty_location_path, notice: "Location successfully emptied."
+      redirect_to new_empty_location_path, notice: I18n.t('success.messages.emptied', resource: 'Location')
     else
       render :new
     end

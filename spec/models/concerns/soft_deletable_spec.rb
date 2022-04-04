@@ -66,7 +66,7 @@ RSpec.describe SoftDeletable, type: :model do
   it "#destroy should remove any associations specified" do
     blog_post = BlogPost.create(title: "A blog post")
     comment = Comment.create(text: "A Comment")
-    comment.update_attributes(blog_post: blog_post)
+    comment.update(blog_post: blog_post)
     comment.destroy
     expect(comment.reload.blog_post).to be_nil
   end
