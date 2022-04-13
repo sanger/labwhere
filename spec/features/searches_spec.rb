@@ -101,7 +101,7 @@ RSpec.describe "Searches", type: :feature do
       fill_in "Term", with: labware.barcode
       click_button "Search"
       find(:data_id, labware.id).find(:data_behavior, "drilldown").click
-      expect(find(:data_id, labware.id)).to have_css("article", count: 5)
+      expect(find(:data_id, labware.id)).to have_css("article", count: 5, wait: 5)
     end
   end
 end

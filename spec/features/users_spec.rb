@@ -98,7 +98,7 @@ RSpec.describe "Users", type: :feature do
       user = create(:user_with_audits)
       visit users_path
       find(:data_id, user.id).find(:data_behavior, "drilldown").click
-      expect(find(:data_id, user.id)).to have_css("article", count: 5)
+      expect(find(:data_id, user.id)).to have_css("article", count: 5, wait: 5)
     end
   end
 end
