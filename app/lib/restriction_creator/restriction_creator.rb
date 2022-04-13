@@ -20,17 +20,20 @@ class RestrictionCreator
   end
 
   def create_restriction(restriction)
-    type = restriction["type"] || "Restriction"
-    location_type = LocationType.find_or_create_by(name: restriction["location_type"])
-    location_types_restrictions = restriction.delete("location_types_restrictions")
-    new_restriction = type.constantize.create(restriction.merge("location_type" => location_type))
-    create_location_types_restrictions(new_restriction, location_types_restrictions) if location_types_restrictions.present?
+    type = restriction['type'] || 'Restriction'
+    location_type = LocationType.find_or_create_by(name: restriction['location_type'])
+    location_types_restrictions = restriction.delete('location_types_restrictions')
+    new_restriction = type.constantize.create(restriction.merge('location_type' => location_type))
+    if location_types_restrictions.present?
+      create_location_types_restrictions(new_restriction,
+                                         location_types_restrictions)
+    end
   end
 
   def create_location_types_restrictions(restriction, location_types_restrictions)
     location_types_restrictions.each do |location_type_name|
       location_type = LocationType.find_or_create_by(name: location_type_name)
-      LocationTypesRestriction.create("location_type_id" => location_type.id, "restriction_id" => restriction.id)
+      LocationTypesRestriction.create('location_type_id' => location_type.id, 'restriction_id' => restriction.id)
     end
   end
 end

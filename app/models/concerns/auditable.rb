@@ -34,6 +34,6 @@ module Auditable
   def uk_dates
     return {} unless created_at && updated_at
 
-    { "created_at" => created_at.to_s(:uk), "updated_at" => updated_at.to_s(:uk) }
+    { 'created_at' => created_at.to_s(:uk), 'updated_at' => updated_at.to_s(:uk) }
   end
 end

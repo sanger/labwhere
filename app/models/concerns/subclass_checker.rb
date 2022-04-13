@@ -24,14 +24,14 @@ module SubclassChecker
 
     def method_name(klass)
       name = klass.to_s
-      name.include?("_") ? "#{name.split('_').first}?" : "#{name}?"
+      name.include?('_') ? "#{name.split('_').first}?" : "#{name}?"
     end
 
     private
 
     def set_klass_name(klass)
       name = klass.to_s
-      name.include?("_") ? name.camelize : name.capitalize
+      name.include?('_') ? name.camelize : name.capitalize
     end
   end
 end

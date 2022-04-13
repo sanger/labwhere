@@ -10,8 +10,8 @@ module Permissions
     def initialize(user)
       super
       allow :move_locations, [:create]
-      allow :location_types, [:create, :update]
-      allow :teams, [:create, :update]
+      allow :location_types, %i[create update]
+      allow :teams, %i[create update]
       allow :users, [:create, :update] do |record|
         !record.user.administrator? && !record.user.instance_of?(Administrator)
         # instance_of?(Administrator) checks the user being edited isnt an Administrator
@@ -20,7 +20,7 @@ module Permissions
       allow :locations, [:create, :update] do |record|
         !record.location.protected_changed?
       end
-      allow "api/labwares", [:create]
+      allow 'api/labwares', [:create]
     end
   end
 end

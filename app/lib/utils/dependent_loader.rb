@@ -25,7 +25,9 @@ class DependentLoader
   #   end
   #  end
   def self.start(table, &block)
-    return unless ActiveRecord::Base.connection.data_source_exists?(table.to_s) and !defined?(::Rake) and Rails.env.test?
+    unless ActiveRecord::Base.connection.data_source_exists?(table.to_s) and !defined?(::Rake) and Rails.env.test?
+      return
+    end
 
     if table.to_s.classify.constantize.all.empty?
       block.callback :success

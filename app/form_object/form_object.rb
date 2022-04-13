@@ -9,20 +9,26 @@ module FormObject
   # Provides a middleman between views and models.
   # A form object will allow you to assign permitted attributes.
   # It will also allow you to carry out other functions such as authorisation and adding audit records.
-  # Convention states that the name must be in the format of the model followed by Form e.g. MyModelForm relates to MyModel.
+  # Convention states that the name must be in the format of the model followed by
+  # Form e.g. MyModelForm relates to MyModel.
   # It will set the ActiveModel name to the underlying model name for use in views.
   #
   # The set_attributes method accepts a list of attributes which will be assigned on submit and are permitted.
   # These must be attributes of the model.
   # The form object can be initialized with an existing object
-  # The submit method accepts parameters of type ActionController::Parameters of format { my_model: { attr_a: "a", attr_b: "b"}}
-  # The submit method will assign any form variables, assign the model attributes will validate the model and carry out any other
+  # The submit method accepts parameters of type ActionController::Parameters of format
+  # { my_model: { attr_a: "a", attr_b: "b"}}
+  # The submit method will assign any form variables, assign the model attributes will
+  # validate the model and carry out any other
   # specific validations that are added. It will then save the model if it is valid.
   # The after_validate method allows you to change which actions are carried out post validation.
-  # The after_submit callback allows you to specify actions which can be carried out after a successful submit.
-  # Each form object will automatically assign controller and action variables if the parameters come from a controller and will
+  # The after_submit callback allows you to specify actions which can be carried
+  # out after a successful submit.
+  # Each form object will automatically assign controller and action variables if the parameters
+  # come from a controller and will
   # also assign the parameters to an instance variable.
-  # Each object will also have an attribute called model which relates to the underlying model this is also aliased to the name of the model.
+  # Each object will also have an attribute called model which relates to the underlying
+  # model this is also aliased to the name of the model.
   # e.g. if model is called MyModel there will an attribute called my_model.
 
   # Usage:
@@ -67,10 +73,10 @@ module FormObject
   #
 
   included do
-    _model = self.to_s.gsub("Form", "")
+    _model = self.to_s.gsub('Form', '')
 
     class_attribute :form_variables
-    self.form_variables = FormObject::FormVariables.new(self, _model.underscore.to_sym, [:controller, :action])
+    self.form_variables = FormObject::FormVariables.new(self, _model.underscore.to_sym, %i[controller action])
 
     validate :check_for_errors
 
@@ -180,7 +186,7 @@ module FormObject
           yield
         end
         true
-      rescue
+      rescue StandardError
         false
       end
     else

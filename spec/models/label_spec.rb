@@ -25,7 +25,7 @@ RSpec.describe Label, type: :model do
       expect(subject.body[0][:barcode]).to eql(location.barcode)
       expect(subject.body[0][:parent_location]).to eql(location.parent.name)
       expect(subject.body[0][:location]).to eql(location.name)
-      expect(subject.body[0][:label_name]).to eql("location")
+      expect(subject.body[0][:label_name]).to eql('location')
     end
   end
 

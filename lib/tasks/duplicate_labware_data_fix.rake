@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 namespace :duplicates do
-  desc "De-duplicate labware"
+  desc 'De-duplicate labware'
   task delete: :environment do |_t|
     ActiveRecord::Base.transaction do
-      puts "Starting de-duping..."
+      puts 'Starting de-duping...'
 
       # Get all the barcodes where there are duplicates
       barcode_to_count = Labware.group(:barcode).count
@@ -18,7 +18,7 @@ namespace :duplicates do
 
       barcode_to_labs = labs.group_by(&:barcode)
 
-      puts "Deleting duplicates..."
+      puts 'Deleting duplicates...'
       barcode_to_labs.each do |_barcode, labwares|
         # save one of them
         labwares.pop
@@ -30,7 +30,7 @@ namespace :duplicates do
         end
       end
 
-      puts "Finished de-duping."
+      puts 'Finished de-duping.'
     end
   end
 end

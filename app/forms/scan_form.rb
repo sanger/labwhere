@@ -12,7 +12,9 @@ class ScanForm
   set_form_variables :labware_barcodes, :location_barcode, :start_position, location: :find_location
 
   after_validate do
-    scan.add_attributes_from_collection(LabwareCollection.open(location: location, user: current_user, coordinates: available_coordinates, labwares: labwares).push)
+    scan.add_attributes_from_collection(LabwareCollection.open(location: location, user: current_user,
+                                                               coordinates: available_coordinates,
+                                                               labwares: labwares).push)
     scan.save
   end
 
@@ -33,7 +35,7 @@ class ScanForm
 
   def check_available_coordinates
     unless available_coordinates.count == labwares.count
-      errors.add(:base, I18n.t("errors.messages.not_enough_empty_coordinates"))
+      errors.add(:base, I18n.t('errors.messages.not_enough_empty_coordinates'))
     end
   end
 
@@ -43,7 +45,7 @@ class ScanForm
 
   def check_if_any_barcodes_are_locations
     if labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
-      errors.add(:base, I18n.t("errors.messages.not_labware", { url: new_move_location_path }))
+      errors.add(:base, I18n.t('errors.messages.not_labware', { url: new_move_location_path }))
     end
   end
 end

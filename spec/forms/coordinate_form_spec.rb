@@ -8,7 +8,7 @@ RSpec.describe CoordinateForm, type: :model do
   let(:labware) { create(:labware) }
 
   let(:coordinate_form) { CoordinateForm.new(coordinate) }
-  let(:controller_args) { { controller: "locations/coordinates", action: "update" } }
+  let(:controller_args) { { controller: 'locations/coordinates', action: 'update' } }
   let(:user_args) { { user_code: administrator.login } }
   let(:labware_args) { { labware_barcode: labware.barcode } }
 

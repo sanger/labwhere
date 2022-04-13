@@ -12,10 +12,10 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
     labwares = build_list(:labware, num_plates)
     visit new_scan_path
     expect do
-      fill_in "User swipe card id/barcode", with: sci_swipe_card_id
-      fill_in "Location barcode", with: location.barcode
-      fill_in "Labware barcodes", with: labwares.join_barcodes
-      click_button "Go!"
+      fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
+      fill_in 'Location barcode', with: location.barcode
+      fill_in 'Labware barcodes', with: labwares.join_barcodes
+      click_button 'Go!'
     end.to change(Scan, :count).by(1)
   end
 
@@ -25,7 +25,7 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
     end
 
     before do
-      stub_const("Broker::Handle", broker)
+      stub_const('Broker::Handle', broker)
     end
 
     context 'when we cannot connect to RabbitMQ' do

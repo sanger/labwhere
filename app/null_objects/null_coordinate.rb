@@ -4,7 +4,7 @@
 class NullCoordinate
   # Always set the name to null
   def name
-    "null"
+    'null'
   end
 
   # Set the location to location unknown

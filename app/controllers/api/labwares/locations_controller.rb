@@ -15,6 +15,6 @@ class Api::Labwares::LocationsController < ApiController
     Labware
       .includes(:location, { coordinate: :location })
       .by_barcode(params[:barcodes])
-      .where("coordinate_id IS NOT NULL OR location_id IS NOT NULL")
+      .where('coordinate_id IS NOT NULL OR location_id IS NOT NULL')
   end
 end

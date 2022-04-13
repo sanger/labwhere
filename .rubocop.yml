@@ -32,3 +32,6 @@ Lint/AmbiguousBlockAssociation:
 
 Naming/MemoizedInstanceVariableName:
   Enabled: false
+
+Style/RedundantInitialize:
+  Enabled: false

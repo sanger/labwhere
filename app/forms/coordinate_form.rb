@@ -19,8 +19,8 @@ class CoordinateForm
   private
 
   def labware_barcode_is_provided
-    if !params.require(:coordinate).has_key?(:labware_barcode)
-      errors.add(:base, "A labware barcode must be provided")
+    unless params.require(:coordinate).key?(:labware_barcode)
+      errors.add(:base, 'A labware barcode must be provided')
     end
   end
 

@@ -41,7 +41,7 @@ class PrintsController < ApplicationController
   end
 
   def message_suffix
-    suffix = params[:print_child_barcodes] ? " for each child of" : " for"
+    suffix = params[:print_child_barcodes] ? ' for each child of' : ' for'
     suffix + " location: #{current_resource.name}"
   end
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# TODO: improve the way the search method is done. At the moment it works by adding all the results together and then filtering.
+# TODO: improve the way the search method is done. At the moment
+# it works by adding all the results together and then filtering.
 
 ##
 # The Searchable module allows you to do a multi-model search across various attributes.

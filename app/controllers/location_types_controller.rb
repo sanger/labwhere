@@ -41,7 +41,7 @@ class LocationTypesController < ApplicationController
   def destroy
     respond_to do |format|
       if @location_type.destroy(params)
-        flash_keep "Location type successfully deleted"
+        flash_keep 'Location type successfully deleted'
         format.js { render js: "window.location.pathname='#{location_types_path}'" }
       else
         format.js

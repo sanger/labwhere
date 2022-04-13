@@ -15,9 +15,9 @@ module Permissions
         user.id == record.user.id && record.user.scientist?
         # Scientists can update themselves but not change their types
       end
-      allow "api/scans", [:create]
-      allow "api/coordinates", [:update]
-      allow "api/locations/coordinates", [:update]
+      allow 'api/scans', [:create]
+      allow 'api/coordinates', [:update]
+      allow 'api/locations/coordinates', [:update]
     end
   end
 end

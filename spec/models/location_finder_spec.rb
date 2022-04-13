@@ -122,7 +122,8 @@ RSpec.describe LocationFinder, type: :model do
       let(:labware_record_last)     { csv_output.select { |row| row[0] == labware_last.barcode }.flatten }
 
       it 'will have the correct headers' do
-        expect(csv_output[0]).to eq(%w[labware_barcode labware_exists location_barcode location_name location_parentage])
+        expect(csv_output[0]).to eq(%w[labware_barcode labware_exists location_barcode location_name
+                                       location_parentage])
       end
 
       it 'will have the correct number of rows' do

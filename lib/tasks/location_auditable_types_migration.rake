@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :migration do
-  desc "change historical location auditable_types"
+  desc 'change historical location auditable_types'
   task change_location_auditable_types: :environment do |_t|
     audits = Audit.where(auditable_type: [OrderedLocation.to_s, UnorderedLocation.to_s])
     num_audits = audits.count
@@ -11,7 +11,7 @@ namespace :migration do
       audits.each do |audit|
         audit.auditable_type = Location.to_s
         audit.save!
-        print "."
+        print '.'
       end
     end
 

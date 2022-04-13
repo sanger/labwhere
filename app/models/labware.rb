@@ -55,7 +55,7 @@ class Labware < ActiveRecord::Base
   end
 
   def exists
-    "Yes"
+    'Yes'
   end
 
   def flush_coordinate
@@ -77,7 +77,8 @@ class Labware < ActiveRecord::Base
   ##
   # Useful for creating audit records. There are certain attributes which are not needed.
   def as_json(options = {})
-    super({ except: [:location_id, :coordinate_id, :previous_location_id, :deleted_at] }.merge(options)).merge(uk_dates).merge("location" => location.barcode)
+    super({ except: %i[location_id coordinate_id previous_location_id
+                       deleted_at] }.merge(options)).merge(uk_dates).merge('location' => location.barcode)
   end
 
   def write_event(audit_record)

@@ -19,7 +19,7 @@ describe Api::Locations::DescendantsController, type: :request do
 
     context 'when min_available_coordinates is specified' do
       it 'uses the AvailableCoordinatesQuery' do
-        expect(AvailableCoordinatesQuery).to receive(:call).with(@descendants, "5").and_call_original
+        expect(AvailableCoordinatesQuery).to receive(:call).with(@descendants, '5').and_call_original
         get api_location_descendants_path(@parent.barcode), params: { min_available_coordinates: 5 }
         expect(ActiveSupport::JSON.decode(response.body).length).to eq(@grandchildren.length)
       end

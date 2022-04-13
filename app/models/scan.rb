@@ -9,7 +9,7 @@
 class Scan < ActiveRecord::Base
   include AssertLocation
 
-  enum status: [:in, :out]
+  enum status: %i[in out]
 
   belongs_to :location, optional: true
   belongs_to :user, optional: true

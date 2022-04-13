@@ -46,7 +46,8 @@ class Audit < ActiveRecord::Base
     new_action = if auditable.destroyed?
                    AuditAction::DESTROY
                  # we need to know whether the auditable has just been created or whether it exists already.
-                 # originally using created_at but this is no longer relevant as labwares are sometimes rescanned into the same location which does not change updated at
+                 # originally using created_at but this is no longer relevant as labwares
+                 # are sometimes rescanned into the same location which does not change updated at
                  # If the audits are empty we should be able to assume (not 100%) that the labware has just been created
                  elsif auditable.audits.empty?
                    AuditAction::CREATE
@@ -61,7 +62,8 @@ class Audit < ActiveRecord::Base
   # they need to know where it is with a more descriptive message if
   # the audit record is for a location or labware
   def create_message
-    new_message = if (auditable.is_a?(Location) || auditable.instance_of?(Labware)) && auditable.try(:breadcrumbs).present?
+    new_message = if (auditable.is_a?(Location) || auditable.instance_of?(Labware)) &&
+                     auditable.try(:breadcrumbs).present?
                     "#{action_instance.display_text} and stored in #{auditable.breadcrumbs}"
                   else
                     action_instance.display_text

@@ -18,6 +18,6 @@ class NullLabwareCollection
   end
 
   def original_location_names
-    ""
+    ''
   end
 end

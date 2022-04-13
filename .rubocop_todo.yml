@@ -25,7 +25,6 @@ Lint/AmbiguousOperator:
 # Cop supports --auto-correct.
 Lint/NonDeterministicRequireOrder:
   Exclude:
-    - 'config/initializers/load_cgap_models.rb'
     - 'config/initializers/restrictions.rb'
     - 'lib/tasks/location_creator.rake'
     - 'lib/tasks/restriction_creator.rake'
@@ -52,7 +51,6 @@ Lint/UselessAssignment:
   Exclude:
     - 'app/models/concerns/searchable.rb'
     - 'app/models/label_printer.rb'
-    - 'lib/cgap/cgap/migrate_top_level_locations.rb'
     - 'spec/api/locations_spec.rb'
     - 'spec/features/locations_spec.rb'
     - 'spec/features/printers_spec.rb'
@@ -101,7 +99,6 @@ Naming/AccessorMethodName:
     - 'app/forms/coordinates_form.rb'
     - 'app/lib/utils/hash_attributes.rb'
     - 'app/models/concerns/subclass_checker.rb'
-    - 'lib/cgap/cgap/load_data.rb'
 
 # Offense count: 1
 # Configuration parameters: EnforcedStyleForLeadingUnderscores.
@@ -172,7 +169,6 @@ Rails/ApplicationRecord:
     - 'app/models/search.rb'
     - 'app/models/team.rb'
     - 'app/models/users/user.rb'
-    - 'lib/cgap/cgap/base.rb'
 
 # Offense count: 1
 # Configuration parameters: EnforcedStyle.
@@ -205,9 +201,7 @@ Rails/EnumHash:
 Rails/FilePath:
   Exclude:
     - 'config/application.rb'
-    - 'config/initializers/load_cgap_models.rb'
     - 'config/initializers/restrictions.rb'
-    - 'lib/cgap/cgap/load_data.rb'
     - 'test/location_creator/location_creator_test.rb'
     - 'test/restriction_creator/restriction_creator_test.rb'
     - 'test/test_helper.rb'
@@ -241,19 +235,6 @@ Rails/InverseOf:
     - 'app/models/locations/ordered_location.rb'
     - 'app/models/restrictions/parentage_restriction.rb'
 
-# Offense count: 1
-# Configuration parameters: Include.
-# Include: app/**/*.rb, config/**/*.rb, db/**/*.rb, lib/**/*.rb
-Rails/Output:
-  Exclude:
-    - 'lib/cgap/cgap/load_data.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Rails/RedundantForeignKey:
-  Exclude:
-    - 'lib/cgap/cgap/labware.rb'
-
 # Offense count: 12
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, Include.
@@ -261,7 +242,6 @@ Rails/RedundantForeignKey:
 # Include: **/test/**/*
 Rails/RefuteMethods:
   Exclude:
-    - 'test/cgap/migrate_top_level_locations_test.rb'
     - 'test/location_creator/location_creator_test.rb'
     - 'test/restriction_creator/restriction_creator_test.rb'
 
@@ -275,18 +255,7 @@ Rails/SkipsModelValidations:
     - 'app/models/coordinate.rb'
     - 'app/models/locations/location.rb'
     - 'app/models/search.rb'
-    - 'lib/cgap/cgap/migrate_locations.rb'
-    - 'lib/cgap/cgap/migrate_top_level_locations.rb'
     - 'spec/models/locations/location_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, AutoCorrect.
-# SupportedStyles: conservative, aggressive
-Rails/UniqBeforePluck:
-  Exclude:
-    - 'test/cgap/migrate_locations_test.rb'
-    - 'test/cgap/migrate_top_level_locations_test.rb'
 
 # Offense count: 7
 # Configuration parameters: Include.
@@ -440,7 +409,6 @@ Style/EmptyMethod:
     - 'app/controllers/users_controller.rb'
     - 'app/null_objects/null_coordinate.rb'
     - 'spec/factories/restrictions.rb'
-    - 'test/cgap/load_data_test.rb'
     - 'test/location_creator/location_creator_test.rb'
 
 # Offense count: 4
@@ -490,8 +458,6 @@ Style/IfUnlessModifier:
     - 'app/lib/validators/parent_white_list_validator.rb'
     - 'app/models/labware_collection/ordered_location.rb'
     - 'app/models/locations/location.rb'
-    - 'config/initializers/load_cgap_models.rb'
-    - 'lib/cgap/cgap/base.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -513,61 +479,50 @@ Style/MixinUsage:
     - 'bin/setup'
     - 'bin/update'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'app/models/audit.rb'
-    - 'lib/cgap/cgap/create_location_types.rb'
-    - 'lib/cgap/cgap/migrate_locations.rb'
+# # Offense count: 3
+# # Cop supports --auto-correct.
+# # Configuration parameters: EnforcedStyle.
+# # SupportedStyles: literals, strict
+# Style/MutableConstant:
+#   Exclude:
+#     - 'app/models/audit.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: both, prefix, postfix
-Style/NegatedIf:
-  Exclude:
-    - 'app/forms/coordinate_form.rb'
-    - 'app/forms/location_form.rb'
+# # Offense count: 2
+# # Cop supports --auto-correct.
+# # Configuration parameters: EnforcedStyle.
+# # SupportedStyles: both, prefix, postfix
+# Style/NegatedIf:
+#   Exclude:
+#     - 'app/forms/coordinate_form.rb'
+#     - 'app/forms/location_form.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: be, be_a, be_an, be_between, be_falsey, be_kind_of, be_instance_of, be_truthy, be_within, eq, eql, end_with, include, match, raise_error, respond_to, start_with
-Style/NestedParenthesizedCalls:
-  Exclude:
-    - 'lib/cgap/cgap/load_data.rb'
+# # Offense count: 2
+# # Cop supports --auto-correct.
+# Style/Not:
+#   Exclude:
+#     - 'app/forms/location_form.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/Not:
-  Exclude:
-    - 'app/forms/location_form.rb'
+# # Offense count: 10
+# # Cop supports --auto-correct.
+# # Configuration parameters: Strict.
+# Style/NumericLiterals:
+#   MinDigits: 9
 
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: Strict.
-Style/NumericLiterals:
-  MinDigits: 9
+# # Offense count: 8
+# # Cop supports --auto-correct.
+# # Configuration parameters: AutoCorrect, EnforcedStyle, IgnoredMethods.
+# # SupportedStyles: predicate, comparison
+# Style/NumericPredicate:
+#   Exclude:
+#     - 'spec/**/*'
+#     - 'app/models/locations/location.rb'
+#     - 'lib/utils/deployed_version.rb'
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle, IgnoredMethods.
-# SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'app/models/locations/location.rb'
-    - 'lib/cgap/cgap/migrate_labwares.rb'
-    - 'lib/utils/deployed_version.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/ParallelAssignment:
-  Exclude:
-    - 'app/form_object/form_object/form_variables.rb'
+# # Offense count: 1
+# # Cop supports --auto-correct.
+# Style/ParallelAssignment:
+#   Exclude:
+#     - 'app/form_object/form_object/form_variables.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -586,22 +541,22 @@ Style/PercentLiteralDelimiters:
     - 'config/application.rb'
     - 'config/spring.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: short, verbose
-Style/PreferredHashMethods:
-  Exclude:
-    - 'app/controllers/api/locations/descendants_controller.rb'
-    - 'app/form_object/form_object/form_variables.rb'
-    - 'app/forms/coordinate_form.rb'
-    - 'app/forms/location_form.rb'
+# # Offense count: 4
+# # Cop supports --auto-correct.
+# # Configuration parameters: EnforcedStyle.
+# # SupportedStyles: short, verbose
+# Style/PreferredHashMethods:
+#   Exclude:
+#     - 'app/controllers/api/locations/descendants_controller.rb'
+#     - 'app/form_object/form_object/form_variables.rb'
+#     - 'app/forms/coordinate_form.rb'
+#     - 'app/forms/location_form.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Proc:
-  Exclude:
-    - 'app/models/coordinate.rb'
+# # Offense count: 1
+# # Cop supports --auto-correct.
+# Style/Proc:
+#   Exclude:
+#     - 'app/models/coordinate.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -610,23 +565,23 @@ Style/RedundantBegin:
     - 'app/forms/location_form.rb'
     - 'bin/yarn'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/RedundantFreeze:
-  Exclude:
-    - 'lib/utils/psd_formatter.rb'
+# # Offense count: 2
+# # Cop supports --auto-correct.
+# Style/RedundantFreeze:
+#   Exclude:
+#     - 'lib/utils/psd_formatter.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantInterpolation:
-  Exclude:
-    - 'spec/forms/scan_form_spec.rb'
+# # Offense count: 1
+# # Cop supports --auto-correct.
+# Style/RedundantInterpolation:
+#   Exclude:
+#     - 'spec/forms/scan_form_spec.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantPercentQ:
-  Exclude:
-    - 'app/queries/available_coordinates_query.rb'
+# # Offense count: 1
+# # Cop supports --auto-correct.
+# Style/RedundantPercentQ:
+#   Exclude:
+#     - 'app/queries/available_coordinates_query.rb'
 
 # Offense count: 31
 # Cop supports --auto-correct.
@@ -648,24 +603,24 @@ Style/RedundantSelf:
     - 'config/initializers/04_symbol.rb'
     - 'config/initializers/active_record_extension.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: implicit, explicit
-Style/RescueStandardError:
-  Exclude:
-    - 'app/form_object/form_object.rb'
-    - 'app/forms/coordinates_form.rb'
-    - 'app/forms/location_form.rb'
-    - 'spec/mailers/exception_notifier_spec.rb'
+# # Offense count: 4
+# # Cop supports --auto-correct.
+# # Configuration parameters: EnforcedStyle.
+# # SupportedStyles: implicit, explicit
+# Style/RescueStandardError:
+#   Exclude:
+#     - 'app/form_object/form_object.rb'
+#     - 'app/forms/coordinates_form.rb'
+#     - 'app/forms/location_form.rb'
+#     - 'spec/mailers/exception_notifier_spec.rb'
 
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: AllowIfMethodIsEmpty.
-Style/SingleLineMethods:
-  Exclude:
-    - 'app/null_objects/null_location.rb'
-    - 'config/initializers/02_proc.rb'
+# # Offense count: 10
+# # Cop supports --auto-correct.
+# # Configuration parameters: AllowIfMethodIsEmpty.
+# Style/SingleLineMethods:
+#   Exclude:
+#     - 'app/null_objects/null_location.rb'
+#     - 'config/initializers/02_proc.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -673,57 +628,23 @@ Style/StderrPuts:
   Exclude:
     - 'bin/yarn'
 
-# Offense count: 1700
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Enabled: false
+# # Offense count: 18
+# # Cop supports --auto-correct.
+# # Configuration parameters: MinSize.
+# # SupportedStyles: percent, brackets
+# Style/SymbolArray:
+#   EnforcedStyle: brackets
 
-# Offense count: 16
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiteralsInInterpolation:
-  Exclude:
-    - 'app/lib/validators/either_or_validator.rb'
-    - 'app/lib/validators/parent_black_list_validator.rb'
-    - 'app/lib/validators/parent_white_list_validator.rb'
-    - 'app/models/search_result.rb'
-    - 'lib/cgap/cgap/load_data.rb'
-    - 'spec/forms/authentication_form_spec.rb'
-    - 'spec/forms/scan_form_spec.rb'
-
-# Offense count: 18
-# Cop supports --auto-correct.
-# Configuration parameters: MinSize.
-# SupportedStyles: percent, brackets
-Style/SymbolArray:
-  EnforcedStyle: brackets
-
-# Offense count: 7
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoredMethods.
-# IgnoredMethods: respond_to, define_method
-Style/SymbolProc:
-  Exclude:
-    - 'app/controllers/api/locations_controller.rb'
-    - 'app/controllers/locations_controller.rb'
-    - 'app/lib/utils/barcode_utilities.rb'
-    - 'app/models/concerns/available_coordinates.rb'
-    - 'app/models/coordinate.rb'
-    - 'spec/api/labwares/locations_spec.rb'
-    - 'spec/factories/labware_collections.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/UnlessElse:
-  Exclude:
-    - 'app/lib/validators/location_validator.rb'
-
-# Offense count: 110
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Layout/LineLength:
-  Max: 216
+# # Offense count: 7
+# # Cop supports --auto-correct.
+# # Configuration parameters: IgnoredMethods.
+# # IgnoredMethods: respond_to, define_method
+# Style/SymbolProc:
+#   Exclude:
+#     - 'app/controllers/api/locations_controller.rb'
+#     - 'app/controllers/locations_controller.rb'
+#     - 'app/lib/utils/barcode_utilities.rb'
+#     - 'app/models/concerns/available_coordinates.rb'
+#     - 'app/models/coordinate.rb'
+#     - 'spec/api/labwares/locations_spec.rb'
+#     - 'spec/factories/labware_collections.rb'

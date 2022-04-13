@@ -79,7 +79,7 @@ module Messages
       if check_connection_and_connect
         _publish(message)
       else
-        Rails.logger.error("Not connected to RabbitMQ")
+        Rails.logger.error('Not connected to RabbitMQ')
         Rails.logger.error("Message not published: #{message.payload}")
       end
     end

@@ -3,9 +3,9 @@
 ##
 # A location can store locations or labware
 class Location < ActiveRecord::Base
-  UNKNOWN = "UNKNOWN"
+  UNKNOWN = 'UNKNOWN'
   UNKNOWN_LIMIT_ERROR = "Can't have more than 1 UnknownLocation"
-  BARCODE_PREFIX = "lw-"
+  BARCODE_PREFIX = 'lw-'
 
   include Searchable::Client
   include HasActive
@@ -16,7 +16,7 @@ class Location < ActiveRecord::Base
 
   belongs_to :location_type, optional: true # Optional for UnknownLocation
   belongs_to :team, optional: true
-  belongs_to :internal_parent, class_name: "Location", optional: true
+  belongs_to :internal_parent, class_name: 'Location', optional: true
   has_many :coordinates
   has_many :labwares
 
@@ -113,7 +113,7 @@ class Location < ActiveRecord::Base
 
   # A location will only need coordinates if it has rows and columns
   def coordinateable?
-    rows > 0 && columns > 0
+    rows.positive? && columns.positive?
   end
 
   def destroyable
@@ -129,13 +129,14 @@ class Location < ActiveRecord::Base
   end
 
   def type
-    super || "Location"
+    super || 'Location'
   end
 
   ##
   # Useful for creating audit records. There are certain attributes which are not needed.
   def as_json(options = {})
-    super({ except: [:deactivated_at, :location_type_id] }.merge(options)).merge(uk_dates).merge("location_type" => location_type.name)
+    super({ except: %i[deactivated_at
+                       location_type_id] }.merge(options)).merge(uk_dates).merge('location_type' => location_type.name)
   end
 
   def child_count
@@ -151,7 +152,7 @@ class Location < ActiveRecord::Base
   end
 
   def set_parentage
-    self.parentage = ancestors.pluck(:name).join(" / ")
+    self.parentage = ancestors.pluck(:name).join(' / ')
   end
 
   def set_internal_parent_id
@@ -206,13 +207,13 @@ class Location < ActiveRecord::Base
   end
 
   def used?
-    child_count > 0 || audits.present?
+    child_count.positive? || audits.present?
   end
 
   def has_been_used
     return unless used?
 
-    errors.add :location, "Has been used"
+    errors.add :location, 'Has been used'
     throw :abort
   end
 

@@ -5,7 +5,7 @@
 # at defined positions e.g. box.
 # Logically it can't have locations as children.
 class OrderedLocation < Location
-  has_many :coordinates, foreign_key: "location_id", dependent: :destroy
+  has_many :coordinates, foreign_key: 'location_id', dependent: :destroy
   has_many :labwares, through: :coordinates
 
   before_create :populate_coordinates

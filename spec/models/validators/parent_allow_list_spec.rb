@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe ParentAllowListValidator, type: :model do
   let(:valid_parent_types) { create_list(:location_type, 3) }

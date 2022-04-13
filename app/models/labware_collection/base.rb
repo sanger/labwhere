@@ -33,7 +33,7 @@ module LabwareCollection
     end
 
     def original_location_names
-      original_locations.uniq.join(", ")
+      original_locations.uniq.join(', ')
     end
 
     def labwares=(labwares) # rubocop:todo Lint/DuplicateMethods

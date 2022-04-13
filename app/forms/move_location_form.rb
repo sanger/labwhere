@@ -6,7 +6,8 @@
 class MoveLocationForm
   include ActiveModel::Model
 
-  attr_reader :current_user, :user_code, :controller, :action, :parent_location_barcode, :child_location_barcodes, :parent_location, :child_locations, :params
+  attr_reader :current_user, :user_code, :controller, :action, :parent_location_barcode, :child_location_barcodes,
+              :parent_location, :child_locations, :params
 
   validate :check_user, :check_parent_location, :check_child_locations
 
@@ -67,17 +68,20 @@ class MoveLocationForm
 
   def check_parent_location
     if parent_location.present?
-      errors.add(:parent_location, "is not a container") unless parent_location.container
+      errors.add(:parent_location, 'is not a container') unless parent_location.container
       return
     end
 
-    errors.add(:parent_location, I18n.t("errors.messages.existence"))
+    errors.add(:parent_location, I18n.t('errors.messages.existence'))
   end
 
   def check_child_locations
     child_locations.each do |location|
       if location.is_a?(Location)
-        errors.add(:base, "Location with barcode #{location.barcode} #{I18n.t('errors.messages.protected')}") if location.protected && current_user.scientist?
+        if location.protected && current_user.scientist?
+          errors.add(:base,
+                     "Location with barcode #{location.barcode} #{I18n.t('errors.messages.protected')}")
+        end
       else
         errors.add(:base, "Location with barcode #{location} #{I18n.t('errors.messages.existence')}")
       end

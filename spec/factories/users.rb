@@ -7,11 +7,11 @@ FactoryBot.define do
     barcode { "Barcode:#{login}" }
     team
 
-    factory :administrator, class: "Administrator"
+    factory :administrator, class: 'Administrator'
 
-    factory :technician, class: "Technician"
+    factory :technician, class: 'Technician'
 
-    factory :scientist, class: "Scientist"
+    factory :scientist, class: 'Scientist'
 
     factory :user_with_audits do
       transient do

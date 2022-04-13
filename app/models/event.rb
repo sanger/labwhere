@@ -65,7 +65,8 @@ class Event
 
   def coordinate
     @coordinate ||= unless for_old_audit?
-                      # if we are firing an event for a newly created audit, we can grab the current coordinate from the labware
+                      # if we are firing an event for a newly created audit,
+                      # we can grab the current coordinate from the labware
                       labware.coordinate
                     end
     # otherwise, return nil as we're re-firing an old event & don't know the coordinate for the time it occurred

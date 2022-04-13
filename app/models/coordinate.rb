@@ -11,7 +11,7 @@ class Coordinate < ActiveRecord::Base
 
   validates :position, :row, :column, presence: true, numericality: true
   validates :location, existence: true
-  validates :location, nested: true, unless: Proc.new { |l| l.location.nil? || l.location.unknown? }
+  validates :location, nested: true, unless: proc { |l| l.location.nil? || l.location.unknown? }
 
   scope :ordered, -> { order(position: :asc) }
 
@@ -20,7 +20,7 @@ class Coordinate < ActiveRecord::Base
   end
 
   def self.filled
-    all.select { |c| c.filled? }
+    all.select(&:filled?)
   end
 
   # Check if the coordinate has a piece of labware

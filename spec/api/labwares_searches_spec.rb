@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe Api::Labwares::SearchesController, type: :request do
   let!(:location) { create(:location_with_parent) }
@@ -10,16 +10,16 @@ RSpec.describe Api::Labwares::SearchesController, type: :request do
     post api_labwares_searches_path, params: { barcodes: Labware.pluck(:barcode) }
   end
 
-  it "should be a success" do
+  it 'should be a success' do
     expect(response).to be_successful
   end
 
-  it "should return the labwares" do
+  it 'should return the labwares' do
     json = ActiveSupport::JSON.decode(response.body)
     expect(json.length).to eq(5)
     Labware.pluck(:barcode).each do |barcode|
       expect(response.body).to include(barcode)
     end
-    expect(json.first["location"]["barcode"]).to eq(location.barcode)
+    expect(json.first['location']['barcode']).to eq(location.barcode)
   end
 end
