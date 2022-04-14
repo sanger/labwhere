@@ -16,32 +16,32 @@ RSpec.describe 'Locations', type: :feature do
     location_type = build(:location_type)
     visit location_types_path
     click_link 'Add new location type'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Name', with: location_type.name
       click_button 'Create Location type'
-    }.to change(LocationType, :count).by(1)
+    end.to change(LocationType, :count).by(1)
     expect(page).to have_content('Location type successfully created')
   end
 
   it 'Reports an error if user adds a location type with invalid attributes' do
     visit new_location_type_path
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       click_button 'Create Location type'
-    }.to_not change(LocationType, :count)
+    end.to_not change(LocationType, :count)
     expect(page.text).to match('error prohibited this record from being saved')
   end
 
   it 'Allows a user to edit an existing location type' do
     location_type = create(:location_type)
     visit location_types_path
-    expect {
+    expect do
       find(:data_id, location_type.id).click_link 'Edit'
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Name', with: 'Updated location type'
       click_button 'Update Location type'
-    }.to change { location_type.reload.name }.to('Updated location type')
+    end.to change { location_type.reload.name }.to('Updated location type')
     expect(page).to have_content('Location type successfully updated')
   end
 
@@ -60,11 +60,11 @@ RSpec.describe 'Locations', type: :feature do
     it 'Prevents a user from deleting an existing location type if they are not authorised' do
       location_type = create(:location_type)
       visit location_types_path
-      expect {
+      expect do
         find(:data_id, location_type.id).click_link 'Delete'
         fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
         click_button 'Delete'
-      }.to_not change(LocationType, :count)
+      end.to_not change(LocationType, :count)
       expect(page).to have_content('error prohibited this record from being saved')
       expect(page).to have_content('User is not authorised')
     end
@@ -85,12 +85,12 @@ RSpec.describe 'Locations', type: :feature do
     location = build(:location)
     visit locations_path
     click_link 'Add new location'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Name', with: location.name
       check 'Container'
       click_button 'Create Location'
-    }.to change(Location, :count).by(1)
+    end.to change(Location, :count).by(1)
     expect(Location.last.reserved?).to eq(false)
     expect(page).to have_content('Location(s) successfully created')
   end
@@ -99,14 +99,14 @@ RSpec.describe 'Locations', type: :feature do
     location = build(:location)
     visit locations_path
     click_link 'Add new location'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Name', with: location.name
       fill_in 'Start', with: '1'
       fill_in 'End', with: '3'
       check 'Container'
       click_button 'Create Location'
-    }.to change(Location, :count).by(3)
+    end.to change(Location, :count).by(3)
     expect(Location.last.reserved?).to eq(false)
     expect(page).to have_content('Location(s) successfully created')
   end
@@ -115,14 +115,14 @@ RSpec.describe 'Locations', type: :feature do
     location = build(:location)
     visit locations_path
     click_link 'Add new location'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Name', with: location.name
       fill_in 'Start', with: '99'
       fill_in 'End', with: '101'
       check 'Container'
       click_button 'Create Location'
-    }.to change(Location, :count).by(3)
+    end.to change(Location, :count).by(3)
     expect(Location.last.reserved?).to eq(false)
     expect(page).to have_content('Location(s) successfully created')
   end
@@ -134,7 +134,7 @@ RSpec.describe 'Locations', type: :feature do
       location = build(:ordered_location_with_parent)
       visit locations_path
       click_link 'Add new location'
-      expect {
+      expect do
         fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
         fill_in 'Name', with: location.name
         check 'Has Co-ordinates'
@@ -143,7 +143,7 @@ RSpec.describe 'Locations', type: :feature do
         fill_in 'Rows', with: location.rows
         fill_in 'Columns', with: location.columns
         click_button 'Create Location'
-      }.to change(Location, :count).by(1)
+      end.to change(Location, :count).by(1)
       expect(OrderedLocation.first.coordinates.count).to eq(create(:ordered_location_with_parent).coordinates.length)
       expect(page).to have_content('Location(s) successfully created')
     end
@@ -155,14 +155,14 @@ RSpec.describe 'Locations', type: :feature do
       visit locations_path
       click_link 'Add new location'
 
-      expect {
+      expect do
         fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
         fill_in 'Name', with: location.name
         check 'Reserve?'
         select parent_location.id, from: 'Parent'
         select location_types.first.name, from: 'Location type'
         click_button 'Create Location'
-      }.to change(Location, :count).by(1)
+      end.to change(Location, :count).by(1)
 
       expect(Location.last.team).to eq(administrator.team)
       expect(page).to have_content('Location(s) successfully created')
@@ -173,49 +173,49 @@ RSpec.describe 'Locations', type: :feature do
     location = build(:location)
     visit locations_path
     click_link 'Add new location'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Name', with: location.name
       select parent_location.id, from: 'Parent'
       select location_types.first.name, from: 'Location type'
       click_button 'Create Location'
-    }.to change(Location, :count).by(1)
+    end.to change(Location, :count).by(1)
     expect(Location.last.parent).to eq(parent_location)
     expect(page).to have_content('Location(s) successfully created')
   end
 
   it 'Reports an error if user adds a location with invalid attributes' do
     visit new_location_path
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       select location_types.first.name, from: 'Location type'
       click_button 'Create Location'
-    }.to_not change(Location, :count)
+    end.to_not change(Location, :count)
     expect(page.text).to match('errors prohibited this record from being saved')
   end
 
   it 'Reports an error if user adds multiple locations and at least one is already present' do
     create(:location, name: 'Test Location 2')
     visit new_location_path
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Name', with: 'Test Location'
       fill_in 'Start', with: '1'
       fill_in 'End', with: '3'
       check 'Container'
       click_button 'Create Location'
-    }.to_not change(Location, :count)
+    end.to_not change(Location, :count)
     expect(page.text).to match('error prohibited this record from being saved')
   end
 
   it 'Allows a user to edit an existing location' do
     location = create(:location)
     visit edit_location_path(location)
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Name', with: 'An updated location name'
       click_button 'Update Location'
-    }.to change { location.reload.name }.to('An updated location name')
+    end.to change { location.reload.name }.to('An updated location name')
     expect(page).to have_content('Location successfully updated')
   end
 
@@ -224,11 +224,11 @@ RSpec.describe 'Locations', type: :feature do
 
     visit edit_location_path(location)
 
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       check 'Reserve?'
       click_button 'Update Location'
-    }.to change { location.reload.team }.to(administrator.team)
+    end.to change { location.reload.team }.to(administrator.team)
 
     expect(page).to have_content('Location successfully updated')
   end
@@ -238,11 +238,11 @@ RSpec.describe 'Locations', type: :feature do
 
     visit edit_location_path(location)
 
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       uncheck 'Reserve?'
       click_button 'Update Location'
-    }.to change { location.reload.team }.to(nil)
+    end.to change { location.reload.team }.to(nil)
 
     expect(page).to have_content('Location successfully updated')
   end
@@ -289,11 +289,11 @@ RSpec.describe 'Locations', type: :feature do
   it 'Allows a user to deactivate a location' do
     location = create(:location)
     visit edit_location_path(location)
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       uncheck 'Active'
       click_button 'Update Location'
-    }.to change { location.reload.active? }.from(true).to(false)
+    end.to change { location.reload.active? }.from(true).to(false)
     expect(page).to have_content('Location successfully updated')
   end
 
@@ -302,11 +302,11 @@ RSpec.describe 'Locations', type: :feature do
     location = create(:location)
     location.deactivate
     visit edit_location_path(location)
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       check 'Active'
       click_button 'Update Location'
-    }.to change { location.reload.active? }.from(false).to(true)
+    end.to change { location.reload.active? }.from(false).to(true)
     expect(page).to have_content('Location successfully updated')
   end
 
@@ -314,12 +314,12 @@ RSpec.describe 'Locations', type: :feature do
     location = build(:location)
     visit locations_path
     click_link 'Add new location'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
       fill_in 'Name', with: location.name
       check 'Container'
       click_button 'Create Location'
-    }.to_not change(Location, :count)
+    end.to_not change(Location, :count)
     expect(page).to have_content('error prohibited this record from being saved')
     expect(page).to have_content('User is not authorised')
   end

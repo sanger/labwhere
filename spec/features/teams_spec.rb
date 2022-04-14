@@ -10,12 +10,12 @@ RSpec.describe 'Teams', type: :feature do
     team = build(:team)
     visit teams_path
     click_link 'Add new team'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Name', with: team.name
       fill_in 'Number', with: team.number
       click_button 'Create Team'
-    }.to change(Team, :count).by(1)
+    end.to change(Team, :count).by(1)
     expect(page).to have_content('Team successfully created')
   end
 
@@ -24,11 +24,11 @@ RSpec.describe 'Teams', type: :feature do
     new_team = build(:team)
     visit teams_path
     find(:data_id, team.id).click_link 'Edit'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Name', with: new_team.name
       click_button 'Update Team'
-    }.to change { team.reload.name }.to(new_team.name)
+    end.to change { team.reload.name }.to(new_team.name)
     expect(page).to have_content('Team successfully updated')
   end
 
@@ -37,12 +37,12 @@ RSpec.describe 'Teams', type: :feature do
     team = build(:team)
     visit teams_path
     click_link 'Add new team'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Name', with: existing_team.name
       fill_in 'Number', with: team.number
       click_button 'Create Team'
-    }.to_not change(Team, :count)
+    end.to_not change(Team, :count)
     expect(page).to have_content('error prohibited this record from being saved')
   end
 
@@ -52,12 +52,12 @@ RSpec.describe 'Teams', type: :feature do
     team = build(:team)
     visit teams_path
     click_link 'Add new team'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
       fill_in 'Name', with: team.name
       fill_in 'Number', with: team.number
       click_button 'Create Team'
-    }.to_not change(Team, :count)
+    end.to_not change(Team, :count)
     expect(page).to have_content('error prohibited this record from being saved')
     expect(page).to have_content('User is not authorised')
   end

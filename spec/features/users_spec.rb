@@ -14,14 +14,14 @@ RSpec.describe 'Users', type: :feature do
     user = build(:user)
     visit users_path
     click_link 'Add new user'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Login', with: user.login
       fill_in 'Swipe card', with: user.swipe_card_id
       fill_in 'Barcode', with: user.barcode
       select teams.first.name, from: 'Team'
       click_button 'Create User'
-    }.to change(User, :count).by(1)
+    end.to change(User, :count).by(1)
     expect(page).to have_content('User successfully created')
   end
 
@@ -32,18 +32,18 @@ RSpec.describe 'Users', type: :feature do
     within("#user_#{user.id}") do
       click_link 'Edit'
     end
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Swipe card', with: user_2.swipe_card_id
       click_button 'Update User'
-    }.to change { user.reload.swipe_card_id }.to(Digest::SHA1.hexdigest(user_2.swipe_card_id))
+    end.to change { user.reload.swipe_card_id }.to(Digest::SHA1.hexdigest(user_2.swipe_card_id))
   end
 
   it 'Allows a user to create a different type of user' do
     user = build(:user)
     visit users_path
     click_link 'Add new user'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Login', with: user.login
       fill_in 'Swipe card', with: user.swipe_card_id
@@ -51,7 +51,7 @@ RSpec.describe 'Users', type: :feature do
       select teams.first.name, from: 'Team'
       select 'Admin', from: 'Type'
       click_button 'Create User'
-    }.to change(Administrator, :count).by(1)
+    end.to change(Administrator, :count).by(1)
     expect(page).to have_content('User successfully created')
   end
 
@@ -59,11 +59,11 @@ RSpec.describe 'Users', type: :feature do
     user = create(:user)
     visit users_path
     find(:data_id, user.id).click_link 'Edit'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       uncheck 'Active'
       click_button 'Update User'
-    }.to change { user.reload.active? }.from(true).to(false)
+    end.to change { user.reload.active? }.from(true).to(false)
     expect(page).to have_content('User successfully updated')
   end
 
@@ -72,11 +72,11 @@ RSpec.describe 'Users', type: :feature do
     user.deactivate
     visit users_path
     find(:data_id, user.id).click_link 'Edit'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       check 'Active'
       click_button 'Update User'
-    }.to change { user.reload.active? }.from(false).to(true)
+    end.to change { user.reload.active? }.from(false).to(true)
     expect(page).to have_content('User successfully updated')
   end
 
@@ -84,13 +84,13 @@ RSpec.describe 'Users', type: :feature do
     user = build(:user)
     visit users_path
     click_link 'Add new user'
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
       fill_in 'Swipe card', with: user.swipe_card_id
       fill_in 'Barcode', with: user.barcode
       select teams.first.name, from: 'Team'
       click_button 'Create User'
-    }.to_not change(User, :count)
+    end.to_not change(User, :count)
     expect(page).to have_content('error prohibited this record from being saved')
   end
 

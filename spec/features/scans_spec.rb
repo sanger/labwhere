@@ -15,12 +15,12 @@ RSpec.describe 'Scans', type: :feature do
     location = create(:location_with_parent)
     labwares = build_list(:labware, 10)
     visit new_scan_path
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
       fill_in 'Location barcode', with: location.barcode
       fill_in 'Labware barcodes', with: labwares.join_barcodes
       click_button 'Go!'
-    }.to change(Scan, :count).by(1)
+    end.to change(Scan, :count).by(1)
     expect(page).to have_content(Scan.first.message)
   end
 
@@ -55,24 +55,24 @@ RSpec.describe 'Scans', type: :feature do
     location = create(:ordered_location_with_parent, rows: 5, columns: 5)
     labwares = build_list(:labware, 10)
     visit new_scan_path
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
       fill_in 'Location barcode', with: location.barcode
       fill_in 'Labware barcodes', with: labwares.join_barcodes
       fill_in 'Start position', with: 5
       click_button 'Go!'
-    }.to change(Scan, :count).by(1)
+    end.to change(Scan, :count).by(1)
     expect(page).to have_content(Scan.first.message)
   end
 
   it 'allows a user to scan out some labware with no location' do
     labwares = create_list(:labware, 10, location: create(:location_with_parent))
     visit new_scan_path
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
       fill_in 'Labware barcodes', with: labwares.join_barcodes
       click_button 'Go!'
-    }.to change(Scan, :count).by(1)
+    end.to change(Scan, :count).by(1)
     expect(page).to have_content(Scan.first.message)
   end
 
@@ -80,12 +80,12 @@ RSpec.describe 'Scans', type: :feature do
     location = create(:location)
     labwares = build_list(:labware, 10)
     visit new_scan_path
-    expect {
+    expect do
       fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
       fill_in 'Location barcode', with: location.barcode
       fill_in 'Labware barcodes', with: labwares.join_barcodes
       click_button 'Go!'
-    }.to_not change(Scan, :count)
+    end.to_not change(Scan, :count)
     expect(page).to have_content('error prohibited this record from being saved')
     expect(page).to have_field('Location barcode', with: location.barcode)
     expect(page).to have_content(labwares.join_barcodes("\r "))
@@ -95,11 +95,11 @@ RSpec.describe 'Scans', type: :feature do
     location = create(:location_with_parent)
     labwares = build_list(:labware, 10)
     visit new_scan_path
-    expect {
+    expect do
       fill_in 'Location barcode', with: location.barcode
       fill_in 'Labware barcodes', with: labwares.join_barcodes
       click_button 'Go!'
-    }.to_not change(Scan, :count)
+    end.to_not change(Scan, :count)
     expect(page).to have_content('errors prohibited this record from being saved')
   end
 
@@ -109,12 +109,12 @@ RSpec.describe 'Scans', type: :feature do
       labwares = build_list(:labware, 10)
       visit new_scan_path
 
-      expect {
+      expect do
         fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
         fill_in 'Location barcode', with: location.barcode
         fill_in 'Labware barcodes', with: labwares.join_barcodes
         click_button 'Go!'
-      }.to_not change(Scan, :count)
+      end.to_not change(Scan, :count)
 
       expect(page).to have_content('error prohibited this record from being saved')
     end
@@ -123,11 +123,11 @@ RSpec.describe 'Scans', type: :feature do
       labwares = create_list(:labware, 10, location: create(:location_with_parent, team: create(:team)))
       visit new_scan_path
 
-      expect {
+      expect do
         fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
         fill_in 'Labware barcodes', with: labwares.join_barcodes
         click_button 'Go!'
-      }.to change(Scan, :count).by(0)
+      end.to change(Scan, :count).by(0)
 
       expect(page).to have_content('errors prohibited this record from being saved')
     end
@@ -138,11 +138,11 @@ RSpec.describe 'Scans', type: :feature do
 
       visit new_scan_path
 
-      expect {
+      expect do
         fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
         fill_in 'Labware barcodes', with: labwares.join_barcodes
         click_button 'Go!'
-      }.to change(Scan, :count).by(0)
+      end.to change(Scan, :count).by(0)
 
       expect(page).to have_content('errors prohibited this record from being saved')
     end

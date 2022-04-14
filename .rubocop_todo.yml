@@ -222,26 +222,6 @@ Style/AsciiComments:
     - 'app/models/restrictions/parentage_restriction.rb'
     - 'app/models/restrictions/restriction.rb'
 
-# Offense count: 53
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ProceduralMethods, FunctionalMethods, IgnoredMethods, AllowBracesOnProceduralOneLiners, BracesRequiredMethods.
-# SupportedStyles: line_count_based, semantic, braces_for_chaining, always_braces
-# ProceduralMethods: benchmark, bm, bmbm, create, each_with_object, measure, new, realtime, tap, with_object
-# FunctionalMethods: let, let!, subject, watch
-# IgnoredMethods: lambda, proc, it
-Style/BlockDelimiters:
-  Exclude:
-    - 'spec/api/coordinates_spec.rb'
-    - 'spec/features/locations_spec.rb'
-    - 'spec/features/printers_spec.rb'
-    - 'spec/features/scans_spec.rb'
-    - 'spec/features/teams_spec.rb'
-    - 'spec/features/users_spec.rb'
-    - 'spec/form_object/form_object_spec.rb'
-    - 'spec/forms/authentication_form_spec.rb'
-    - 'spec/forms/scan_form_spec.rb'
-    - 'spec/forms/user_form_spec.rb'
-
 # Offense count: 31
 # Cop supports --auto-correct.
 # Configuration parameters: AutoCorrect, EnforcedStyle.

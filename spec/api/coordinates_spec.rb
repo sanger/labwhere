@@ -59,11 +59,11 @@ RSpec.describe Api::CoordinatesController, type: :request do
     end
 
     context 'when no barcode is provided' do
-      let(:params) {
+      let(:params) do
         { coordinate: {
           user_code: administrator.login
         } }
-      }
+      end
 
       it 'is not successful' do
         expect(response).to_not be_successful
@@ -102,11 +102,11 @@ RSpec.describe Api::CoordinatesController, type: :request do
 
   describe 'bulk #update' do
     let(:coordinates) { create_list(:coordinate, 5) }
-    let(:coordinate_params) {
-      coordinates.map.with_index { |coordinate, i|
+    let(:coordinate_params) do
+      coordinates.map.with_index do |coordinate, i|
         { id: coordinate.id, labware_barcode: labwares[i].barcode }
-      }
-    }
+      end
+    end
     let(:administrator) { create(:administrator) }
     let(:labwares) { create_list(:labware, 5) }
 

@@ -33,11 +33,11 @@ RSpec.describe ScanForm, type: :model do
     end
 
     it 'existing location with existing labware should move them to the location' do
-      expect {
+      expect do
         create_scan.submit(params.merge(scan:
          { 'location_barcode' => location.barcode, 'labware_barcodes' => existing_labware.join_barcodes,
            user_code: sci_swipe_card_id }))
-      }.to_not change(Labware, :count)
+      end.to_not change(Labware, :count)
       scan = Scan.first
       expect(scan.user).to eq(scientist)
       expect(scan.location).to eq(location)

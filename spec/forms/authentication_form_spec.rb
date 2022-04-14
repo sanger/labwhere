@@ -30,16 +30,16 @@ RSpec.describe AuthenticationForm, type: :model do
     admin_swipe_card_id = generate(:swipe_card_id)
     create(:administrator, swipe_card_id: admin_swipe_card_id)
     model_c_form = ModelCForm.new
-    expect {
+    expect do
       model_c_form.submit(params.merge(model_c: { name: 'name', user_code: admin_swipe_card_id }))
-    }.to change(ModelC, :count).by(1)
+    end.to change(ModelC, :count).by(1)
   end
 
   it 'should not create the record if the user does not exist' do
     model_c_form = ModelCForm.new
-    expect {
+    expect do
       model_c_form.submit(params.merge(model_c: { name: 'name', user_code: '1111' }))
-    }.to_not change(ModelC, :count)
+    end.to_not change(ModelC, :count)
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t('errors.messages.existence')}")
   end
 
@@ -49,9 +49,9 @@ RSpec.describe AuthenticationForm, type: :model do
     sci_swipe_card_id = generate(:swipe_card_id)
     create(:scientist, swipe_card_id: sci_swipe_card_id)
     model_c_form = ModelCForm.new
-    expect {
+    expect do
       model_c_form.submit(params.merge(model_c: { name: 'name', user_code: sci_swipe_card_id }))
-    }.to_not change(ModelC, :count)
+    end.to_not change(ModelC, :count)
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t('errors.messages.authorised')}")
   end
 
@@ -60,9 +60,9 @@ RSpec.describe AuthenticationForm, type: :model do
     user = create(:administrator, swipe_card_id: admin_swipe_card_id)
     user.deactivate
     model_c_form = ModelCForm.new
-    expect {
+    expect do
       model_c_form.submit(params.merge(model_c: { name: 'name', user_code: admin_swipe_card_id }))
-    }.to_not change(ModelC, :count)
+    end.to_not change(ModelC, :count)
     expect(model_c_form.errors.full_messages).to include("User #{I18n.t('errors.messages.active')}")
   end
 end

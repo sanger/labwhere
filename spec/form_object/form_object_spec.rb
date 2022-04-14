@@ -132,20 +132,20 @@ RSpec.describe FormObject, type: :model do |_variable|
   end
 
   it 'allows creation of a new record with valid attributes' do
-    expect {
+    expect do
       ModelAForm.new.submit(ActionController::Parameters.new(model_a: { name: 'A name' }))
-    }.to change(ModelA, :count).by(1)
+    end.to change(ModelA, :count).by(1)
 
-    expect {
+    expect do
       ModelBForm.new.submit(ActionController::Parameters.new(model_b: { name: 'A name' }))
-    }.to change(ModelB, :count).by(1)
+    end.to change(ModelB, :count).by(1)
   end
 
   it 'prevents creation of record with invalid attributes' do
     model_a_form = ModelAForm.new
-    expect {
+    expect do
       model_a_form.submit(ActionController::Parameters.new(model_a: { name: nil }))
-    }.to_not change(ModelA, :count)
+    end.to_not change(ModelA, :count)
     expect(model_a_form).to_not be_valid
     expect(model_a_form.errors.count).to eq(1)
   end
@@ -155,9 +155,9 @@ RSpec.describe FormObject, type: :model do |_variable|
     model_a_form = ModelAForm.new(model_a)
     expect(model_a_form.id).to eq(model_a.id)
     expect(model_a_form).to be_persisted
-    expect {
+    expect do
       model_a_form.submit(ActionController::Parameters.new(model_a: { name: 'Another name' }))
-    }.to change { model_a.reload.name }.to('Another name')
+    end.to change { model_a.reload.name }.to('Another name')
   end
 
   it 'should be able to modify the save options' do
