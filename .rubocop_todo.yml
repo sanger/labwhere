@@ -6,31 +6,31 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, no_empty_lines
-Layout/EmptyLinesAroundBlockBody:
-  Exclude:
-    - 'spec/form_object/form_object_spec.rb'
+# # Offense count: 1
+# # Cop supports --auto-correct.
+# # Configuration parameters: EnforcedStyle.
+# # SupportedStyles: empty_lines, no_empty_lines
+# Layout/EmptyLinesAroundBlockBody:
+#   Exclude:
+#     - 'spec/form_object/form_object_spec.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-Lint/AmbiguousOperator:
-  Exclude:
-    - 'app/form_object/form_object.rb'
-    - 'app/models/locations/unordered_location.rb'
+# # Offense count: 4
+# # Cop supports --auto-correct.
+# Lint/AmbiguousOperator:
+#   Exclude:
+#     - 'app/form_object/form_object.rb'
+#     - 'app/models/locations/unordered_location.rb'
 
-# Offense count: 7
-# Cop supports --auto-correct.
-Lint/NonDeterministicRequireOrder:
-  Exclude:
-    - 'config/initializers/restrictions.rb'
-    - 'lib/tasks/location_creator.rake'
-    - 'lib/tasks/restriction_creator.rake'
-    - 'spec/rails_helper.rb'
-    - 'test/location_creator/location_creator_test.rb'
-    - 'test/restriction_creator/restriction_creator_test.rb'
+# # Offense count: 7
+# # Cop supports --auto-correct.
+# Lint/NonDeterministicRequireOrder:
+#   Exclude:
+#     - 'config/initializers/restrictions.rb'
+#     - 'lib/tasks/location_creator.rake'
+#     - 'lib/tasks/restriction_creator.rake'
+#     - 'spec/rails_helper.rb'
+#     - 'test/location_creator/location_creator_test.rb'
+#     - 'test/restriction_creator/restriction_creator_test.rb'
 
 # Offense count: 2
 # Configuration parameters: AllowKeywordBlockArguments.
@@ -39,12 +39,12 @@ Lint/UnderscorePrefixedVariableName:
     - 'app/controllers/concerns/auditing.rb'
     - 'app/form_object/form_object.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods, IgnoreNotImplementedMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'app/form_object/form_object.rb'
+# # Offense count: 1
+# # Cop supports --auto-correct.
+# # Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods, IgnoreNotImplementedMethods.
+# Lint/UnusedMethodArgument:
+#   Exclude:
+#     - 'app/form_object/form_object.rb'
 
 # Offense count: 20
 Lint/UselessAssignment:
@@ -144,14 +144,14 @@ Naming/VariableNumber:
     - 'spec/models/locations/ordered_location_spec.rb'
     - 'spec/models/scan_spec.rb'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-Rails/ActiveRecordAliases:
-  Exclude:
-    - 'app/models/concerns/soft_deletable.rb'
-    - 'spec/models/concerns/auditable_spec.rb'
-    - 'spec/models/concerns/soft_deletable_spec.rb'
-    - 'spec/models/user_spec.rb'
+# # Offense count: 5
+# # Cop supports --auto-correct.
+# Rails/ActiveRecordAliases:
+#   Exclude:
+#     - 'app/models/concerns/soft_deletable.rb'
+#     - 'spec/models/concerns/auditable_spec.rb'
+#     - 'spec/models/concerns/soft_deletable_spec.rb'
+#     - 'spec/models/user_spec.rb'
 
 # Offense count: 1
 # Configuration parameters: EnforcedStyle.
@@ -169,14 +169,14 @@ Rails/Date:
 Rails/DynamicFindBy:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/EnumHash:
-  Exclude:
-    - 'app/models/concerns/has_active.rb'
-    - 'app/models/scan.rb'
+# # Offense count: 2
+# # Cop supports --auto-correct.
+# # Configuration parameters: Include.
+# # Include: app/models/**/*.rb
+# Rails/EnumHash:
+#   Exclude:
+#     - 'app/models/concerns/has_active.rb'
+#     - 'app/models/scan.rb'
 
 # Offense count: 9
 # Configuration parameters: EnforcedStyle.

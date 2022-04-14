@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-Dir[File.join(Rails.root, 'lib', 'location_creator', '*.rb')].each { |f| require f }
+Dir[File.join(Rails.root, 'lib', 'location_creator', '*.rb')].sort.each { |f| require f }
 
 class LocationCreatorTest < ActiveSupport::TestCase
   def setup

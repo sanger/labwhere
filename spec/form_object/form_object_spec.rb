@@ -20,7 +20,6 @@ RSpec.describe FormObject, type: :model do |_variable|
       t.string :name
       t.timestamps null: false
     end
-
   end
 
   with_model :ModelDuck do
@@ -28,7 +27,6 @@ RSpec.describe FormObject, type: :model do |_variable|
       t.string :name
       t.timestamps null: false
     end
-
   end
 
   with_model :ShesA do
@@ -36,7 +34,6 @@ RSpec.describe FormObject, type: :model do |_variable|
       t.string :name
       t.timestamps null: false
     end
-
   end
   before(:all) do
     class ModelAForm
@@ -169,5 +166,4 @@ RSpec.describe FormObject, type: :model do |_variable|
     expect(model_b_form.shout).to eq('hallelujah!')
     expect(ModelB.count).to eq(1)
   end
-
 end

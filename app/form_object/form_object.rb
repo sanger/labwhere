@@ -98,7 +98,7 @@ module FormObject
   module ClassMethods
     # Set the permitted of attributes that will be assigned to the model.
     def set_attributes(*attributes)
-      delegate *attributes, to: :model
+      delegate(*attributes, to: :model)
 
       define_method :model_attributes do
         attributes
@@ -114,7 +114,7 @@ module FormObject
     def after_validate(&block)
       define_method :save_if_valid do
         run_transaction do
-          instance_eval &block
+          instance_eval(&block)
         end
       end
     end
@@ -179,7 +179,7 @@ module FormObject
   end
 
   # rubocop:disable Style/ExplicitBlockArgument
-  def run_transaction(&block)
+  def run_transaction
     if valid?
       begin
         ActiveRecord::Base.transaction do

@@ -11,7 +11,7 @@
 class Scan < ApplicationRecord
   include AssertLocation
 
-  enum status: %i[in out]
+  enum status: { in: 0, out: 1 }
 
   belongs_to :location, optional: true
   belongs_to :user, optional: true
