@@ -3,8 +3,7 @@
 class LocationTypes::LocationsController < ApplicationController
   before_action :locations, only: [:index]
 
-  def index
-  end
+  def index; end
 
   protected
 

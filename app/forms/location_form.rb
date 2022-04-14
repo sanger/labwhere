@@ -163,7 +163,7 @@ class LocationForm
   end
 
   # rubocop:disable Style/ExplicitBlockArgument
-  def run_transaction()
+  def run_transaction
     begin
       ActiveRecord::Base.transaction do
         yield

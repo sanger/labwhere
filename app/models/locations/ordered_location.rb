@@ -15,7 +15,7 @@ class OrderedLocation < Location
   end
 
   def populate_coordinates
-    Hash.grid(self.rows, self.columns) do |position, row, column|
+    Hash.grid(rows, columns) do |position, row, column|
       coordinates.build(position: position, row: row, column: column)
     end
   end

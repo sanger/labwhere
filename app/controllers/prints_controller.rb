@@ -17,11 +17,11 @@ class PrintsController < ApplicationController
 
     respond_to do |format|
       @message = @print_barcode.message + message_suffix
-      if @print_barcode.response_ok?
-        @message_type = 'notice'
-      else
-        @message_type = 'alert'
-      end
+      @message_type = if @print_barcode.response_ok?
+                        'notice'
+                      else
+                        'alert'
+                      end
       format.js { render 'prints/create' }
     end
   end

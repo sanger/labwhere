@@ -10,7 +10,7 @@
 # The record data is a JSON representation of the record it belongs to.
 #
 # This ensures we know the state of that record when the audit record was created.
-class Audit < ActiveRecord::Base
+class Audit < ApplicationRecord
   include Uuidable
 
   belongs_to :user

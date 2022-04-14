@@ -56,6 +56,5 @@ class LocationCreatorTest < ActiveSupport::TestCase
     assert_equal 'Tray 1', Location.find_by(name: 'Shelf 2').children.first.name
   end
 
-  def teardown
-  end
+  def teardown; end
 end

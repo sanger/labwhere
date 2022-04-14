@@ -17,7 +17,7 @@ class RestrictionCreatorTest < ActiveSupport::TestCase
     @site_parent = create(:location, location_type: site)
     @building_parent = create(:location, location_type: building)
     @room_parent = create(:location, location_type: room)
-    yaml = YAML::load_file(File.join(Rails.root, 'app/data/restrictions.yaml'))
+    yaml = YAML.load_file(File.join(Rails.root, 'app/data/restrictions.yaml'))
     RestrictionCreator.new(yaml).run!
   end
 
@@ -58,7 +58,7 @@ class RestrictionCreatorTest < ActiveSupport::TestCase
   test 'should create the right restrictions from a yaml file' do
     Restriction.delete_all
     LocationType.delete_all
-    yaml = YAML::load_file(File.join(Rails.root, 'test/fixtures/restrictions_short.yaml'))
+    yaml = YAML.load_file(File.join(Rails.root, 'test/fixtures/restrictions_short.yaml'))
     RestrictionCreator.new(yaml).run!
     assert_equal yaml.count, Restriction.all.count
     assert_equal 43, LocationTypesRestriction.all.count

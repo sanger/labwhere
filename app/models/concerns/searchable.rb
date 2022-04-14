@@ -91,7 +91,7 @@ module Searchable
       @results ||= SearchResult.new do |result|
         result.limit = self.class.limit
         self.class.searchable_models.each do |k, v|
-          search_result = v.search(self.term)
+          search_result = v.search(term)
           result.add k.pluralize, search_result
           count += search_result.count
         end

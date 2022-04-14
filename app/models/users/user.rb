@@ -6,7 +6,7 @@
 # Inherited by Administrator, Technician, Scientist and Guest.
 require 'digest/sha1'
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include HasActive
   include Auditable
   include SubclassChecker

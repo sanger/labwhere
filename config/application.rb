@@ -28,7 +28,7 @@ module Labwhere
     # config.i18n.default_locale = :de
 
     # redirect errors to errors controller
-    config.exceptions_app = self.routes
+    config.exceptions_app = routes
 
     config.autoload_paths += %W[#{config.root}/app/lib]
 

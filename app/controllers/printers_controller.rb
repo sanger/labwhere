@@ -3,8 +3,7 @@
 class PrintersController < ApplicationController
   before_action :printers, only: [:index]
 
-  def index
-  end
+  def index; end
 
   def new
     @printer = PrinterForm.new

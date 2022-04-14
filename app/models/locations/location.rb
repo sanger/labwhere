@@ -2,7 +2,7 @@
 
 ##
 # A location can store locations or labware
-class Location < ActiveRecord::Base
+class Location < ApplicationRecord
   UNKNOWN = 'UNKNOWN'
   UNKNOWN_LIMIT_ERROR = "Can't have more than 1 UnknownLocation"
   BARCODE_PREFIX = 'lw-'
@@ -117,15 +117,13 @@ class Location < ActiveRecord::Base
   end
 
   def destroyable
-    unless used? && block_given?
-      yield
-    end
+    yield unless used? && block_given?
   end
 
   # This will transform the location into the correct type of location based on whether it
   # has coordinates.
   def transform
-    self.becomes!(coordinateable? ? OrderedLocation : UnorderedLocation)
+    becomes!(coordinateable? ? OrderedLocation : UnorderedLocation)
   end
 
   def type
@@ -195,7 +193,7 @@ class Location < ActiveRecord::Base
   ##
   # The barcode is the name downcased with spaces replaced by dashes with the id added again separated by a space.
   def generate_barcode
-    update_column(:barcode, "#{BARCODE_PREFIX}#{self.name.tr(' ', '-').downcase}-#{self.id}")
+    update_column(:barcode, "#{BARCODE_PREFIX}#{name.tr(' ', '-').downcase}-#{id}")
   end
 
   def apply_restrictions

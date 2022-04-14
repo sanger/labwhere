@@ -21,9 +21,7 @@ module ActiveModel
       # ` || object.respond_to?(a.first, true)` to check if the object responded to
       # the given method.
       def try(*a, &b)
-        if a.empty? || respond_to?(a.first, true) || object.respond_to?(a.first, true)
-          try!(*a, &b)
-        end
+        try!(*a, &b) if a.empty? || respond_to?(a.first, true) || object.respond_to?(a.first, true)
       end
 
       # AMS 0.8 would return nil if the serializer was initialized with a nil

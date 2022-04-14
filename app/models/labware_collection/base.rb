@@ -14,7 +14,7 @@ module LabwareCollection
       @original_locations = []
     end
 
-    def push()
+    def push
       if valid?
         ActiveRecord::Base.transaction do
           labwares.each_with_index do |labware, i|

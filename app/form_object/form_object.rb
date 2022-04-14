@@ -73,7 +73,7 @@ module FormObject
   #
 
   included do
-    _model = self.to_s.gsub('Form', '')
+    _model = to_s.gsub('Form', '')
 
     class_attribute :form_variables
     self.form_variables = FormObject::FormVariables.new(self, _model.underscore.to_sym, %i[controller action])
@@ -86,7 +86,7 @@ module FormObject
 
     attr_reader :model
 
-    alias_attribute self.form_variables.model_key, :model
+    alias_attribute form_variables.model_key, :model
 
     delegate :id, :created_at, :updated_at, :to_json, to: :model
 
@@ -107,7 +107,7 @@ module FormObject
 
     # Set the list of form variables which will be assigned on submit.
     def set_form_variables(*variables)
-      self.form_variables.add(*variables)
+      form_variables.add(*variables)
     end
 
     # modify the actions which will be carried out after a successful validation.
@@ -122,14 +122,14 @@ module FormObject
 
   # If no argument is passed a new model is created otherwise the passed object is assigned
   def initialize(object = nil)
-    @model = object || self.model_name.klass.new
+    @model = object || model_name.klass.new
   end
 
   def fill_model(params)
-    self.form_variables.assign(self, params)
-    if self.respond_to?(:model_attributes)
+    form_variables.assign(self, params)
+    if respond_to?(:model_attributes)
       run_callbacks :assigning_model_variables do
-        model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
+        model.attributes = params[model_name.i18n_key].slice(*model_attributes).permit!
       end
     end
   end

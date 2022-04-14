@@ -3,8 +3,7 @@
 class TeamsController < ApplicationController
   before_action :teams, only: [:index]
 
-  def index
-  end
+  def index; end
 
   def new
     @team = TeamForm.new

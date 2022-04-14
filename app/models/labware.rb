@@ -4,7 +4,7 @@
 # Labware is stored in a location.
 # LabWhere needs to know nothing about it apart from its barcode and where it is.
 # If a labware has no location it's location will be set to unknown automatically
-class Labware < ActiveRecord::Base
+class Labware < ApplicationRecord
   include SoftDeletable
   include Searchable::Client
   include Auditable
@@ -23,7 +23,7 @@ class Labware < ActiveRecord::Base
 
   searchable_by :barcode
 
-  scope :by_barcode, lambda { |barcodes| includes(:location).where(barcode: barcodes) }
+  scope :by_barcode, ->(barcodes) { includes(:location).where(barcode: barcodes) }
   scope :by_barcode_known_locations, lambda { |barcodes|
                                        includes(:location)
                                          .where(barcode: barcodes)
@@ -34,7 +34,7 @@ class Labware < ActiveRecord::Base
                               }
 
   def self.find_or_initialize_by_barcode(object)
-    barcode = object.kind_of?(Hash) ? object[:barcode] : object
+    barcode = object.is_a?(Hash) ? object[:barcode] : object
     Labware.find_or_initialize_by(barcode: barcode.remove_control_chars)
   end
 
