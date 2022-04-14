@@ -53,7 +53,7 @@ class Location < ApplicationRecord
   # See https://github.com/stefankroes/ancestry
   has_ancestry counter_cache: true
 
-  alias_method :has_child_locations?, :has_children?
+  alias has_child_locations? has_children?
 
   ##
   # It is possible for the parent to be nil

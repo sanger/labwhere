@@ -76,11 +76,11 @@ class LocationForm
   end
 
   def check_range
-    if start_from.nil? and !end_to.nil?
+    if start_from.nil? && !end_to.nil?
       errors.add(:start_from, :blank, message: 'must be present if End is present')
-    elsif !start_from.nil? and end_to.nil?
+    elsif !start_from.nil? && end_to.nil?
       errors.add(:end_to, :blank, message: 'must be present if Start is present')
-    elsif pos_int?(start_from) and pos_int?(end_to) and start_from.to_i >= end_to.to_i
+    elsif pos_int?(start_from) && pos_int?(end_to) && (start_from.to_i >= end_to.to_i)
       errors.add(:start_from, :invalid, message: 'must be less than End')
     end
   end
@@ -137,7 +137,7 @@ class LocationForm
   end
 
   def generate_names(prefix, start_from, end_to)
-    if start_from.present? and end_to.present?
+    if start_from.present? && end_to.present?
       (start_from..end_to).each do |name|
         yield "#{prefix} #{name}"
       end
@@ -164,14 +164,12 @@ class LocationForm
 
   # rubocop:disable Style/ExplicitBlockArgument
   def run_transaction
-    begin
-      ActiveRecord::Base.transaction do
-        yield
-      end
-      true
-    rescue StandardError
-      false
+    ActiveRecord::Base.transaction do
+      yield
     end
+    true
+  rescue StandardError
+    false
   end
   # rubocop:enable Style/ExplicitBlockArgument
 

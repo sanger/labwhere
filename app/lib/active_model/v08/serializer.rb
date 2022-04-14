@@ -13,7 +13,7 @@ module ActiveModel
         read_attribute_for_serialization(method)
       end
 
-      alias_method :options, :instance_options
+      alias options instance_options
 
       # Since attributes could be read from the `object` via `method_missing`,
       # the `try` method did not behave as before. This patches `try` with the
