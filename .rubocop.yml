@@ -46,3 +46,4 @@ Style/RedundantInitialize:
 Style/CaseEquality:
   Exclude:
     - 'config/initializers/02_proc.rb'
+    
