@@ -54,5 +54,4 @@ class RestrictionCreatorTest < ActiveSupport::TestCase
     assert build(:location, name: 'Delivered2', location_type: delivered, parent: building_parent).valid?
     # delivered can now have any parent, updated from only allowed building parent
   end
-
 end

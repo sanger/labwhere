@@ -21,7 +21,7 @@ class LocationCreator
   end
 
   def create_locations(type, location, parents)
-    location_type = LocationType.find_or_create_by(name: type)
+    location_type = LocationType.find_or_create_by!(name: type)
     [].tap do |locations|
       parents.each do |parent|
         if location[:number]
@@ -36,7 +36,7 @@ class LocationCreator
   end
 
   def create_location(location, location_type, parent, container)
-    UnorderedLocation.find_or_create_by(name: location, container: container) do |l|
+    UnorderedLocation.find_or_create_by!(name: location, container: container) do |l|
       l.parent = parent
       l.location_type = location_type
     end
