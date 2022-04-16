@@ -26,7 +26,6 @@ Lint/UselessAssignment:
     - 'spec/models/locations/location_spec.rb'
     - 'spec/models/search_result_spec.rb'
     - 'spec/models/user_spec.rb'
-    - 'test/location_creator/location_creator_test.rb'
 
 # Offense count: 8
 # Configuration parameters: IgnoredMethods.
@@ -134,9 +133,6 @@ Rails/FilePath:
   Exclude:
     - 'config/application.rb'
     - 'config/initializers/restrictions.rb'
-    - 'test/location_creator/location_creator_test.rb'
-    - 'test/restriction_creator/restriction_creator_test.rb'
-    - 'test/test_helper.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -166,16 +162,6 @@ Rails/InverseOf:
     - 'app/models/location_types_restriction.rb'
     - 'app/models/locations/ordered_location.rb'
     - 'app/models/restrictions/parentage_restriction.rb'
-
-# Offense count: 12
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, Include.
-# SupportedStyles: assert_not, refute
-# Include: **/test/**/*
-Rails/RefuteMethods:
-  Exclude:
-    - 'test/location_creator/location_creator_test.rb'
-    - 'test/restriction_creator/restriction_creator_test.rb'
 
 # Offense count: 12
 # Configuration parameters: ForbiddenMethods, AllowedMethods.

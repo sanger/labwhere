@@ -30,6 +30,8 @@ module Labwhere
     # redirect errors to errors controller
     config.exceptions_app = routes
 
+    # TODO. There should be no need for lib. We should not need to autoload anything in app
+    # Something is not quite right so needs investigating.
     config.autoload_paths += %W[#{config.root}/app/lib]
 
     config.autoload_paths += %W[#{config.root}/app/lib/utils #{config.root}/app/lib/validators]
