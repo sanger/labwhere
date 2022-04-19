@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# Dir[File.join(Rails.root, 'lib', 'restriction_creator', '*.rb')].sort.each { |f| require f }
-
 DependentLoader.start(:restrictions) do |on|
   on.success do
     DependentLoader.start(:location_types_restrictions) do |and_on|
