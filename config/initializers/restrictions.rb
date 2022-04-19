@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Dir[File.join(Rails.root, 'lib', 'restriction_creator', '*.rb')].sort.each { |f| require f }
+# Dir[File.join(Rails.root, 'lib', 'restriction_creator', '*.rb')].sort.each { |f| require f }
 
 DependentLoader.start(:restrictions) do |on|
   on.success do
