@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require Rails.root.join('app/lib/restriction_creator/restriction_creator.rb')
+# require Rails.root.join('app/lib/restriction_creator/restriction_creator.rb')
 
 namespace :restrictions do
   desc 'create restrictions'
