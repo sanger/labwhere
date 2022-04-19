@@ -37,7 +37,7 @@ class AvailableCoordinates
   private
 
   def available?(coordinates)
-    coordinates.all? { |c| c.vacant? }
+    coordinates.all?(&:vacant?)
   end
 
   def line(min, max)

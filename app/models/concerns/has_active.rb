@@ -10,7 +10,7 @@ module HasActive
   extend ActiveSupport::Concern
 
   included do
-    enum status: [:active, :inactive]
+    enum status: { active: 0, inactive: 1 }
     before_save :update_deactivated_at
   end
 

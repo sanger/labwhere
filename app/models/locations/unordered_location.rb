@@ -17,12 +17,12 @@ class UnorderedLocation < Location
   ##
   # Deactivate the child location as well of all of its childrens' children
   def deactivate_children
-    descendants.each &:deactivate
+    descendants.each(&:deactivate)
   end
 
   ##
   # Activate the child location as well of all of its childrens' children
   def activate_children
-    descendants.each &:activate
+    descendants.each(&:activate)
   end
 end

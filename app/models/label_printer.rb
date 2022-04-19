@@ -39,7 +39,7 @@ class LabelPrinter
   ##
   # Produce a success or failure message
   def message
-    response_ok? ? I18n.t("printing.success") : I18n.t("printing.failure")
+    response_ok? ? I18n.t('printing.success') : I18n.t('printing.failure')
   end
 
   ##
@@ -53,7 +53,7 @@ class LabelPrinter
       response = Net::HTTP.post URI("#{Rails.configuration.pmb_api_base}/print_jobs"),
                                 body.to_json,
                                 'Content-Type' => 'application/json'
-      if response.code == "200"
+      if response.code == '200'
         @response_ok = true
       else
         throw JSON.parse(response.body)

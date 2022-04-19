@@ -23,7 +23,10 @@ class UserForm
     assign_attributes
 
     ActiveRecord::Base.transaction do
-      @params[:user][:swipe_card_id] = Digest::SHA1.hexdigest(@params[:user][:swipe_card_id]) if @params[:user][:swipe_card_id].present? && persisted?
+      if @params[:user][:swipe_card_id].present? && persisted?
+        @params[:user][:swipe_card_id] =
+          Digest::SHA1.hexdigest(@params[:user][:swipe_card_id])
+      end
       user.update(@params[:user].permit(:swipe_card_id, :barcode, :status, :team_id, :type, :login))
       if valid?
         user.create_audit(current_user)

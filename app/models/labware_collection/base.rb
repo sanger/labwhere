@@ -14,7 +14,7 @@ module LabwareCollection
       @original_locations = []
     end
 
-    def push()
+    def push
       if valid?
         ActiveRecord::Base.transaction do
           labwares.each_with_index do |labware, i|
@@ -33,7 +33,7 @@ module LabwareCollection
     end
 
     def original_location_names
-      original_locations.uniq.join(", ")
+      original_locations.uniq.join(', ')
     end
 
     def labwares=(labwares) # rubocop:todo Lint/DuplicateMethods

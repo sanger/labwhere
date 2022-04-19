@@ -9,7 +9,7 @@ RSpec.describe CoordinatesForm, type: :model do
   let(:coordinates_form) { CoordinatesForm.new }
 
   let(:params) { ActionController::Parameters.new(param_args) }
-  let(:param_args) { { controller: "api/coordinates", action: "update" }.merge(user_params).merge(coordinates_params) }
+  let(:param_args) { { controller: 'api/coordinates', action: 'update' }.merge(user_params).merge(coordinates_params) }
   let(:user_params) { { user_code: technician.login } }
   let(:coordinates_params) do
     { coordinates: coordinates.map.with_index { |c, i| { id: c.id, labware_barcode: labwares[i].barcode } } }

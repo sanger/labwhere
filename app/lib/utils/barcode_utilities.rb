@@ -9,6 +9,6 @@ module BarcodeUtilities
 
   # Extract the barcodes from the input object(s)
   def extract_barcodes
-    self.collect { |l| l.barcode }
+    collect(&:barcode)
   end
 end

@@ -2,7 +2,7 @@
 
 namespace :labware_events do
   # to run this use bundle exec rake END_DATE=2020-09-24
-  desc "Move the labware audits to the events warehouse"
+  desc 'Move the labware audits to the events warehouse'
   task create: :environment do |_t|
     # any audits before this date will have events created
     end_date = DateTime.parse(ENV['END_DATE'])

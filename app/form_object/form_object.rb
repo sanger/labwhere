@@ -9,20 +9,26 @@ module FormObject
   # Provides a middleman between views and models.
   # A form object will allow you to assign permitted attributes.
   # It will also allow you to carry out other functions such as authorisation and adding audit records.
-  # Convention states that the name must be in the format of the model followed by Form e.g. MyModelForm relates to MyModel.
+  # Convention states that the name must be in the format of the model followed by
+  # Form e.g. MyModelForm relates to MyModel.
   # It will set the ActiveModel name to the underlying model name for use in views.
   #
   # The set_attributes method accepts a list of attributes which will be assigned on submit and are permitted.
   # These must be attributes of the model.
   # The form object can be initialized with an existing object
-  # The submit method accepts parameters of type ActionController::Parameters of format { my_model: { attr_a: "a", attr_b: "b"}}
-  # The submit method will assign any form variables, assign the model attributes will validate the model and carry out any other
+  # The submit method accepts parameters of type ActionController::Parameters of format
+  # { my_model: { attr_a: "a", attr_b: "b"}}
+  # The submit method will assign any form variables, assign the model attributes will
+  # validate the model and carry out any other
   # specific validations that are added. It will then save the model if it is valid.
   # The after_validate method allows you to change which actions are carried out post validation.
-  # The after_submit callback allows you to specify actions which can be carried out after a successful submit.
-  # Each form object will automatically assign controller and action variables if the parameters come from a controller and will
+  # The after_submit callback allows you to specify actions which can be carried
+  # out after a successful submit.
+  # Each form object will automatically assign controller and action variables if the parameters
+  # come from a controller and will
   # also assign the parameters to an instance variable.
-  # Each object will also have an attribute called model which relates to the underlying model this is also aliased to the name of the model.
+  # Each object will also have an attribute called model which relates to the underlying
+  # model this is also aliased to the name of the model.
   # e.g. if model is called MyModel there will an attribute called my_model.
 
   # Usage:
@@ -67,10 +73,10 @@ module FormObject
   #
 
   included do
-    _model = self.to_s.gsub("Form", "")
+    _model = to_s.gsub('Form', '')
 
     class_attribute :form_variables
-    self.form_variables = FormObject::FormVariables.new(self, _model.underscore.to_sym, [:controller, :action])
+    self.form_variables = FormObject::FormVariables.new(self, _model.underscore.to_sym, %i[controller action])
 
     validate :check_for_errors
 
@@ -80,7 +86,7 @@ module FormObject
 
     attr_reader :model
 
-    alias_attribute self.form_variables.model_key, :model
+    alias_attribute form_variables.model_key, :model
 
     delegate :id, :created_at, :updated_at, :to_json, to: :model
 
@@ -92,7 +98,7 @@ module FormObject
   module ClassMethods
     # Set the permitted of attributes that will be assigned to the model.
     def set_attributes(*attributes)
-      delegate *attributes, to: :model
+      delegate(*attributes, to: :model)
 
       define_method :model_attributes do
         attributes
@@ -101,14 +107,14 @@ module FormObject
 
     # Set the list of form variables which will be assigned on submit.
     def set_form_variables(*variables)
-      self.form_variables.add(*variables)
+      form_variables.add(*variables)
     end
 
     # modify the actions which will be carried out after a successful validation.
     def after_validate(&block)
       define_method :save_if_valid do
         run_transaction do
-          instance_eval &block
+          instance_eval(&block)
         end
       end
     end
@@ -116,14 +122,14 @@ module FormObject
 
   # If no argument is passed a new model is created otherwise the passed object is assigned
   def initialize(object = nil)
-    @model = object || self.model_name.klass.new
+    @model = object || model_name.klass.new
   end
 
   def fill_model(params)
-    self.form_variables.assign(self, params)
-    if self.respond_to?(:model_attributes)
+    form_variables.assign(self, params)
+    if respond_to?(:model_attributes)
       run_callbacks :assigning_model_variables do
-        model.attributes = params[self.model_name.i18n_key].slice(*model_attributes).permit!
+        model.attributes = params[model_name.i18n_key].slice(*model_attributes).permit!
       end
     end
   end
@@ -173,14 +179,14 @@ module FormObject
   end
 
   # rubocop:disable Style/ExplicitBlockArgument
-  def run_transaction(&block)
+  def run_transaction
     if valid?
       begin
         ActiveRecord::Base.transaction do
           yield
         end
         true
-      rescue
+      rescue StandardError
         false
       end
     else

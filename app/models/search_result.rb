@@ -69,8 +69,11 @@ class SearchResult
   # If the number of results is under the limit then output the number of results.
   # If the number of results exceeds the limit state the limit and the actual number of results.
   def message
-    return "Your search returned #{pluralize(count, "result")}." if count <= limit
+    return "Your search returned #{pluralize(count, 'result')}." if count <= limit
 
-    "Your search returned #{pluralize(count, "result")}. It has been limited to #{pluralize(limit, "result")}. Please refine your search."
+    "Your search returned #{pluralize(count,
+                                      'result')}. It has been limited to #{pluralize(limit,
+                                                                                     'result')}."\
+                                                                                     ' Please refine your search.'
   end
 end

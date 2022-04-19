@@ -9,7 +9,10 @@ class Api::Locations::DescendantsController < ApiController
 
   def current_resource
     locations = find_descendants if params[:location_barcode]
-    locations = AvailableCoordinatesQuery.call(locations, permitted_params[:min_available_coordinates]) if permitted_params.has_key? :min_available_coordinates
+    if permitted_params.key? :min_available_coordinates
+      locations = AvailableCoordinatesQuery.call(locations,
+                                                 permitted_params[:min_available_coordinates])
+    end
     locations
   end
 
@@ -20,6 +23,6 @@ class Api::Locations::DescendantsController < ApiController
   def find_descendants
     Location.find_by_code(params[:location_barcode])
             .descendants
-            .includes(coordinates: [:labware, :location])
+            .includes(coordinates: %i[labware location])
   end
 end

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 namespace :migration do
-  desc "back-fill uuids"
+  desc 'back-fill uuids'
   task create_uuids: :environment do |_t|
-    puts "Updating labwares..."
+    puts 'Updating labwares...'
     labware_updated = 0
     Labware.where(uuid: '').each do |lab|
       lab.uuid = SecureRandom.uuid
@@ -12,7 +12,7 @@ namespace :migration do
     end
     puts "#{labware_updated} labwares updated"
 
-    puts "Updating locations..."
+    puts 'Updating locations...'
     locations_updated = 0
     Location.where(uuid: '').each do |loc|
       loc.uuid = SecureRandom.uuid
@@ -21,7 +21,7 @@ namespace :migration do
     end
     puts "#{locations_updated} locations updated"
 
-    puts "Updating audits..."
+    puts 'Updating audits...'
     audits_updated = 0
     Audit.where(uuid: '').each do |aud|
       aud.uuid = SecureRandom.uuid

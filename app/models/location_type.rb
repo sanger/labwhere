@@ -2,7 +2,7 @@
 
 ##
 # Every location must have a type.
-class LocationType < ActiveRecord::Base
+class LocationType < ApplicationRecord
   include Searchable::Client
   include Auditable
 
@@ -39,7 +39,7 @@ class LocationType < ActiveRecord::Base
 
   def check_locations
     if has_locations?
-      errors.add(:base, I18n.t("errors.messages.location_type_in_use"))
+      errors.add(:base, I18n.t('errors.messages.location_type_in_use'))
       throw :abort
     end
   end

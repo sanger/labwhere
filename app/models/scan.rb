@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Scanning labware in and out of a location
 # A scan is a throwaway object i.e. it has no use once it has been done.
@@ -6,10 +8,10 @@
 # We need to show a message to the user showing how many pieces of labwares were scanned in or out
 # of the location. For this purpose we create a temporary list of all the labwares
 # so we can determine which locations they have come from and how many there are.
-class Scan < ActiveRecord::Base
+class Scan < ApplicationRecord
   include AssertLocation
 
-  enum status: [:in, :out]
+  enum status: { in: 0, out: 1 }
 
   belongs_to :location, optional: true
   belongs_to :user, optional: true
@@ -21,11 +23,8 @@ class Scan < ActiveRecord::Base
   # If we are scanning in tell the user how many labwares have been scanned in to the scan location.
   # If we are scanning out tell the user how many labwares have been scanned out of their previous locations.
   def create_message
-    self.message = "#{labwares.count} labwares scanned #{self.status} " << if in?
-                                                                             "to #{location.name}"
-                                                                           else
-                                                                             "from #{labwares.original_location_names}"
-                                                                           end
+    self.message = "#{labwares.count} labwares scanned #{status} "\
+                   "#{in? ? "to #{location.name}" : "from #{labwares.original_location_names}"}"
   end
 
   def labwares
@@ -42,6 +41,6 @@ class Scan < ActiveRecord::Base
   private
 
   def set_status
-    self.status = Scan.statuses[:out] if self.location.unknown?
+    self.status = Scan.statuses[:out] if location.unknown?
   end
 end

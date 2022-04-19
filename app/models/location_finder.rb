@@ -12,7 +12,7 @@ class LocationFinder
   def data
     # we could have an empty file we have a validation for that
     # this removes the need for any expensive logic.
-    @data ||= ::CSV.parse(file || "")
+    @data ||= ::CSV.parse(file || '')
   end
 
   def barcodes

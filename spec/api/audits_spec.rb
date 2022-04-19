@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe Api::Locations::AuditsController, type: :request do
   let!(:location) { create(:location_with_audits) }
@@ -11,27 +11,27 @@ RSpec.describe Api::Locations::AuditsController, type: :request do
     @json = ActiveSupport::JSON.decode(response.body).first
   end
 
-  it "should be a success" do
+  it 'should be a success' do
     expect(response).to be_successful
   end
 
-  it "should return user" do
-    expect(@json["user"]).to eq(@audit.user.login)
+  it 'should return user' do
+    expect(@json['user']).to eq(@audit.user.login)
   end
 
-  it "should return record date" do
-    expect(@json["record_data"]).to eq(@audit.record_data)
+  it 'should return record date' do
+    expect(@json['record_data']).to eq(@audit.record_data)
   end
 
-  it "should return date created" do
-    expect(@json["created_at"]).to eq(@audit.created_at.to_s(:uk))
+  it 'should return date created' do
+    expect(@json['created_at']).to eq(@audit.created_at.to_s(:uk))
   end
 
-  it "should return the action" do
-    expect(@json["action"]).to eq(@audit.action)
+  it 'should return the action' do
+    expect(@json['action']).to eq(@audit.action)
   end
 
-  it "should return the auditable type" do
-    expect(@json["auditable_type"]).to eq(@audit.auditable_type)
+  it 'should return the auditable type' do
+    expect(@json['auditable_type']).to eq(@audit.auditable_type)
   end
 end

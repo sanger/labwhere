@@ -27,7 +27,7 @@ module StorageValidator
   #  Check through all ancestors to make sure none are reserved
   def check_location_for_reservation(location)
     if location.reserved? && location.reserved_by != current_user.team
-      errors.add(:location, I18n.t("errors.messages.reserved", team: location.reserved_by.name))
+      errors.add(:location, I18n.t('errors.messages.reserved', team: location.reserved_by.name))
       return
     end
     check_location_for_reservation(location.parent) if location.parent_id?

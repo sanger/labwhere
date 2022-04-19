@@ -25,7 +25,7 @@ class Api::Locations::CoordinatesController < ApiController
 
   def ordered_location
     OrderedLocation
-      .includes(coordinates: [:labware, :location])
+      .includes(coordinates: %i[labware location])
       .find_by_code(params[:location_barcode])
   end
 

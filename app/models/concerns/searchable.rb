@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# TODO: improve the way the search method is done. At the moment it works by adding all the results together and then filtering.
+# TODO: improve the way the search method is done. At the moment
+# it works by adding all the results together and then filtering.
 
 ##
 # The Searchable module allows you to do a multi-model search across various attributes.
@@ -90,7 +91,7 @@ module Searchable
       @results ||= SearchResult.new do |result|
         result.limit = self.class.limit
         self.class.searchable_models.each do |k, v|
-          search_result = v.search(self.term)
+          search_result = v.search(term)
           result.add k.pluralize, search_result
           count += search_result.count
         end

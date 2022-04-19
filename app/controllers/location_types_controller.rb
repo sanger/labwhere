@@ -4,11 +4,9 @@ class LocationTypesController < ApplicationController
   before_action :location_types, only: [:index]
   before_action :set_location_type, except: [:index]
 
-  def index
-  end
+  def index; end
 
-  def new
-  end
+  def new; end
 
   def create
     if @location_type.submit(params)
@@ -18,8 +16,7 @@ class LocationTypesController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @location_type.submit(params)
@@ -29,8 +26,7 @@ class LocationTypesController < ApplicationController
     end
   end
 
-  def show
-  end
+  def show; end
 
   def delete
     respond_to do |format|
@@ -41,7 +37,7 @@ class LocationTypesController < ApplicationController
   def destroy
     respond_to do |format|
       if @location_type.destroy(params)
-        flash_keep "Location type successfully deleted"
+        flash_keep 'Location type successfully deleted'
         format.js { render js: "window.location.pathname='#{location_types_path}'" }
       else
         format.js

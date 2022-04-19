@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe Searchable, type: :model do
   with_model :Label do
@@ -44,57 +44,57 @@ RSpec.describe Searchable, type: :model do
   end
 
   describe Searchable::Client do
-    it "should allow for search by term" do
-      Label.create(name: "A name")
-      Label.create(name: "Another name")
-      Label.create(name: "Gobbledeyguke")
+    it 'should allow for search by term' do
+      Label.create(name: 'A name')
+      Label.create(name: 'Another name')
+      Label.create(name: 'Gobbledeyguke')
 
-      expect(Label.search("name").count).to eq(2)
-      expect(Label.search("Gobbledeyguke").count).to eq(1)
-      expect(Label.search("gobbledeyguke").count).to eq(1)
-      expect(Label.search("gobble").count).to eq(1)
+      expect(Label.search('name').count).to eq(2)
+      expect(Label.search('Gobbledeyguke').count).to eq(1)
+      expect(Label.search('gobbledeyguke').count).to eq(1)
+      expect(Label.search('gobble').count).to eq(1)
     end
 
-    it "should allow for search by term on multiple fields" do
-      BarcodeLabel.create(name: "A name")
-      BarcodeLabel.create(name: "Another name")
-      BarcodeLabel.create(barcode: "Gobbledeyguke")
+    it 'should allow for search by term on multiple fields' do
+      BarcodeLabel.create(name: 'A name')
+      BarcodeLabel.create(name: 'Another name')
+      BarcodeLabel.create(barcode: 'Gobbledeyguke')
 
-      expect(BarcodeLabel.search("name").count).to eq(2)
-      expect(BarcodeLabel.search("Gobbledeyguke").count).to eq(1)
-      expect(BarcodeLabel.search("gobbledeyguke").count).to eq(1)
-      expect(BarcodeLabel.search("gobble").count).to eq(1)
+      expect(BarcodeLabel.search('name').count).to eq(2)
+      expect(BarcodeLabel.search('Gobbledeyguke').count).to eq(1)
+      expect(BarcodeLabel.search('gobbledeyguke').count).to eq(1)
+      expect(BarcodeLabel.search('gobble').count).to eq(1)
     end
 
-    it "should remove duplicate records" do
-      BarcodeLabel.create(name: "A name", barcode: "A name:1")
+    it 'should remove duplicate records' do
+      BarcodeLabel.create(name: 'A name', barcode: 'A name:1')
 
-      expect(BarcodeLabel.search("A name").count).to eq(1)
+      expect(BarcodeLabel.search('A name').count).to eq(1)
     end
   end
 
   describe Searchable::Orchestrator do
-    it "should return an empty result if nothing matches" do
-      Label.create(name: "A name")
-      BarcodeLabel.create(name: "Another name")
+    it 'should return an empty result if nothing matches' do
+      Label.create(name: 'A name')
+      BarcodeLabel.create(name: 'Another name')
 
-      expect(Search.create(term: "A dodgy term").results).to be_empty
+      expect(Search.create(term: 'A dodgy term').results).to be_empty
     end
 
-    it "should return results if the term matches" do
-      Label.create(name: "A name")
-      BarcodeLabel.create(name: "A name")
-      BarcodeLabel.create(barcode: "Gobbledeyguke")
+    it 'should return results if the term matches' do
+      Label.create(name: 'A name')
+      BarcodeLabel.create(name: 'A name')
+      BarcodeLabel.create(barcode: 'Gobbledeyguke')
 
-      expect(Search.create(term: "name").results.count).to eq(2)
-      expect(Search.create(term: "Gobbledey").results.count).to eq(1)
+      expect(Search.create(term: 'name').results.count).to eq(2)
+      expect(Search.create(term: 'Gobbledey').results.count).to eq(1)
     end
 
-    it "limit should limit the number of results returned by the search" do
-      (1...101).each { |_i| Label.create(name: "A name") }
-      (1...106).each { |_i| BarcodeLabel.create(name: "A name") }
-      expect(Search.create(term: "name").results.count).to eq(205)
-      expect(Search.create(term: "name").results.adjusted_count).to eq(200)
+    it 'limit should limit the number of results returned by the search' do
+      (1...101).each { |_i| Label.create(name: 'A name') }
+      (1...106).each { |_i| BarcodeLabel.create(name: 'A name') }
+      expect(Search.create(term: 'name').results.count).to eq(205)
+      expect(Search.create(term: 'name').results.adjusted_count).to eq(200)
     end
   end
 end

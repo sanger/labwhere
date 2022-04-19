@@ -16,7 +16,8 @@ class UploadLabwareForm
 
     return false unless valid?
 
-    uploader = ManifestUploader.new(json: format_file_to_json, user_code: params[:upload_labware_form][:user_code], controller: params[:controller], action: params[:action])
+    uploader = ManifestUploader.new(json: format_file_to_json, user_code: params[:upload_labware_form][:user_code],
+                                    controller: params[:controller], action: params[:action])
 
     unless uploader.run
       uploader.errors.full_messages.each { |error| errors.add(:base, error) }
@@ -41,9 +42,9 @@ class UploadLabwareForm
   end
 
   def check_required_params
-    params.require([:controller, :action])
-    params.require(:upload_labware_form).permit([:user_code, :file]).tap do |form_params|
-      form_params.require([:user_code, :file])
+    params.require(%i[controller action])
+    params.require(:upload_labware_form).permit(%i[user_code file]).tap do |form_params|
+      form_params.require(%i[user_code file])
     end
   rescue ActionController::ParameterMissing
     errors.add(:base, 'The required fields must be filled in')

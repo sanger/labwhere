@@ -2,7 +2,7 @@
 
 ##
 # Teams which users belong to.
-class Team < ActiveRecord::Base
+class Team < ApplicationRecord
   include Auditable
 
   validates :number, presence: true, uniqueness: true, numericality: true

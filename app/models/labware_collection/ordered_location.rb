@@ -19,7 +19,7 @@ module LabwareCollection
 
     def check_coordinates
       unless coordinates.count == labwares.count
-        errors.add(:base, I18n.t("errors.messages.not_enough_empty_coordinates"))
+        errors.add(:base, I18n.t('errors.messages.not_enough_empty_coordinates'))
       end
     end
   end

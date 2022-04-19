@@ -7,46 +7,46 @@ RSpec.describe Labware, type: :model do
     expect(create(:labware).uuid).to be_present
   end
 
-  it "is invalid without a barcode" do
+  it 'is invalid without a barcode' do
     expect(build(:labware, barcode: nil)).to_not be_valid
   end
 
-  it "is invalid without a unique barcode" do
+  it 'is invalid without a unique barcode' do
     labware = create(:labware)
     expect(build(:labware, barcode: labware.barcode)).to_not be_valid
   end
 
-  it "can only be added to a location that is nested" do
+  it 'can only be added to a location that is nested' do
     expect(build(:labware, location: build(:location))).to_not be_valid
     expect(build(:labware, location: build(:location_with_parent))).to be_valid
   end
 
-  it "can be added to a location that is unknown" do
+  it 'can be added to a location that is unknown' do
     expect(build(:labware, location: UnknownLocation.get)).to be_valid
   end
 
-  it "exists" do
-    expect(create(:labware).exists).to eq("Yes")
+  it 'exists' do
+    expect(create(:labware).exists).to eq('Yes')
   end
 
-  it "is destroyed it will be soft deleted with all associations removed" do
+  it 'is destroyed it will be soft deleted with all associations removed' do
     labware = create(:labware, location: create(:location_with_parent))
     labware.destroy
     expect(Labware.deleted.count).to eq(1)
     expect(labware.reload.location).to be_empty
   end
 
-  it "is created with no location should set location to be empty" do
+  it 'is created with no location should set location to be empty' do
     labware = create(:labware)
     expect(labware.location).to be_empty
   end
 
-  it "#find_by_barcode should find labware by barcode" do
+  it '#find_by_barcode should find labware by barcode' do
     labware = create(:labware)
     expect(Labware.find_by_barcode(labware.barcode)).to eq(labware)
   end
 
-  it "#by_barcode should return a list of labwares for the barcodes" do
+  it '#by_barcode should return a list of labwares for the barcodes' do
     create_list(:labware, 5)
     expect(Labware.by_barcode(Labware.pluck(:barcode)).count).to eq(5)
   end
@@ -60,7 +60,7 @@ RSpec.describe Labware, type: :model do
     expect(Labware.by_barcode_known_locations(labwares.pluck(:barcode)).count).to eq(4)
   end
 
-  it "#by_location_barcode should return a list of labwares for the given location barcodes" do
+  it '#by_location_barcode should return a list of labwares for the given location barcodes' do
     labwares = []
     labwares += create_list(:labware, 2)
     labwares += create_list(:labware_with_location, 2)
@@ -70,7 +70,7 @@ RSpec.describe Labware, type: :model do
     expect(Labware.by_location_barcode(location_barcodes).count).to eq(5)
   end
 
-  it "#location should always be returned whether labware is attached to a location, coordinate or nothing" do
+  it '#location should always be returned whether labware is attached to a location, coordinate or nothing' do
     location = create(:location_with_parent)
     coordinate = create(:coordinate)
     labware_1 = create(:labware, location: location)
@@ -81,19 +81,19 @@ RSpec.describe Labware, type: :model do
     expect(labware_3.location).to be_empty
   end
 
-  it "#as_json should have the correct attributes" do
+  it '#as_json should have the correct attributes' do
     labware = create(:labware)
     json = labware.as_json
-    expect(json["created_at"]).to eq(labware.created_at.to_s(:uk))
-    expect(json["updated_at"]).to eq(labware.updated_at.to_s(:uk))
-    expect(json["location"]).to eq(labware.location.barcode)
-    expect(json["location_id"]).to be_nil
-    expect(json["coordinate_id"]).to be_nil
-    expect(json["deleted_at"]).to be_nil
-    expect(json["previous_location_id"]).to be_nil
+    expect(json['created_at']).to eq(labware.created_at.to_s(:uk))
+    expect(json['updated_at']).to eq(labware.updated_at.to_s(:uk))
+    expect(json['location']).to eq(labware.location.barcode)
+    expect(json['location_id']).to be_nil
+    expect(json['coordinate_id']).to be_nil
+    expect(json['deleted_at']).to be_nil
+    expect(json['previous_location_id']).to be_nil
   end
 
-  it "#flush_coordinate should remove coordinate" do
+  it '#flush_coordinate should remove coordinate' do
     coordinate = create(:coordinate)
     labware = create(:labware)
     coordinate.fill(labware)
@@ -103,14 +103,14 @@ RSpec.describe Labware, type: :model do
     expect(coordinate.reload).to be_vacant
   end
 
-  it "#flush_location should remove location" do
+  it '#flush_location should remove location' do
     labware = create(:labware, location: create(:location_with_parent))
     labware.flush_location
     labware.save
     expect(labware.location).to be_empty
   end
 
-  it "#flush should remove location and coordinate" do
+  it '#flush should remove location and coordinate' do
     labware = create(:labware, location: create(:location_with_parent), coordinate: create(:coordinate))
     labware.flush
     labware.save
@@ -118,11 +118,11 @@ RSpec.describe Labware, type: :model do
     expect(labware.coordinate).to be_vacant
   end
 
-  it "#find_or_initialize_by_barcode should create or find a labware" do
+  it '#find_or_initialize_by_barcode should create or find a labware' do
     labware = create(:labware)
     expect(Labware.find_or_initialize_by_barcode(labware.barcode)).to eq(labware)
     expect(Labware.find_or_initialize_by_barcode(barcode: labware.barcode)).to eq(labware)
-    expect(Labware.find_or_initialize_by_barcode("999")).to be_new_record
+    expect(Labware.find_or_initialize_by_barcode('999')).to be_new_record
   end
 
   it 'should have a full path string' do
@@ -182,22 +182,22 @@ RSpec.describe Labware, type: :model do
       expect(labware.audits.last.action).to eq(AuditAction::UPDATE)
     end
 
-    context "message" do
+    context 'message' do
       let!(:user) { create(:user) }
 
-      it "when it is new labware" do
+      it 'when it is new labware' do
         labware = create(:labware)
         audit = labware.create_audit(user)
         expect(audit.message).to eq(create_action.display_text)
       end
 
-      it "when it is new labware with a location" do
+      it 'when it is new labware with a location' do
         labware = create(:labware_with_location)
         audit = labware.create_audit(user)
         expect(audit.message).to eq("#{create_action.display_text} and stored in #{labware.breadcrumbs}")
       end
 
-      it "when it is existing labware with a location" do
+      it 'when it is existing labware with a location' do
         labware = create(:labware_with_location)
         labware.create_audit(user)
         labware.update(location: create(:location_with_parent))

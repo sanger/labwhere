@@ -12,7 +12,7 @@ FactoryBot.define do
       parent { FactoryBot.create(:location) }
     end
 
-    factory :unordered_location, class: "UnorderedLocation" do
+    factory :unordered_location, class: 'UnorderedLocation' do
       factory :unordered_location_with_parent do
         parent { FactoryBot.create(:location) }
       end
@@ -50,7 +50,7 @@ FactoryBot.define do
       end
     end
 
-    factory :ordered_location, class: "OrderedLocation" do
+    factory :ordered_location, class: 'OrderedLocation' do
       rows { 4 }
       columns  { 4 }
 
@@ -84,6 +84,6 @@ FactoryBot.define do
       end
     end
 
-    factory :unknown_location, class: "UnknownLocation"
+    factory :unknown_location, class: 'UnknownLocation'
   end
 end

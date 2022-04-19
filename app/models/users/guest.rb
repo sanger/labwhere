@@ -16,19 +16,19 @@ class Guest < User
   ##
   # Always set to 0
   def swipe_card_id
-    "Guest"
+    'Guest'
   end
 
   ##
   # Always set to "Guest:1"
   def barcode
-    "Guest:1"
+    'Guest:1'
   end
 
   ##
   # Always set to "Guest"
   def login
-    "Guest"
+    'Guest'
   end
 
   ##

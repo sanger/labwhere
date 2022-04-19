@@ -2,14 +2,12 @@
 
 class LocationsController < ApplicationController
   before_action :locations, only: [:index]
-  before_action :set_location, except: [:index, :activate, :deactivate]
-  before_action :permitted_params, only: [:create, :update]
+  before_action :set_location, except: %i[index activate deactivate]
+  before_action :permitted_params, only: %i[create update]
 
-  def index
-  end
+  def index; end
 
-  def new
-  end
+  def new; end
 
   def show
     @location = current_resource
@@ -23,8 +21,7 @@ class LocationsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @location.update(permitted_params)
@@ -84,7 +81,7 @@ class LocationsController < ApplicationController
   end
 
   def permitted_params
-    location_attrs =  Location.new.attributes.keys.map { |k| k.to_sym }
+    location_attrs =  Location.new.attributes.keys.map(&:to_sym)
     params.permit(:action, :controller, location: [*location_attrs,
                                                    :parent_id,
                                                    :user_code,

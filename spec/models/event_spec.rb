@@ -15,7 +15,7 @@ RSpec.describe Event, type: :model do
       {
         event: {
           uuid: audit.uuid,
-          event_type: "labwhere_create",
+          event_type: 'labwhere_create',
           occured_at: audit.created_at,
           user_identifier: audit.user.login,
           subjects: [
@@ -213,7 +213,8 @@ RSpec.describe Event, type: :model do
       it 'fails validation' do
         audit.record_data.delete('barcode')
         expect(event).to_not be_valid
-        expect(event.errors.full_messages).to include("Either the labware attribute, or a labware barcode in 'record_data' must be present")
+        expect(event.errors.full_messages)
+          .to include("Either the labware attribute, or a labware barcode in 'record_data' must be present")
       end
     end
 
@@ -232,7 +233,8 @@ RSpec.describe Event, type: :model do
 
       it 'fails validation' do
         expect(event).to_not be_valid
-        expect(event.errors.full_messages).to include('Events can only be created for Audits where the auditable type is Labware')
+        expect(event.errors.full_messages)
+          .to include('Events can only be created for Audits where the auditable type is Labware')
       end
     end
   end

@@ -48,8 +48,9 @@ Rails.application.configure do
 
   config.middleware.use ExceptionNotification::Rack,
                         email: {
-                          email_prefix: "[PREFIX] ",
-                          sender_address: %("Projects Exception Notifier" <#{Rails.configuration.mailer['smtp']['sender']}>),
+                          email_prefix: '[PREFIX] ',
+                          sender_address: %("Projects Exception Notifier"
+                          <#{Rails.configuration.mailer['smtp']['sender']}>),
                           exception_recipients: %w(#{Rails.configuration.mailer['smtp']['recipient']})
                         }
 

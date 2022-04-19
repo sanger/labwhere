@@ -7,7 +7,7 @@ module Auditing
   extend ActiveSupport::Concern
 
   included do
-    _model = self.to_s.deconstantize.singularize
+    _model = to_s.deconstantize.singularize
 
     define_method :model do
       _model.constantize
@@ -23,8 +23,7 @@ module Auditing
 
   ##
   # Audits should only implement the index action as they are system created.
-  def index
-  end
+  def index; end
 
   protected
 

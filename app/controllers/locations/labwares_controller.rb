@@ -3,8 +3,7 @@
 class Locations::LabwaresController < ApplicationController
   before_action :labwares, only: [:index]
 
-  def index
-  end
+  def index; end
 
   protected
 

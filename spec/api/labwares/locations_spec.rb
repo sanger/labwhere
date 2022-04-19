@@ -27,7 +27,7 @@ describe Api::Labwares::LocationsController, type: :request do
       let(:labware) { create(:labware) }
       let(:barcodes) do
         barcodes = location.coordinates.map { |c| c.labware.barcode }
-        barcodes | [labware.barcode] | location_with_labware.labwares.map { |lw| lw.barcode }
+        barcodes | [labware.barcode] | location_with_labware.labwares.map(&:barcode)
       end
 
       it 'is successful' do

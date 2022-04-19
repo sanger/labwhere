@@ -4,7 +4,7 @@
 class NullLabware
   # barcode will always be empty
   def barcode
-    "Empty"
+    'Empty'
   end
 
   # null labware will always be empty
@@ -21,7 +21,7 @@ class NullLabware
   end
 
   def exists
-    "No"
+    'No'
   end
 
   def breadcrumbs

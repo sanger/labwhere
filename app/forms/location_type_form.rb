@@ -9,7 +9,7 @@ class LocationTypeForm
   set_attributes :name
 
   def destroy(params)
-    self.form_variables.assign(self, params)
+    form_variables.assign(self, params)
     return false unless valid?
 
     location_type.destroy

@@ -3,8 +3,7 @@
 class UsersController < ApplicationController
   before_action :users, only: [:index]
 
-  def index
-  end
+  def index; end
 
   def new
     @user = UserForm.new

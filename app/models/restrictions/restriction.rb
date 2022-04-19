@@ -10,7 +10,7 @@
 #  Location.create(name: "Fridge", location_type: location_type)
 
 # MyValidator is run
-class Restriction < ActiveRecord::Base
+class Restriction < ApplicationRecord
   belongs_to :location_type
   serialize :params
   validates :validator, presence: true

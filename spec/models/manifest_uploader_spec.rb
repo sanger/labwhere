@@ -10,10 +10,14 @@ RSpec.describe ManifestUploader, type: :model do
   let(:unordered_location) { create(:unordered_location_with_parent) }
   let(:labware_prefix)     { 'RNA' }
   let!(:scientist)         { create(:scientist) }
-  let(:manifest_uploader)  { ManifestUploader.new(user_code: scientist.barcode, controller: "upload_labware", action: "create") }
+  let(:manifest_uploader)  do
+    ManifestUploader.new(user_code: scientist.barcode, controller: 'upload_labware', action: 'create')
+  end
 
   context 'with unordered locations that all exist' do
-    let!(:json_manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_json }
+    let!(:json_manifest) do
+      build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_json
+    end
 
     attr_reader :data
 
@@ -42,7 +46,10 @@ RSpec.describe ManifestUploader, type: :model do
   end
 
   context 'when there is a location that is not valid' do
-    let!(:json_manifest) { build(:csv_manifest, locations: locations + [new_location], number_of_labwares: 5, labware_prefix: labware_prefix).generate_json }
+    let!(:json_manifest) do
+      build(:csv_manifest, locations: locations + [new_location], number_of_labwares: 5,
+                           labware_prefix: labware_prefix).generate_json
+    end
 
     before(:each) do
       manifest_uploader.json = json_manifest
@@ -54,7 +61,8 @@ RSpec.describe ManifestUploader, type: :model do
 
     it 'will show an error' do
       manifest_uploader.run
-      expect(manifest_uploader.errors.full_messages).to include("location(s) with barcode '#{new_location.barcode}' do not exist")
+      expect(manifest_uploader.errors.full_messages)
+        .to include("location(s) with barcode '#{new_location.barcode}' do not exist")
     end
 
     it 'will not create any labwares' do
@@ -65,7 +73,10 @@ RSpec.describe ManifestUploader, type: :model do
   end
 
   context 'when any of the locations are ordered' do
-    let!(:json_manifest) { build(:csv_manifest, locations: locations + [ordered_location], number_of_labwares: 5, labware_prefix: labware_prefix).generate_json }
+    let!(:json_manifest) do
+      build(:csv_manifest, locations: locations + [ordered_location], number_of_labwares: 5,
+                           labware_prefix: labware_prefix).generate_json
+    end
 
     before(:each) do
       manifest_uploader.json = json_manifest
@@ -77,16 +88,19 @@ RSpec.describe ManifestUploader, type: :model do
 
     it 'will show an error' do
       manifest_uploader.run
-      expect(manifest_uploader.errors.full_messages).to include("You are trying to put stuff into #{ordered_location.barcode} which is the wrong type")
+      expect(manifest_uploader.errors.full_messages)
+        .to include("You are trying to put stuff into #{ordered_location.barcode} which is the wrong type")
     end
   end
 
   context 'when any of the data is invalid' do
-    let!(:json_manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_json }
+    let!(:json_manifest) do
+      build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_json
+    end
 
     context 'when there are empty cells' do
       before(:each) do
-        json_manifest[:labwares] << { location_barcode: "", labware_barcode: "" }
+        json_manifest[:labwares] << { location_barcode: '', labware_barcode: '' }
         manifest_uploader.json = json_manifest
       end
 
@@ -96,13 +110,15 @@ RSpec.describe ManifestUploader, type: :model do
 
       it 'will show an error' do
         manifest_uploader.run
-        expect(manifest_uploader.errors.full_messages).to include("It looks like there is some missing or invalid data. Please review and remove anything that shouldn't be there.")
+        expect(manifest_uploader.errors.full_messages)
+          .to include('It looks like there is some missing or invalid data.'\
+                      " Please review and remove anything that shouldn't be there.")
       end
     end
 
     context 'when there is invalid data (length of cell string is < 5)' do
       before(:each) do
-        json_manifest[:labwares] << { location_barcode: new_location.barcode.to_s, labware_barcode: "abcd" }
+        json_manifest[:labwares] << { location_barcode: new_location.barcode.to_s, labware_barcode: 'abcd' }
         manifest_uploader.json = json_manifest
       end
 
@@ -112,14 +128,16 @@ RSpec.describe ManifestUploader, type: :model do
 
       it 'will show an error' do
         manifest_uploader.run
-        expect(manifest_uploader.errors.full_messages).to include("It looks like there is some missing or invalid data. Please review and remove anything that shouldn't be there.")
+        expect(manifest_uploader.errors.full_messages)
+          .to include('It looks like there is some missing or invalid data.'\
+                      " Please review and remove anything that shouldn't be there.")
       end
     end
 
     context 'when there are multiple empty cells' do
       before(:each) do
-        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: "", "": '' }
-        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: "", "": '' }
+        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: '', "": '' }
+        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: '', "": '' }
         manifest_uploader.json = json_manifest
       end
 
@@ -129,13 +147,16 @@ RSpec.describe ManifestUploader, type: :model do
 
       it 'will only show one error' do
         manifest_uploader.run
-        expect(manifest_uploader.errors.full_messages).to eq(["It looks like there is some missing or invalid data. Please review and remove anything that shouldn't be there."])
+        expect(manifest_uploader.errors.full_messages)
+          .to eq(['It looks like there is some missing or invalid data.'\
+                  " Please review and remove anything that shouldn't be there."])
       end
     end
 
     context 'when there are labwares with the same barcode as an existing location' do
       before(:each) do
-        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: unordered_location.barcode.to_s }
+        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s,
+                                      labware_barcode: unordered_location.barcode.to_s }
         manifest_uploader.json = json_manifest
       end
 
@@ -145,17 +166,21 @@ RSpec.describe ManifestUploader, type: :model do
 
       it 'will only show one error' do
         manifest_uploader.run
-        expect(manifest_uploader.errors.full_messages).to eq(["Labware barcodes cannot be the same as an existing location barcode. Please review and remove incorrect labware barcodes"])
+        expect(manifest_uploader.errors.full_messages)
+          .to eq(['Labware barcodes cannot be the same as an existing location barcode.'\
+                  ' Please review and remove incorrect labware barcodes'])
       end
     end
   end
 
   context 'when the data is valid' do
-    let!(:json_manifest) { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_json }
+    let!(:json_manifest) do
+      build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_json
+    end
 
     context 'when there is valid data (length of cell string is >= 5)' do
       before(:each) do
-        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: "abcde" }
+        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: 'abcde' }
         manifest_uploader.json = json_manifest
       end
 

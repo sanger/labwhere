@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe Auditable, type: :model do
   let!(:user) { create(:user) }
@@ -8,25 +8,27 @@ RSpec.describe Auditable, type: :model do
   let!(:parent_location) { create(:location_with_parent) }
   let!(:location_with_parent) { create(:location_with_parent, parent: parent_location) }
 
-  it "should be able to create an audit record" do
+  it 'should be able to create an audit record' do
     location.create_audit(user, AuditAction::CREATE)
     audit = location.audits.first
     expect(audit.user).to eq(user)
-    expect(audit.record_data.except("created_at", "updated_at")).to eq(location.as_json.except("created_at", "updated_at"))
+    expect(audit.record_data.except('created_at',
+                                    'updated_at')).to eq(location.as_json.except('created_at', 'updated_at'))
     expect(location.reload.audits.count).to eq(1)
   end
 
-  it "should add a method for converting dates to uk" do
-    expect(location.uk_dates["created_at"]).to eq(location.created_at.to_s(:uk))
-    expect(location.uk_dates["updated_at"]).to eq(location.updated_at.to_s(:uk))
+  it 'should add a method for converting dates to uk' do
+    expect(location.uk_dates['created_at']).to eq(location.created_at.to_s(:uk))
+    expect(location.uk_dates['updated_at']).to eq(location.updated_at.to_s(:uk))
   end
 
-  it "should add an action if none is provided" do
+  it 'should add an action if none is provided' do
     location.create_audit(user)
     expect(location.audits.last.action).to eq(AuditAction::CREATE)
-    # Need to put the created date into the past because the test is too quick, so that created date and updated date are equal
+    # Need to put the created date into the past because the test is too quick,
+    # so that created date and updated date are equal
     location.update(created_at: DateTime.now - 1)
-    location.update(name: "New Name")
+    location.update(name: 'New Name')
     location.create_audit(user)
     expect(location.audits.last.action).to eq(AuditAction::UPDATE)
   end

@@ -13,7 +13,7 @@ module ActiveModel
         read_attribute_for_serialization(method)
       end
 
-      alias_method :options, :instance_options
+      alias options instance_options
 
       # Since attributes could be read from the `object` via `method_missing`,
       # the `try` method did not behave as before. This patches `try` with the
@@ -21,9 +21,7 @@ module ActiveModel
       # ` || object.respond_to?(a.first, true)` to check if the object responded to
       # the given method.
       def try(*a, &b)
-        if a.empty? || respond_to?(a.first, true) || object.respond_to?(a.first, true)
-          try!(*a, &b)
-        end
+        try!(*a, &b) if a.empty? || respond_to?(a.first, true) || object.respond_to?(a.first, true)
       end
 
       # AMS 0.8 would return nil if the serializer was initialized with a nil
