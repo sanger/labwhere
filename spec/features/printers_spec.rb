@@ -33,7 +33,7 @@ RSpec.describe 'Printers', type: :feature do
   end
 
   it 'Should return an error if a printer is created with invalid attributes' do
-    printer = build(:printer)
+    build(:printer)
     visit printers_path
     click_link 'Add new printer'
     expect do

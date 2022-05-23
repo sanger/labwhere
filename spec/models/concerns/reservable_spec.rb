@@ -41,8 +41,6 @@ RSpec.describe Reservable, type: :model do
 
   describe '#release' do
     it 'sets the team to nil' do
-      p reserved_model.release
-      p reserved_model.errors.full_messages
       expect(reserved_model.release).to be_truthy
       expect(reserved_model.reserved?).to eq(false)
     end

@@ -58,7 +58,7 @@ class LabelPrinter
       else
         throw JSON.parse(response.body)
       end
-    rescue StandardError => e
+    rescue StandardError
       @response_ok = false
     end
   end

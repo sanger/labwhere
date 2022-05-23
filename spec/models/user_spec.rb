@@ -52,22 +52,22 @@ RSpec.describe User, type: :model do
 
   describe 'User Types' do
     it 'should be able to create an Administrator' do
-      user = create(:user, type: 'Administrator')
+      create(:user, type: 'Administrator')
       expect(Administrator.all.count).to eq(1)
     end
 
     it 'should be able to create a Technician' do
-      user = create(:user, type: 'Technician')
+      create(:user, type: 'Technician')
       expect(Technician.all.count).to eq(1)
     end
 
     it 'should be able to create a Guest' do
-      user = create(:user, type: 'Guest')
+      create(:user, type: 'Guest')
       expect(Guest.all.count).to eq(1)
     end
 
     it 'should be able to create a Scientist' do
-      user = create(:user, type: 'Scientist')
+      create(:user, type: 'Scientist')
       expect(Scientist.all.count).to eq(1)
     end
   end

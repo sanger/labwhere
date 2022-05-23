@@ -11,7 +11,6 @@ RSpec.describe SearchResult, type: :model do
   end
 
   it 'should assign any passed attributes' do
-    results = { a: [1, 2], b: [3, 4], c: [5, 6], d: [7, 8] }
     search_result = SearchResult.new(count: 10, limit: 5)
     expect(search_result.count).to eq(10)
     expect(search_result.limit).to eq(5)
