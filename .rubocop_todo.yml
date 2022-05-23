@@ -168,12 +168,8 @@ Rails/InverseOf:
 # ForbiddenMethods: decrement!, decrement_counter, increment!, increment_counter, insert, insert!, insert_all, insert_all!, toggle!, touch, touch_all, update_all, update_attribute, update_column, update_columns, update_counters, upsert, upsert_all
 Rails/SkipsModelValidations:
   Exclude:
-    - 'app/models/concerns/has_active.rb'
-    - 'app/models/concerns/reservable.rb'
-    - 'app/models/coordinate.rb'
     - 'app/models/locations/location.rb'
     - 'app/models/search.rb'
-    - 'spec/models/locations/location_spec.rb'
 
 # Offense count: 7
 # Configuration parameters: Include.
@@ -186,27 +182,7 @@ Rails/UniqueValidationWithoutIndex:
     - 'app/models/search.rb'
     - 'app/models/team.rb'
     - 'app/models/users/user.rb'
-
-# Offense count: 9
-# Cop supports --auto-correct.
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/Validation:
-  Exclude:
-    - 'app/models/label_printer.rb'
-    - 'app/models/labware_collection/base.rb'
-    - 'app/models/locations/location.rb'
     - 'app/models/printer.rb'
-    - 'app/models/users/user.rb'
-
-# Offense count: 7
-# Configuration parameters: AllowedChars.
-Style/AsciiComments:
-  Exclude:
-    - 'app/forms/storage_validator.rb'
-    - 'app/models/concerns/reservable.rb'
-    - 'app/models/restrictions/parentage_restriction.rb'
-    - 'app/models/restrictions/restriction.rb'
 
 # Offense count: 31
 # Cop supports --auto-correct.
@@ -223,10 +199,3 @@ Style/Documentation:
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
   Enabled: false
-
-
-# Offense count: 2
-Style/MissingRespondToMissing:
-  Exclude:
-    - 'app/lib/active_model/v08/serializer.rb'
-    - 'config/initializers/02_proc.rb'

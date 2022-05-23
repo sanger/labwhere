@@ -10,8 +10,8 @@ class LabelPrinter
   attr_accessor :label_template_name
   attr_reader :labels, :printer
 
-  validates_presence_of :printer, :locations, :label_template_name
-  validates_numericality_of :copies, greater_than: 0
+  validates :printer, :locations, :label_template_name, presence: true
+  validates :copies, numericality: { greater_than: 0 }
   ##
   # For a given printer and location create a json request.
   # The labels will contain a header and footer and info about the location.
