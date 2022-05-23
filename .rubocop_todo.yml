@@ -170,6 +170,7 @@ Rails/SkipsModelValidations:
   Exclude:
     - 'app/models/locations/location.rb'
     - 'app/models/search.rb'
+    - 'app/models/concerns/reservable.rb'
 
 # Offense count: 7
 # Configuration parameters: Include.

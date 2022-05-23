@@ -19,6 +19,6 @@ module Reservable
   end
 
   def release
-    update(team: nil)
+    update_attribute(:team, nil)
   end
 end
