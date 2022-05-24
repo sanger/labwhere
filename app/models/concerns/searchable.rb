@@ -46,9 +46,9 @@ module Searchable
       # TODO: is there a  more efficient way to do this?
       def searchable_by(*attributes)
         define_singleton_method :search do |term|
-          attributes.inject([]) do |result, attribute|
-            result + where(arel_table[attribute].matches("%#{term}%"))
-          end.uniq
+          attributes.reduce(none) do |result, attribute|
+            result.or(where(arel_table[attribute].matches("%#{term}%")))
+          end
         end
       end
     end

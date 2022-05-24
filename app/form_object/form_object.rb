@@ -73,15 +73,15 @@ module FormObject
   #
 
   included do
-    modell = to_s.gsub('Form', '')
+    model_string = to_s.gsub('Form', '')
 
     class_attribute :form_variables
-    self.form_variables = FormObject::FormVariables.new(self, modell.underscore.to_sym, %i[controller action])
+    self.form_variables = FormObject::FormVariables.new(self, model_string.underscore.to_sym, %i[controller action])
 
     validate :check_for_errors
 
     define_singleton_method :model_name do
-      ActiveModel::Name.new(modell.constantize)
+      ActiveModel::Name.new(model_string.constantize)
     end
 
     attr_reader :model

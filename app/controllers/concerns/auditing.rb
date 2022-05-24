@@ -7,15 +7,14 @@ module Auditing
   extend ActiveSupport::Concern
 
   included do
-    # called it modell cos I can't call it model
-    modell = to_s.deconstantize.singularize
+    model_string = to_s.deconstantize.singularize
 
     define_method :model do
-      modell.constantize
+      model_string.constantize
     end
 
     define_method :key do
-      modell.foreign_key.to_sym
+      model_string.foreign_key.to_sym
     end
 
     before_action :audits, only: [:index]
