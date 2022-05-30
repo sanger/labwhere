@@ -39,8 +39,8 @@ class Coordinate < ApplicationRecord
   end
 
   # Fill the coordinate with a piece of labware
-  def fill(l)
-    update(labware: l)
-    l
+  def fill(labw)
+    update(labware: labw)
+    labw
   end
 end

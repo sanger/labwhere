@@ -22,10 +22,10 @@ module ActiveModel
       # Since attributes could be read from the `object` via `method_missing`,
       # the `try` method did not behave as before. This patches `try` with the
       # original implementation plus the addition of
-      # ` || object.respond_to?(a.first, true)` to check if the object responded to
+      # ` || object.respond_to?(args.first, true)` to check if the object responded to
       # the given method.
-      def try(*a, &b)
-        try!(*a, &b) if a.empty? || respond_to?(a.first, true) || object.respond_to?(a.first, true)
+      def try(*args, &block)
+        try!(*args, &block) if args.empty? || respond_to?(args.first, true) || object.respond_to?(args.first, true)
       end
 
       # AMS 0.8 would return nil if the serializer was initialized with a nil

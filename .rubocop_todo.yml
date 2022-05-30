@@ -37,23 +37,16 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 9
 
-# Offense count: 1
-# Configuration parameters: EnforcedStyleForLeadingUnderscores.
-# SupportedStylesForLeadingUnderscores: disallowed, required, optional
-Naming/MemoizedInstanceVariableName:
-  Exclude:
-    - 'app/controllers/location_types_controller.rb'
-
-# Offense count: 7
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: at, by, db, id, in, io, ip, of, on, os, pp, to
-Naming/MethodParameterName:
-  Exclude:
-    - 'app/controllers/api/coordinates_controller.rb'
-    - 'app/lib/active_model/v08/serializer.rb'
-    - 'app/models/concerns/available_coordinates.rb'
-    - 'app/models/coordinate.rb'
-    - 'app/models/search_result.rb'
+# # Offense count: 7
+# # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
+# # AllowedNames: at, by, db, id, in, io, ip, of, on, os, pp, to
+# Naming/MethodParameterName:
+#   Exclude:
+#     - 'app/controllers/api/coordinates_controller.rb'
+#     - 'app/lib/active_model/v08/serializer.rb'
+#     - 'app/models/concerns/available_coordinates.rb'
+#     - 'app/models/coordinate.rb'
+#     - 'app/models/search_result.rb'
 
 # Offense count: 3
 # Configuration parameters: NamePrefix, ForbiddenPrefixes, AllowedMethods, MethodDefinitionMacros.

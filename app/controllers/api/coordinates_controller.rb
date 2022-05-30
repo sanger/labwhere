@@ -15,7 +15,7 @@ class Api::CoordinatesController < ApiController
 
   private
 
-  def record_not_found(e)
-    render json: { errors: e.message }, status: :unprocessable_entity
+  def record_not_found(error)
+    render json: { errors: error.message }, status: :unprocessable_entity
   end
 end
