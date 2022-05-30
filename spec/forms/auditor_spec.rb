@@ -20,7 +20,7 @@ RSpec.describe Auditor, type: :model do
       include AuthenticationForm
       include Auditor
 
-      set_attributes :name
+      create_attributes :name
     end
   end
   # rubocop:enable Lint/ConstantDefinitionInBlock

@@ -39,8 +39,8 @@ RSpec.describe FormObject, type: :model do |_variable|
     class ModelAForm
       include FormObject
 
-      set_attributes :name
-      set_form_variables :attr_a, attr_b: :modify_a
+      create_attributes :name
+      add_form_variables :attr_a, attr_b: :modify_a
       after_submit :set_last
       attr_reader :last
 
@@ -58,7 +58,7 @@ RSpec.describe FormObject, type: :model do |_variable|
 
       attr_reader :shout
 
-      set_attributes :name
+      create_attributes :name
 
       after_validate do
         model.save
@@ -69,7 +69,7 @@ RSpec.describe FormObject, type: :model do |_variable|
     class ModelDuckForm
       include FormObject
 
-      set_attributes :name
+      create_attributes :name
 
       attr_reader :duck
 
@@ -89,7 +89,7 @@ RSpec.describe FormObject, type: :model do |_variable|
     class ShesAModelAndShesLookingGoodForm
       include FormObject
 
-      set_form_variables :attr_a
+      add_form_variables :attr_a
     end
     # rubocop:enable Lint/ConstantDefinitionInBlock
   end

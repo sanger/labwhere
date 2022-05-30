@@ -8,7 +8,7 @@ class UserForm
   include ActiveModel::Model
   include FormObject
 
-  set_form_variables :user_code, current_user: :find_current_user
+  add_form_variables :user_code, current_user: :find_current_user
 
   delegate :login, :swipe_card_id, :barcode, :team_id, :type, :status, to: :user
 

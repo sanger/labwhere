@@ -6,7 +6,7 @@ module AuthenticationForm
   included do
     include FormObject
 
-    set_form_variables :user_code, current_user: :find_current_user
+    add_form_variables :user_code, current_user: :find_current_user
 
     validate :check_user
   end

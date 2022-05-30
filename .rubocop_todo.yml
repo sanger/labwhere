@@ -37,14 +37,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 9
 
-# Offense count: 6
-Naming/AccessorMethodName:
-  Exclude:
-    - 'app/form_object/form_object.rb'
-    - 'app/forms/coordinates_form.rb'
-    - 'app/lib/utils/hash_attributes.rb'
-    - 'app/models/concerns/subclass_checker.rb'
-
 # Offense count: 1
 # Configuration parameters: EnforcedStyleForLeadingUnderscores.
 # SupportedStylesForLeadingUnderscores: disallowed, required, optional

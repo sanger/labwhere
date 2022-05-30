@@ -16,9 +16,9 @@ module SubclassChecker
 
     def klass_name(klass, options)
       if options[:suffix]
-        "#{set_klass_name(klass)}#{to_s.capitalize}"
+        "#{build_klass_name(klass)}#{to_s.capitalize}"
       else
-        set_klass_name(klass)
+        build_klass_name(klass)
       end
     end
 
@@ -29,7 +29,7 @@ module SubclassChecker
 
     private
 
-    def set_klass_name(klass)
+    def build_klass_name(klass)
       name = klass.to_s
       name.include?('_') ? name.camelize : name.capitalize
     end

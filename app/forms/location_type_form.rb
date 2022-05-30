@@ -6,7 +6,7 @@ class LocationTypeForm
   include AuthenticationForm
   include Auditor
 
-  set_attributes :name
+  create_attributes :name
 
   def destroy(params)
     form_variables.assign(self, params)

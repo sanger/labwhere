@@ -9,7 +9,7 @@ class ScanForm
   include StorageValidator
   include Rails.application.routes.url_helpers
 
-  set_form_variables :labware_barcodes, :location_barcode, :start_position, location: :find_location
+  add_form_variables :labware_barcodes, :location_barcode, :start_position, location: :find_location
 
   after_validate do
     scan.add_attributes_from_collection(LabwareCollection.open(location: location, user: current_user,

@@ -6,5 +6,5 @@ class PrinterForm
   include AuthenticationForm
   include Auditor
 
-  set_attributes :name
+  create_attributes :name
 end

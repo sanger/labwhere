@@ -9,8 +9,8 @@ class CoordinateForm
 
   validate :labware_barcode_is_provided
 
-  set_attributes :labware
-  set_form_variables :labware_barcode, :location_barcode, location: :find_location, labware: :find_labware
+  create_attributes :labware
+  add_form_variables :labware_barcode, :location_barcode, location: :find_location, labware: :find_labware
 
   after_validate do
     coordinate.labware = find_labware
