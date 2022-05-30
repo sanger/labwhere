@@ -37,50 +37,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 9
 
-# # Offense count: 7
-# # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# # AllowedNames: at, by, db, id, in, io, ip, of, on, os, pp, to
-# Naming/MethodParameterName:
-#   Exclude:
-#     - 'app/controllers/api/coordinates_controller.rb'
-#     - 'app/lib/active_model/v08/serializer.rb'
-#     - 'app/models/concerns/available_coordinates.rb'
-#     - 'app/models/coordinate.rb'
-#     - 'app/models/search_result.rb'
-
-# Offense count: 3
-# Configuration parameters: NamePrefix, ForbiddenPrefixes, AllowedMethods, MethodDefinitionMacros.
-# NamePrefix: is_, has_, have_
-# ForbiddenPrefixes: is_, has_, have_
-# AllowedMethods: is_a?
-# MethodDefinitionMacros: define_method, define_singleton_method
-Naming/PredicateName:
-  Exclude:
-    - 'spec/**/*'
-    - 'app/models/concerns/subclass_checker.rb'
-    - 'app/models/location_type.rb'
-    - 'app/models/locations/location.rb'
-
-# Offense count: 32
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: snake_case, normalcase, non_integer
-Naming/VariableNumber:
-  Exclude:
-    - 'spec/api/location_types_spec.rb'
-    - 'spec/features/users_spec.rb'
-    - 'spec/models/labware_spec.rb'
-    - 'spec/models/location_type_spec.rb'
-    - 'spec/models/locations/location_spec.rb'
-    - 'spec/models/locations/ordered_location_spec.rb'
-    - 'spec/models/scan_spec.rb'
-
-# Offense count: 1
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: strict, flexible
-Rails/Date:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-
 # Offense count: 49
 # Cop supports --auto-correct.
 # Configuration parameters: Whitelist, AllowedMethods, AllowedReceivers.

@@ -4,7 +4,7 @@ module SubclassChecker
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def has_subclasses(*classes)
+    def create_subclass_methods(*classes)
       options = classes.extract_options!
       classes.each do |klass|
         object_type = klass_name(klass, options)

@@ -21,7 +21,7 @@ class User < ApplicationRecord
 
   validates_with EitherOrValidator, fields: %i[swipe_card_id barcode], on: :create
 
-  has_subclasses :administrator, :technician, :scientist, :guest
+  create_subclass_methods :administrator, :technician, :scientist, :guest
 
   before_create :encrypt_swipe_card_id
 

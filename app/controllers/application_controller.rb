@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   ##
   # Current year necessary for copyright.
   def current_year
-    @current_year ||= Date.today.year
+    @current_year ||= Time.zone.today.year
   end
 
   ##

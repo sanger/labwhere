@@ -73,12 +73,12 @@ RSpec.describe Labware, type: :model do
   it '#location should always be returned whether labware is attached to a location, coordinate or nothing' do
     location = create(:location_with_parent)
     coordinate = create(:coordinate)
-    labware_1 = create(:labware, location: location)
-    expect(labware_1.location).to eq(location)
-    labware_2 = create(:labware, coordinate: coordinate)
-    expect(labware_2.location).to eq(coordinate.location)
-    labware_3 = create(:labware)
-    expect(labware_3.location).to be_empty
+    labware1 = create(:labware, location: location)
+    expect(labware1.location).to eq(location)
+    labware2 = create(:labware, coordinate: coordinate)
+    expect(labware2.location).to eq(coordinate.location)
+    labware3 = create(:labware)
+    expect(labware3.location).to be_empty
   end
 
   it '#as_json should have the correct attributes' do
@@ -126,11 +126,11 @@ RSpec.describe Labware, type: :model do
   end
 
   it 'should have a full path string' do
-    location_1 = create(:location, name: 'Location_1')
-    location_2 = create(:location, name: 'Location_2', parent: location_1)
-    location_3 = create(:location, name: 'Location_3', parent: location_2)
+    location1 = create(:location, name: 'Location1')
+    location2 = create(:location, name: 'Location2', parent: location1)
+    location3 = create(:location, name: 'Location3', parent: location2)
 
-    expect(create(:labware, location: location_3).full_path).to eq('Location_1 > Location_2 > Location_3')
+    expect(create(:labware, location: location3).full_path).to eq('Location1 > Location2 > Location3')
   end
 
   describe '#write_event' do

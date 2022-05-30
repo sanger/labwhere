@@ -19,13 +19,13 @@ RSpec.describe LocationType, type: :model do
     expect(build(:location_type, name: 'unique name')).to_not be_valid
   end
 
-  it '#has_locations? should signify whether a location type can be destroyed' do
-    location_type_1 = create(:location_type, name: 'Building')
-    create(:location_with_parent, location_type: location_type_1)
-    expect(location_type_1.has_locations?).to be_truthy
+  it '#locations? should signify whether a location type can be destroyed' do
+    location_type1 = create(:location_type, name: 'Building')
+    create(:location_with_parent, location_type: location_type1)
+    expect(location_type1.locations?).to be_truthy
 
-    location_type_2 = create(:location_type)
-    expect(location_type_2.has_locations?).to be_falsey
+    location_type2 = create(:location_type)
+    expect(location_type2.locations?).to be_falsey
   end
 
   it '#ordered should produce a list ordered by name' do
