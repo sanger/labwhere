@@ -6,27 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 2
-# Configuration parameters: AllowKeywordBlockArguments.
-Lint/UnderscorePrefixedVariableName:
-  Exclude:
-    - 'app/controllers/concerns/auditing.rb'
-    - 'app/form_object/form_object.rb'
-
-# Offense count: 20
-Lint/UselessAssignment:
-  Exclude:
-    - 'app/models/concerns/searchable.rb'
-    - 'app/models/label_printer.rb'
-    - 'spec/api/locations_spec.rb'
-    - 'spec/features/locations_spec.rb'
-    - 'spec/features/printers_spec.rb'
-    - 'spec/features/searches_spec.rb'
-    - 'spec/models/location_type_spec.rb'
-    - 'spec/models/locations/location_spec.rb'
-    - 'spec/models/search_result_spec.rb'
-    - 'spec/models/user_spec.rb'
-
 # Offense count: 8
 # Configuration parameters: IgnoredMethods.
 Metrics/AbcSize:
@@ -168,12 +147,9 @@ Rails/InverseOf:
 # ForbiddenMethods: decrement!, decrement_counter, increment!, increment_counter, insert, insert!, insert_all, insert_all!, toggle!, touch, touch_all, update_all, update_attribute, update_column, update_columns, update_counters, upsert, upsert_all
 Rails/SkipsModelValidations:
   Exclude:
-    - 'app/models/concerns/has_active.rb'
-    - 'app/models/concerns/reservable.rb'
-    - 'app/models/coordinate.rb'
     - 'app/models/locations/location.rb'
     - 'app/models/search.rb'
-    - 'spec/models/locations/location_spec.rb'
+    - 'app/models/concerns/reservable.rb'
 
 # Offense count: 7
 # Configuration parameters: Include.
@@ -186,27 +162,7 @@ Rails/UniqueValidationWithoutIndex:
     - 'app/models/search.rb'
     - 'app/models/team.rb'
     - 'app/models/users/user.rb'
-
-# Offense count: 9
-# Cop supports --auto-correct.
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/Validation:
-  Exclude:
-    - 'app/models/label_printer.rb'
-    - 'app/models/labware_collection/base.rb'
-    - 'app/models/locations/location.rb'
     - 'app/models/printer.rb'
-    - 'app/models/users/user.rb'
-
-# Offense count: 7
-# Configuration parameters: AllowedChars.
-Style/AsciiComments:
-  Exclude:
-    - 'app/forms/storage_validator.rb'
-    - 'app/models/concerns/reservable.rb'
-    - 'app/models/restrictions/parentage_restriction.rb'
-    - 'app/models/restrictions/restriction.rb'
 
 # Offense count: 31
 # Cop supports --auto-correct.
@@ -223,10 +179,3 @@ Style/Documentation:
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
   Enabled: false
-
-
-# Offense count: 2
-Style/MissingRespondToMissing:
-  Exclude:
-    - 'app/lib/active_model/v08/serializer.rb'
-    - 'config/initializers/02_proc.rb'

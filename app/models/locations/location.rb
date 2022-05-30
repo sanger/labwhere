@@ -22,12 +22,12 @@ class Location < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { scope: :ancestry, case_sensitive: true }
 
-  validates_format_of :name, with: /\A[\w\-\s()]+\z/
-  validates_length_of :name, maximum: 60
+  validates :name, format: { with: /\A[\w\-\s()]+\z/ }
+  validates :name, length: { maximum: 60 }
 
   with_options unless: :unknown? do
     validates :location_type, existence: true
-    validates_format_of :name, without: /UNKNOWN/i
+    validates :name, format: { without: /UNKNOWN/i }
 
     before_validation do
       apply_restrictions

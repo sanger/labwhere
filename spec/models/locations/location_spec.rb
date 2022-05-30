@@ -102,7 +102,7 @@ RSpec.describe Location, type: :model do
 
   it "#find_by_code should find a location by it's barcode" do
     location1 = create(:location)
-    location2 = create(:location)
+    create(:location)
     expect(Location.find_by_code(location1.barcode)).to eq(location1)
   end
 
@@ -163,7 +163,7 @@ RSpec.describe Location, type: :model do
     location_4 = create(:unordered_location, parent: location_3)
     location_5 = create(:ordered_location, parent: location_4)
 
-    location_3.update_attribute(:parent, location_2)
+    location_3.update(parent: location_2)
     expect(location_3.reload.parentage).to eq(location_2.name)
     expect(location_4.reload.parentage).to eq("#{location_2.name} / #{location_3.name}")
     expect(location_5.reload.parentage).to eq("#{location_2.name} / #{location_3.name} / #{location_4.name}")
@@ -189,8 +189,8 @@ RSpec.describe Location, type: :model do
   end
 
   it '#by_root should return locations which have no parent' do
-    locations_with_parents = create_list(:location_with_parent, 3)
-    locations_without_parents = create_list(:location, 3)
+    create_list(:location_with_parent, 3)
+    create_list(:location, 3)
     expect(Location.by_root.count).to eq(6)
   end
 

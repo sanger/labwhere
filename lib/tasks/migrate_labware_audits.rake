@@ -5,7 +5,7 @@ namespace :labware_events do
   desc 'Move the labware audits to the events warehouse'
   task create: :environment do |_t|
     # any audits before this date will have events created
-    end_date = DateTime.parse(ENV['END_DATE'])
+    end_date = DateTime.parse(ENV.fetch('END_DATE'))
 
     # labwares
     audits = Audit.includes(:auditable).where("auditable_type = 'Labware' and created_at <= :date", date: end_date)
