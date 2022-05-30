@@ -17,13 +17,13 @@ module HasActive
   ##
   # Update status to inactive
   def deactivate
-    update_attribute(:status, self.class.statuses[:inactive])
+    update(status: self.class.statuses[:inactive])
   end
 
   ##
   # Update status to active
   def activate
-    update_attribute(:status, self.class.statuses[:active])
+    update(status: self.class.statuses[:active])
   end
 
   ##

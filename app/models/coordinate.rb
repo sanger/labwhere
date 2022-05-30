@@ -40,7 +40,7 @@ class Coordinate < ApplicationRecord
 
   # Fill the coordinate with a piece of labware
   def fill(l)
-    update_attribute(:labware, l)
+    update(labware: l)
     l
   end
 end

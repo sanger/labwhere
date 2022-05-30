@@ -7,7 +7,7 @@ module LabwareCollection
 
     attr_accessor :location, :labwares, :user, :original_locations, :start_position, :coordinates
 
-    validates_presence_of :location, :user, :labwares
+    validates :location, :user, :labwares, presence: true
 
     def initialize(attributes = {})
       super

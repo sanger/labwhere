@@ -11,7 +11,7 @@ module Reservable
   def reserve(new_team)
     return false if team.present?
 
-    update_attribute(:team, new_team)
+    update(team: new_team)
   end
 
   def reserved_by

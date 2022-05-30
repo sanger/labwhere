@@ -420,7 +420,7 @@ RSpec.describe 'Locations', type: :feature do
     end
 
     it 'should allow printing one location barcode after another' do
-      user = create(:administrator)
+      create(:administrator)
       location1 = create(:unordered_location)
       location2 = create(:unordered_location)
 

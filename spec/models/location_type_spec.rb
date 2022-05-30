@@ -29,9 +29,9 @@ RSpec.describe LocationType, type: :model do
   end
 
   it '#ordered should produce a list ordered by name' do
-    location_type_1 = LocationType.create(name: 'abc')
-    location_type_2 = LocationType.create(name: 'abc1')
-    location_type_3 = LocationType.create(name: 'bacd')
+    LocationType.create(name: 'abc')
+    LocationType.create(name: 'abc1')
+    LocationType.create(name: 'bacd')
     expect(LocationType.ordered.count).to eq(3)
     expect(LocationType.ordered.first.name).to eq('abc')
     expect(LocationType.ordered.last.name).to eq('bacd')

@@ -17,7 +17,7 @@ class User < ApplicationRecord
 
   validates :team, existence: true
 
-  validates_uniqueness_of :swipe_card_id, :barcode, allow_blank: true, allow_nil: true
+  validates :swipe_card_id, :barcode, uniqueness: { allow_blank: true }
 
   validates_with EitherOrValidator, fields: %i[swipe_card_id barcode], on: :create
 

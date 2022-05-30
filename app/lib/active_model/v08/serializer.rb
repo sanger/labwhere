@@ -13,6 +13,10 @@ module ActiveModel
         read_attribute_for_serialization(method)
       end
 
+      def respond_to_missing?(method_name, include_private = false)
+        super(method_name, include_private)
+      end
+
       alias options instance_options
 
       # Since attributes could be read from the `object` via `method_missing`,

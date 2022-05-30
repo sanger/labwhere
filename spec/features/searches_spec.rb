@@ -28,7 +28,7 @@ RSpec.describe 'Searches', type: :feature do
   end
 
   it 'with a term that finds a location type should output the result' do
-    location_type = create(:location_type, name: 'A Site')
+    create(:location_type, name: 'A Site')
     visit root_path
     fill_in 'Term', with: 'Site'
     click_button 'Search'
@@ -47,7 +47,7 @@ RSpec.describe 'Searches', type: :feature do
 
   it 'with a term that spans more than one resource should output all of the results' do
     location = create(:location, name: 'A stupid name')
-    labware = create(:labware, barcode: 'A stupid barcode', location: create(:location_with_parent))
+    create(:labware, barcode: 'A stupid barcode', location: create(:location_with_parent))
     visit root_path
     fill_in 'Term', with: 'A stupid'
     click_button 'Search'
