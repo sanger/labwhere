@@ -13,7 +13,7 @@ module FormObject
   # Form e.g. MyModelForm relates to MyModel.
   # It will set the ActiveModel name to the underlying model name for use in views.
   #
-  # The set_attributes method accepts a list of attributes which will be assigned on submit and are permitted.
+  # The create_attributes method accepts a list of attributes which will be assigned on submit and are permitted.
   # These must be attributes of the model.
   # The form object can be initialized with an existing object
   # The submit method accepts parameters of type ActionController::Parameters of format
@@ -39,7 +39,7 @@ module FormObject
   #  class MyModelForm
   #   include FormObject
   #
-  #   set_attributes :attr_a, :attr_b
+  #   create_attributes :attr_a, :attr_b
   #   set_form_attributes :user_code
   #   validate :check_user
   #
@@ -97,7 +97,7 @@ module FormObject
 
   module ClassMethods
     # Set the permitted of attributes that will be assigned to the model.
-    def set_attributes(*attributes)
+    def create_attributes(*attributes)
       delegate(*attributes, to: :model)
 
       define_method :model_attributes do
@@ -106,7 +106,7 @@ module FormObject
     end
 
     # Set the list of form variables which will be assigned on submit.
-    def set_form_variables(*variables)
+    def add_form_variables(*variables)
       form_variables.add(*variables)
     end
 

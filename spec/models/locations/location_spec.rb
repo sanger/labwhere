@@ -147,26 +147,26 @@ RSpec.describe Location, type: :model do
   end
 
   it 'should add the parentage when a location is created' do
-    location_1 = create(:location)
-    expect(location_1.parentage).to be_blank
+    location1 = create(:location)
+    expect(location1.parentage).to be_blank
 
-    location_2 = create(:location, parent: location_1)
-    location_3 = create(:location, parent: location_2)
-    expect(location_3.parentage).to eq("#{location_1.name} / #{location_2.name}")
+    location2 = create(:location, parent: location1)
+    location3 = create(:location, parent: location2)
+    expect(location3.parentage).to eq("#{location1.name} / #{location2.name}")
   end
 
   it 'should update the parentage when a parent is updated' do
-    location_1 = create(:unordered_location)
-    location_2 = create(:unordered_location)
+    location1 = create(:unordered_location)
+    location2 = create(:unordered_location)
 
-    location_3 = create(:unordered_location, parent: location_1)
-    location_4 = create(:unordered_location, parent: location_3)
-    location_5 = create(:ordered_location, parent: location_4)
+    location3 = create(:unordered_location, parent: location1)
+    location4 = create(:unordered_location, parent: location3)
+    location5 = create(:ordered_location, parent: location4)
 
-    location_3.update(parent: location_2)
-    expect(location_3.reload.parentage).to eq(location_2.name)
-    expect(location_4.reload.parentage).to eq("#{location_2.name} / #{location_3.name}")
-    expect(location_5.reload.parentage).to eq("#{location_2.name} / #{location_3.name} / #{location_4.name}")
+    location3.update(parent: location2)
+    expect(location3.reload.parentage).to eq(location2.name)
+    expect(location4.reload.parentage).to eq("#{location2.name} / #{location3.name}")
+    expect(location5.reload.parentage).to eq("#{location2.name} / #{location3.name} / #{location4.name}")
   end
 
   it '#coordinateable? should determine if location has rows and columns' do
@@ -175,12 +175,12 @@ RSpec.describe Location, type: :model do
   end
 
   it '#transform should transform location to be the correct type and have the correct type attribute' do
-    location_1 = build(:location)
-    location_1 = location_1.transform
-    expect(location_1).to be_unordered
-    location_2 = build(:location, rows: 5, columns: 5)
-    location_2 = location_2.transform
-    expect(location_2).to be_ordered
+    location1 = build(:location)
+    location1 = location1.transform
+    expect(location1).to be_unordered
+    location2 = build(:location, rows: 5, columns: 5)
+    location2 = location2.transform
+    expect(location2).to be_ordered
   end
 
   it '#available_coordinates should be empty' do
@@ -195,11 +195,11 @@ RSpec.describe Location, type: :model do
   end
 
   it '#should allow the same name with different parents' do
-    parent_1 = create(:location, name: 'Building1')
-    parent_2 = create(:location, name: 'Building2')
+    parent1 = create(:location, name: 'Building1')
+    parent2 = create(:location, name: 'Building2')
 
-    expect(create(:location, name: 'Location', parent: parent_1)).to be_valid
-    expect(create(:location, name: 'Location', parent: parent_2)).to be_valid
+    expect(create(:location, name: 'Location', parent: parent1)).to be_valid
+    expect(create(:location, name: 'Location', parent: parent2)).to be_valid
   end
 
   it '#should not allow the same name in the same parent' do

@@ -27,16 +27,16 @@ RSpec.describe 'Users', type: :feature do
 
   it 'Allows a user to edit an existing user' do
     user = create(:user)
-    user_2 = build(:user)
+    user2 = build(:user)
     visit users_path
     within("#user_#{user.id}") do
       click_link 'Edit'
     end
     expect do
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
-      fill_in 'Swipe card', with: user_2.swipe_card_id
+      fill_in 'Swipe card', with: user2.swipe_card_id
       click_button 'Update User'
-    end.to change { user.reload.swipe_card_id }.to(Digest::SHA1.hexdigest(user_2.swipe_card_id))
+    end.to change { user.reload.swipe_card_id }.to(Digest::SHA1.hexdigest(user2.swipe_card_id))
   end
 
   it 'Allows a user to create a different type of user' do

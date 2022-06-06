@@ -16,9 +16,9 @@ class AvailableCoordinates
   end
 
   # Order the coordinates
-  def initialize(coordinates, n)
+  def initialize(coordinates, num)
     @coordinates = coordinates.ordered
-    @n = n
+    @n = num
   end
 
   ##

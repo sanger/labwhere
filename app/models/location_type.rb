@@ -20,12 +20,12 @@ class LocationType < ApplicationRecord
   ##
   # A location type can only be destroyed if it has no locations
   def destroyable
-    yield unless has_locations? && block_given?
+    yield unless locations? && block_given?
   end
 
   ##
   # Has the location type got any locations attached.
-  def has_locations?
+  def locations?
     locations.present?
   end
 
@@ -38,7 +38,7 @@ class LocationType < ApplicationRecord
   private
 
   def check_locations
-    if has_locations?
+    if locations?
       errors.add(:base, I18n.t('errors.messages.location_type_in_use'))
       throw :abort
     end

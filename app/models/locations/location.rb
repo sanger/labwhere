@@ -45,10 +45,10 @@ class Location < ApplicationRecord
   before_save :set_parentage
   before_save :set_internal_parent_id
   after_create :generate_barcode
-  before_destroy :has_been_used
+  before_destroy :been_used?
 
   searchable_by :name, :barcode
-  has_subclasses :ordered, :unordered, :unknown, suffix: true
+  create_subclass_methods :ordered, :unordered, :unknown, suffix: true
 
   # See https://github.com/stefankroes/ancestry
   has_ancestry counter_cache: true
@@ -208,7 +208,7 @@ class Location < ApplicationRecord
     child_count.positive? || audits.present?
   end
 
-  def has_been_used
+  def been_used?
     return unless used?
 
     errors.add :location, 'Has been used'

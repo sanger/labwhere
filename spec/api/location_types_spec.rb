@@ -78,10 +78,10 @@ RSpec.describe Api::LocationTypesController, type: :request do
   end
 
   it 'should return an error if the updated location type has invalid attributes' do
-    location_type_1 = create(:location_type)
-    location_type_2 = create(:location_type)
-    patch api_location_type_path(location_type_1),
-          params: { location_type: { user_code: admin_swipe_card_id, name: location_type_2.name } }
+    location_type1 = create(:location_type)
+    location_type2 = create(:location_type)
+    patch api_location_type_path(location_type1),
+          params: { location_type: { user_code: admin_swipe_card_id, name: location_type2.name } }
     expect(response).to have_http_status(:unprocessable_entity)
     expect(ActiveSupport::JSON.decode(response.body)['errors']).not_to be_empty
   end

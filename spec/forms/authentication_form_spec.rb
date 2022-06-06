@@ -19,7 +19,7 @@ RSpec.describe AuthenticationForm, type: :model do
     class ModelCForm
       include AuthenticationForm
 
-      set_attributes :name
+      create_attributes :name
     end
   end
   # rubocop:enable Lint/ConstantDefinitionInBlock

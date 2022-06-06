@@ -51,16 +51,16 @@ class SearchResult
   # Add an object to the results hash with key k unless it is empty.
   # result with key will be replaced.
   # if adding result exceeds the limit then only spare capacity will be added.
-  def add(k, v)
+  def add(key, value)
     return if adjusted_count >= limit
 
-    unless v.empty?
-      if adjusted_count + v.length > limit
-        @results[k] = v.take(limit - adjusted_count)
+    unless value.empty?
+      if adjusted_count + value.length > limit
+        @results[key] = value.take(limit - adjusted_count)
         @adjusted_count = limit
       else
-        @results[k] = v
-        @adjusted_count += v.length
+        @results[key] = value
+        @adjusted_count += value.length
       end
     end
   end
