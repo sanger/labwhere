@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module ActiveModel
+  # V08 serializer fixes
   module V08
+    # V08- Serializer
     class Serializer < ActiveModel::Serializer
       include Rails.application.routes.url_helpers
 

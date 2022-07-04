@@ -38,6 +38,7 @@ module Searchable
   module Client
     extend ActiveSupport::Concern
 
+    # ClassMethods for Searchable
     module ClassMethods
       ##
       # Create a search method signified by the attributes.
@@ -62,6 +63,7 @@ module Searchable
       delegate :message, to: :results
     end
 
+    # ClassMethods for Orchestrator
     module ClassMethods
       ##
       # Define which models the Orchestrator will search through.

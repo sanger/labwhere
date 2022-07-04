@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# UploadLabwareController
 class UploadLabwareController < ApplicationController
   def new
     @upload_labware = UploadLabwareForm.new

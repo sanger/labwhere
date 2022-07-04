@@ -4,7 +4,6 @@ module FormObject
   # Allows you to set the form variables for the form object
   # Controller variables are assigned via the initializer and model variables are assigned via the add method.
   # The first argument in initialize is the key for the model.
-
   class FormVariables
     attr_reader :model_key, :readers, :writers, :variables, :derived
 

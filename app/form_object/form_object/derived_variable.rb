@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module FormObject
+  # DerivedVariable
   class DerivedVariable < ReaderVariable
     # rubocop:disable Lint/MissingSuper
     def initialize(model, hsh)

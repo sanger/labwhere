@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Serializer for the Coordinate model
 class CoordinateSerializer < ActiveModel::V08::Serializer
   attributes :id, :position, :row, :column, :labware, :location
 

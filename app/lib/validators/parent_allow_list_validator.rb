@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# ParentAllowListValidator
 class ParentAllowListValidator < ActiveModel::Validator
   def validate(record)
     return if record.parent.present? && record.parent.location_type.in?(options[:location_types])

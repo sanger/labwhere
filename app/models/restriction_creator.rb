@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# RestrictionCreator - for creating restrictions
 class RestrictionCreator
   attr_reader :restrictions
 

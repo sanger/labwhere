@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Api::Locations::CoordinatesController
 class Api::Locations::CoordinatesController < ApiController
   before_action :coordinate, only: [:update]
 

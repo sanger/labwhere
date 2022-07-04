@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module LabwareCollection
+  # LabwareCollection - OrderedLocation
   class OrderedLocation < Base
     validate :check_coordinates
 

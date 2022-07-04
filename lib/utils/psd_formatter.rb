@@ -3,6 +3,7 @@
 require 'syslog/logger'
 require 'ostruct'
 
+# PsdFormatter
 class PsdFormatter < Syslog::Logger::Formatter
   LINE_FORMAT = "(thread-%s) [%s] %5s -- : %s\n"
 

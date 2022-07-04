@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# ApplicationHelper - helpers for views
 module ApplicationHelper
   ##
   # If the record has a status attribute.

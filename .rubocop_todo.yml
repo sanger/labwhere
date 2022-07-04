@@ -103,7 +103,3 @@ Rails/UniqueValidationWithoutIndex:
 # SupportedStyles: nested, compact
 Style/ClassAndModuleChildren:
   Enabled: false
-
-# Offense count: 111
-Style/Documentation:
-  Enabled: false

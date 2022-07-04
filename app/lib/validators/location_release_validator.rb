@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# LocationReleaseValidator
 class LocationReleaseValidator < ActiveModel::Validator
   def validate(record)
     return unless record.model.team_id_changed? && (record.model.team_id_was != options[:team_id])

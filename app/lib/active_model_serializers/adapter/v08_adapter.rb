@@ -2,6 +2,7 @@
 
 module ActiveModelSerializers
   module Adapter
+    # ActiveModelSerializers - Adapter - V08Adapter
     class V08Adapter < ActiveModelSerializers::Adapter::Base
       def serializable_hash(options = nil)
         options ||= {}

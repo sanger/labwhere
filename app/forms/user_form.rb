@@ -4,6 +4,7 @@
 # Form object for creating or updating a User
 require 'digest/sha1'
 
+# Shared form for User authentication
 class UserForm
   include ActiveModel::Model
   include FormObject

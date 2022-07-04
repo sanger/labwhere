@@ -14,6 +14,7 @@
 #  p.allow?(:any_old, :action) => true
 #
 module Permissions
+  # BasePermission
   class BasePermission
     ##
     # create an empty allowed action object

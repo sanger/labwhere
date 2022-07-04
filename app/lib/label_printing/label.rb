@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# build labels for printing
 class Label
   attr_accessor :locations
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# String extension
 class String
   ##
   # remove tabs, carriage returns and returns from a string

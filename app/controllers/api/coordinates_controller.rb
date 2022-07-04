@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Api::CoordinatesController
 class Api::CoordinatesController < ApiController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 

@@ -2,6 +2,7 @@
 
 require 'csv'
 
+# ManifestUploader - allows manifest of labwares to be added to a Location
 class ManifestUploader
   include ActiveModel::Model
 
