@@ -96,7 +96,7 @@ RSpec.describe 'Searches', type: :feature do
       end
     end
 
-    it.skip 'with a labware should allow viewing of associated audits' do
+    xit 'with a labware should allow viewing of associated audits' do
       labware = create(:labware_with_audits)
       visit root_path
       fill_in 'Term', with: labware.barcode
