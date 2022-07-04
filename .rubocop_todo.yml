@@ -107,8 +107,3 @@ Style/ClassAndModuleChildren:
 # Offense count: 111
 Style/Documentation:
   Enabled: false
-
-# Offense count: 20
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Enabled: false

@@ -28,12 +28,10 @@ class UserForm
           Digest::SHA1.hexdigest(@params[:user][:swipe_card_id])
       end
       user.update(@params[:user].permit(:swipe_card_id, :barcode, :status, :team_id, :type, :login))
-      if valid?
-        user.create_audit(current_user)
-        true
-      else
-        raise ActiveRecord::Rollback
-      end
+      raise ActiveRecord::Rollback unless valid?
+
+      user.create_audit(current_user)
+      true
     end
   end
 

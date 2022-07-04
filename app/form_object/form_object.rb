@@ -127,10 +127,10 @@ module FormObject
 
   def fill_model(params)
     form_variables.assign(self, params)
-    if respond_to?(:model_attributes)
-      run_callbacks :assigning_model_variables do
-        model.attributes = params[model_name.i18n_key].slice(*model_attributes).permit!
-      end
+    return unless respond_to?(:model_attributes)
+
+    run_callbacks :assigning_model_variables do
+      model.attributes = params[model_name.i18n_key].slice(*model_attributes).permit!
     end
   end
 

@@ -30,8 +30,8 @@ module HasActive
   # If the status has changed to active remove deactivated_at
   # If the status has changed to inactive update deactivated_at with the current date and time.
   def update_deactivated_at
-    if status_changed?
-      self.deactivated_at = inactive? ? Time.zone.now : nil
-    end
+    return unless status_changed?
+
+    self.deactivated_at = inactive? ? Time.zone.now : nil
   end
 end

@@ -24,10 +24,10 @@ class RestrictionCreator
     location_type = LocationType.find_or_create_by(name: restriction['location_type'])
     location_types_restrictions = restriction.delete('location_types_restrictions')
     new_restriction = type.constantize.create(restriction.merge('location_type' => location_type))
-    if location_types_restrictions.present?
-      create_location_types_restrictions(new_restriction,
-                                         location_types_restrictions)
-    end
+    return if location_types_restrictions.blank?
+
+    create_location_types_restrictions(new_restriction,
+                                       location_types_restrictions)
   end
 
   def create_location_types_restrictions(restriction, location_types_restrictions)

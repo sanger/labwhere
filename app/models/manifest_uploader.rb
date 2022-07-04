@@ -95,11 +95,11 @@ class ManifestUploader
   def check_if_any_labwares_are_locations
     return if errors.present?
 
-    if labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
-      errors.add(:base,
-                 'Labware barcodes cannot be the same as an existing location barcode.'\
-                 ' Please review and remove incorrect labware barcodes')
-    end
+    return unless labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
+
+    errors.add(:base,
+               'Labware barcodes cannot be the same as an existing location barcode.'\
+               ' Please review and remove incorrect labware barcodes')
   end
 
   def check_user
