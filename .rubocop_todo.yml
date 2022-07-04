@@ -46,14 +46,6 @@ Metrics/PerceivedComplexity:
 Rails/DynamicFindBy:
   Enabled: false
 
-# Offense count: 9
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: slashes, arguments
-Rails/FilePath:
-  Exclude:
-    - 'config/application.rb'
-    - 'config/initializers/restrictions.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: Include.

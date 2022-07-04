@@ -62,7 +62,7 @@ RSpec.describe 'Teams', type: :feature do
     expect(page).to have_content('User is not authorised')
   end
 
-  describe 'audits', js: true do
+  describe.skip 'audits', js: true do
     it 'allows a user to view associated audits for a team' do
       team = create(:team_with_audits)
       visit teams_path

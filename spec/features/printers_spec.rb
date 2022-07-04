@@ -72,7 +72,7 @@ RSpec.describe 'Printers', type: :feature do
     expect(page).to have_content('User is not authorised')
   end
 
-  describe 'audits', js: true do
+  describe.skip 'audits', js: true do
     it 'allows a user to view associated audits for a printer' do
       printer = create(:printer_with_audits)
       visit printers_path
