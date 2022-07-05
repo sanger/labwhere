@@ -94,6 +94,10 @@ RSpec.describe 'Users', type: :feature do
     expect(page).to have_content('error prohibited this record from being saved')
   end
 
+  # This test causes intermittent failures on CI. Not sure why.
+  # Tried various things and it seems less trouble to skip it
+  # as we know these tests are mature and pass
+  # Next step would be to fix or remove
   describe.skip 'drilling down', js: true do
     it 'should allow viewing of associated audits' do
       user = create(:user_with_audits)
