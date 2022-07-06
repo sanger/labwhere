@@ -41,7 +41,7 @@ module Labwhere
 
     config.autoload_paths += %W[#{config.root}/app/lib/label_printing #{config.root}/app/models/labware_collection]
 
-    config.mailer = YAML.load_file("#{Rails.root}/config/mailer.yml")[Rails.env]
+    config.mailer = YAML.load_file(Rails.root.join('config/mailer.yml'))[Rails.env]
 
     config.label_templates = Rails.application.config_for(:label_templates)
 

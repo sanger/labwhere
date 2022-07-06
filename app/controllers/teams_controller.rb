@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TeamsController
 class TeamsController < ApplicationController
   before_action :teams, only: [:index]
 

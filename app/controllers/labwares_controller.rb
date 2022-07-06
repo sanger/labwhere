@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# LabwaresController
 class LabwaresController < ApplicationController
   def show
     @labware = current_resource

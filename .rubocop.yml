@@ -26,6 +26,8 @@ AllCops:
     - 'config/spring.rb'
     - 'Rakefile'
     - 'config.ru'
+    - 'config/application.rb'
+    - 'app/models/application_record.rb'
 
 Metrics/BlockLength:
   Exclude:

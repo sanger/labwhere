@@ -53,15 +53,14 @@ class SearchResult
   # if adding result exceeds the limit then only spare capacity will be added.
   def add(key, value)
     return if adjusted_count >= limit
+    return if value.empty?
 
-    unless value.empty?
-      if adjusted_count + value.length > limit
-        @results[key] = value.take(limit - adjusted_count)
-        @adjusted_count = limit
-      else
-        @results[key] = value
-        @adjusted_count += value.length
-      end
+    if adjusted_count + value.length > limit
+      @results[key] = value.take(limit - adjusted_count)
+      @adjusted_count = limit
+    else
+      @results[key] = value
+      @adjusted_count += value.length
     end
   end
 

@@ -4,6 +4,7 @@
 # Permissions for a Technician
 #
 module Permissions
+  # Permissions for a Technician
   class TechnicianPermission < ScientistPermission
     # - Technician's cannot edit Admin users or set users to admin type
     # - Technician's cannot edit the protected flag within Locations or create protected locations
