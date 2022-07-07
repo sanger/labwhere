@@ -73,7 +73,7 @@ class SearchResult
 
     "Your search returned #{pluralize(count,
                                       'result')}. It has been limited to #{pluralize(limit,
-                                                                                     'result')}."\
-                                                                                     ' Please refine your search.'
+                                                                                     'result')}. " \
+                                                                                     'Please refine your search.'
   end
 end
