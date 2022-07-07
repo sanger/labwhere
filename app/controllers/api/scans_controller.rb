@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Api::ScansController
 class Api::ScansController < ApiController
   def create
     @scan = ScanForm.new

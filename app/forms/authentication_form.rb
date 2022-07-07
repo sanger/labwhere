@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# concern for authentication
 module AuthenticationForm
   extend ActiveSupport::Concern
 

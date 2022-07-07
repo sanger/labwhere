@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Hash extension
 class Hash
   def self.grid(rows, columns)
     position = 1

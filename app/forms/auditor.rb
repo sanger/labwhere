@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# concern for auditing
 module Auditor
   extend ActiveSupport::Concern
 

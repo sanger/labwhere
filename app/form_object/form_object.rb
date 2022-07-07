@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# FormObject
 # TODO: I think this needs to be removed so we can return to simpler times.
 module FormObject
   extend ActiveSupport::Concern
@@ -95,6 +96,7 @@ module FormObject
     define_model_callbacks :assigning_model_variables, only: :after
   end
 
+  # FormObject - ClassMethods
   module ClassMethods
     # Set the permitted of attributes that will be assigned to the model.
     def create_attributes(*attributes)
@@ -127,10 +129,10 @@ module FormObject
 
   def fill_model(params)
     form_variables.assign(self, params)
-    if respond_to?(:model_attributes)
-      run_callbacks :assigning_model_variables do
-        model.attributes = params[model_name.i18n_key].slice(*model_attributes).permit!
-      end
+    return unless respond_to?(:model_attributes)
+
+    run_callbacks :assigning_model_variables do
+      model.attributes = params[model_name.i18n_key].slice(*model_attributes).permit!
     end
   end
 

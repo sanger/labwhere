@@ -38,9 +38,9 @@ class LocationType < ApplicationRecord
   private
 
   def check_locations
-    if locations?
-      errors.add(:base, I18n.t('errors.messages.location_type_in_use'))
-      throw :abort
-    end
+    return unless locations?
+
+    errors.add(:base, I18n.t('errors.messages.location_type_in_use'))
+    throw :abort
   end
 end

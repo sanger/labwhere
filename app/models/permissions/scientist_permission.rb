@@ -4,6 +4,7 @@
 # Permissions for a Scientist
 #
 module Permissions
+  # Permissions for a Scientist
   class ScientistPermission < BasePermission
     def initialize(user)
       super

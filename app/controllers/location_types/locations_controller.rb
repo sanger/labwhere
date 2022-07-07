@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# LocationTypes::LocationsController
 class LocationTypes::LocationsController < ApplicationController
   before_action :locations, only: [:index]
 

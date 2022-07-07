@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# concern for storage validation
 module StorageValidator
   extend ActiveSupport::Concern
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Api::SearchesController
 class Api::SearchesController < ApiController
   def create
     @search = Search.find_or_create_by(search_params)

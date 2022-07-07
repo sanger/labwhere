@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Api::LocationTypesController
 class Api::LocationTypesController < ApiController
   def index
     render json: LocationType.all
