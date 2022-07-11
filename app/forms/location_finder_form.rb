@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# form for finding Locations for Labwares
 class LocationFinderForm
   include ActiveModel::Model
 

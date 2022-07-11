@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# ScansController
 class ScansController < ApplicationController
   def new
     @scan = ScanForm.new

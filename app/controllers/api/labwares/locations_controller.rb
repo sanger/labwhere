@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Api::Labwares::LocationsController
 class Api::Labwares::LocationsController < ApiController
   def create
     render json: labware_locations

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Create locations. Useful for dummy data
 class LocationCreator
   attr_reader :locations
 

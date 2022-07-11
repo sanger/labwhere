@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+# Create subclass methods
 module SubclassChecker
   extend ActiveSupport::Concern
 
+  # ClassMethods for SubclassChecker
   module ClassMethods
     def create_subclass_methods(*classes)
       options = classes.extract_options!

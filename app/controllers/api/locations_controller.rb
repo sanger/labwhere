@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Api::LocationsController
 class Api::LocationsController < ApiController
   before_action :permitted_params, only: %i[create update]
 

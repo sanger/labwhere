@@ -46,14 +46,6 @@ Metrics/PerceivedComplexity:
 Rails/DynamicFindBy:
   Enabled: false
 
-# Offense count: 9
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: slashes, arguments
-Rails/FilePath:
-  Exclude:
-    - 'config/application.rb'
-    - 'config/initializers/restrictions.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: Include.
@@ -110,13 +102,4 @@ Rails/UniqueValidationWithoutIndex:
 # Configuration parameters: AutoCorrect, EnforcedStyle.
 # SupportedStyles: nested, compact
 Style/ClassAndModuleChildren:
-  Enabled: false
-
-# Offense count: 111
-Style/Documentation:
-  Enabled: false
-
-# Offense count: 20
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
   Enabled: false

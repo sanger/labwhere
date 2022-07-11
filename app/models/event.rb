@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Create Event for Audit
 class Event
   include ActiveModel::Model
 

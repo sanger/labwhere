@@ -111,8 +111,8 @@ RSpec.describe ManifestUploader, type: :model do
       it 'will show an error' do
         manifest_uploader.run
         expect(manifest_uploader.errors.full_messages)
-          .to include('It looks like there is some missing or invalid data.' \
-                      " Please review and remove anything that shouldn't be there.")
+          .to include('It looks like there is some missing or invalid data. ' \
+                      "Please review and remove anything that shouldn't be there.")
       end
     end
 
@@ -129,8 +129,13 @@ RSpec.describe ManifestUploader, type: :model do
       it 'will show an error' do
         manifest_uploader.run
         expect(manifest_uploader.errors.full_messages)
+<<<<<<< HEAD
           .to include('It looks like there is some missing or invalid data.' \
                       " Please review and remove anything that shouldn't be there.")
+=======
+          .to include('It looks like there is some missing or invalid data. ' \
+                      "Please review and remove anything that shouldn't be there.")
+>>>>>>> develop
       end
     end
 
@@ -148,8 +153,13 @@ RSpec.describe ManifestUploader, type: :model do
       it 'will only show one error' do
         manifest_uploader.run
         expect(manifest_uploader.errors.full_messages)
+<<<<<<< HEAD
           .to eq(['It looks like there is some missing or invalid data.' \
                   " Please review and remove anything that shouldn't be there."])
+=======
+          .to eq(['It looks like there is some missing or invalid data. ' \
+                  "Please review and remove anything that shouldn't be there."])
+>>>>>>> develop
       end
     end
 
@@ -167,8 +177,13 @@ RSpec.describe ManifestUploader, type: :model do
       it 'will only show one error' do
         manifest_uploader.run
         expect(manifest_uploader.errors.full_messages)
+<<<<<<< HEAD
           .to eq(['Labware barcodes cannot be the same as an existing location barcode.' \
                   ' Please review and remove incorrect labware barcodes'])
+=======
+          .to eq(['Labware barcodes cannot be the same as an existing location barcode. ' \
+                  'Please review and remove incorrect labware barcodes'])
+>>>>>>> develop
       end
     end
   end

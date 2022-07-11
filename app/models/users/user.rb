@@ -6,6 +6,7 @@
 # Inherited by Administrator, Technician, Scientist and Guest.
 require 'digest/sha1'
 
+# base User
 class User < ApplicationRecord
   include HasActive
   include Auditable

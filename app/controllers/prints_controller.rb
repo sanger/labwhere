@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# PrintsController
 class PrintsController < ApplicationController
   layout false
 

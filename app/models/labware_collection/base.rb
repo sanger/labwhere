@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module LabwareCollection
+  # Base for LabwareCollection
   class Base
     include Enumerable
     include ActiveModel::Model

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Add Methods for Reserved
 module Reservable
   extend ActiveSupport::Concern
 

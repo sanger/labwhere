@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Array extension
 class Array
   include BarcodeUtilities
 

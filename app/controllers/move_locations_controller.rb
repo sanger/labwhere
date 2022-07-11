@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# MoveLocationsController
 class MoveLocationsController < ApplicationController
   def new
     @move_locations = MoveLocationForm.new

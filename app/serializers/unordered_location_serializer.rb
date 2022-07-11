@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Serializer for the UnorderedLocation model
 class UnorderedLocationSerializer < LocationSerializer
   attributes :labwares, :children
 

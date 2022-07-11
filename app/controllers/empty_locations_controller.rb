@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# EmptyLocationsController
 class EmptyLocationsController < ApplicationController
   def new
     @empty_location = EmptyLocationForm.new

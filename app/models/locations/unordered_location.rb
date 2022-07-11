@@ -9,9 +9,9 @@ class UnorderedLocation < Location
   # If the status of a location changes we need to ensure that all of its children are synchronised.
   # For example if a location is deactivated then all of its children need to be.
   def synchronise_status_of_children
-    if status_changed?
-      inactive? ? deactivate_children : activate_children
-    end
+    return unless status_changed?
+
+    inactive? ? deactivate_children : activate_children
   end
 
   ##

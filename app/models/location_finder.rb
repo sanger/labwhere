@@ -2,6 +2,7 @@
 
 require 'csv'
 
+# find the locations for a group of Labwares
 class LocationFinder
   include ActiveModel::Model
 

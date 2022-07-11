@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module FormObject
+  # WriterVariable
   class WriterVariable < ReaderVariable
     # rubocop:disable Lint/MissingSuper
     def initialize(model, name)

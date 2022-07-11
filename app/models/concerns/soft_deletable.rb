@@ -30,6 +30,7 @@ module SoftDeletable
     end
   end
 
+  # ClassMethods for SoftDeletable
   module ClassMethods
     def removable_associations(*associations)
       define_singleton_method :modifiable_attributes do

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Null object for a Labware
 class NullLabwareCollection
   def count
     0

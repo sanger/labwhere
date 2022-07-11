@@ -2,6 +2,7 @@
 
 require 'csv'
 
+# ManifestUploader - allows manifest of labwares to be added to a Location
 class ManifestUploader
   include ActiveModel::Model
 
@@ -85,8 +86,8 @@ class ManifestUploader
         next unless cell.blank? || cell.length < MIMIMUM_CELL_LENGTH
 
         errors.add(:base,
-                   'It looks like there is some missing or invalid data. Please review and' \
-                   " remove anything that shouldn't be there.")
+                   'It looks like there is some missing or invalid data. Please review and ' \
+                   "remove anything that shouldn't be there.")
         break
       end
     end
@@ -95,11 +96,11 @@ class ManifestUploader
   def check_if_any_labwares_are_locations
     return if errors.present?
 
-    if labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
-      errors.add(:base,
-                 'Labware barcodes cannot be the same as an existing location barcode.' \
-                 ' Please review and remove incorrect labware barcodes')
-    end
+    return unless labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
+
+    errors.add(:base,
+               'Labware barcodes cannot be the same as an existing location barcode. ' \
+               'Please review and remove incorrect labware barcodes')
   end
 
   def check_user
