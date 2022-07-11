@@ -199,7 +199,7 @@ RSpec.describe Api::LabwaresController, type: :request do
         expect(json['errors']).not_to be_empty
         expect(json['errors'].length).to eq 2
         expect(json['errors'][0]).to eq "location(s) with barcode '' do not exist"
-        expect(json['errors'][1]).to eq 'It looks like there is some missing or invalid data.'\
+        expect(json['errors'][1]).to eq 'It looks like there is some missing or invalid data.' \
                                         " Please review and remove anything that shouldn't be there."
       end
 

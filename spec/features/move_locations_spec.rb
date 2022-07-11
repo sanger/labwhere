@@ -58,7 +58,7 @@ RSpec.describe 'MoveLocations', type: :feature do
       click_button 'Go!'
     end.to_not change(parent_location.children, :count)
     expect(page).to have_content('error prohibited this record from being saved')
-    expect(page).to have_content("Location with barcode #{protected_child_location.barcode}"\
+    expect(page).to have_content("Location with barcode #{protected_child_location.barcode}" \
                                  ' is protected and cannot be moved')
   end
 

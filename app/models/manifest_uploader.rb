@@ -85,7 +85,7 @@ class ManifestUploader
         next unless cell.blank? || cell.length < MIMIMUM_CELL_LENGTH
 
         errors.add(:base,
-                   'It looks like there is some missing or invalid data. Please review and'\
+                   'It looks like there is some missing or invalid data. Please review and' \
                    " remove anything that shouldn't be there.")
         break
       end
@@ -97,7 +97,7 @@ class ManifestUploader
 
     if labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
       errors.add(:base,
-                 'Labware barcodes cannot be the same as an existing location barcode.'\
+                 'Labware barcodes cannot be the same as an existing location barcode.' \
                  ' Please review and remove incorrect labware barcodes')
     end
   end
