@@ -23,7 +23,7 @@ class Scan < ApplicationRecord
   # If we are scanning in tell the user how many labwares have been scanned in to the scan location.
   # If we are scanning out tell the user how many labwares have been scanned out of their previous locations.
   def create_message
-    self.message = "#{labwares.count} labwares scanned #{status} "\
+    self.message = "#{labwares.count} labwares scanned #{status} " \
                    "#{in? ? "to #{location.name}" : "from #{labwares.original_location_names}"}"
   end
 
