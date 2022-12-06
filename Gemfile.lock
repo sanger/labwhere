@@ -452,6 +452,7 @@ DEPENDENCIES
   sdoc
   select2-rails
   spring
+  sprockets-rails
   teaspoon-jasmine
   turbolinks
   uglifier

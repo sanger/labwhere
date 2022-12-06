@@ -20,6 +20,7 @@ gem 'sass-rails' # Use SCSS for stylesheets
 gem 'sdoc', group: :doc # bundle exec rake doc:rails generates the API under doc/api.
 gem 'select2-rails'
 gem 'turbolinks' # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+gem 'sprockets-rails'
 
 gem 'rack-cors'
 

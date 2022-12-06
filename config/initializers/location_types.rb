@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require Rails.root.join('app/lib/utils/dependent_loader.rb')
+
 DependentLoader.start(:location_types) do |on|
   on.success do
     LocationType.create(

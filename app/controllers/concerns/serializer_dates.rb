@@ -13,12 +13,12 @@ module SerializerDates
   ##
   # Output created_at as day month year time
   def created_at
-    object.created_at.to_s(:uk)
+    object.created_at.to_fs(:uk)
   end
-
+ß
   ##
   # Output updated_at as day month year time
   def updated_at
-    object.updated_at.to_s(:uk)
+    object.updated_at.to_fs(:uk)
   end
 end

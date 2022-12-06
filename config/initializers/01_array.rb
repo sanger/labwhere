@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require Rails.root.join('app/lib/utils/barcode_utilities.rb')
 
 # Array extension
 class Array

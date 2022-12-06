@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 
 module Labwhere
   class Application < Rails::Application
-    config.load_defaults 5.2
+    config.load_defaults 7.0
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -39,7 +39,7 @@ module Labwhere
     config.autoload_paths += %W[#{config.root}/app/models/users #{config.root}/app/models/locations
                                 #{config.root}/app/models/restrictions]
 
-    config.autoload_paths += %W[#{config.root}/app/lib/label_printing #{config.root}/app/models/labware_collection]
+    config.autoload_paths += %W[#{config.root}/app/lib/label_printing #{config.root}/app/labware_collection]
 
     config.mailer = YAML.load_file(Rails.root.join('config/mailer.yml'))[Rails.env]
 
@@ -58,6 +58,8 @@ module Labwhere
 
       # Fix for Psych::DisallowedClass. Added the four top classes as this may guard against hidden errors.
       config.active_record.yaml_column_permitted_classes = [Symbol, Hash, Array, ActiveSupport::HashWithIndifferentAccess]
+
+      config.active_record.legacy_connection_handling = false
     end
 
     # RabbitMQ config

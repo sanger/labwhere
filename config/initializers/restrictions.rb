@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require Rails.root.join('app/lib/utils/dependent_loader.rb')
 
 DependentLoader.start(:restrictions) do |on|
   on.success do

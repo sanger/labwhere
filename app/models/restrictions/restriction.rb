@@ -20,6 +20,7 @@ class Restriction < ApplicationRecord
   end
 
   def validator
-    super.constantize if validator?
+    # super.constantize if validator?
+    super.constantize unless self[:validator].nil?
   end
 end
