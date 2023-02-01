@@ -58,7 +58,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter = Logger::Formatter.new
 
   # Use a different logger for distributed setups.
 

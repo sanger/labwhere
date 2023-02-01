@@ -2,13 +2,13 @@
 
 # Api::LabwaresController
 class Api::LabwaresController < ApiController
-  def show
-    render json: current_resource
-  end
-
   def index
     # doesn't currently include a basic index function, returning all labwares, but could in future
     render json: labwares_by_location
+  end
+
+  def show
+    render json: current_resource
   end
 
   def create
