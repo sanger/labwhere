@@ -10,6 +10,10 @@ class PrintersController < ApplicationController
     @printer = PrinterForm.new
   end
 
+  def edit
+    @printer = PrinterForm.new(current_resource)
+  end
+
   def create
     @printer = PrinterForm.new
     if @printer.submit(params)
@@ -17,10 +21,6 @@ class PrintersController < ApplicationController
     else
       render :new
     end
-  end
-
-  def edit
-    @printer = PrinterForm.new(current_resource)
   end
 
   def update

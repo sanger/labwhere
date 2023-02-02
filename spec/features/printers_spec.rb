@@ -76,12 +76,12 @@ RSpec.describe 'Printers', type: :feature do
   # Tried various things and it seems less trouble to skip it
   # as we know these tests are mature and pass
   # Next step would be to fix or remove
-  describe.skip 'audits', js: true do
+  describe 'audits', js: true do
     it 'allows a user to view associated audits for a printer' do
       printer = create(:printer_with_audits)
       visit printers_path
-      find(:data_id, printer.id).find(:data_behavior, 'drilldown').click
-      expect(find(:data_id, printer.id)).to have_css('article', count: 5)
+      first(:data_id, printer.id).find(:data_behavior, 'drilldown').click
+      expect(first(:data_id, printer.id)).to have_css('article', count: 5)
     end
   end
 end

@@ -10,6 +10,10 @@ class TeamsController < ApplicationController
     @team = TeamForm.new
   end
 
+  def edit
+    @team = TeamForm.new(current_resource)
+  end
+
   def create
     @team = TeamForm.new
     if @team.submit(params)
@@ -17,10 +21,6 @@ class TeamsController < ApplicationController
     else
       render :new
     end
-  end
-
-  def edit
-    @team = TeamForm.new(current_resource)
   end
 
   def update

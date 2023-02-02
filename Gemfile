@@ -15,7 +15,7 @@ gem 'mysql2'
 gem 'pmb-client', '0.1.0', github: 'sanger/pmb-client'
 gem 'pry'
 gem 'puma' # Use Puma as the app server
-gem 'rails', '~>6.1.0'
+gem 'rails', '~>6.1'
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'sdoc', group: :doc # bundle exec rake doc:rails generates the API under doc/api.
 gem 'select2-rails'

@@ -97,7 +97,7 @@ RSpec.describe 'Searches', type: :feature do
     end
 
     # Another intermittent failing test on CI
-    xit 'with a labware should allow viewing of associated audits' do
+    it 'with a labware should allow viewing of associated audits' do
       labware = create(:labware_with_audits)
       visit root_path
       fill_in 'Term', with: labware.barcode
