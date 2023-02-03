@@ -15,7 +15,7 @@ module SerializerDates
   def created_at
     object.created_at.to_fs(:uk)
   end
-ß
+
   ##
   # Output updated_at as day month year time
   def updated_at
