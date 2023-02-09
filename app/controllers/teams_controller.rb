@@ -1,32 +1,32 @@
 # frozen_string_literal: true
 
+# TeamsController
 class TeamsController < ApplicationController
   before_action :teams, only: [:index]
 
-  def index
-  end
+  def index; end
 
   def new
     @team = TeamForm.new
-  end
-
-  def create
-    @team = TeamForm.new
-    if @team.submit(params)
-      redirect_to teams_path, notice: "Team successfully created"
-    else
-      render :new
-    end
   end
 
   def edit
     @team = TeamForm.new(current_resource)
   end
 
+  def create
+    @team = TeamForm.new
+    if @team.submit(params)
+      redirect_to teams_path, notice: I18n.t('success.messages.created', resource: 'Team')
+    else
+      render :new
+    end
+  end
+
   def update
     @team = TeamForm.new(current_resource)
     if @team.submit(params)
-      redirect_to teams_path, notice: "Team successfully updated"
+      redirect_to teams_path, notice: I18n.t('success.messages.updated', resource: 'Team')
     else
       render :edit
     end

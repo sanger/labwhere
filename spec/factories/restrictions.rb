@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class MyFakeValidator < ActiveModel::Validator
-  def validate(record)
-  end
+  def validate(record); end
 end
 
 FactoryBot.define do
@@ -10,7 +9,7 @@ FactoryBot.define do
     location_type
     validator { MyFakeValidator }
 
-    factory :parentage_restriction, class: "ParentageRestriction" do
+    factory :parentage_restriction, class: 'ParentageRestriction' do
       after(:create) do |parentage_restriction, _evaluator|
         create_list(:location_types_restriction, 2, parentage_restriction: parentage_restriction)
       end

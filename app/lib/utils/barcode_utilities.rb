@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# BarcodeUtilities - do some stuff with barcodes
 module BarcodeUtilities
   ##
   # Take the barcodes for the object and create a string using the defined delimiter.
@@ -9,6 +10,6 @@ module BarcodeUtilities
 
   # Extract the barcodes from the input object(s)
   def extract_barcodes
-    self.collect { |l| l.barcode }
+    collect(&:barcode)
   end
 end

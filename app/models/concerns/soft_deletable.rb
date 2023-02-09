@@ -30,12 +30,12 @@ module SoftDeletable
     end
   end
 
+  # ClassMethods for SoftDeletable
   module ClassMethods
     def removable_associations(*associations)
       define_singleton_method :modifiable_attributes do
-        associations.inject({ deleted_at: Time.zone.now }) do |result, item|
+        associations.each_with_object({ deleted_at: Time.zone.now }) do |item, result|
           result[item] = nil
-          result
         end
       end
     end
@@ -49,7 +49,7 @@ module SoftDeletable
     if mode == :hard
       super()
     else
-      update_attributes(self.class.modifiable_attributes)
+      update(self.class.modifiable_attributes)
     end
   end
 

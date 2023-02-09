@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# ApplicationController - base for all controllers
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -18,7 +19,7 @@ class ApplicationController < ActionController::Base
   ##
   # Current year necessary for copyright.
   def current_year
-    @current_year ||= Date.today.year
+    @current_year ||= Time.zone.today.year
   end
 
   ##

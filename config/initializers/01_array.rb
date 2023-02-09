@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
+# Array extension
 class Array
   include BarcodeUtilities
 
   def second
-    self.at(1)
+    at(1)
   end
 end

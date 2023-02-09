@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
+# Locations::ChildrenController
 class Locations::ChildrenController < ApplicationController
   before_action :children, only: [:index]
 
-  def index
-  end
+  def index; end
 
   protected
 

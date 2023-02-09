@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# TODO: improve the way the search method is done. At the moment it works by adding all the results together and then filtering.
+# TODO: improve the way the search method is done. At the moment
+# it works by adding all the results together and then filtering.
 
 ##
 # The Searchable module allows you to do a multi-model search across various attributes.
@@ -37,6 +38,7 @@ module Searchable
   module Client
     extend ActiveSupport::Concern
 
+    # ClassMethods for Searchable
     module ClassMethods
       ##
       # Create a search method signified by the attributes.
@@ -45,9 +47,9 @@ module Searchable
       # TODO: is there a  more efficient way to do this?
       def searchable_by(*attributes)
         define_singleton_method :search do |term|
-          attributes.inject([]) do |result, attribute|
-            result += where(arel_table[attribute].matches("%#{term}%"))
-          end.uniq
+          attributes.reduce(none) do |result, attribute|
+            result.or(where(arel_table[attribute].matches("%#{term}%")))
+          end
         end
       end
     end
@@ -61,6 +63,7 @@ module Searchable
       delegate :message, to: :results
     end
 
+    # ClassMethods for Orchestrator
     module ClassMethods
       ##
       # Define which models the Orchestrator will search through.
@@ -74,7 +77,7 @@ module Searchable
         end
 
         define_singleton_method :searchable_models do
-          models.collect { |model| [model, model.to_s.classify.constantize] }.to_h
+          models.index_with { |model| model.to_s.classify.constantize }
         end
       end
     end
@@ -90,7 +93,7 @@ module Searchable
       @results ||= SearchResult.new do |result|
         result.limit = self.class.limit
         self.class.searchable_models.each do |k, v|
-          search_result = v.search(self.term)
+          search_result = v.search(term)
           result.add k.pluralize, search_result
           count += search_result.count
         end

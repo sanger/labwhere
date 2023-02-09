@@ -4,11 +4,12 @@
 # Form object for creating or updating a User
 require 'digest/sha1'
 
+# Shared form for User authentication
 class UserForm
   include ActiveModel::Model
   include FormObject
 
-  set_form_variables :user_code, current_user: :find_current_user
+  add_form_variables :user_code, current_user: :find_current_user
 
   delegate :login, :swipe_card_id, :barcode, :team_id, :type, :status, to: :user
 
@@ -23,14 +24,15 @@ class UserForm
     assign_attributes
 
     ActiveRecord::Base.transaction do
-      @params[:user][:swipe_card_id] = Digest::SHA1.hexdigest(@params[:user][:swipe_card_id]) if @params[:user][:swipe_card_id].present? && persisted?
-      user.update(@params[:user].permit(:swipe_card_id, :barcode, :status, :team_id, :type, :login))
-      if valid?
-        user.create_audit(current_user)
-        true
-      else
-        raise ActiveRecord::Rollback
+      if @params[:user][:swipe_card_id].present? && persisted?
+        @params[:user][:swipe_card_id] =
+          Digest::SHA1.hexdigest(@params[:user][:swipe_card_id])
       end
+      user.update(@params[:user].permit(:swipe_card_id, :barcode, :status, :team_id, :type, :login))
+      raise ActiveRecord::Rollback unless valid?
+
+      user.create_audit(current_user)
+      true
     end
   end
 

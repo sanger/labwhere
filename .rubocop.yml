@@ -20,6 +20,14 @@ AllCops:
     - 'db/migrate/*'
     - 'vendor/**/*'
     - 'config/routes.rb'
+    - 'bin/yarn'
+    - 'bin/setup'
+    - 'bin/update'
+    - 'config/spring.rb'
+    - 'Rakefile'
+    - 'config.ru'
+    - 'config/application.rb'
+    - 'app/models/application_record.rb'
 
 Metrics/BlockLength:
   Exclude:
@@ -32,3 +40,12 @@ Lint/AmbiguousBlockAssociation:
 
 Naming/MemoizedInstanceVariableName:
   Enabled: false
+
+# There are some which cause test failures. If enabled this should be run without -A and checked.
+Style/RedundantInitialize:
+  Enabled: false
+
+Style/CaseEquality:
+  Exclude:
+    - 'config/initializers/02_proc.rb'
+    

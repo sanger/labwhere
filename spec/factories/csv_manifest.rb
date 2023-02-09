@@ -45,7 +45,9 @@ FactoryBot.define do
       number_of_labwares { 1 }
     end
 
-    initialize_with { new(locations: locations, labware_prefix: labware_prefix, number_of_labwares: number_of_labwares) }
+    initialize_with do
+      new(locations: locations, labware_prefix: labware_prefix, number_of_labwares: number_of_labwares)
+    end
 
     skip_create
   end

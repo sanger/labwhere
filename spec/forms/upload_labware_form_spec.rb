@@ -41,7 +41,9 @@ RSpec.describe UploadLabwareForm, type: :model do
   describe '#submit' do
     let(:labware_prefix)  { 'RNA' }
     let!(:locations)      { create_list(:unordered_location_with_parent, 10) }
-    let!(:manifest)       { build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv }
+    let!(:manifest)       do
+      build(:csv_manifest, locations: locations, number_of_labwares: 5, labware_prefix: labware_prefix).generate_csv
+    end
 
     before do
       tempfile.write(manifest)
@@ -60,7 +62,7 @@ RSpec.describe UploadLabwareForm, type: :model do
     end
 
     it '#format_file_to_json' do
-      file = double("file", tempfile: tempfile)
+      file = double('file', tempfile: tempfile)
       allow(create_upload_labware).to receive(:file) { file }
       result = create_upload_labware.format_file_to_json
       expect(result[:labwares].length).to eq(50)

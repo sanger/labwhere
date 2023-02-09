@@ -1,35 +1,31 @@
 # frozen_string_literal: true
 
+# LocationTypesController
 class LocationTypesController < ApplicationController
   before_action :location_types, only: [:index]
   before_action :set_location_type, except: [:index]
 
-  def index
-  end
+  def index; end
 
-  def new
-  end
+  def show; end
+  def new; end
+
+  def edit; end
 
   def create
     if @location_type.submit(params)
-      redirect_to location_types_path, notice: "Location type successfully created"
+      redirect_to location_types_path, notice: I18n.t('success.messages.created', resource: 'Location type')
     else
       render :new
     end
   end
 
-  def edit
-  end
-
   def update
     if @location_type.submit(params)
-      redirect_to location_types_path, notice: "Location type successfully updated"
+      redirect_to location_types_path, notice: I18n.t('success.messages.updated', resource: 'Location type')
     else
       render :edit
     end
-  end
-
-  def show
   end
 
   def delete
@@ -41,7 +37,7 @@ class LocationTypesController < ApplicationController
   def destroy
     respond_to do |format|
       if @location_type.destroy(params)
-        flash_keep "Location type successfully deleted"
+        flash_keep 'Location type successfully deleted'
         format.js { render js: "window.location.pathname='#{location_types_path}'" }
       else
         format.js

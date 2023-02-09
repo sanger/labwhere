@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# build labels for printing
 class Label
   attr_accessor :locations
 
@@ -19,7 +20,7 @@ class Label
         barcode: location.barcode,
         parent_location: location.parent.name,
         location: location.name,
-        label_name: "location"
+        label_name: 'location'
       }
     end
   end

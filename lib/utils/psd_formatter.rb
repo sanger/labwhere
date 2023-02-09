@@ -3,12 +3,13 @@
 require 'syslog/logger'
 require 'ostruct'
 
+# PsdFormatter
 class PsdFormatter < Syslog::Logger::Formatter
-  LINE_FORMAT = "(thread-%s) [%s] %5s -- : %s\n".freeze
+  LINE_FORMAT = "(thread-%s) [%s] %5s -- : %s\n"
 
   def initialize(deployment_info)
-    info = OpenStruct.new(deployment_info)
-    @app_tag = "#{info.version}:#{info.environment}".freeze
+    info = OpenStruct.new(deployment_info) # rubocop:todo Style/OpenStructUse
+    @app_tag = "#{info.version}:#{info.environment}"
     super()
   end
 

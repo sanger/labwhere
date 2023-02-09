@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Add Methods for Reserved
 module Reservable
   extend ActiveSupport::Concern
 
@@ -11,7 +12,7 @@ module Reservable
   def reserve(new_team)
     return false if team.present?
 
-    update_attribute(:team, new_team)
+    update(team: new_team)
   end
 
   def reserved_by

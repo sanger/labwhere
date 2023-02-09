@@ -51,17 +51,16 @@ class SearchResult
   # Add an object to the results hash with key k unless it is empty.
   # result with key will be replaced.
   # if adding result exceeds the limit then only spare capacity will be added.
-  def add(k, v)
+  def add(key, value)
     return if adjusted_count >= limit
+    return if value.empty?
 
-    unless v.empty?
-      if adjusted_count + v.length > limit
-        @results[k] = v.take(limit - adjusted_count)
-        @adjusted_count = limit
-      else
-        @results[k] = v
-        @adjusted_count += v.length
-      end
+    if adjusted_count + value.length > limit
+      @results[key] = value.take(limit - adjusted_count)
+      @adjusted_count = limit
+    else
+      @results[key] = value
+      @adjusted_count += value.length
     end
   end
 
@@ -69,8 +68,11 @@ class SearchResult
   # If the number of results is under the limit then output the number of results.
   # If the number of results exceeds the limit state the limit and the actual number of results.
   def message
-    return "Your search returned #{pluralize(count, "result")}." if count <= limit
+    return "Your search returned #{pluralize(count, 'result')}." if count <= limit
 
-    "Your search returned #{pluralize(count, "result")}. It has been limited to #{pluralize(limit, "result")}. Please refine your search."
+    "Your search returned #{pluralize(count,
+                                      'result')}. It has been limited to #{pluralize(limit,
+                                                                                     'result')}. " \
+                                                                                     'Please refine your search.'
   end
 end

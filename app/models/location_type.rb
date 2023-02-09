@@ -2,7 +2,7 @@
 
 ##
 # Every location must have a type.
-class LocationType < ActiveRecord::Base
+class LocationType < ApplicationRecord
   include Searchable::Client
   include Auditable
 
@@ -20,12 +20,12 @@ class LocationType < ActiveRecord::Base
   ##
   # A location type can only be destroyed if it has no locations
   def destroyable
-    yield unless has_locations? && block_given?
+    yield unless locations? && block_given?
   end
 
   ##
   # Has the location type got any locations attached.
-  def has_locations?
+  def locations?
     locations.present?
   end
 
@@ -38,9 +38,9 @@ class LocationType < ActiveRecord::Base
   private
 
   def check_locations
-    if has_locations?
-      errors.add(:base, I18n.t("errors.messages.location_type_in_use"))
-      throw :abort
-    end
+    return unless locations?
+
+    errors.add(:base, I18n.t('errors.messages.location_type_in_use'))
+    throw :abort
   end
 end

@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
+# Api::LabwaresController
 class Api::LabwaresController < ApiController
-  def show
-    render json: current_resource
-  end
-
   def index
     # doesn't currently include a basic index function, returning all labwares, but could in future
     render json: labwares_by_location
   end
 
+  def show
+    render json: current_resource
+  end
+
   def create
-    uploader = ManifestUploader.new(json: permitted_params, user_code: params[:user_code], controller: "api/labwares", action: "create")
+    uploader = ManifestUploader.new(json: permitted_params, user_code: params[:user_code], controller: 'api/labwares',
+                                    action: 'create')
 
     if uploader.run
       render json: Labware.by_barcode_known_locations(uploader.labwares), each_serializer: LabwareLiteSerializer
@@ -21,7 +23,7 @@ class Api::LabwaresController < ApiController
   end
 
   def by_barcode
-    if request.params["known"] == "true"
+    if request.params['known'] == 'true'
       render json: Labware.by_barcode_known_locations(params[:barcodes]), each_serializer: LabwareLiteSerializer
     else
       render json: Labware.by_barcode(params[:barcodes]), each_serializer: LabwareLiteSerializer
@@ -44,6 +46,6 @@ class Api::LabwaresController < ApiController
   end
 
   def permitted_params
-    params.permit(:action, :controller, labwares: [:location_barcode, :labware_barcode])
+    params.permit(:action, :controller, labwares: %i[location_barcode labware_barcode])
   end
 end

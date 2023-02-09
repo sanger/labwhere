@@ -25,14 +25,14 @@ class DependentLoader
   #   end
   #  end
   def self.start(table, &block)
-    return unless ActiveRecord::Base.connection.data_source_exists?(table.to_s) and !defined?(::Rake) and Rails.env.test?
+    return unless ActiveRecord::Base.connection.data_source_exists?(table.to_s) && !defined?(::Rake) && Rails.env.test?
 
     if table.to_s.classify.constantize.all.empty?
       block.callback :success
     else
       block.callback :failure
     end
-  rescue ActiveRecord::NoDatabaseError, Mysql2::Error::ConnectionError
+  rescue ActiveRecord::NoDatabaseError, Mysql2::Error::ConnectionError, ActiveRecord::ConnectionNotEstablished
     # Do nothing. We've probably not created the database yet.
   end
 end

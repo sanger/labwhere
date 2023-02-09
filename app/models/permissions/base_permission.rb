@@ -14,6 +14,7 @@
 #  p.allow?(:any_old, :action) => true
 #
 module Permissions
+  # BasePermission
   class BasePermission
     ##
     # create an empty allowed action object
@@ -31,7 +32,7 @@ module Permissions
     # attached to particular users.
     def allow?(controller, action, resource = nil)
       allowed = allow_all? || allowed_actions[[controller.to_s, action.to_s]]
-      allowed && (allowed == true || resource && allowed.call(resource))
+      allowed && (allowed == true || (resource && allowed.call(resource)))
     end
 
     ##

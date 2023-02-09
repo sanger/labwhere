@@ -9,10 +9,12 @@ class ScanForm
   include StorageValidator
   include Rails.application.routes.url_helpers
 
-  set_form_variables :labware_barcodes, :location_barcode, :start_position, location: :find_location
+  add_form_variables :labware_barcodes, :location_barcode, :start_position, location: :find_location
 
   after_validate do
-    scan.add_attributes_from_collection(LabwareCollection.open(location: location, user: current_user, coordinates: available_coordinates, labwares: labwares).push)
+    scan.add_attributes_from_collection(LabwareCollection.open(location: location, user: current_user,
+                                                               coordinates: available_coordinates,
+                                                               labwares: labwares).push)
     scan.save
   end
 
@@ -32,9 +34,9 @@ class ScanForm
   end
 
   def check_available_coordinates
-    unless available_coordinates.count == labwares.count
-      errors.add(:base, I18n.t("errors.messages.not_enough_empty_coordinates"))
-    end
+    return if available_coordinates.count == labwares.count
+
+    errors.add(:base, I18n.t('errors.messages.not_enough_empty_coordinates'))
   end
 
   def labwares
@@ -42,8 +44,8 @@ class ScanForm
   end
 
   def check_if_any_barcodes_are_locations
-    if labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
-      errors.add(:base, I18n.t("errors.messages.not_labware", { url: new_move_location_path }))
-    end
+    return unless labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
+
+    errors.add(:base, I18n.t('errors.messages.not_labware', { url: new_move_location_path }))
   end
 end

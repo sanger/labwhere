@@ -4,7 +4,7 @@
 class NullCoordinate
   # Always set the name to null
   def name
-    "null"
+    'null'
   end
 
   # Set the location to location unknown
@@ -17,17 +17,13 @@ class NullCoordinate
     true
   end
 
-  def flush
-  end
+  def flush; end
 
-  def row
-  end
+  def row; end
 
-  def column
-  end
+  def column; end
 
-  def position
-  end
+  def position; end
 
   def marked_for_destruction?
     false

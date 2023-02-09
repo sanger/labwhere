@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+# Api::LocationsController
 class Api::LocationsController < ApiController
-  before_action :permitted_params, only: [:create, :update]
+  before_action :permitted_params, only: %i[create update]
 
   def index
     render json: Location.by_root
@@ -36,7 +37,7 @@ class Api::LocationsController < ApiController
   end
 
   def permitted_params
-    location_attrs = Location.new.attributes.keys.map { |k| k.to_sym }
+    location_attrs = Location.new.attributes.keys.map(&:to_sym)
     params.permit(:action, :controller, location: [*location_attrs,
                                                    :parent_id,
                                                    :user_code,

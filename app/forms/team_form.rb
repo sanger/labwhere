@@ -6,5 +6,5 @@ class TeamForm
   include AuthenticationForm
   include Auditor
 
-  set_attributes :name, :number
+  create_attributes :name, :number
 end

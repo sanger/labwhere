@@ -28,17 +28,20 @@ module Labwhere
     # config.i18n.default_locale = :de
 
     # redirect errors to errors controller
-    config.exceptions_app = self.routes
+    config.exceptions_app = routes
 
-    config.autoload_paths += %W(#{config.root}/app/lib)
+    # TODO. There should be no need for lib. We should not need to autoload anything in app
+    # Something is not quite right so needs investigating.
+    config.autoload_paths += %W[#{config.root}/app/lib]
 
-    config.autoload_paths += %W(#{config.root}/app/lib/utils #{config.root}/app/lib/validators)
+    config.autoload_paths += %W[#{config.root}/app/lib/utils #{config.root}/app/lib/validators]
 
-    config.autoload_paths += %W(#{config.root}/app/models/users #{config.root}/app/models/locations #{config.root}/app/models/restrictions)
+    config.autoload_paths += %W[#{config.root}/app/models/users #{config.root}/app/models/locations
+                                #{config.root}/app/models/restrictions]
 
-    config.autoload_paths += %W(#{config.root}/app/lib/label_printing #{config.root}/app/models/labware_collection)
+    config.autoload_paths += %W[#{config.root}/app/lib/label_printing #{config.root}/app/models/labware_collection]
 
-    config.mailer = YAML.load_file("#{Rails.root}/config/mailer.yml")[Rails.env]
+    config.mailer = YAML.load_file(Rails.root.join('config/mailer.yml'))[Rails.env]
 
     config.label_templates = Rails.application.config_for(:label_templates)
 
@@ -51,7 +54,10 @@ module Labwhere
                        routing_specs: false,
                        controller_specs: false,
                        request_specs: true
-      g.fixture_replacement :factory_bot, dir: "spec/factories"
+      g.fixture_replacement :factory_bot, dir: 'spec/factories'
+
+      # Fix for Psych::DisallowedClass. Added the four top classes as this may guard against hidden errors.
+      config.active_record.yaml_column_permitted_classes = [Symbol, Hash, Array, ActiveSupport::HashWithIndifferentAccess]
     end
 
     # RabbitMQ config

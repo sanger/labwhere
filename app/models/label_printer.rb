@@ -10,8 +10,8 @@ class LabelPrinter
   attr_accessor :label_template_name
   attr_reader :labels, :printer
 
-  validates_presence_of :printer, :locations, :label_template_name
-  validates_numericality_of :copies, greater_than: 0
+  validates :printer, :locations, :label_template_name, presence: true
+  validates :copies, numericality: { greater_than: 0 }
   ##
   # For a given printer and location create a json request.
   # The labels will contain a header and footer and info about the location.
@@ -39,7 +39,7 @@ class LabelPrinter
   ##
   # Produce a success or failure message
   def message
-    response_ok? ? I18n.t("printing.success") : I18n.t("printing.failure")
+    response_ok? ? I18n.t('printing.success') : I18n.t('printing.failure')
   end
 
   ##
@@ -53,12 +53,12 @@ class LabelPrinter
       response = Net::HTTP.post URI("#{Rails.configuration.pmb_api_base}/print_jobs"),
                                 body.to_json,
                                 'Content-Type' => 'application/json'
-      if response.code == "200"
+      if response.code == '200'
         @response_ok = true
       else
         throw JSON.parse(response.body)
       end
-    rescue StandardError => e
+    rescue StandardError
       @response_ok = false
     end
   end

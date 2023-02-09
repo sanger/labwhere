@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# LabwareLocations - TODO: Is this even being used??
 class LabwareLocations < ActiveModelSerializers::Model
   attributes :locations
 

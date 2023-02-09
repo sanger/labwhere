@@ -2,7 +2,9 @@
 
 require 'open3'
 
+# Deployed
 module Deployed
+  # RepoData
   class RepoData
     def tag
       @tag ||= git_tag || read_file('TAG').strip.presence
@@ -84,7 +86,7 @@ module Deployed
     end
 
     def read_file(filename)
-      File.open(Rails.root.join(filename), 'r', &:readline)
+      Rails.root.join(filename).open('r', &:readline)
     rescue Errno::ENOENT, EOFError
       ''
     end
@@ -113,9 +115,5 @@ module Deployed
   HOSTNAME       = Socket.gethostname
 
   require 'ostruct'
-  DETAILS = OpenStruct.new(
-    :name => APP_NAME,
-    :version => VERSION_ID,
-    :environment => ENVIRONMENT
-  )
+  DETAILS = OpenStruct.new(name: APP_NAME, version: VERSION_ID, environment: ENVIRONMENT) # rubocop:todo Style/OpenStructUse
 end

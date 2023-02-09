@@ -2,6 +2,7 @@
 
 require 'csv'
 
+# ManifestUploader - allows manifest of labwares to be added to a Location
 class ManifestUploader
   include ActiveModel::Model
 
@@ -76,15 +77,18 @@ class ManifestUploader
     errors.add(:base, "You are trying to put stuff into #{ordered_locations.keys.join(',')} which is the wrong type")
   end
 
-  # Agreement come to by the customer in that if any of the cells are blank or if the length of the string is less than 5 then it is an error.
+  # Agreement come to by the customer in that if any of the cells are blank or
+  # if the length of the string is less than 5 then it is an error.
   # 5 is an aribitrary number which could be changed if we find it is too lax.
   def check_for_missing_or_invalid_data
     data.each do |row|
       break unless row.each do |cell|
-        if cell.blank? || cell.length < MIMIMUM_CELL_LENGTH
-          errors.add(:base, "It looks like there is some missing or invalid data. Please review and remove anything that shouldn't be there.")
-          break
-        end
+        next unless cell.blank? || cell.length < MIMIMUM_CELL_LENGTH
+
+        errors.add(:base,
+                   'It looks like there is some missing or invalid data. Please review and ' \
+                   "remove anything that shouldn't be there.")
+        break
       end
     end
   end
@@ -92,9 +96,11 @@ class ManifestUploader
   def check_if_any_labwares_are_locations
     return if errors.present?
 
-    if labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
-      errors.add(:base, "Labware barcodes cannot be the same as an existing location barcode. Please review and remove incorrect labware barcodes")
-    end
+    return unless labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
+
+    errors.add(:base,
+               'Labware barcodes cannot be the same as an existing location barcode. ' \
+               'Please review and remove incorrect labware barcodes')
   end
 
   def check_user
@@ -105,6 +111,6 @@ class ManifestUploader
   def check_labwares_present
     return if errors.present?
 
-    errors.add(:base, "No labwares have been provided") if json[:labwares].blank?
+    errors.add(:base, 'No labwares have been provided') if json[:labwares].blank?
   end
 end

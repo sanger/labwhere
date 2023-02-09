@@ -8,8 +8,8 @@ class EitherOrValidator < ActiveModel::Validator
   # If all of them are empty add an error to the record
   def validate(record)
     fields = options[:fields]
-    if fields.all? { |field| record.send(field).blank? }
-      record.errors[:base] << "#{fields.collect { |field| field.to_s.humanize }.join(" or ")} must be completed"
-    end
+    return unless fields.all? { |field| record.send(field).blank? }
+
+    record.errors.add(:base, "#{fields.collect { |field| field.to_s.humanize }.join(' or ')} must be completed")
   end
 end

@@ -1,20 +1,21 @@
 # frozen_string_literal: true
 
 module LabwareCollection
+  # Base for LabwareCollection
   class Base
     include Enumerable
     include ActiveModel::Model
 
     attr_accessor :location, :labwares, :user, :original_locations, :start_position, :coordinates
 
-    validates_presence_of :location, :user, :labwares
+    validates :location, :user, :labwares, presence: true
 
     def initialize(attributes = {})
       super
       @original_locations = []
     end
 
-    def push()
+    def push
       if valid?
         ActiveRecord::Base.transaction do
           labwares.each_with_index do |labware, i|
@@ -33,7 +34,7 @@ module LabwareCollection
     end
 
     def original_location_names
-      original_locations.uniq.join(", ")
+      original_locations.uniq.join(', ')
     end
 
     def labwares=(labwares) # rubocop:todo Lint/DuplicateMethods

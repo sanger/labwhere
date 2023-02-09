@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe ParentDenyListValidator, type: :model do
   let(:invalid_parent_types) { create_list(:location_type, 3) }

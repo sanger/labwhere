@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+# Create subclass methods
 module SubclassChecker
   extend ActiveSupport::Concern
 
+  # ClassMethods for SubclassChecker
   module ClassMethods
-    def has_subclasses(*classes)
+    def create_subclass_methods(*classes)
       options = classes.extract_options!
       classes.each do |klass|
         object_type = klass_name(klass, options)
@@ -16,22 +18,22 @@ module SubclassChecker
 
     def klass_name(klass, options)
       if options[:suffix]
-        "#{set_klass_name(klass)}#{self.to_s.capitalize}"
+        "#{build_klass_name(klass)}#{to_s.capitalize}"
       else
-        set_klass_name(klass)
+        build_klass_name(klass)
       end
     end
 
     def method_name(klass)
       name = klass.to_s
-      name.include?("_") ? "#{name.split('_').first}?" : "#{name}?"
+      name.include?('_') ? "#{name.split('_').first}?" : "#{name}?"
     end
 
     private
 
-    def set_klass_name(klass)
+    def build_klass_name(klass)
       name = klass.to_s
-      name.include?("_") ? name.camelize : name.capitalize
+      name.include?('_') ? name.camelize : name.capitalize
     end
   end
 end

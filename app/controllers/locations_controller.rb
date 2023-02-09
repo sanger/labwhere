@@ -1,34 +1,32 @@
 # frozen_string_literal: true
 
+# LocationsController
 class LocationsController < ApplicationController
   before_action :locations, only: [:index]
-  before_action :set_location, except: [:index, :activate, :deactivate]
-  before_action :permitted_params, only: [:create, :update]
+  before_action :set_location, except: %i[index activate deactivate]
+  before_action :permitted_params, only: %i[create update]
 
-  def index
-  end
-
-  def new
-  end
+  def index; end
 
   def show
     @location = current_resource
   end
 
+  def new; end
+
+  def edit; end
+
   def create
     if @location.submit(permitted_params)
-      redirect_to locations_path, notice: "Location(s) successfully created"
+      redirect_to locations_path, notice: I18n.t('success.messages.created', resource: 'Location(s)')
     else
       render :new
     end
   end
 
-  def edit
-  end
-
   def update
     if @location.update(permitted_params)
-      redirect_to locations_path, notice: "Location successfully updated"
+      redirect_to locations_path, notice: I18n.t('success.messages.updated', resource: 'Location')
     else
       render :edit
     end
@@ -56,13 +54,13 @@ class LocationsController < ApplicationController
   def deactivate
     @location = current_resource
     @location.deactivate
-    redirect_to locations_path, notice: "Location successfully deactivated"
+    redirect_to locations_path, notice: I18n.t('success.messages.deactivated', resource: 'Location')
   end
 
   def activate
     @location = current_resource
     @location.activate
-    redirect_to locations_path, notice: "Location successfully activated"
+    redirect_to locations_path, notice: I18n.t('success.messages.activated', resource: 'Location')
   end
 
   protected
@@ -84,7 +82,7 @@ class LocationsController < ApplicationController
   end
 
   def permitted_params
-    location_attrs =  Location.new.attributes.keys.map { |k| k.to_sym }
+    location_attrs =  Location.new.attributes.keys.map(&:to_sym)
     params.permit(:action, :controller, location: [*location_attrs,
                                                    :parent_id,
                                                    :user_code,

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# PrintsController
 class PrintsController < ApplicationController
   layout false
 
@@ -17,11 +18,11 @@ class PrintsController < ApplicationController
 
     respond_to do |format|
       @message = @print_barcode.message + message_suffix
-      if @print_barcode.response_ok?
-        @message_type = 'notice'
-      else
-        @message_type = 'alert'
-      end
+      @message_type = if @print_barcode.response_ok?
+                        'notice'
+                      else
+                        'alert'
+                      end
       format.js { render 'prints/create' }
     end
   end
@@ -41,7 +42,7 @@ class PrintsController < ApplicationController
   end
 
   def message_suffix
-    suffix = params[:print_child_barcodes] ? " for each child of" : " for"
+    suffix = params[:print_child_barcodes] ? ' for each child of' : ' for'
     suffix + " location: #{current_resource.name}"
   end
 end

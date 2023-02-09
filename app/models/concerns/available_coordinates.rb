@@ -16,9 +16,9 @@ class AvailableCoordinates
   end
 
   # Order the coordinates
-  def initialize(coordinates, n)
+  def initialize(coordinates, num)
     @coordinates = coordinates.ordered
-    @n = n
+    @n = num
   end
 
   ##
@@ -37,7 +37,7 @@ class AvailableCoordinates
   private
 
   def available?(coordinates)
-    coordinates.all? { |c| c.vacant? }
+    coordinates.all?(&:vacant?)
   end
 
   def line(min, max)

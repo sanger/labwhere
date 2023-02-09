@@ -14,7 +14,7 @@ class CoordinatesForm
   delegate :to_json, to: :coordinates
 
   def submit(params)
-    set_attributes_from_params(params)
+    create_attributes_from_params(params)
     return false unless valid?
 
     begin
@@ -26,7 +26,7 @@ class CoordinatesForm
         end
       end
       true
-    rescue
+    rescue StandardError
       false
     end
   end
@@ -39,7 +39,7 @@ class CoordinatesForm
 
   attr_accessor :params
 
-  def set_attributes_from_params(params)
+  def create_attributes_from_params(params)
     self.params = params
     self.current_user = find_current_user(params[:user_code])
     self.controller = params.fetch(:controller)
@@ -58,7 +58,7 @@ class CoordinatesForm
 
   def check_location_for_reservation(location)
     if location.reserved? && location.reserved_by != current_user.team
-      errors.add(:location, I18n.t("errors.messages.reserved", team: location.reserved_by.name))
+      errors.add(:location, I18n.t('errors.messages.reserved', team: location.reserved_by.name))
       return
     end
     check_location_for_reservation(location.parent) if location.parent_id?
@@ -79,7 +79,7 @@ class CoordinatesForm
   end
 
   def update_params
-    permitted_params.map { |param| { labware: find_labware!(param["labware_barcode"]) } }
+    permitted_params.map { |param| { labware: find_labware!(param['labware_barcode']) } }
   end
 
   def find_labware!(barcode)

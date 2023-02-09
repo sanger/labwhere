@@ -8,17 +8,17 @@
 # * If the location is present and it does not have a parent then it is not valid.
 class LocationValidator < ActiveModel::Validator
   def validate(record)
-    unless record.location.nil? || record.location.unspecified?
-      record.errors.add(:location, I18n.t("errors.messages.container")) unless record.location.container?
-      record.errors.add(:location, I18n.t("errors.messages.active")) unless record.location.active?
+    if record.location.nil? || record.location.unspecified?
+      record.errors.add(:location, I18n.t('errors.messages.existence')) if record.location_barcode.present?
+    else
+      record.errors.add(:location, I18n.t('errors.messages.container')) unless record.location.container?
+      record.errors.add(:location, I18n.t('errors.messages.active')) unless record.location.active?
       NestedValidator.new({ attributes: :location }).validate_each(record, :location, record.location)
 
-      if (record.location.reserved? && record.location.team_id != record.current_user.team_id)
-        record.errors.add(:location, I18n.t("errors.messages.reserved", team: record.location.team.name))
+      if record.location.reserved? && record.location.team_id != record.current_user.team_id
+        record.errors.add(:location, I18n.t('errors.messages.reserved', team: record.location.team.name))
       end
 
-    else
-      record.errors.add(:location, I18n.t("errors.messages.existence")) if record.location_barcode.present?
     end
   end
 end

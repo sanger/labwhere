@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe HasActive, type: :model do
   with_model :TestModel do
@@ -16,19 +16,19 @@ RSpec.describe HasActive, type: :model do
     end
   end
 
-  let!(:model) { TestModel.create(name: "Test Model") }
+  let!(:model) { TestModel.create(name: 'Test Model') }
 
-  it "should be active when first created" do
+  it 'should be active when first created' do
     expect(model).to be_active
   end
 
-  it "when deactivated should set it to inactive and record the date and time it was done" do
+  it 'when deactivated should set it to inactive and record the date and time it was done' do
     model.deactivate
     expect(model).to be_inactive
     expect(model.deactivated_at).to_not be_nil
   end
 
-  it "when activated should set it to inactive and remove deactivated_at" do
+  it 'when activated should set it to inactive and remove deactivated_at' do
     model.deactivate
     model.activate
     expect(model).to be_active

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-desc "Print out all the locations that fail validation"
+desc 'Print out all the locations that fail validation'
 task invalid_locations: :environment do
   has_failures = false
   format = "%-20s\t%-20s\t%-20s\t%-20s\n"
@@ -10,8 +10,8 @@ task invalid_locations: :environment do
 
     # Print out some nicely formatted headers
     unless has_failures
-      printf(format, "Name", "Location Type", "Parentage", "Parent Location Type")
-      printf(format, "----", "-------------", "---------", "--------------------")
+      printf(format, 'Name', 'Location Type', 'Parentage', 'Parent Location Type')
+      printf(format, '----', '-------------', '---------', '--------------------')
     end
 
     # NullLocation doesn't have a LocationType so we need to do a check first
@@ -22,5 +22,5 @@ task invalid_locations: :environment do
     has_failures = true
   end
 
-  puts "All locations passed" unless has_failures
+  puts 'All locations passed' unless has_failures
 end

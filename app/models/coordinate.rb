@@ -3,7 +3,7 @@
 #
 # A coordinate is a defined position in a location which can hold a piece of labware.
 # A location will usually have a fixed set of coordinates.
-class Coordinate < ActiveRecord::Base
+class Coordinate < ApplicationRecord
   include Auditable
 
   belongs_to :location
@@ -11,7 +11,7 @@ class Coordinate < ActiveRecord::Base
 
   validates :position, :row, :column, presence: true, numericality: true
   validates :location, existence: true
-  validates :location, nested: true, unless: Proc.new { |l| l.location.nil? || l.location.unknown? }
+  validates :location, nested: true, unless: proc { |l| l.location.nil? || l.location.unknown? }
 
   scope :ordered, -> { order(position: :asc) }
 
@@ -20,7 +20,7 @@ class Coordinate < ActiveRecord::Base
   end
 
   def self.filled
-    all.select { |c| c.filled? }
+    all.select(&:filled?)
   end
 
   # Check if the coordinate has a piece of labware
@@ -39,8 +39,8 @@ class Coordinate < ActiveRecord::Base
   end
 
   # Fill the coordinate with a piece of labware
-  def fill(l)
-    update_attribute(:labware, l)
-    l
+  def fill(labw)
+    update(labware: labw)
+    labw
   end
 end

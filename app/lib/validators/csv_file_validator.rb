@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# CsvFileValidator
 class CsvFileValidator < ActiveModel::Validator
   def validate(record)
     the_file = record.params[record.form_sym][:file]

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Api::Locations::ChildrenController
 class Api::Locations::ChildrenController < ApiController
   def index
     render json: current_resource
