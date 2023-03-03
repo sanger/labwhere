@@ -43,8 +43,8 @@ class SearchResult
   #  search_result.each do |search|
   #   ...
   #  end => each result
-  def each(&block)
-    results.each(&block)
+  def each(&)
+    results.each(&)
   end
 
   ##

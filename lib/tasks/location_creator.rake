@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Dir[Rails.root.join('lib/location_creator/*.rb')].sort.each { |f| require f }
+Dir[Rails.root.join('lib/location_creator/*.rb')].each { |f| require f }
 
 desc 'locations'
 namespace :locations do
