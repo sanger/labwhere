@@ -171,7 +171,7 @@ RSpec.describe ScanForm, type: :model do
         { 'location_barcode' => location.barcode, 'labware_barcodes' => another_location.barcode,
           user_code: sci_swipe_card_id }))
       expect(create_scan.errors.full_messages).to include(I18n.t('errors.messages.not_labware',
-                                                                 { url: new_move_location_path }))
+                                                                 url: new_move_location_path))
       expect(Scan.all).to be_empty
     end
 
@@ -181,7 +181,7 @@ RSpec.describe ScanForm, type: :model do
           'labware_barcodes' => "#{another_location.barcode}\n#{new_labware.join_barcodes}",
           user_code: sci_swipe_card_id }))
       expect(create_scan.errors.full_messages).to include(I18n.t('errors.messages.not_labware',
-                                                                 { url: new_move_location_path }))
+                                                                 url: new_move_location_path))
       expect(Scan.all).to be_empty
     end
   end

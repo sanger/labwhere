@@ -113,10 +113,10 @@ module FormObject
     end
 
     # modify the actions which will be carried out after a successful validation.
-    def after_validate(&block)
+    def after_validate(&)
       define_method :save_if_valid do
         run_transaction do
-          instance_eval(&block)
+          instance_eval(&)
         end
       end
     end
