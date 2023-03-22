@@ -29,8 +29,8 @@ module LabwareCollection
       self
     end
 
-    def each(&)
-      labwares.each(&)
+    def each(&block)
+      labwares.each(&block)
     end
 
     def original_location_names

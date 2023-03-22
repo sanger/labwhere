@@ -2,10 +2,6 @@
 
 # SearchesController
 class SearchesController < ApplicationController
-  def show
-    @search = current_resource
-  end
-
   def create
     @search = Search.find_or_create_by(search_params)
     if @search.valid?
@@ -13,6 +9,10 @@ class SearchesController < ApplicationController
     else
       redirect_to root_path
     end
+  end
+
+  def show
+    @search = current_resource
   end
 
   private

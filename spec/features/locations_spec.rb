@@ -328,8 +328,8 @@ RSpec.describe 'Locations', type: :feature do
     it 'allows a user to view associated audits for a location type' do
       location_type = create(:location_type_with_audits)
       visit location_types_path
-      first(:data_id, location_type.id).find(:data_behavior, 'audits').click
-      expect(first(:data_id, location_type.id)).to have_css('article', count: 5)
+      find(:data_id, location_type.id).find(:data_behavior, 'audits').click
+      expect(find(:data_id, location_type.id)).to have_css('article', count: 5)
     end
 
     it 'allows a user to view associated audits for a location' do

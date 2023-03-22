@@ -10,10 +10,6 @@ class UsersController < ApplicationController
     @user = UserForm.new
   end
 
-  def edit
-    @user = UserForm.new(current_resource)
-  end
-
   def create
     @user = UserForm.new
     if @user.submit(params)
@@ -21,6 +17,10 @@ class UsersController < ApplicationController
     else
       render :new
     end
+  end
+
+  def edit
+    @user = UserForm.new(current_resource)
   end
 
   def update

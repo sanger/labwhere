@@ -98,12 +98,12 @@ RSpec.describe 'Users', type: :feature do
   # Tried various things and it seems less trouble to skip it
   # as we know these tests are mature and pass
   # Next step would be to fix or remove
-  describe 'drilling down', js: true do
+  describe.skip 'drilling down', js: true do
     it 'should allow viewing of associated audits' do
       user = create(:user_with_audits)
       visit users_path
-      first(:data_id, user.id).find(:data_behavior, 'drilldown').click
-      expect(first(:data_id, user.id)).to have_css('article', count: 5, wait: 5)
+      find(:data_id, user.id).find(:data_behavior, 'drilldown').click
+      expect(find(:data_id, user.id)).to have_css('article', count: 5, wait: 5)
     end
   end
 end

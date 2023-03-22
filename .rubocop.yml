@@ -45,9 +45,6 @@ Naming/MemoizedInstanceVariableName:
 Style/RedundantInitialize:
   Enabled: false
 
-Style/HashSyntax:
-  Enabled: false
-
 Style/CaseEquality:
   Exclude:
     - 'config/initializers/02_proc.rb'

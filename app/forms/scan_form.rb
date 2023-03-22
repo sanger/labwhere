@@ -46,6 +46,6 @@ class ScanForm
   def check_if_any_barcodes_are_locations
     return unless labwares.any? { |labware| labware.match(/^#{Location::BARCODE_PREFIX}?/o) }
 
-    errors.add(:base, I18n.t('errors.messages.not_labware', url: new_move_location_path))
+    errors.add(:base, I18n.t('errors.messages.not_labware', { url: new_move_location_path }))
   end
 end
