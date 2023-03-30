@@ -8,11 +8,13 @@ class LocationsController < ApplicationController
 
   def index; end
 
-  def new; end
-
   def show
     @location = current_resource
   end
+
+  def new; end
+
+  def edit; end
 
   def create
     if @location.submit(permitted_params)
@@ -21,8 +23,6 @@ class LocationsController < ApplicationController
       render :new
     end
   end
-
-  def edit; end
 
   def update
     if @location.update(permitted_params)
