@@ -16,4 +16,5 @@
 //= require select2
 //= require codemirror
 
+//= require_self
 //= require_tree .

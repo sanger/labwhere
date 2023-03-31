@@ -16,4 +16,6 @@
  *= require_self
  *= require select2
  *= require codemirror
+ *=require_self
  */
+
