@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# This only creates restrictions if there are no restrictions in the database
+# It does not update outdated or removed restrictions. 
 namespace :restrictions do
   desc 'create restrictions'
   task create: :environment do |_t|
