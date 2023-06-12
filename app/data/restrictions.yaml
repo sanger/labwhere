@@ -13,16 +13,8 @@
     :attributes:
       - :name
     :scope: :location_type_id
-    :message: has already been taken for this Location Type
+    :message: has already been taken for this Location Type (Building)
   location_type: Building
-5:
-  validator: ActiveRecord::Validations::UniquenessValidator
-  params:
-    :attributes:
-      - :name
-    :scope: location_type_id
-    :message: has already been taken for this Location Type
-  location_type: Room
 6:
   type: ParentageRestriction
   validator: ParentAllowListValidator
