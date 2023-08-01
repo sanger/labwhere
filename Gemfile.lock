@@ -301,7 +301,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.2.5)
+    rexml (3.2.6)
     rspec-core (3.12.1)
       rspec-support (~> 3.12.0)
     rspec-expectations (3.12.2)
@@ -361,7 +361,7 @@ GEM
     sdoc (2.6.1)
       rdoc (>= 5.0)
     select2-rails (4.0.13)
-    selenium-webdriver (4.8.1)
+    selenium-webdriver (4.9.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -401,10 +401,6 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webdrivers (5.2.0)
-      nokogiri (~> 1.6)
-      rubyzip (>= 1.3.0)
-      selenium-webdriver (~> 4.0)
     websocket (1.2.9)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -417,6 +413,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-darwin-22
   x86_64-linux
 
 DEPENDENCIES
@@ -455,12 +452,12 @@ DEPENDENCIES
   sass-rails
   sdoc
   select2-rails
+  selenium-webdriver
   spring
   teaspoon-jasmine
   turbolinks
   uglifier
   web-console
-  webdrivers
   with_model
 
 BUNDLED WITH
