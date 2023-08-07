@@ -5,7 +5,6 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 require 'rspec/rails'
 require 'with_model'
-require 'webdrivers/chromedriver'
 require 'selenium/webdriver'
 require 'support/helpers'
 
@@ -92,16 +91,15 @@ RSpec.configure do |config|
     xpath { |id| XPath.css("[data-output='#{id}']") }
   end
 
-  # copied from Sequencescape but removed the extra bits not needed currently.
   Capybara.register_driver :headless_chrome do |app|
-    Capybara.drivers[:selenium_chrome_headless].call(app)
+    options = Selenium::WebDriver::Chrome::Options.new(args: %w[headless])
+    Capybara::Selenium::Driver.new(
+      app,
+      browser: :chrome,
+      options: options
+    )
   end
 
-  # options is deprecated
-  Capybara.register_driver :chrome do |app|
-    options = Selenium::WebDriver::Chrome::Options.new
-    Capybara::Selenium::Driver.new(app, browser: :chrome, capabilities: options)
-  end
-
+  Selenium::WebDriver.logger.level = :error
   Capybara.javascript_driver = :headless_chrome
 end

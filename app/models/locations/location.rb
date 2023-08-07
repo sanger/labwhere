@@ -209,7 +209,7 @@ class Location < ApplicationRecord
   end
 
   def been_used?
-    return unless used?
+    return false unless used?
 
     errors.add :location, 'Has been used'
     throw :abort

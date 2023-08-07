@@ -11,8 +11,8 @@ class AvailableCoordinates
   # The number of free coordinates needed
   attr_reader :n
 
-  def self.find(*args)
-    new(*args).find
+  def self.find(*)
+    new(*).find
   end
 
   # Order the coordinates
