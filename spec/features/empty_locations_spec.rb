@@ -12,7 +12,7 @@ RSpec.describe 'EmptyLocations', type: :feature do
   it 'allows a user to empty locations' do
     visit new_empty_location_path
     fill_in 'User swipe card id/barcode', with: tech_swipe_card_id
-    fill_in 'Barcode of location to be emptied', with: "#{location.barcode}\n"
+    fill_in 'Barcode of location to be emptied', with: location.barcode.to_s
     click_button 'Go!'
     expect(location.reload.labwares).to be_empty
     expect(page).to have_content('Location successfully emptied')

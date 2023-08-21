@@ -25,6 +25,7 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
     end
 
     before do
+      allow(broker).to receive(:start_connection)
       stub_const('Broker::Handle', broker)
     end
 

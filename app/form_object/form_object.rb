@@ -108,8 +108,8 @@ module FormObject
     end
 
     # Set the list of form variables which will be assigned on submit.
-    def add_form_variables(*variables)
-      form_variables.add(*variables)
+    def add_form_variables(*)
+      form_variables.add(*)
     end
 
     # modify the actions which will be carried out after a successful validation.
