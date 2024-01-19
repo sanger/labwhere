@@ -19,7 +19,7 @@ namespace :duplicates do
       barcode_to_labs = labs.group_by(&:barcode)
 
       puts 'Deleting duplicates...'
-      barcode_to_labs.each do |_barcode, labwares|
+      barcode_to_labs.each_value do |labwares|
         # save one of them
         labwares.pop
 
