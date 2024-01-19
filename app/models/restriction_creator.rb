@@ -15,7 +15,7 @@ class RestrictionCreator
   private
 
   def generate!
-    restrictions.each do |_k, restriction|
+    restrictions.each_value do |restriction|
       create_restriction(restriction)
     end
   end
