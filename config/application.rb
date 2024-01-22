@@ -9,7 +9,8 @@ Bundler.require(*Rails.groups)
 
 module Labwhere
   class Application < Rails::Application
-    config.load_defaults 5.2
+    config.load_defaults 6.1
+    config.autoloader = :zeitwerk
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -44,6 +45,11 @@ module Labwhere
     config.mailer = YAML.load_file(Rails.root.join('config/mailer.yml'))[Rails.env]
 
     config.label_templates = Rails.application.config_for(:label_templates)
+
+    config.eager_load_paths += %W[#{config.root}/app/lib/utils #{config.root}/app/lib/validators
+                                  #{config.root}/app/models/users #{config.root}/app/models/locations
+                                  #{config.root}/app/models/restrictions #{config.root}/app/lib/label_printing
+                                  #{config.root}/app/models/labware_collection]
 
     # replace fixtures with factory bot
     config.generators do |g|
