@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-# # Broker for handling messages
-# module Broker
-# end
-
-# # frozen_string_literal: true
-
 # Broker setup
 module Broker
   if Rails.configuration.bunny['enabled']

@@ -10,7 +10,6 @@ Bundler.require(*Rails.groups)
 module Labwhere
   class Application < Rails::Application
     config.load_defaults 6.1
-    config.autoloader = :zeitwerk
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -68,5 +67,12 @@ module Labwhere
 
     # RabbitMQ config
     config.bunny = config_for(:bunny)
+
+    Rails.application.config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get]
+      end
+    end
   end
 end
