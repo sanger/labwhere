@@ -7,7 +7,7 @@ require 'digest/sha1'
 namespace :user do
   desc "to hash all existing users swipe_card_id's"
   task hash_swipe_card_ids: :environment do
-    User.all.each do |user|
+    User.find_each do |user|
       next if user.swipe_card_id.blank?
 
       user.swipe_card_id = Digest::SHA1.hexdigest(user.swipe_card_id)

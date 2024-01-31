@@ -216,7 +216,7 @@ class Location < ApplicationRecord
   end
 
   def only_one_unknown
-    return unless type == 'UnknownLocation' && (new_record? || type_changed?) && UnknownLocation.all.count >= 1
+    return unless type == 'UnknownLocation' && (new_record? || type_changed?) && UnknownLocation.count >= 1
 
     errors.add(:base, UNKNOWN_LIMIT_ERROR)
   end
