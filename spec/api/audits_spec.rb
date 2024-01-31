@@ -24,7 +24,7 @@ RSpec.describe Api::Locations::AuditsController, type: :request do
   end
 
   it 'should return date created' do
-    expect(@json['created_at']).to eq(@audit.created_at.to_s(:uk))
+    expect(@json['created_at']).to eq(@audit.created_at.to_fs(:uk))
   end
 
   it 'should return the action' do

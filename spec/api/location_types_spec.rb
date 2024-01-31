@@ -23,8 +23,8 @@ RSpec.describe Api::LocationTypesController, type: :request do
     json = ActiveSupport::JSON.decode(response.body)
     expect(json['id']).to eq(location_type.id)
     expect(json['name']).to eq(location_type.name)
-    expect(json['created_at']).to eq(location_type.created_at.to_s(:uk))
-    expect(json['updated_at']).to eq(location_type.updated_at.to_s(:uk))
+    expect(json['created_at']).to eq(location_type.created_at.to_fs(:uk))
+    expect(json['updated_at']).to eq(location_type.updated_at.to_fs(:uk))
     expect(json['locations']).to eq(api_location_type_locations_path(location_type))
     expect(json['audits']).to eq(api_location_type_audits_path(location_type))
   end
@@ -49,8 +49,8 @@ RSpec.describe Api::LocationTypesController, type: :request do
     location_type = LocationType.first
     expect(response).to be_successful
     json = ActiveSupport::JSON.decode(response.body)
-    expect(json['created_at']).to eq(location_type.created_at.to_s(:uk))
-    expect(json['updated_at']).to eq(location_type.updated_at.to_s(:uk))
+    expect(json['created_at']).to eq(location_type.created_at.to_fs(:uk))
+    expect(json['updated_at']).to eq(location_type.updated_at.to_fs(:uk))
     expect(json['locations']).to eq(api_location_type_locations_path(location_type))
     expect(json['audits']).to eq(api_location_type_audits_path(location_type))
   end

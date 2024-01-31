@@ -23,6 +23,8 @@ gem 'turbolinks' # Turbolinks makes following links in your web application fast
 
 gem 'rack-cors'
 
+gem 'sprockets-rails' # Use Sprockets for asset management and caching
+
 group :development do
   gem 'apiaryio'
   gem 'listen'
