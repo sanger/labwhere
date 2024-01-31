@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# module LabwareCollection
 module LabwareCollection
   # Base for LabwareCollection
   class Base

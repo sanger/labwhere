@@ -73,7 +73,7 @@ RSpec.describe ScanForm, type: :model do
       create_scan.submit(params.merge(scan:
        { 'location_barcode' => location.barcode, 'labware_barcodes' => new_labware.join_barcodes,
          user_code: sci_swipe_card_id }))
-      expect(Audit.all.count).to eq(4)
+      expect(Audit.count).to eq(4)
       expect(location.labwares.first.audits.first.user).to eq(scientist)
       expect(location.labwares.first.audits.first.action).to eq('create')
     end
