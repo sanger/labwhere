@@ -14,7 +14,7 @@ namespace :db do
 
     # create some location types
     location_types = YAML.load_file(Rails.root.join('config/location_types.yml'))
-    location_types.each do |_k, v|
+    location_types.each_value do |v|
       LocationType.create(v)
     end
 

@@ -5,7 +5,7 @@ task invalid_locations: :environment do
   has_failures = false
   format = "%-20s\t%-20s\t%-20s\t%-20s\n"
 
-  Location.all.each do |location|
+  Location.find_each do |location|
     next if location.valid?
 
     # Print out some nicely formatted headers

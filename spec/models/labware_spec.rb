@@ -66,7 +66,7 @@ RSpec.describe Labware, type: :model do
     labwares += create_list(:labware_with_location, 2)
     labwares += create_list(:labware_with_ordered_location, 2)
     labwares += [create(:labware, location: UnknownLocation.get)]
-    location_barcodes = labwares.map(&:location).map(&:barcode)
+    location_barcodes = labwares.map { |labware| labware.location.barcode }
     expect(Labware.by_location_barcode(location_barcodes).count).to eq(5)
   end
 
@@ -78,6 +78,7 @@ RSpec.describe Labware, type: :model do
     labware2 = create(:labware, coordinate: coordinate)
     expect(labware2.location).to eq(coordinate.location)
     labware3 = create(:labware)
+
     expect(labware3.location).to be_empty
   end
 
