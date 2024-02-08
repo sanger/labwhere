@@ -94,7 +94,7 @@ class LocationForm
   end
 
   def coordinateable
-    @coordinateable ||= (coordinateable? || @location.is_a?(OrderedLocation))
+    @coordinateable ||= coordinateable? || @location.is_a?(OrderedLocation)
   end
 
   def persisted?
