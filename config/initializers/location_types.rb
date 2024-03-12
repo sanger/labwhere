@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require './app/lib/utils/dependent_loader'
+
 DependentLoader.start(:location_types) do |on|
   on.success do
     LocationType.create(

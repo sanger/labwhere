@@ -200,7 +200,7 @@ class Location < ApplicationRecord
     return unless location_type
 
     location_type.restrictions.each do |restriction|
-      validates_with restriction.validator, restriction.params
+      validates_with restriction.constantise_validator, restriction.params
     end
   end
 

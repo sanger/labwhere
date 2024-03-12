@@ -19,7 +19,7 @@ class Restriction < ApplicationRecord
     super || {}
   end
 
-  def validator
-    super.constantize if validator?
+  def constantise_validator
+    validator.constantize
   end
 end

@@ -8,7 +8,7 @@ RSpec.describe Restriction, type: :model do
   end
 
   it 'returns validator as a constant' do
-    expect(build(:restriction).validator).to be_kind_of(Class)
+    expect(build(:restriction).constantise_validator).to be_kind_of(Class)
   end
 
   context 'when params is empty' do
