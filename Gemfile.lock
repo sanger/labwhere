@@ -182,7 +182,7 @@ GEM
     jquery-turbolinks (2.1.0)
       railties (>= 3.1.0)
       turbolinks
-    jquery-ui-rails (6.0.1)
+    jquery-ui-rails (7.0.0)
       railties (>= 3.2.16)
     json (2.7.1)
     json_api_client (1.21.0)
