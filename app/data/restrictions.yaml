@@ -7,14 +7,6 @@
   location_type: Building
   location_types_restrictions:
     - Site
-4:
-  validator: ActiveRecord::Validations::UniquenessValidator
-  params:
-    :attributes:
-      - :name
-    :scope: :location_type_id
-    :message: has already been taken for this Location Type (Building)
-  location_type: Building
 6:
   type: ParentageRestriction
   validator: ParentAllowListValidator
