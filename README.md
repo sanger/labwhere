@@ -7,7 +7,7 @@ A tool for tracking uniquely barcoded labware
 ## Getting Started
 
 1. Get the right Ruby version
-Make sure you have `ruby-3.2.0` installed. e.g. `rvm install ruby-3.2.0`.
+Make sure you have the correct ruby version (in `.ruby-version` file) installed. e.g. `rvm install ruby-3.2.0`.
 
 1. Create a new gemset and install bundler (if necessary)
 
@@ -16,11 +16,14 @@ Make sure you have `ruby-3.2.0` installed. e.g. `rvm install ruby-3.2.0`.
     gem install bundler
     ```
 
-1. Install dependencies: 
+1. Install dependencies:
     ```bash
     bundle install
     npm install
     ```
+
+1. Remove the `.example` suffix from two files - `database.yml.example` and `bunny.yml.example`
+
 1. Set up the local database
 The local database uses `mysql`.
 
@@ -89,7 +92,7 @@ This will create a number of labware barcodes that can then be scanned into the 
 
 #### UAT
 
-Update `.release-version` with major/minor/patch. On merging a pull request into develop, a release will be created with the release version as the tag/name + -develop 
+Update `.release-version` with major/minor/patch. On merging a pull request into develop, a release will be created with the release version as the tag/name + -develop
 
 ### PROD
 
