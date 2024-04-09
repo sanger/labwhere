@@ -7,7 +7,7 @@ A tool for tracking uniquely barcoded labware
 ## Getting Started
 
 1. Get the right Ruby version
-Make sure you have `ruby-3.2.0` installed. e.g. `rvm install ruby-3.2.0`.
+Make sure you have the correct ruby version (in `.ruby-version` file) installed. e.g. `rvm install ruby-3.2.0`.
 
 1. Create a new gemset and install bundler (if necessary)
 
