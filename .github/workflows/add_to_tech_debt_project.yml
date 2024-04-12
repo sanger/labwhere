@@ -1,0 +1,16 @@
+# Triggered on creation of depfu pull requests
+# Adds the pull request to the technical debt project (board)
+
+name: Add dependencies to technical debt project
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  call-workflow-add_to_technical_debt_project:
+  uses: sanger/.github/workflows/add_to_technical_debt_project.yml@main
+  with:
+    github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+    labeled: depfu
