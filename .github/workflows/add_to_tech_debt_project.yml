@@ -4,9 +4,6 @@
 name: Add dependencies to technical debt project
 
 on:
-  push:
-    branches:
-      - github-action-add-to-tech-debt-project
   pull_request:
     types:
       - labeled
