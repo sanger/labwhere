@@ -1,5 +1,7 @@
-# Triggered on creation of depfu pull requests
-# Adds the pull request to the technical debt project (board)
+# Triggered on creation of pull requests with a label (any label)
+# Calls a reusable workflow in the .github repo,
+# which adds the PR to the Technical Debt project board, if it is a depfu one.
+# Passes a personal access token as a secret to the reusable workflow.
 
 name: Add dependencies to technical debt project
 
