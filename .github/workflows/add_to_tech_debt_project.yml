@@ -4,6 +4,9 @@
 name: Add dependencies to technical debt project
 
 on:
+  push:
+    branches:
+      - github-action-add-to-tech-debt-project
   pull_request:
     types:
       - labeled
@@ -11,6 +14,5 @@ on:
 jobs:
   call-workflow-add_to_technical_debt_project:
     uses: sanger/.github/.github/workflows/add_to_technical_debt_project.yml@master
-    with:
-      github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
-      labeled: test-label
+    secrets:
+      token: ${{ secrets.ADD_TO_PROJECT_PAT }}
