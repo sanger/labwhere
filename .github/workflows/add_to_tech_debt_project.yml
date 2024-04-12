@@ -10,6 +10,6 @@ on:
 
 jobs:
   call-workflow-add_to_technical_debt_project:
-    uses: sanger/.github/.github/workflows/add_to_technical_debt_project.yml@master
+    uses: sanger/.github/.github/workflows/add_to_tech_debt_project_reusable.yml@master
     secrets:
       token: ${{ secrets.ADD_TO_PROJECT_PAT }}
