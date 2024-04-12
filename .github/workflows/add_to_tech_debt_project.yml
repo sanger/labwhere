@@ -7,6 +7,9 @@ on:
   push:
     branches:
       - github-action-add-to-tech-debt-project
+  pull_request:
+    types:
+      - labeled
 
 jobs:
   call-workflow-add_to_technical_debt_project:
