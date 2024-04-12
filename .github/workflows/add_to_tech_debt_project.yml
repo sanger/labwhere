@@ -10,7 +10,7 @@ on:
 
 jobs:
   call-workflow-add_to_technical_debt_project:
-  uses: sanger/.github/workflows/add_to_technical_debt_project.yml@main
-  with:
-    github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
-    labeled: test-label
+    uses: sanger/.github/.github/workflows/add_to_technical_debt_project.yml@master
+    with:
+      github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+      labeled: test-label
