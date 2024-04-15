@@ -4,7 +4,7 @@ namespace :db do
   desc 'clear the database'
   task clear: :environment do |_t|
     Rails.application.eager_load!
-    models = ActiveRecord::Base.descendants
+    models = ApplicationRecord.descendants
     models.each(&:delete_all)
   end
 
