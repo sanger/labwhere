@@ -372,7 +372,7 @@ GEM
     sdoc (2.6.1)
       rdoc (>= 5.0)
     select2-rails (4.0.13)
-    selenium-webdriver (4.19.0)
+    selenium-webdriver (4.20.0)
       base64 (~> 0.2)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
