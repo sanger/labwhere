@@ -13,7 +13,7 @@ on:
 
 jobs:
   call-workflow-add_to_technical_debt_project:
-    uses: sanger/.github/.github/workflows/add_to_tech_debt_project_reusable.yml@master
+    uses: sanger/.github/workflows/add_to_tech_debt_project_reusable.yml@master
     secrets:
       app_id: ${{ secrets.ADD_TO_PROJECT_APP_ID_PSD }}
       app_key: ${{ secrets.ADD_TO_PROJECT_APP_KEY_PSD }}
