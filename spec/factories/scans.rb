@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :scan do
     user
-    location nil
+    location { nil }
   end
 end

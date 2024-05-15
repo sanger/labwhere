@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Restriction, type: :model do
   it 'is not valid without a validator' do
-    expect(build(:restriction, validator: nil)).to be_invalid
+    expect(build(:restriction, validator: nil)).not_to be_valid
   end
 
   it 'returns validator as a constant' do
