@@ -48,8 +48,8 @@ class User < ApplicationRecord
 
     encrypted_code = Digest::SHA1.hexdigest(code)
 
-    where('swipe_card_id = :encrypted_code OR barcode = :code OR login = :code',
-          { code: code, encrypted_code: encrypted_code }).take || Guest.new
+    find_by('swipe_card_id = :encrypted_code OR barcode = :code OR login = :code',
+            { code: code, encrypted_code: encrypted_code }) || Guest.new
   end
 
   ##
