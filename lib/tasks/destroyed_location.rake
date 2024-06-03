@@ -3,7 +3,6 @@
 namespace :destroyed_location do
   desc 'Creates Destroyed Location Type and Location'
   task create: :environment do |_t|
-
     location_type_name = 'Destroyed'
     location_name = 'Destroyed'
     location_barcode = 'lw-destroyed'
