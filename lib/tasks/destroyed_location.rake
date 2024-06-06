@@ -10,11 +10,12 @@ namespace :destroyed_location do
     parent_type = 'Site'
 
     ActiveRecord::Base.transaction do
-      # Needs a parent to be able to scan labware; use the Sanger Location
-      parent_type = LocationType.find_or_create_by!(name: parent_type)
-      parent = UnorderedLocation.create_with(
-        location_type: parent_type
-      ).find_or_create_by(name: parent_name)
+      # The destroyed location needs a parent to be able to scan labware.
+      # We assume that a parent location with the name 'Sanger' and the
+      # location type name 'Site' already exists.
+      parent = UnorderedLocation
+               .joins(:location_type)
+               .find_by(name: parent_name, location_types: { name: parent_type })
 
       # Create the Destroyed Location Type
       location_type = LocationType.find_or_create_by!(name: location_type_name)
