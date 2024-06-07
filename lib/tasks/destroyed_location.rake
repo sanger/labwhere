@@ -17,23 +17,15 @@ namespace :destroyed_location do
                .joins(:location_type)
                .find_by(name: parent_name, location_types: { name: parent_type })
 
-      # Create the Destroyed Location Type
+      # Create the Destroyed Location Type.
       location_type = LocationType.find_or_create_by!(name: location_type_name)
 
-      begin
-        # Use the specified Destroyed Location barcode; skip the callback to generate a barcode
-        UnorderedLocation.skip_callback(:create, :after, :generate_barcode)
-
-        # Create the Destroyed Location
-        UnorderedLocation.create_with(
-          barcode: location_barcode,
-          location_type: location_type,
-          parent: parent
-        ).find_or_create_by(name: location_name)
-      ensure
-        # Restore the callback to generate a barcode
-        UnorderedLocation.set_callback(:create, :after, :generate_barcode)
-      end
+      # Create the Destroyed Location.
+      UnorderedLocation.create_with(
+        barcode: location_barcode,
+        location_type: location_type,
+        parent: parent
+      ).find_or_create_by(name: location_name)
     end
   end
 end
