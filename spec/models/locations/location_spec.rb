@@ -135,6 +135,13 @@ RSpec.describe Location, type: :model do
     expect(location.barcode).to eq("lw-location1-#{location.id}")
   end
 
+  it 'does not generate a new barcode if one is already specified' do
+    barcode = 'specified-barcode'
+    name = 'location-name'
+    location = create(:location, name:, barcode:)
+    expect(location.barcode).to eq(barcode)
+  end
+
   it '#as_json should return the correct attributes' do
     location_type = create(:location_type, name: 'Building')
     location      = create(:location, location_type: location_type)
