@@ -466,4 +466,15 @@ RSpec.describe Location, type: :model do
       expect(audit.message).to eq("#{update_action.display_text} and stored in #{location.breadcrumbs}")
     end
   end
+
+  describe '#max_descendant_depth' do
+    it 'returns all labwares in the location and its children' do
+      location1 = create(:location, name: 'Location1')
+      location2 = create(:location, name: 'Location2', parent: location1)
+      location3 = create(:location, name: 'Location3', parent: location2)
+      expect(location1.max_descendant_depth).to eq(2)
+      expect(location2.max_descendant_depth).to eq(1)
+      expect(location3.max_descendant_depth).to eq(0)
+    end
+  end
 end
