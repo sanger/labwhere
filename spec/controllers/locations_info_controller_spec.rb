@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Api::LocationsController, type: :controller do
@@ -23,7 +25,7 @@ RSpec.describe Api::LocationsController, type: :controller do
 
       it 'returns an error' do
         expect(response.body).to eq({ errors: ['Location not found'] }.to_json)
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end

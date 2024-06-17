@@ -27,7 +27,7 @@ class Api::LocationsController < ApiController
   # For example, to get information about a location with barcode 'lw-location-1-1', the URL would be:
   # GET /api/locations/info?barcode=lw-location-1-1
   #
-  # @return A response with a JSON body. If a location is found, the body contains the labwares 
+  # @return A response with a JSON body. If a location is found, the body contains the labwares
   # and the maximum descendant depth.
   #  e.g { labwares: [labware1, labware2], depth: 2 }
   #  If no location is found, the body contains an error. e.g { errors: ['Location not found'] }
