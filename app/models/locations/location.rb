@@ -190,8 +190,8 @@ class Location < ApplicationRecord
 
   # Calculates the maximum depth of the descendant locations of the current location.
   # The depth of a location is defined as the number of child locations below it.
-  # This method works by recursively calling `max_descendant_depth` (of ancestry gem) on all children of the current location,
-  # finding the maximum of these values, and adding 1 to it.
+  # This method works by recursively calling max_descendant_depth (of ancestry gem)
+  # on all children of the current location, finding the maximum of these values.
   # If the location has no children, the depth is 0.
   #
   # @return [Integer] The maximum depth of the descendants of the current location
