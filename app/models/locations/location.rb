@@ -193,6 +193,8 @@ class Location < ApplicationRecord
   ##
   # The barcode is the name downcased with spaces replaced by dashes with the id added again separated by a space.
   def generate_barcode
+    return if barcode.present? # Use the specified barcode if it exists.
+
     update_column(:barcode, "#{BARCODE_PREFIX}#{name.tr(' ', '-').downcase}-#{id}")
   end
 
