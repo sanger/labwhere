@@ -22,6 +22,25 @@ class Api::LocationsController < ApiController
     process_location(@location.update(permitted_params))
   end
 
+  # Retrieves information about a location based on its barcode.
+  # @param params The request parameters. Expected to contain a `:barcode` key with the barcode of the location.
+  # For example, to get information about a location with barcode 'lw-location-1-1', the URL would be:
+  # GET /api/locations/info?barcode=lw-location-1-1
+  #
+  # @return A response with a JSON body. If a location is found, the body contains the labwares
+  # and the maximum descendant depth.
+  #  e.g { labwares: [labware1, labware2], depth: 2 }
+  #  If no location is found, the body contains an error. e.g { errors: ['Location not found'] }
+
+  def info
+    location = Location.find_by(barcode: params[:barcode])
+    if location
+      render json: { labwares: location.labwares.to_a, depth: location.max_descendant_depth }
+    else
+      render json: { errors: ['Location not found'] }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def current_resource

@@ -65,9 +65,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     get 'docs', to: 'docs#index'
+    get 'locations/info', to: 'locations#info'
     post 'labwares/searches', to: 'labwares/searches#create'
     post 'labwares/locations', to: 'labwares/locations#create'
-
+ 
     # This needs to be a post due to the number of barcodes that will be passed which is not possible with a get
     post 'labwares_by_barcode', to: 'labwares#by_barcode'
     root 'docs#index'
