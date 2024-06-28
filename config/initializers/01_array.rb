@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require '../../app/lib/utils/barcode_utilities'
+require './app/lib/utils/barcode_utilities'
 
 # Array extension
 class Array
