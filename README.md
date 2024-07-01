@@ -17,6 +17,7 @@ Make sure you have the correct ruby version (in `.ruby-version` file) installed.
     ```
 
 1. Install dependencies:
+
     ```bash
     bundle install
     npm install
