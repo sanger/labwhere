@@ -147,8 +147,8 @@ RSpec.describe Location, type: :model do
     location      = create(:location, location_type: location_type)
     json          = location.as_json
     expect(json['deactivated_at']).to be_nil
-    expect(json['created_at']).to eq(location.created_at.to_s(:uk))
-    expect(json['updated_at']).to eq(location.updated_at.to_s(:uk))
+    expect(json['created_at']).to eq(location.created_at.to_fs(:uk))
+    expect(json['updated_at']).to eq(location.updated_at.to_fs(:uk))
     expect(json['location_type_id']).to be_nil
     expect(json['location_type']).to eq(location_type.name)
   end

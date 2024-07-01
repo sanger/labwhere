@@ -248,7 +248,7 @@ RSpec.describe Api::LabwaresController, type: :request do
       json = ActiveSupport::JSON.decode(response.body).first
       audit = labware.audits.first
       expect(json['user']).to eq(audit.user.login)
-      expect(json['created_at']).to eq(audit.created_at.to_s(:uk))
+      expect(json['created_at']).to eq(audit.created_at.to_fs(:uk))
     end
   end
 

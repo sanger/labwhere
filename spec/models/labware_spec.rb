@@ -85,8 +85,8 @@ RSpec.describe Labware, type: :model do
   it '#as_json should have the correct attributes' do
     labware = create(:labware)
     json = labware.as_json
-    expect(json['created_at']).to eq(labware.created_at.to_s(:uk))
-    expect(json['updated_at']).to eq(labware.updated_at.to_s(:uk))
+    expect(json['created_at']).to eq(labware.created_at.to_fs(:uk))
+    expect(json['updated_at']).to eq(labware.updated_at.to_fs(:uk))
     expect(json['location']).to eq(labware.location.barcode)
     expect(json['location_id']).to be_nil
     expect(json['coordinate_id']).to be_nil

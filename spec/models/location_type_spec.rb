@@ -40,8 +40,8 @@ RSpec.describe LocationType, type: :model do
   it '#as_json should have the correct attributes' do
     location_type = create(:location_type)
     json = location_type.as_json
-    expect(json['created_at']).to eq(location_type.created_at.to_s(:uk))
-    expect(json['updated_at']).to eq(location_type.updated_at.to_s(:uk))
+    expect(json['created_at']).to eq(location_type.created_at.to_fs(:uk))
+    expect(json['updated_at']).to eq(location_type.updated_at.to_fs(:uk))
   end
 
   it 'should not be destroyed if it has locations' do
