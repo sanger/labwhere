@@ -21,7 +21,7 @@ RSpec.describe Messages::Broker do
 
   let(:broker) { Messages::Broker.new(bunny_config) }
 
-  setup do
+  before do
     stub_const('Bunny', bunny)
   end
 

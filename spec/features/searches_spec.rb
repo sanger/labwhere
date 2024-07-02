@@ -67,7 +67,7 @@ RSpec.describe 'Searches', type: :feature do
         expect(page).to have_content(location.name)
       end
       other_locations.each do |location|
-        expect(page).to_not have_content(location.name)
+        expect(page).to have_no_content(location.name)
       end
     end
 

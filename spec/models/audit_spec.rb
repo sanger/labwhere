@@ -40,12 +40,12 @@ RSpec.describe Audit, type: :model do
   it 'summary should be correct' do
     location.audits.create(user: user, record_data: location)
     audit = location.audits.first
-    expect(audit.summary).to eq("#{create_action.display_text} by #{user.login} on #{audit.created_at.to_s(:uk)}")
+    expect(audit.summary).to eq("#{create_action.display_text} by #{user.login} on #{audit.created_at.to_fs(:uk)}")
 
     labware = create(:labware)
     labware.audits.create(message: 'rideontime', user: user, record_data: location)
     audit = labware.audits.first
-    expect(audit.summary).to eq("rideontime by #{user.login} on #{audit.created_at.to_s(:uk)}")
+    expect(audit.summary).to eq("rideontime by #{user.login} on #{audit.created_at.to_fs(:uk)}")
   end
 
   describe 'action' do

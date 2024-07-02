@@ -18,8 +18,8 @@ RSpec.describe Auditable, type: :model do
   end
 
   it 'should add a method for converting dates to uk' do
-    expect(location.uk_dates['created_at']).to eq(location.created_at.to_s(:uk))
-    expect(location.uk_dates['updated_at']).to eq(location.updated_at.to_s(:uk))
+    expect(location.uk_dates['created_at']).to eq(location.created_at.to_fs(:uk))
+    expect(location.uk_dates['updated_at']).to eq(location.updated_at.to_fs(:uk))
   end
 
   it 'should add an action if none is provided' do

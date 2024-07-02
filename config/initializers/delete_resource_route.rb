@@ -3,7 +3,7 @@
 # DeleteResourceRoute
 module DeleteResourceRoute
   def resources(*args)
-    super(*args) do
+    super do
       yield if block_given?
       if args.length == 1
         member do

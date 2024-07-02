@@ -42,7 +42,7 @@ RSpec.describe PrintsController, type: :controller do
           copies: 1
         }, xhr: true
 
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
 
         expect(assigns(:message_type)).to eq('notice')
         expect(assigns(:message)).to eq(I18n.t('printing.success') + " for each child of location: #{@location.name}")
@@ -62,7 +62,7 @@ RSpec.describe PrintsController, type: :controller do
           copies: 1
         }, xhr: true
 
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
 
         expect(assigns(:message_type)).to eq('notice')
         expect(assigns(:message)).to eq(I18n.t('printing.success') + " for location: #{@location.name}")

@@ -1,6 +1,6 @@
 # Labwhere
 
-[![Build Status](https://travis-ci.com/sanger/labwhere.svg?branch=develop)](https://travis-ci.com/sanger/labwhere)
+[![Build Status](https://github.com/sanger/labwhere/actions/workflows/automated_release_and_build.yml/badge.svg?branch=develop)](https://github.com/sanger/labwhere/actions/workflows/automated_release_and_build.yml)
 
 A tool for tracking uniquely barcoded labware
 
@@ -17,6 +17,7 @@ Make sure you have the correct ruby version (in `.ruby-version` file) installed.
     ```
 
 1. Install dependencies:
+
     ```bash
     bundle install
     npm install

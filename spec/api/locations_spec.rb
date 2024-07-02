@@ -48,8 +48,8 @@ RSpec.describe Api::LocationsController, type: :request do
     expect(json['container']).to eq(location.container)
     expect(json['status']).to eq(location.status)
     expect(json['location_type_id']).to eq(location.location_type_id)
-    expect(json['created_at']).to eq(location.created_at.to_s(:uk))
-    expect(json['updated_at']).to eq(location.updated_at.to_s(:uk))
+    expect(json['created_at']).to eq(location.created_at.to_fs(:uk))
+    expect(json['updated_at']).to eq(location.updated_at.to_fs(:uk))
     expect(json['parentage']).to eq(location.parentage)
     expect(json['rows']).to eq(location.rows)
     expect(json['columns']).to eq(location.columns)
@@ -110,8 +110,8 @@ RSpec.describe Api::LocationsController, type: :request do
     expect(response).to be_successful
     location = Location.first
     json = ActiveSupport::JSON.decode(response.body)
-    expect(json['created_at']).to eq(location.created_at.to_s(:uk))
-    expect(json['updated_at']).to eq(location.updated_at.to_s(:uk))
+    expect(json['created_at']).to eq(location.created_at.to_fs(:uk))
+    expect(json['updated_at']).to eq(location.updated_at.to_fs(:uk))
   end
 
   it 'should return an error if the location has invalid attributes' do
