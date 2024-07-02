@@ -46,9 +46,12 @@ group :development, :test do
   gem 'rb-readline'
   gem 'rspec-rails'
   gem 'rubocop', require: false
+  gem 'rubocop-capybara'
+  gem 'rubocop-factory_bot'
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec', require: false
+  gem 'rubocop-rspec_rails'
   gem 'spring' # Spring speeds up development by keeping your application running in the background.
   gem 'teaspoon-jasmine'
   gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
