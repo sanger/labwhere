@@ -20,6 +20,6 @@ class Restriction < ApplicationRecord
   end
 
   def validator
-    super.constantize if validator?
+    super.present? ? super.constantize : ''
   end
 end

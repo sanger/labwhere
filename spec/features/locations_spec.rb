@@ -74,7 +74,7 @@ RSpec.describe 'Locations', type: :feature do
     location_type = create(:location_type)
     visit location_types_path
     within("#location_type_#{location_type.id}") do
-      expect(page).to_not have_content('Delete')
+      expect(page).to have_no_content('Delete')
     end
   end
 
@@ -273,7 +273,7 @@ RSpec.describe 'Locations', type: :feature do
     location_child = create(:location)
     visit edit_location_path(location_child)
     within('#location_parent_id') do
-      expect(page).to_not have_content location_child.name
+      expect(page).to have_no_content location_child.name
     end
   end
 
@@ -282,7 +282,7 @@ RSpec.describe 'Locations', type: :feature do
     location_child = create(:location)
     visit edit_location_path(location_child)
     within('#location_parent_id') do
-      expect(page).to_not have_content location_parent.name
+      expect(page).to have_no_content location_parent.name
     end
   end
 
@@ -370,7 +370,7 @@ RSpec.describe 'Locations', type: :feature do
 
       expect(page).to have_content("Location '#{location.name}' successfully deleted")
 
-      expect(page).to_not have_css("article#location_#{location.id}")
+      expect(page).to have_no_css("article#location_#{location.id}")
 
       expect(Location.find_by(id: location.id)).to be_nil
     end
@@ -379,7 +379,7 @@ RSpec.describe 'Locations', type: :feature do
       location = create(:unordered_location_with_children)
       visit locations_path
 
-      expect(find(:data_id, location.id)).to_not have_link('Delete')
+      expect(find(:data_id, location.id)).to have_no_link('Delete')
     end
 
     it 'is possible to delete multiple locations one after another' do
@@ -393,7 +393,7 @@ RSpec.describe 'Locations', type: :feature do
 
       expect(page).to have_content("Location '#{location1.name}' successfully deleted")
 
-      expect(page).to_not have_css("article#location_#{location1.id}")
+      expect(page).to have_no_css("article#location_#{location1.id}")
 
       find(:data_id, location2.id).click_link 'Delete'
       fill_in 'User swipe card id/barcode', with: admin_swipe_card_id
@@ -401,7 +401,7 @@ RSpec.describe 'Locations', type: :feature do
 
       expect(page).to have_content("Location '#{location2.name}' successfully deleted")
 
-      expect(page).to_not have_css("article#location_#{location2.id}")
+      expect(page).to have_no_css("article#location_#{location2.id}")
 
       expect(page).to have_css("article#location_#{location3.id}")
 

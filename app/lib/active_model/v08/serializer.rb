@@ -16,7 +16,7 @@ module ActiveModel
       end
 
       def respond_to_missing?(method_name, include_private = false)
-        super(method_name, include_private)
+        super
       end
 
       alias options instance_options
