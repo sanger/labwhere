@@ -20,6 +20,8 @@ RSpec.describe 'location:fix_children_count' do
   end
 
   it 'fixes the children_count for all locations and outputs the correct message' do
+    expect(@parent.children_count).to eq(0)
+    expect(@child1.children_count).to eq(0)
     expect do
       Rake::Task['location:fix_children_count'].invoke
     end.to output(/Updated children_count for Location #{@parent.id} to 2\nUpdated children_count for Location 2 to 1/)
