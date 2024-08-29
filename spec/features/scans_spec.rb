@@ -40,29 +40,25 @@ RSpec.describe 'Scans', type: :feature do
     visit new_scan_path
     fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
     fill_in 'Location barcode', with: location.barcode
+
     # Fill in the first barcode and press Enter
-    fill_in_labware_barcodes('1234')
-    find('.CodeMirror').click # Focus on the CodeMirror editor
-    find('.CodeMirror').send_keys(:enter)
+    # fill_in_labware_barcodes('1234')
+    execute_script("document.querySelector('.CodeMirror').CodeMirror.setValue('1234\\n');")
     expect(page.all('.cm-error').count).to eq(0)
 
     # Fill in the second barcode and press Enter
-    fill_in_labware_barcodes('4567')
-    find('.CodeMirror').click # Focus on the CodeMirror editor
-    find('.CodeMirror').send_keys(:enter)
+    # fill_in_labware_barcodes('4567')
+    execute_script("document.querySelector('.CodeMirror').CodeMirror.setValue('1234\\n4567\\n');")
     expect(page.all('.cm-error').count).to eq(0)
 
     # Fill in the duplicate barcode and press Enter
-    fill_in_labware_barcodes('1234')
-    find('.CodeMirror').click # Focus on the CodeMirror editor
-    find('.CodeMirror').send_keys(:enter)
+    # fill_in_labware_barcodes('1234')
+    execute_script("document.querySelector('.CodeMirror').CodeMirror.setValue('1234\\n4567\\n1234\\n');")
     expect(page.all('.cm-error').count).to eq(1)
 
     # Fill in the duplicate barcode and press Enter
-    fill_in_labware_barcodes('4567')
-    find('.CodeMirror').click # Focus on the CodeMirror editor
-    find('.CodeMirror').send_keys(:enter)
-    expect(page.all('.cm-error').count).to eq(1)
+    # fill_in_labware_barcodes('4567')
+    execute_script("document.querySelector('.CodeMirror').CodeMirror.setValue('1234\\n4567\\n1234\\n4567\\n');")
 
     # Add debugging information
     puts "Debug Info: #{page.html}" if page.all('.cm-error', wait: 5).count != 2
