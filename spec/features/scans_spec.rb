@@ -49,6 +49,7 @@ RSpec.describe 'Scans', type: :feature do
     expect(page.all('.cm-error').count).to eq(1)
     fill_in_labware_barcodes("4567\n")
     expect(page.all('.cm-error').count).to eq(2)
+    puts page.html
   end
 
   it 'allows a user to scan is some labware to a location with coordinates' do
