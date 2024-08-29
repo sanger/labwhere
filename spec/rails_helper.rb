@@ -101,5 +101,6 @@ RSpec.configure do |config|
   end
 
   Selenium::WebDriver.logger.level = :error
+  Capybara.default_max_wait_time = 10
   Capybara.javascript_driver = :headless_chrome
 end
