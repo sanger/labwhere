@@ -57,6 +57,9 @@ jobs:
       run: |
         echo "Browser Version:"
         google-chrome --version
+        google-chrome --version
+        echo "Ubuntu Version:"
+        lsb_release -a
         echo "Environment Variables:"
         env
 
