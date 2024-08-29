@@ -71,14 +71,7 @@ RSpec.describe 'MoveLocations', type: :feature do
     expect(page.all('.cm-error').count).to eq(0)
     fill_in_labware_barcodes("1234\n")
     expect(page.all('.cm-error').count).to eq(1)
-    # Use JavaScript to ensure the input is processed correctly
-    page.execute_script("document.querySelector('.CodeMirror').CodeMirror.setValue('4567');")
-    page.execute_script("document.querySelector('.CodeMirror textarea').dispatchEvent(new Event('change'));")
-
-    # fill_in_labware_barcodes("4567\n")
-    # Add debugging information
-    puts "Debug Info: #{page.html}" if page.all('.cm-error', wait: 5).count != 2
-
+    fill_in_labware_barcodes("4567\n")
     expect(page.all('.cm-error').count).to eq(2)
   end
 end
