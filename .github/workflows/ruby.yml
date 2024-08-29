@@ -12,9 +12,8 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      DISABLE_HEADLESS: true
-    env:
       RAILS_ENV: test
+      DISABLE_HEADLESS: true
 
     services:
       mysql:
