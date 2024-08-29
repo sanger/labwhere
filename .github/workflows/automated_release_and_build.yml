@@ -9,8 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DISABLE_HEADLESS: true
     steps:
       - uses: actions/checkout@v2
       - uses: nelonoel/branch-name@v1.0.1
@@ -49,9 +47,3 @@ jobs:
           commit: ${{ github.sha }}
           artifacts: release.tar.gz
           artifactErrorsFailBuild: true
-      - name: Debugging Information
-        run: |
-          echo "Browser Version:"
-          google-chrome --version
-          echo "Environment Variables:"
-          env

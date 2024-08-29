@@ -11,7 +11,8 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-
+    env:
+      DISABLE_HEADLESS: true
     env:
       RAILS_ENV: test
 
@@ -52,6 +53,13 @@ jobs:
         bundle exec rails db:setup
         bundle exec rails about
         bundle exec rails stats
+
+    - name: Debugging Information
+      run: |
+        echo "Browser Version:"
+        google-chrome --version
+        echo "Environment Variables:"
+        env
 
     - name: Run tests
       env:
