@@ -11,9 +11,10 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-
+    
     env:
       RAILS_ENV: test
+      DISABLE_HEADLESS: true
 
     services:
       mysql:
@@ -29,6 +30,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: nanasess/setup-chromedriver@v2
+      with:
+        chromedriver-version: '127.0.6533.119'
     - name: Export node version
       id: node_version
       run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
@@ -52,6 +56,19 @@ jobs:
         bundle exec rails db:setup
         bundle exec rails about
         bundle exec rails stats
+
+    - name: Debugging Information
+      run: |
+        echo "Browser Version:"
+        google-chrome --version
+        echo "ChromeDriver Version:"
+        chromedriver --version
+        echo "Ubuntu Version:"
+        UBUNTU_VERSION=$(lsb_release -a)
+        echo "$UBUNTU_VERSION"
+        echo "::set-output name=UBUNTU_VERSION::$UBUNTU_VERSION"
+        echo "Environment Variables:"
+        env
 
     - name: Run tests
       env:
