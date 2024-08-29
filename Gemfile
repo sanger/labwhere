@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 gem 'active_model_serializers'
 gem 'ancestry'
 gem 'bootsnap', require: false # For startup speed
-gem 'bunny'
+gem 'bunny', '~> 2.23.0'
 gem 'exception_notification' # Exception Notification to send exception emails
 gem 'jbuilder' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jquery-rails' # Use jquery as the JavaScript library

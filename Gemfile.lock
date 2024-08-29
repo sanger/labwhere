@@ -446,7 +446,7 @@ DEPENDENCIES
   ancestry
   apiaryio
   bootsnap
-  bunny
+  bunny (~> 2.23.0)
   byebug
   capybara
   capybara-selenium
