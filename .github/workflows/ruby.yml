@@ -59,7 +59,9 @@ jobs:
         google-chrome --version
         google-chrome --version
         echo "Ubuntu Version:"
-        lsb_release -a
+        UBUNTU_VERSION=$(lsb_release -a)
+        echo "$UBUNTU_VERSION"
+        echo "::set-output name=UBUNTU_VERSION::$UBUNTU_VERSION"
         echo "Environment Variables:"
         env
 
