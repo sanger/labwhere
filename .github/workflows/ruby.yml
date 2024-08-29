@@ -33,6 +33,10 @@ jobs:
     - uses: nanasess/setup-chromedriver@v2
       with:
         chromedriver-version: '127.0.6533.119'
+    - uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: '127.0.6533.119' # Specify the desired Chrome version
+
     - name: Export node version
       id: node_version
       run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
