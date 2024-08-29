@@ -57,7 +57,8 @@ jobs:
       run: |
         echo "Browser Version:"
         google-chrome --version
-        google-chrome --version
+        echo "ChromeDriver Version:"
+        chromedriver --version
         echo "Ubuntu Version:"
         UBUNTU_VERSION=$(lsb_release -a)
         echo "$UBUNTU_VERSION"
