@@ -49,3 +49,9 @@ jobs:
           commit: ${{ github.sha }}
           artifacts: release.tar.gz
           artifactErrorsFailBuild: true
+      - name: Debugging Information
+        run: |
+          echo "Browser Version:"
+          google-chrome --version
+          echo "Environment Variables:"
+          env
