@@ -46,6 +46,7 @@ RSpec.describe 'Scans', type: :feature do
     fill_in_labware_barcodes("4567\n")
     expect(page.all('.cm-error').count).to eq(0)
     fill_in_labware_barcodes("1234\n")
+    sleep 50
     expect(page.all('.cm-error').count).to eq(1)
     fill_in_labware_barcodes("4567\n")
     # Add debugging information
