@@ -10,7 +10,8 @@ on:
 jobs:
   test:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    
     env:
       RAILS_ENV: test
       DISABLE_HEADLESS: true
@@ -29,6 +30,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: nanasess/setup-chromedriver@v2
+      with:
+        chromedriver-version: '127.0.6533.119'
     - name: Export node version
       id: node_version
       run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
