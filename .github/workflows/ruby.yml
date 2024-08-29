@@ -53,6 +53,12 @@ jobs:
         bundle exec rails about
         bundle exec rails stats
 
+    - name: Set up Chrome
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: '127.0.6533.119' # Specify the desired Chrome version
+
+
     - name: Debugging Information
       run: |
         echo "Browser Version:"
