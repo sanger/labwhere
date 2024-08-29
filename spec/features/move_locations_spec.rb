@@ -76,6 +76,9 @@ RSpec.describe 'MoveLocations', type: :feature do
     page.execute_script("document.querySelector('.CodeMirror textarea').dispatchEvent(new Event('change'));")
 
     # fill_in_labware_barcodes("4567\n")
+    # Add debugging information
+    puts "Debug Info: #{page.html}" if page.all('.cm-error', wait: 5).count != 2
+
     expect(page.all('.cm-error').count).to eq(2)
   end
 end
