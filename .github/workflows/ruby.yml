@@ -58,6 +58,10 @@ jobs:
       with:
         chrome-version: '127.0.6533.119' # Specify the desired Chrome version
 
+    - name: Set up ChromeDriver
+      uses: browser-actions/setup-chromedriver@v1
+      with:
+        version: '127.0.6533.119' # Specify the corresponding ChromeDriver version
 
     - name: Debugging Information
       run: |
