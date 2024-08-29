@@ -8,7 +8,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    env:
+      DISABLE_HEADLESS: true
     steps:
       - uses: actions/checkout@v2
       - uses: nelonoel/branch-name@v1.0.1
