@@ -26,6 +26,7 @@ Make sure you have the correct ruby version (in `.ruby-version` file) installed.
 1. Remove the `.example` suffix from two files - `database.yml.example` and `bunny.yml.example`
 
 1. Set up the local database
+
 The local database uses `mysql`.
 
     ```bash
