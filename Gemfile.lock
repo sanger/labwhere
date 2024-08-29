@@ -93,7 +93,7 @@ GEM
     ast (2.4.2)
     base64 (0.2.0)
     bindex (0.8.1)
-    bootsnap (1.18.4)
+    bootsnap (1.18.3)
       msgpack (~> 1.2)
     builder (3.3.0)
     bunny (2.23.0)
