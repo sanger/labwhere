@@ -40,17 +40,17 @@ RSpec.describe 'Scans', type: :feature do
     visit new_scan_path
     fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
     fill_in 'Location barcode', with: location.barcode
-    expect(page.all('.cm-error').count).to eq(0)
+    expect(page).to have_no_css('.cm-error', wait: 5)
     fill_in_labware_barcodes("1234\n")
-    expect(page.all('.cm-error').count).to eq(0)
+    expect(page).to have_no_css('.cm-error', wait: 5)
     fill_in_labware_barcodes("4567\n")
-    expect(page.all('.cm-error').count).to eq(0)
+    expect(page).to have_no_css('.cm-error', wait: 5)
     fill_in_labware_barcodes("4567\n")
-    expect(page.all('.cm-error').count).to eq(1)
+    expect(page).to have_css('.cm-error', count: 1, wait: 5)
     fill_in_labware_barcodes("1234\n")
     # Add debugging information
-    puts "Debug Info: #{page.html}" if page.all('.cm-error').count != 2
-    expect(page.all('.cm-error').count).to eq(2)
+    puts "Debug Info: #{page.html}" if page.all('.cm-error', wait: 5).count != 2
+    expect(page).to have_css('.cm-error', count: 2, wait: 5)
   end
 
   it 'allows a user to scan is some labware to a location with coordinates' do
