@@ -92,7 +92,11 @@ RSpec.configure do |config|
   end
 
   Capybara.register_driver :headless_chrome do |app|
-    options = Selenium::WebDriver::Chrome::Options.new(args: %w[headless])
+    options = Selenium::WebDriver::Chrome::Options.new
+    options.add_argument('--headless=new')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--window-size=1280,800')
+    options.add_argument('--disable-search-engine-choice-screen')
     Capybara::Selenium::Driver.new(
       app,
       browser: :chrome,
