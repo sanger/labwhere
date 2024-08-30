@@ -62,6 +62,7 @@ RSpec.describe 'Scans', type: :feature do
 
     # Add debugging information
     puts "Debug Info: #{page.html}" if page.all('.cm-error', wait: 5).count != 2
+
     expect(page.all('.cm-error').count).to eq(2)
   end
 
