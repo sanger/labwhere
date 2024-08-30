@@ -7,10 +7,14 @@ RSpec.shared_context 'shared helpers', shared_context: :metadata do
       # Click makes CodeMirror element active:
       current_scope.click
 
+      # Find the hidden textarea:
+      field = current_scope.find('textarea', visible: false)
+
+      # Mimic user typing the text:
       # Split the text by newline and send each part followed by Enter key
       text.split("\n").each do |line|
-        current_scope.send_keys(line)
-        current_scope.send_keys(:enter)
+        field.send_keys(line)
+        field.send_keys(:enter)
       end
     end
   end
