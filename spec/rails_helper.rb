@@ -92,6 +92,8 @@ RSpec.configure do |config|
   end
 
   Capybara.register_driver :headless_chrome do |app|
+    # Fix for error updating to Chrome 128
+    # https://github.com/SeleniumHQ/selenium/issues/14453
     options = Selenium::WebDriver::Chrome::Options.new
     options.add_argument('--headless=new')
     options.add_argument('--disable-gpu')
