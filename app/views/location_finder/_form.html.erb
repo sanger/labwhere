@@ -12,7 +12,7 @@
       <ul>
         <li>
           <div><%= f.label :file, 'Upload a file here*' %></div>
-          <div><%= f.file_field :file %></div>
+          <div><%= f.file_field :file, :required => true %></div>
         </li>
         <li>
           <%= f.submit "Go!" %>

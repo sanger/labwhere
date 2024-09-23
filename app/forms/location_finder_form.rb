@@ -14,7 +14,7 @@ class LocationFinderForm
     @params = params
     assign_params
 
-    # we could have an emtpty file.
+    # we could have an empty file.
     # the alternative would be to validate prior to this but then
     # we would have to validate again.
     @location_finder = LocationFinder.new(file: file.try(:tempfile))
@@ -30,7 +30,7 @@ class LocationFinderForm
   end
 
   def assign_params
-    @file = params[:location_finder_form][:file]
+    @file = params[:location_finder_form].fetch(:file, nil)
   end
 
   private

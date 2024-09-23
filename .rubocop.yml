@@ -17,6 +17,7 @@ require:
   - rubocop-rails
   - rubocop-rspec_rails
 AllCops:
+  SuggestExtensions: false
   NewCops: enable
   Exclude:
     - 'db/schema.rb'
