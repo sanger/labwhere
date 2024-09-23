@@ -30,7 +30,7 @@ class LocationFinderForm
   end
 
   def assign_params
-    @file = params[:location_finder_form].fetch(:file, nil)
+    @file = params[:location_finder_form]&.fetch(:file, nil)
   end
 
   private

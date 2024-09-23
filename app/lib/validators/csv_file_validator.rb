@@ -3,7 +3,7 @@
 # CsvFileValidator
 class CsvFileValidator < ActiveModel::Validator
   def validate(record)
-    the_file = record.params[record.form_sym].fetch(:file, nil)
+    the_file = record.params[record.form_sym]&.fetch(:file, nil)
 
     if the_file.nil?
       record.errors.add(:file, 'is empty')
