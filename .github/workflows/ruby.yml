@@ -28,7 +28,7 @@ jobs:
             MYSQL_DATABASE: labwhere_test
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Export node version
       id: node_version
       run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
@@ -66,7 +66,7 @@ jobs:
       RAILS_ENV: test
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
