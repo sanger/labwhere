@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.root.glob('lib/location_creator/*.rb').each { |f| require f }
-
+# rubocop:disable Metrics/BlockLength
 desc 'locations'
 namespace :locations do
   desc 'create some locations'
@@ -56,3 +56,4 @@ namespace :locations do
     locations.each(&:run!)
   end
 end
+# rubocop:enable Metrics/BlockLength
