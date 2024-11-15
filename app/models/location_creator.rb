@@ -39,7 +39,7 @@ class LocationCreator
   end
 
   def create_location(location, location_type, parent, container, barcode)
-    puts "Creating location: #{location} #{barcode}"
+    Rails.logger.debug { "Creating location: #{location} #{barcode}" }
 
     find_or_create_attributes = { name: location, container: container }
     find_or_create_attributes[:barcode] = barcode if barcode.present?
