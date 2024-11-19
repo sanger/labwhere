@@ -5,7 +5,7 @@ desc 'locations'
 namespace :locations do
   desc 'create some locations'
   task create: :environment do |_t|
-    const locations = [random_locations, extraction_80_samples_location, pacbio_20_samples, pacbio_fridge_samples,
+    locations = [random_locations, extraction_80_samples_location, pacbio_20_samples, pacbio_fridge_samples,
                        ont_20_samples, ont_fridge_samples]
     locations.each(&:run!)
   end
