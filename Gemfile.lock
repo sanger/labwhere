@@ -207,7 +207,7 @@ GEM
     mime-types-data (3.2024.0903)
     mini_mime (1.1.5)
     minitest (5.25.2)
-    mocha (2.5.0)
+    mocha (2.7.0)
       ruby2_keywords (>= 0.0.5)
     msgpack (1.7.2)
     mysql2 (0.5.6)
