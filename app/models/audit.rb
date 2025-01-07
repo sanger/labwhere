@@ -19,7 +19,7 @@ class Audit < ApplicationRecord
 
   validates :record_data, presence: true
 
-  serialize :record_data, JSON
+  serialize :record_data, coder: JSON
 
   belongs_to :auditable, polymorphic: true, optional: true # Optional in case auditable has been destroyed
 

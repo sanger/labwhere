@@ -6,6 +6,7 @@ gem 'active_model_serializers'
 gem 'ancestry'
 gem 'bootsnap', require: false # For startup speed
 gem 'bunny'
+gem 'csv'
 gem 'exception_notification' # Exception Notification to send exception emails
 gem 'jbuilder' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jquery-rails' # Use jquery as the JavaScript library
@@ -15,13 +16,12 @@ gem 'mysql2'
 gem 'pmb-client', '0.1.0', github: 'sanger/pmb-client'
 gem 'pry'
 gem 'puma' # Use Puma as the app server
-gem 'rails', '~> 7.0'
+gem 'rack-cors'
+gem 'rails', '~> 7.2.0'
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'sdoc', group: :doc # bundle exec rake doc:rails generates the API under doc/api.
 gem 'select2-rails'
 gem 'turbolinks' # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-
-gem 'rack-cors'
 
 group :development do
   gem 'apiaryio'
