@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/sanger/pmb-client.git
-  revision: b66059d1905aafc9ab85639830d732d980990216
+  revision: 4de142863cff787ba1b9524f3acb8039a7200b5e
   specs:
     pmb-client (0.1.0)
       json_api_client (~> 1.1)
@@ -118,6 +118,8 @@ GEM
       selenium-webdriver
     case_transform (0.2)
       activesupport
+    childprocess (5.1.0)
+      logger (~> 1.5)
     choice (0.2.0)
     coderay (1.1.3)
     coffee-rails (5.0.0)
@@ -144,22 +146,29 @@ GEM
     exception_notification (4.5.0)
       actionmailer (>= 5.2, < 8)
       activesupport (>= 5.2, < 8)
-    execjs (2.9.1)
+    execjs (2.10.0)
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.4.4)
       factory_bot (~> 6.5)
       railties (>= 5.0.0)
-    faraday (2.12.0)
-      faraday-net_http (>= 2.0, < 3.4)
+    faraday (2.12.2)
+      faraday-net_http (>= 2.0, < 3.5)
       json
       logger
     faraday-gzip (2.0.1)
       faraday (>= 1.0)
       zlib (~> 3.0)
-    faraday-net_http (3.3.0)
-      net-http
-    ffi (1.17.0)
+    faraday-net_http (3.4.0)
+      net-http (>= 0.5.0)
+    ffi (1.17.1-aarch64-linux-gnu)
+    ffi (1.17.1-aarch64-linux-musl)
+    ffi (1.17.1-arm-linux-gnu)
+    ffi (1.17.1-arm-linux-musl)
+    ffi (1.17.1-arm64-darwin)
+    ffi (1.17.1-x86_64-darwin)
+    ffi (1.17.1-x86_64-linux-gnu)
+    ffi (1.17.1-x86_64-linux-musl)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.6)
@@ -180,7 +189,7 @@ GEM
       turbolinks
     jquery-ui-rails (7.0.0)
       railties (>= 3.2.16)
-    json (2.8.2)
+    json (2.9.1)
     json_api_client (1.23.0)
       activemodel (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -190,12 +199,13 @@ GEM
       rack (>= 0.2)
     jsonapi-renderer (0.2.2)
     language_server-protocol (3.17.0.3)
-    launchy (2.5.2)
+    launchy (3.0.1)
       addressable (~> 2.8)
+      childprocess (~> 5.0)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    logger (1.6.1)
+    logger (1.6.4)
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -207,16 +217,14 @@ GEM
     marcel (1.0.4)
     matrix (0.4.2)
     method_source (1.1.0)
-    mime-types (3.5.2)
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0903)
+    mime-types (1.25.1)
     mini_mime (1.1.5)
     minitest (5.25.4)
-    mocha (2.5.0)
+    mocha (2.7.1)
       ruby2_keywords (>= 0.0.5)
-    msgpack (1.7.2)
+    msgpack (1.7.5)
     mysql2 (0.5.6)
-    net-http (0.4.1)
+    net-http (0.6.0)
       uri
     net-imap (0.5.5)
       date
@@ -227,20 +235,31 @@ GEM
       timeout
     net-smtp (0.5.0)
     nio4r (2.7.4)
+    nokogiri (1.18.1-aarch64-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.18.1-aarch64-linux-musl)
+      racc (~> 1.4)
+    nokogiri (1.18.1-arm-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.18.1-arm-linux-musl)
+      racc (~> 1.4)
     nokogiri (1.18.1-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.1-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.1-x86_64-linux-gnu)
       racc (~> 1.4)
+    nokogiri (1.18.1-x86_64-linux-musl)
+      racc (~> 1.4)
     parallel (1.26.3)
     parser (3.3.6.0)
       ast (~> 2.4.1)
       racc
-    pry (0.15.0)
+    pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    psych (5.1.2)
+    psych (5.2.2)
+      date
       stringio
     public_suffix (6.0.1)
     puma (6.5.0)
@@ -301,14 +320,14 @@ GEM
       ffi (~> 1.0)
     rb-readline (0.5.5)
     rbtree (0.4.6)
-    rdoc (6.7.0)
+    rdoc (6.10.0)
       psych (>= 4.0.0)
-    regexp_parser (2.9.2)
+    regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
-    rest-client (1.6.7)
-      mime-types (>= 1.16)
-    rexml (3.3.9)
+    rest-client (1.6.14)
+      mime-types (~> 1.16)
+    rexml (3.4.0)
     rspec-core (3.13.2)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.3)
@@ -325,32 +344,32 @@ GEM
       rspec-expectations (~> 3.13)
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
-    rspec-support (3.13.1)
-    rubocop (1.68.0)
+    rspec-support (3.13.2)
+    rubocop (1.69.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 2.4, < 3.0)
-      rubocop-ast (>= 1.32.2, < 2.0)
+      regexp_parser (>= 2.9.3, < 3.0)
+      rubocop-ast (>= 1.36.2, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.36.1)
+      unicode-display_width (>= 2.4.0, < 4.0)
+    rubocop-ast (1.37.0)
       parser (>= 3.3.1.0)
     rubocop-capybara (2.21.0)
       rubocop (~> 1.41)
     rubocop-factory_bot (2.26.1)
       rubocop (~> 1.61)
-    rubocop-performance (1.23.0)
+    rubocop-performance (1.23.1)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
-    rubocop-rails (2.27.0)
+    rubocop-rails (2.28.0)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.52.0, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
-    rubocop-rspec (3.2.0)
+    rubocop-rspec (3.3.0)
       rubocop (~> 1.61)
     rubocop-rspec_rails (2.30.0)
       rubocop (~> 1.61)
@@ -359,7 +378,7 @@ GEM
       rexml
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    rubyzip (2.3.2)
+    rubyzip (2.4.1)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -380,7 +399,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    set (1.1.0)
+    set (1.1.1)
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
@@ -392,13 +411,13 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    stringio (3.1.1)
+    stringio (3.1.2)
     teaspoon (1.4.0)
       railties (>= 5.0)
     teaspoon-jasmine (2.9.1)
       teaspoon (>= 1.0.0)
     thor (1.3.2)
-    tilt (2.4.0)
+    tilt (2.5.0)
     timeout (0.4.3)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
@@ -407,8 +426,10 @@ GEM
       concurrent-ruby (~> 1.0)
     uglifier (4.2.1)
       execjs (>= 0.3.0, < 3)
-    unicode-display_width (2.6.0)
-    uri (0.13.1)
+    unicode-display_width (3.1.3)
+      unicode-emoji (~> 4.0, >= 4.0.4)
+    unicode-emoji (4.0.4)
+    uri (1.0.2)
     useragent (0.16.11)
     web-console (4.2.1)
       actionview (>= 6.0.0)
@@ -425,15 +446,17 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.7.1)
-    zlib (3.1.1)
+    zlib (3.2.1)
 
 PLATFORMS
-  arm64-darwin-22
-  arm64-darwin-23
-  arm64-darwin-24
-  x86_64-darwin-21
-  x86_64-darwin-22
-  x86_64-linux
+  aarch64-linux-gnu
+  aarch64-linux-musl
+  arm-linux-gnu
+  arm-linux-musl
+  arm64-darwin
+  x86_64-darwin
+  x86_64-linux-gnu
+  x86_64-linux-musl
 
 DEPENDENCIES
   active_model_serializers
@@ -484,4 +507,4 @@ DEPENDENCIES
   with_model
 
 BUNDLED WITH
-   2.5.14
+   2.6.2
