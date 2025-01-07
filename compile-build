@@ -3,8 +3,8 @@
 set -e # Exit immediately if something fails
 export NODE_ENV=production
 export RAILS_ENV=development
-echo 'Updating yarn'
-yarn
+echo 'Install npm dependencies'
+npm install
 echo 'Cleaning up'
 bundle exec rake assets:clobber
 echo 'Compiling assets'
@@ -21,13 +21,11 @@ tar \
   --exclude='./.gitignore' \
   --exclude='./.rspec' \
   --exclude='./.tags' \
-  --exclude='./.travis.yml' \
   --exclude='./README*' \
   --exclude='./compile-build' \
   --exclude='./coverage' \
   --exclude='./log/*' \
   --exclude='./node_modules' \
-  --exclude='./travis_phantomjs' \
   --exclude='./spec' \
   --exclude='./test' \
   --exclude='./tmp' \
