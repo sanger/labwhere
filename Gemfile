@@ -24,7 +24,6 @@ gem 'turbolinks' # Turbolinks makes following links in your web application fast
 gem 'rack-cors'
 
 group :development do
-  gem 'apiaryio'
   gem 'listen'
   gem 'rails-erd'
   gem 'web-console' # Access an IRB console on exception pages or by using <%= console %> in views
