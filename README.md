@@ -44,12 +44,10 @@ The local database uses `mysql`.
 
 ## Generating the API Documentation
 
-`bundle exec rails docs:api`
-
-The documentation is written in [API Blueprint](https://apiblueprint.org/) and converted to HTML
-using the [Apiary CLI client](https://github.com/apiaryio/apiary-client) gem.
-
-The documentation will be available at `/api`.
+The ruby apiary client has been archived and is not compatible with later versions of Ruby
+so it has to be removed.
+There will be no viewable api docs although the api.apib file is still available.
+We will need to use something else to build the docs or use rdoc.
 
 ## Creating some dummy data
 

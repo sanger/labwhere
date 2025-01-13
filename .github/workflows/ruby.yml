@@ -33,10 +33,10 @@ jobs:
       id: node_version
       run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
     - name: Setup node
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
-    - run: yarn
+    - run: npm install
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
