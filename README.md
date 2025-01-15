@@ -102,3 +102,9 @@ Merging develop into master will create a release with the same name as the late
 An ERD was created using the `rails-erd` gem by executing: `bundle exec erd`
 
 ![ERD](erd.jpg "ERD")
+
+### Credentials
+
+Secrets are now managed differently. This can be done by running the command `bundle exec rails credentials:edit` locally
+
+This will create a `credentials.yml.enc` and `master.key` in the config directory
