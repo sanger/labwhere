@@ -20,6 +20,7 @@ gem 'rails', '~> 7.2.0'
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'sdoc', group: :doc # bundle exec rake doc:rails generates the API under doc/api.
 gem 'select2-rails'
+gem 'syslog' # No longer part of the default gems in Ruby 3.4
 gem 'turbolinks' # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 
 gem 'rack-cors'
