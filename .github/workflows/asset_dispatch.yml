@@ -24,7 +24,6 @@ jobs:
       - name: Set up environment
         run: |
           cp config/database.yml.example config/database.yml
-          cp config/secrets.yml.example config/secrets.yml
           cp config/bunny.yml.example config/bunny.yml
 
       - name: Compile Build
