@@ -379,6 +379,7 @@ RSpec.describe 'Locations', type: :feature do
       location = create(:unordered_location_with_children)
       visit locations_path
 
+      expect(page).to have_content(location.name) # Ensure the page has loaded
       expect(find(:data_id, location.id)).to have_no_link('Delete')
     end
 
