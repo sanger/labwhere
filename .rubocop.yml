@@ -13,9 +13,10 @@ inherit_from: .rubocop_todo.yml
 require:
   - rubocop-capybara
   - rubocop-factory_bot
+  - rubocop-rspec_rails
+plugins: 
   - rubocop-performance
   - rubocop-rails
-  - rubocop-rspec_rails
 AllCops:
   SuggestExtensions: false
   NewCops: enable
