@@ -21,14 +21,7 @@ class Event
   def for_old_audit?
     # The labware record shouldn't be missing,
     # but if it is, treat this as an 'old' audit
-    @for_old_audit ||= if labware.blank?
-                         true
-                       else
-                         # if this audit is not the latest for this labware,
-                         # we shouldn't expect current info on the labware to be
-                         # relevant to the time the audit was created
-                         audit.id != labware.audits.last.id
-                       end
+    @for_old_audit ||= labware.blank? || audit.id != labware.audits.last.id
   end
 
   def location
