@@ -10,13 +10,15 @@ inherit_from: .rubocop_todo.yml
 # where the inspected file is and continue its way up to the root directory.
 #
 # See https://github.com/rubocop-hq/rubocop/blob/master/manual/configuration.md
-require:
-  - rubocop-factory_bot
-  - rubocop-rspec_rails
-plugins: 
+plugins:
+  - rubocop-capybara
   - rubocop-performance
   - rubocop-rails
-  - rubocop-capybara
+  - rubocop-rspec_rails
+  
+require:
+  - rubocop-factory_bot
+
 AllCops:
   SuggestExtensions: false
   NewCops: enable
