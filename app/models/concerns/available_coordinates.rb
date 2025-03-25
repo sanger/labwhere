@@ -41,6 +41,6 @@ class AvailableCoordinates
   end
 
   def line(min, max)
-    coordinates.select { |c| c.position >= min && c.position <= max }
+    coordinates.select { |c| c.position.between?(min, max) }
   end
 end
