@@ -13,6 +13,7 @@ gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
 gem 'mysql2'
+gem 'ostruct'
 gem 'pmb-client', '0.1.0', github: 'sanger/pmb-client'
 gem 'pry'
 gem 'puma' # Use Puma as the app server
