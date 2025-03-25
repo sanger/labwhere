@@ -19,12 +19,9 @@ class Event
   # or re-firing an event for an 'old' audit?
   # It affects how much data we send in the event - whether we expect it to still be relevant
   def for_old_audit?
-    # 1. The labware record shouldn't be missing,
-    #    but if it is, treat this as an 'old' audit
-    # 2. if this audit is not the latest for this labware,
-    #    we shouldn't expect current info on the labware to be
-    #    relevant to the time the audit was created
-    @for_old_audit ||= labware.blank? || (audit.id != labware.audits.last.id)
+    # The labware record shouldn't be missing,
+    # but if it is, treat this as an 'old' audit
+    @for_old_audit ||= labware.blank? || audit.id != labware.audits.last.id
   end
 
   def location
