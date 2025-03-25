@@ -143,6 +143,7 @@ RSpec.describe 'Locations', type: :feature do
         fill_in 'Rows', with: location.rows
         fill_in 'Columns', with: location.columns
         click_button 'Create Location'
+        expect(page).to have_current_path(locations_path)
       end.to change(Location, :count).by(1)
       expect(OrderedLocation.first.coordinates.count).to eq(create(:ordered_location_with_parent).coordinates.length)
       expect(page).to have_content('Location(s) successfully created')
