@@ -111,8 +111,8 @@ class LocationForm
     @current_user = User.find_by_code(params[:location][:user_code])
     @controller = params[:controller]
     @action = params[:action]
-    @start_from = params.fetch(:location, {}).fetch(:start_from, nil)
-    @end_to = params.fetch(:location, {}).fetch(:end_to, nil)
+    @start_from = params.dig(:location, :start_from)
+    @end_to = params.dig(:location, :end_to)
     @location.assign_attributes(location_attrs(params))
     transform_location
     set_team
