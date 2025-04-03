@@ -136,8 +136,8 @@ RSpec.describe ManifestUploader, type: :model do
 
     context 'when there are multiple empty cells' do
       before(:each) do
-        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: '', "": '' }
-        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: '', "": '' }
+        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: '', '': '' }
+        json_manifest[:labwares] << { location_barcode: unordered_location.barcode.to_s, labware_barcode: '', '': '' }
         manifest_uploader.json = json_manifest
       end
 
