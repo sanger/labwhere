@@ -125,7 +125,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.3.5)
-    connection_pool (2.5.0)
+    connection_pool (2.5.3)
     crass (1.0.6)
     csv (3.3.4)
     database_cleaner (2.1.0)
@@ -162,7 +162,7 @@ GEM
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     io-console (0.8.0)
-    irb (1.15.1)
+    irb (1.15.2)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
@@ -176,7 +176,7 @@ GEM
     jquery-turbolinks (2.1.0)
       railties (>= 3.1.0)
       turbolinks
-    jquery-ui-rails (7.0.0)
+    jquery-ui-rails (8.0.0)
       railties (>= 3.2.16)
     json (2.11.3)
     json_api_client (1.23.0)
@@ -238,7 +238,7 @@ GEM
     pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    psych (5.2.3)
+    psych (5.2.4)
       date
       stringio
     public_suffix (6.0.1)
@@ -300,10 +300,10 @@ GEM
       ffi (~> 1.0)
     rb-readline (0.5.5)
     rbtree (0.4.6)
-    rdoc (6.12.0)
+    rdoc (6.13.1)
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
-    reline (0.6.0)
+    reline (0.6.1)
       io-console (~> 0.5)
     rexml (3.4.1)
     rspec-core (3.13.3)
@@ -397,7 +397,7 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    stringio (3.1.3)
+    stringio (3.1.7)
     syslog (0.3.0)
       logger
     teaspoon (1.4.0)
@@ -433,7 +433,7 @@ GEM
       activerecord (>= 7.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.7.1)
+    zeitwerk (2.7.2)
     zlib (3.2.1)
 
 PLATFORMS
