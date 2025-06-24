@@ -17,6 +17,7 @@ Make sure you have the correct ruby version (in `.ruby-version` file) installed.
     ```
 
 1. Install dependencies:
+
     ```bash
     bundle install
     npm install
@@ -43,12 +44,10 @@ The local database uses `mysql`.
 
 ## Generating the API Documentation
 
-`bundle exec rails docs:api`
-
-The documentation is written in [API Blueprint](https://apiblueprint.org/) and converted to HTML
-using the [Apiary CLI client](https://github.com/apiaryio/apiary-client) gem.
-
-The documentation will be available at `/api`.
+The ruby apiary client has been archived and is not compatible with later versions of Ruby
+so it has to be removed.
+There will be no viewable api docs although the api.apib file is still available.
+We will need to use something else to build the docs or use rdoc.
 
 ## Creating some dummy data
 
@@ -103,3 +102,9 @@ Merging develop into master will create a release with the same name as the late
 An ERD was created using the `rails-erd` gem by executing: `bundle exec erd`
 
 ![ERD](erd.jpg "ERD")
+
+### Credentials
+
+Secrets are now managed differently. This can be done by running the command `bundle exec rails credentials:edit` locally
+
+This will create a `credentials.yml.enc` and `master.key` in the config directory

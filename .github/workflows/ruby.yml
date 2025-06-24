@@ -28,15 +28,15 @@ jobs:
             MYSQL_DATABASE: labwhere_test
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Export node version
       id: node_version
       run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
     - name: Setup node
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
-    - run: yarn
+    - run: npm install
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
@@ -47,7 +47,6 @@ jobs:
         DBPORT: ${{ job.services.mysql.ports[3306] }}
       run: |
         cp config/database.yml.example config/database.yml
-        cp config/secrets.yml.example config/secrets.yml
         cp config/bunny.yml.example config/bunny.yml
         bundle exec rails db:setup
         bundle exec rails about
@@ -66,7 +65,7 @@ jobs:
       RAILS_ENV: test
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:

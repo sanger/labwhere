@@ -135,13 +135,20 @@ RSpec.describe Location, type: :model do
     expect(location.barcode).to eq("lw-location1-#{location.id}")
   end
 
+  it 'does not generate a new barcode if one is already specified' do
+    barcode = 'specified-barcode'
+    name = 'location-name'
+    location = create(:location, name:, barcode:)
+    expect(location.barcode).to eq(barcode)
+  end
+
   it '#as_json should return the correct attributes' do
     location_type = create(:location_type, name: 'Building')
     location      = create(:location, location_type: location_type)
     json          = location.as_json
     expect(json['deactivated_at']).to be_nil
-    expect(json['created_at']).to eq(location.created_at.to_s(:uk))
-    expect(json['updated_at']).to eq(location.updated_at.to_s(:uk))
+    expect(json['created_at']).to eq(location.created_at.to_fs(:uk))
+    expect(json['updated_at']).to eq(location.updated_at.to_fs(:uk))
     expect(json['location_type_id']).to be_nil
     expect(json['location_type']).to eq(location_type.name)
   end
@@ -457,6 +464,17 @@ RSpec.describe Location, type: :model do
       location.update(parent: next_location)
       audit = location.create_audit(user)
       expect(audit.message).to eq("#{update_action.display_text} and stored in #{location.breadcrumbs}")
+    end
+  end
+
+  describe '#max_descendant_depth' do
+    it 'returns all labwares in the location and its children' do
+      location1 = create(:location, name: 'Location1')
+      location2 = create(:location, name: 'Location2', parent: location1)
+      location3 = create(:location, name: 'Location3', parent: location2)
+      expect(location1.max_descendant_depth).to eq(2)
+      expect(location2.max_descendant_depth).to eq(1)
+      expect(location3.max_descendant_depth).to eq(0)
     end
   end
 end

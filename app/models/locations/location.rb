@@ -188,11 +188,24 @@ class Location < ApplicationRecord
     parentage
   end
 
+  # Calculates the maximum depth of the descendant locations of the current location.
+  # The depth of a location is defined as the number of child locations below it.
+  # This method works by recursively calling max_descendant_depth (of ancestry gem)
+  # on all children of the current location, finding the maximum of these values.
+  # If the location has no children, the depth is 0.
+  #
+  # @return [Integer] The maximum depth of the descendants of the current location
+  def max_descendant_depth
+    (children.map(&:max_descendant_depth).max || -1) + 1
+  end
+
   private
 
   ##
   # The barcode is the name downcased with spaces replaced by dashes with the id added again separated by a space.
   def generate_barcode
+    return if barcode.present? # Use the specified barcode if it exists.
+
     update_column(:barcode, "#{BARCODE_PREFIX}#{name.tr(' ', '-').downcase}-#{id}")
   end
 

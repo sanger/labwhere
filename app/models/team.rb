@@ -13,6 +13,6 @@ class Team < ApplicationRecord
   ##
   # Needed for the audit record.
   def as_json(options = {})
-    super(options).merge(uk_dates)
+    super.merge(uk_dates)
   end
 end

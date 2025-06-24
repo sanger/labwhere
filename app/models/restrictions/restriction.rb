@@ -12,7 +12,7 @@
 # MyValidator is run
 class Restriction < ApplicationRecord
   belongs_to :location_type
-  serialize :params
+  serialize :params, coder: JSON
   validates :validator, presence: true
 
   def params
@@ -20,6 +20,6 @@ class Restriction < ApplicationRecord
   end
 
   def validator
-    super.constantize if validator?
+    super.present? ? super.constantize : ''
   end
 end

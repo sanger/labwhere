@@ -97,8 +97,8 @@ RSpec.describe User, type: :model do
     expect(json['barcode']).to be_nil
     expect(json['team_id']).to be_nil
     expect(json['team']).to eq(team.name)
-    expect(json['created_at']).to eq(user.created_at.to_s(:uk))
-    expect(json['updated_at']).to eq(user.updated_at.to_s(:uk))
+    expect(json['created_at']).to eq(user.created_at.to_fs(:uk))
+    expect(json['updated_at']).to eq(user.updated_at.to_fs(:uk))
   end
 
   it 'should not update swipe_card_id and barcode if they are blank' do

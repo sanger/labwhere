@@ -6,7 +6,7 @@ namespace :error_pages do
   desc 'copy the error pages from the views to the public folder'
   task copy: :environment do |_t|
     template = create_erb Rails.root.join('app/views/layouts/public_errors.html.erb')
-    files = Dir[Rails.root.join('app/views/errors/*.html.erb')]
+    files = Rails.root.glob('app/views/errors/*.html.erb')
     files.each do |filename|
       error = create_erb filename
       Rails.public_path.join(File.basename(filename, '.erb')).write(yield_erb(template) { error.result })

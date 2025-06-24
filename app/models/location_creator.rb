@@ -27,17 +27,24 @@ class LocationCreator
       parents.each do |parent|
         if location[:number]
           (1..location[:number]).each do |i|
-            locations << create_location("#{location[:location]} #{i}", location_type, parent, location[:container])
+            locations << create_location("#{location[:location]} #{i}", location_type, parent, location[:container],
+                                         location[:barcode])
           end
         else
-          locations << create_location(location[:location], location_type, parent, location[:container])
+          locations << create_location(location[:location], location_type, parent, location[:container],
+                                       location[:barcode])
         end
       end
     end
   end
 
-  def create_location(location, location_type, parent, container)
-    UnorderedLocation.find_or_create_by!(name: location, container: container) do |l|
+  def create_location(location, location_type, parent, container, barcode)
+    Rails.logger.debug { "Creating location: #{location} #{barcode}" }
+
+    find_or_create_attributes = { name: location, container: container }
+    find_or_create_attributes[:barcode] = barcode if barcode.present?
+
+    UnorderedLocation.find_or_create_by!(find_or_create_attributes) do |l|
       l.parent = parent
       l.location_type = location_type
     end

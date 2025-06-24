@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :labware_collection_unordered_location, class: LabwareCollection::UnorderedLocation do
+  factory :labware_collection_unordered_location, class: 'LabwareCollection::UnorderedLocation' do
     location { FactoryBot.create(:location_with_parent) }
     user { FactoryBot.create(:administrator) }
     labwares do

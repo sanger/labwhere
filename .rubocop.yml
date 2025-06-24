@@ -10,10 +10,15 @@ inherit_from: .rubocop_todo.yml
 # where the inspected file is and continue its way up to the root directory.
 #
 # See https://github.com/rubocop-hq/rubocop/blob/master/manual/configuration.md
-require:
-  - rubocop-rails
+plugins:
+  - rubocop-capybara
+  - rubocop-factory_bot
   - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec_rails
+
 AllCops:
+  SuggestExtensions: false
   NewCops: enable
   Exclude:
     - 'db/schema.rb'
@@ -51,4 +56,7 @@ Style/HashSyntax:
 Style/CaseEquality:
   Exclude:
     - 'config/initializers/02_proc.rb'
-    
+
+# Causes a lot of Rubocop errors
+RSpecRails/InferredSpecType:
+  Enabled: false

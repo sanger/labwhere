@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 
 module Labwhere
   class Application < Rails::Application
-    config.load_defaults 6.1
+    config.load_defaults 7.2
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -32,14 +32,11 @@ module Labwhere
 
     # TODO. There should be no need for lib. We should not need to autoload anything in app
     # Something is not quite right so needs investigating.
-    config.autoload_paths += %W[#{config.root}/app/lib]
-
-    config.autoload_paths += %W[#{config.root}/app/lib/utils #{config.root}/app/lib/validators]
-
-    config.autoload_paths += %W[#{config.root}/app/models/users #{config.root}/app/models/locations
-                                #{config.root}/app/models/restrictions]
-
-    config.autoload_paths += %W[#{config.root}/app/lib/label_printing #{config.root}/app/models/labware_collection]
+    config.autoload_paths += %W[#{config.root}/app/lib
+                                #{config.root}/app/lib/utils #{config.root}/app/lib/validators
+                                #{config.root}/app/models/users #{config.root}/app/models/locations
+                                #{config.root}/app/models/restrictions
+                                #{config.root}/app/lib/label_printing #{config.root}/app/models/labware_collection]
 
     config.mailer = YAML.load_file(Rails.root.join('config/mailer.yml'))[Rails.env]
 
