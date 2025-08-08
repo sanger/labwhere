@@ -194,6 +194,40 @@ RSpec.describe Event, type: :model do
         expect(event.as_json[:event][:subjects][0]).to eq(expected_subject)
       end
     end
+
+    context 'where the labware exists but has no audits' do
+      let!(:labware_barcode) { labware.barcode }
+      let(:labware_without_audits) { create(:labware_with_location) }
+      let(:audit) { create(:audit_of_labware, labware: labware_without_audits) }
+      let(:attributes) { { labware: labware_without_audits, audit: audit } }
+      let(:event) { Event.new(attributes) }
+
+      let(:expected_subject) do
+        {
+          role_type: 'labware',
+          subject_type: 'labware',
+          friendly_name: labware_without_audits.barcode,
+          uuid: labware_without_audits.uuid
+        }
+      end
+
+      before do
+        # Remove all audits from the labware
+        labware_without_audits.audits.destroy_all
+      end
+
+      it 'is valid' do
+        expect(event).to be_valid
+      end
+
+      it 'identifies as an old audit' do
+        expect(event.for_old_audit?).to eq(true)
+      end
+
+      it 'includes a labware subject' do
+        expect(event.as_json[:event][:subjects][0]).to eq(expected_subject)
+      end
+    end
   end
 
   # FAILURE STATES
