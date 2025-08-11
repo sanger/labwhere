@@ -25,7 +25,7 @@ class Event
   rescue NoMethodError => e
     raise NoMethodError,
           "Error in Event#for_old_audit?: labware barcode=#{labware&.barcode}, " \
-          "audit id=#{audit&.id.inspect}. Original error: #{e.message}"
+          "audit id=#{audit&.id}. Original error: #{e.message}"
   end
 
   def location
