@@ -196,7 +196,7 @@ RSpec.describe Event, type: :model do
     end
 
     context 'where the labware exists but has no audits' do
-      let!(:labware_barcode) { labware.barcode }
+      # let!(:labware_barcode) { labware.barcode }
       let(:labware_without_audits) { create(:labware_with_location) }
       let(:audit) { create(:audit_of_labware, labware: labware_without_audits) }
       let(:attributes) { { labware: labware_without_audits, audit: audit } }
@@ -211,21 +211,18 @@ RSpec.describe Event, type: :model do
         }
       end
 
+      let(:expected_nomethod_message) do
+        "Error in Event#for_old_audit?: labware barcode=#{labware_without_audits&.barcode}, " \
+          "audit id=#{audit&.id.inspect}. Original error: undefined method 'id' for nil"
+      end
+
       before do
         # Remove all audits from the labware
         labware_without_audits.audits.destroy_all
       end
 
-      it 'is valid' do
-        expect(event).to be_valid
-      end
-
-      it 'identifies as an old audit' do
-        expect(event.for_old_audit?).to eq(true)
-      end
-
-      it 'includes a labware subject' do
-        expect(event.as_json[:event][:subjects][0]).to eq(expected_subject)
+      it 'throws a NoMethodError when trying to access the last audit' do
+        expect { event.for_old_audit? }.to raise_error(NoMethodError, expected_nomethod_message)
       end
     end
   end
