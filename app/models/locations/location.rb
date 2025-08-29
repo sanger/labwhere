@@ -48,6 +48,7 @@ class Location < ApplicationRecord
   before_destroy :been_used?
 
   searchable_by :name, :barcode
+  # The below adds ordered?, unordered? and unknown? methods
   create_subclass_methods :ordered, :unordered, :unknown, suffix: true
 
   # See https://github.com/stefankroes/ancestry

@@ -18,7 +18,7 @@ class ScanForm
     scan.save
   end
 
-  validate :check_available_coordinates, if: proc { |l| l.location.present? && l.location.is_a?(OrderedLocation) }
+  validate :check_available_coordinates, if: proc { |l| l.location.present? && l.location.ordered? }
   validate :check_if_any_barcodes_are_locations
 
   delegate :message, :created_at, :updated_at, to: :scan
