@@ -80,22 +80,52 @@ RSpec.describe ScanForm, type: :model do
   end
 
   context 'ordered location' do
-    let!(:location)           { create(:ordered_location_with_parent, rows: 5, columns: 5) }
+    let!(:location) { create(:ordered_location_with_parent, rows: 5, columns: 5) }
 
-    it 'will fill coordinates with labwares if there are enough available coordinates' do
-      create_scan.submit(params.merge(scan:
-        { 'location_barcode' => location.barcode, 'labware_barcodes' => (new_labware + existing_labware).join_barcodes,
-          start_position: 5, user_code: sci_swipe_card_id }))
-      scan = Scan.first
-      expect(scan.location.labwares.count).to eq(8)
-      expect(scan.location.coordinates.filled.count).to eq(8)
+    context 'when there are enough available coordinates' do
+      context 'when start_position is provided' do
+        it 'will fill coordinates with labwares' do
+          create_scan.submit(params.merge(scan:
+            { 'location_barcode' => location.barcode, 'labware_barcodes' => (new_labware + existing_labware).join_barcodes,
+              start_position: 5, user_code: sci_swipe_card_id }))
+          scan = Scan.first
+          expect(scan.location.labwares.count).to eq(8)
+          expect(scan.location.coordinates.filled.count).to eq(8)
+        end
+      end
+
+      context 'when start_position is not provided' do
+        it 'will fill coordinates with labwares' do
+          create_scan.submit(params.merge(scan:
+            { 'location_barcode' => location.barcode, 'labware_barcodes' => (new_labware + existing_labware).join_barcodes,
+              start_position: '', user_code: sci_swipe_card_id }))
+          scan = Scan.first
+          expect(scan.location.labwares.count).to eq(8)
+          expect(scan.location.coordinates.filled.count).to eq(8)
+        end
+      end
     end
 
-    it 'will return an error if there are not enough available coordinates' do
-      create_scan.submit(params.merge(scan:
-        { 'location_barcode' => location.barcode, 'labware_barcodes' => (new_labware + existing_labware).join_barcodes,
-          start_position: 25, user_code: sci_swipe_card_id }))
-      expect(create_scan.errors.full_messages).to include(I18n.t('errors.messages.not_enough_empty_coordinates').to_s)
+    context 'when there are not enough available coordinates' do
+      context 'when start_position is provided' do
+        it 'will return an error' do
+          create_scan.submit(params.merge(scan:
+            { 'location_barcode' => location.barcode, 'labware_barcodes' => (new_labware + existing_labware).join_barcodes,
+              start_position: 25, user_code: sci_swipe_card_id }))
+          expect(create_scan.errors.full_messages).to include(I18n.t('errors.messages.not_enough_empty_coordinates').to_s)
+        end
+      end
+
+      context 'when start_position is not provided' do
+        let!(:location) { create(:ordered_location_with_labwares, rows: 5, columns: 5) }
+
+        it 'will return an error' do
+          create_scan.submit(params.merge(scan:
+            { 'location_barcode' => location.barcode, 'labware_barcodes' => (new_labware + existing_labware).join_barcodes,
+              start_position: '', user_code: sci_swipe_card_id }))
+          expect(create_scan.errors.full_messages).to include(I18n.t('errors.messages.not_enough_empty_coordinates').to_s)
+        end
+      end
     end
   end
 

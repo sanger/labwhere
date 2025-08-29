@@ -18,7 +18,7 @@ class ScanForm
     scan.save
   end
 
-  validate :check_available_coordinates, if: proc { |l| l.start_position.present? && l.location.present? }
+  validate :check_available_coordinates, if: proc { |l| l.location.present? && l.location.is_a?(OrderedLocation) }
   validate :check_if_any_barcodes_are_locations
 
   delegate :message, :created_at, :updated_at, to: :scan
@@ -30,6 +30,7 @@ class ScanForm
   end
 
   def available_coordinates
+    # if start_position is not provided, to_i converts '' to 0 - so it fills the location from the start
     @available_coordinates ||= location.available_coordinates(start_position.to_i, labwares.count)
   end
 
