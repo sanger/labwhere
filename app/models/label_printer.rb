@@ -6,6 +6,7 @@ require 'net/http'
 # The object will create a request from a printer_id and location_ids.
 class LabelPrinter
   include ActiveModel::Model
+
   attr_writer :copies
   attr_accessor :label_template_name
   attr_reader :labels, :printer
