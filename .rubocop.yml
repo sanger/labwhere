@@ -46,6 +46,11 @@ Lint/AmbiguousBlockAssociation:
 Naming/MemoizedInstanceVariableName:
   Enabled: false
 
+
+# There is a lot of existing inconsistent code making it not worth enforcing this cop
+Naming/PredicateMethod:
+  Enabled: false
+
 # There are some which cause test failures. If enabled this should be run without -A and checked.
 Style/RedundantInitialize:
   Enabled: false
