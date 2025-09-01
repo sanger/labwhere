@@ -12,6 +12,7 @@ RSpec.describe AuthenticationForm, type: :model do
 
     model do
       include Auditable
+
       validates_presence_of :name
     end
   end

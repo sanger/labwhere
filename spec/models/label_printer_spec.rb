@@ -4,6 +4,7 @@ require 'rails_helper'
 
 class MockResponse
   include ActiveModel::Model
+
   attr_accessor :code
 
   def body

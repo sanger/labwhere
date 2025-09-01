@@ -4,6 +4,7 @@ require 'rails_helper'
 
 class Potato
   include SubclassChecker
+
   create_subclass_methods :baked, :roast, suffix: true
   def type
     self.class.to_s
@@ -18,6 +19,7 @@ end
 
 class Person
   include SubclassChecker
+
   create_subclass_methods :child, :parent
   def type
     self.class.to_s
@@ -32,6 +34,7 @@ end
 
 class XmasSongs
   include SubclassChecker
+
   create_subclass_methods :jingle_bells, :xmas_tree
   def type
     self.class.to_s
