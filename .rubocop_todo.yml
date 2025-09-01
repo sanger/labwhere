@@ -120,12 +120,6 @@ Rails/DynamicFindBy:
     - 'spec/models/locations/location_spec.rb'
     - 'spec/models/user_spec.rb'
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Rails/FindByOrAssignmentMemoization:
-  Exclude:
-    - 'app/models/event.rb'
-
 # Offense count: 6
 # Configuration parameters: Include.
 # Include: **/app/models/**/*.rb

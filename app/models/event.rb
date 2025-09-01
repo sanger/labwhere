@@ -26,7 +26,9 @@ class Event
 
   def location
     # may return nil if the location has been deleted since the audit was created
-    @location ||= Location.find_by(barcode: location_barcode)
+    return @location if defined?(@location)
+
+    @location = Location.find_by(barcode: location_barcode)
   end
 
   def location_barcode
@@ -42,7 +44,9 @@ class Event
   end
 
   def labware
-    @labware ||= Labware.find_by(barcode: labware_barcode)
+    return @labware if defined?(@labware)
+
+    @labware = Labware.find_by(barcode: labware_barcode)
   end
 
   def labware_barcode
