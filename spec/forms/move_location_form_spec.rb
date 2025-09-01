@@ -113,7 +113,7 @@ RSpec.describe MoveLocationForm, type: :model do
           'child_location_barcodes' => locations_with_labwares.join_barcodes, 'user_code' => tech_swipe_card_id }))
       locations_with_labwares.each do |location|
         location.reload
-        expect(location.labwares.all? { |labware| labware.audits.count == 1 }).to be_truthy
+        expect(location.labwares.all? { |labware| labware.audits.one? }).to be_truthy
         expect(location.labwares.first.audits.first.action).to eq("moved to #{parent_location.location_type.name}")
       end
     end
@@ -128,7 +128,7 @@ RSpec.describe MoveLocationForm, type: :model do
         'user_code' => tech_swipe_card_id }))
 
       location.reload
-      expect(location.labwares.all? { |labware| labware.audits.count == 1 }).to be_truthy
+      expect(location.labwares.all? { |labware| labware.audits.one? }).to be_truthy
       expect(location.audits.first.action).to eq("moved to #{parent_location.location_type.name}")
     end
   end
