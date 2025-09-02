@@ -10,12 +10,13 @@ inherit_from: .rubocop_todo.yml
 # where the inspected file is and continue its way up to the root directory.
 #
 # See https://github.com/rubocop-hq/rubocop/blob/master/manual/configuration.md
-require:
+plugins:
   - rubocop-capybara
   - rubocop-factory_bot
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec_rails
+
 AllCops:
   SuggestExtensions: false
   NewCops: enable
@@ -43,6 +44,11 @@ Lint/AmbiguousBlockAssociation:
     - "spec/**/*"
 
 Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
+
+# There is a lot of existing inconsistent code making it not worth enforcing this cop
+Naming/PredicateMethod:
   Enabled: false
 
 # There are some which cause test failures. If enabled this should be run without -A and checked.

@@ -19,21 +19,20 @@ class Event
   # or re-firing an event for an 'old' audit?
   # It affects how much data we send in the event - whether we expect it to still be relevant
   def for_old_audit?
-    # The labware record shouldn't be missing,
-    # but if it is, treat this as an 'old' audit
-    @for_old_audit ||= if labware.blank?
-                         true
-                       else
-                         # if this audit is not the latest for this labware,
-                         # we shouldn't expect current info on the labware to be
-                         # relevant to the time the audit was created
-                         audit.id != labware.audits.last.id
-                       end
+    # The labware record shouldn't be missing, but if it is, treat this as an 'old' audit
+    @for_old_audit ||= labware.blank? || audit.id != labware.audits.last.id
+  # TODO: uncertain what is triggering the NoMethodError exceptions here, so added a rescue to provide more context
+  rescue NoMethodError => e
+    raise NoMethodError,
+          "Error in Event#for_old_audit?: labware barcode=#{labware&.barcode}, " \
+          "audit id=#{audit&.id}. Original error: #{e.message}"
   end
 
   def location
     # may return nil if the location has been deleted since the audit was created
-    @location ||= Location.find_by(barcode: location_barcode)
+    return @location if defined?(@location)
+
+    @location = Location.find_by(barcode: location_barcode)
   end
 
   def location_barcode
@@ -49,7 +48,9 @@ class Event
   end
 
   def labware
-    @labware ||= Labware.find_by(barcode: labware_barcode)
+    return @labware if defined?(@labware)
+
+    @labware = Labware.find_by(barcode: labware_barcode)
   end
 
   def labware_barcode
