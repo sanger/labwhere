@@ -15,8 +15,7 @@ class Event
 
   delegate :uuid, to: :audit
 
-  # Are we firing an event for a newly created audit,
-  # or re-firing an event for an 'old' audit?
+  # Are we firing an event for a newly created audit, or re-firing an event for an 'old' audit?
   # It affects how much data we send in the event - whether we expect it to still be relevant
   def for_old_audit?
     # The labware record shouldn't be missing, but if it is, treat this as an 'old' audit

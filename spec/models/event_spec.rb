@@ -210,11 +210,6 @@ RSpec.describe Event, type: :model do
         }
       end
 
-      # let(:expected_nomethod_message) do
-      #   "Error in Event#for_old_audit?: labware barcode=#{labware_without_audits&.barcode}, " \
-      #     "audit id=#{audit&.id.inspect}. Original error: undefined method 'id' for nil"
-      # end
-
       before do
         # Remove all audits from the labware
         labware_without_audits.audits.destroy_all
