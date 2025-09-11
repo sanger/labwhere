@@ -23,7 +23,7 @@ module LabwareCollection
             model = find_labware(labware)
             add_original_location(model)
             yield(model, i) if block_given?
-            model.create_audit(user)
+            model.create_audit!(user)
           end
         end
       end

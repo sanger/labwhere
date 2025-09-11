@@ -167,7 +167,7 @@ class Location < ApplicationRecord
     return if has_child_locations?
 
     # audit that user emptied the location
-    create_audit(current_user, AuditAction::REMOVE_ALL_LABWARES)
+    create_audit!(current_user, AuditAction::REMOVE_ALL_LABWARES)
 
     unknown_location = UnknownLocation.get
 
@@ -175,7 +175,7 @@ class Location < ApplicationRecord
     labwares.find_each do |labware|
       labware.update(location: unknown_location, coordinate: nil)
       # audit that each labware is now in an unknown location
-      labware.create_audit(current_user, AuditAction::EMPTY_LOCATION)
+      labware.create_audit!(current_user, AuditAction::EMPTY_LOCATION)
     end
 
     # Reset the association to ensure it is no-longer populated
