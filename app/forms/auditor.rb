@@ -9,6 +9,6 @@ module Auditor
   end
 
   def create_audit
-    model.create_audit(current_user)
+    model.create_audit!(current_user)
   end
 end

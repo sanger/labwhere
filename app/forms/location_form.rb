@@ -29,7 +29,7 @@ class LocationForm
           @location = new_location
           check_location
           @location.save!
-          @location.create_audit(current_user, AuditAction::CREATE)
+          @location.create_audit!(current_user, AuditAction::CREATE)
         end
       end
     else
@@ -42,7 +42,7 @@ class LocationForm
     assign_attributes(params)
     if valid?
       run_transaction do
-        location.create_audit(current_user, AuditAction::UPDATE) if location.save
+        location.create_audit!(current_user, AuditAction::UPDATE) if location.save
       end
     else
       false
@@ -57,7 +57,7 @@ class LocationForm
 
     location.destroy
     if location.destroyed?
-      location.create_audit(current_user, AuditAction::DESTROY)
+      location.create_audit!(current_user, AuditAction::DESTROY)
       true
     else
       add_location_errors

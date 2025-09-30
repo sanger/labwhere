@@ -41,7 +41,8 @@ class ScanForm
   end
 
   def labwares
-    @labwares ||= labware_barcodes.split("\n").uniq.collect(&:strip)
+    # split on new lines, and remove duplicate barcodes and blank lines
+    @labwares ||= labware_barcodes.split("\n").uniq.collect(&:strip).compact_blank
   end
 
   def check_if_any_barcodes_are_locations
