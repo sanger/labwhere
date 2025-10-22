@@ -15,17 +15,21 @@ class Event
 
   delegate :uuid, to: :audit
 
-  # Are we firing an event for a newly created audit,
-  # or re-firing an event for an 'old' audit?
+  # Are we firing an event for a newly created audit, or re-firing an event for an 'old' audit?
   # It affects how much data we send in the event - whether we expect it to still be relevant
   def for_old_audit?
     # The labware record shouldn't be missing, but if it is, treat this as an 'old' audit
-    @for_old_audit ||= labware.blank? || audit.id != labware.audits.last.id
-  # TODO: uncertain what is triggering the NoMethodError exceptions here, so added a rescue to provide more context
-  rescue NoMethodError => e
-    raise NoMethodError,
-          "Error in Event#for_old_audit?: labware barcode=#{labware&.barcode}, " \
-          "audit id=#{audit&.id}. Original error: #{e.message}"
+    # And also if the audit id does not match the labware's last audit id (when it has a previous audit)
+    @for_old_audit ||= if labware.blank?
+                         true
+                       else
+                         last_audit_id = labware.audits&.last&.id
+                         if last_audit_id.blank?
+                           false
+                         else
+                           audit.id != last_audit_id
+                         end
+                       end
   end
 
   def location
@@ -69,7 +73,7 @@ class Event
     @coordinate ||= unless for_old_audit?
                       # if we are firing an event for a newly created audit,
                       # we can grab the current coordinate from the labware
-                      labware.coordinate
+                      labware&.coordinate
                     end
     # otherwise, return nil as we're re-firing an old event & don't know the coordinate for the time it occurred
   end

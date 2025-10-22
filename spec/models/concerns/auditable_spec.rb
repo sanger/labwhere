@@ -9,7 +9,7 @@ RSpec.describe Auditable, type: :model do
   let!(:location_with_parent) { create(:location_with_parent, parent: parent_location) }
 
   it 'should be able to create an audit record' do
-    location.create_audit(user, AuditAction::CREATE)
+    location.create_audit!(user, AuditAction::CREATE)
     audit = location.audits.first
     expect(audit.user).to eq(user)
     expect(audit.record_data.except('created_at',
@@ -23,20 +23,20 @@ RSpec.describe Auditable, type: :model do
   end
 
   it 'should add an action if none is provided' do
-    location.create_audit(user)
+    location.create_audit!(user)
     expect(location.audits.last.action).to eq(AuditAction::CREATE)
     # Need to put the created date into the past because the test is too quick,
     # so that created date and updated date are equal
     location.update(created_at: DateTime.now - 1)
     location.update(name: 'New Name')
-    location.create_audit(user)
+    location.create_audit!(user)
     expect(location.audits.last.action).to eq(AuditAction::UPDATE)
   end
 
   context 'without write event method' do
     it 'does not write an event when creating an audit' do
       expect(Messages).not_to receive(:publish)
-      location.create_audit(user)
+      location.create_audit!(user)
     end
   end
 
@@ -49,7 +49,7 @@ RSpec.describe Auditable, type: :model do
 
     it 'writes an event when creating an audit' do
       expect(Messages).to receive(:publish)
-      model_instance.create_audit(user)
+      model_instance.create_audit!(user)
     end
   end
 end

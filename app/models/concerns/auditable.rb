@@ -14,17 +14,8 @@ module Auditable
   ##
   # Build and save an associated audit record.
   # The record data will be a json representation of the saved object.
-  def create_audit(user, action = nil)
-    create_audit_shared(user, action, false)
-  end
-
   def create_audit!(user, action = nil)
-    create_audit_shared(user, action, true)
-  end
-
-  def create_audit_shared(user, action, throw_exception)
-    create_method = throw_exception ? :create! : :create
-    my_audit = Audit.send(create_method, user: user, action: action, record_data: self, auditable: self)
+    my_audit = Audit.send(:create!, user: user, action: action, record_data: self, auditable: self)
     write_event(my_audit) if respond_to?(:write_event)
     my_audit
   end

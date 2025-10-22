@@ -171,13 +171,13 @@ RSpec.describe Labware, type: :model do
 
     it 'when a labware has already been created but is scanned into the same location' do
       labware = create(:labware_with_location)
-      labware.create_audit(administrator)
+      labware.create_audit!(administrator)
       expect(labware.audits.count).to eq(1)
       expect(labware.audits.first.action).to eq(AuditAction::CREATE)
 
       location = labware.location
       labware.update(location: location)
-      labware.create_audit(administrator)
+      labware.create_audit!(administrator)
 
       expect(labware.audits.count).to eq(2)
       expect(labware.audits.last.action).to eq(AuditAction::UPDATE)
@@ -188,21 +188,21 @@ RSpec.describe Labware, type: :model do
 
       it 'when it is new labware' do
         labware = create(:labware)
-        audit = labware.create_audit(user)
+        audit = labware.create_audit!(user)
         expect(audit.message).to eq(create_action.display_text)
       end
 
       it 'when it is new labware with a location' do
         labware = create(:labware_with_location)
-        audit = labware.create_audit(user)
+        audit = labware.create_audit!(user)
         expect(audit.message).to eq("#{create_action.display_text} and stored in #{labware.breadcrumbs}")
       end
 
       it 'when it is existing labware with a location' do
         labware = create(:labware_with_location)
-        labware.create_audit(user)
+        labware.create_audit!(user)
         labware.update(location: create(:location_with_parent))
-        audit = labware.create_audit(user)
+        audit = labware.create_audit!(user)
         expect(audit.message).to eq("#{update_action.display_text} and stored in #{labware.breadcrumbs}")
       end
     end

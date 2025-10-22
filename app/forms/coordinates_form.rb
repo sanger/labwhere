@@ -22,7 +22,7 @@ class CoordinatesForm
         Coordinate.update(coordinate_ids, update_params)
 
         coordinates.each do |coordinate|
-          coordinate.create_audit(current_user, AuditAction::UPDATE)
+          coordinate.create_audit!(current_user, AuditAction::UPDATE)
         end
       end
       true
