@@ -120,7 +120,7 @@ RSpec.describe Api::LabwaresController, type: :request do
           post api_labwares_path, params: payload
         end.to change(Labware, :count).by(0)
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         json = ActiveSupport::JSON.decode(response.body)
         expect(json['errors']).not_to be_empty
         expect(json['errors'].length).to eq 2
@@ -140,7 +140,7 @@ RSpec.describe Api::LabwaresController, type: :request do
           post api_labwares_path, params: payload
         end.to change(Labware, :count).by(0)
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         json = ActiveSupport::JSON.decode(response.body)
         expect(json['errors']).not_to be_empty
         expect(json['errors'].length).to eq 1
@@ -158,7 +158,7 @@ RSpec.describe Api::LabwaresController, type: :request do
           post api_labwares_path, params: payload
         end.to change(Labware, :count).by(0)
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         json = ActiveSupport::JSON.decode(response.body)
         expect(json['errors']).not_to be_empty
         expect(json['errors'].length).to eq 1
@@ -176,7 +176,7 @@ RSpec.describe Api::LabwaresController, type: :request do
           post api_labwares_path, params: payload
         end.to change(Labware, :count).by(0)
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         json = ActiveSupport::JSON.decode(response.body)
         expect(json['errors']).not_to be_empty
         expect(json['errors'].length).to eq 1
@@ -194,7 +194,7 @@ RSpec.describe Api::LabwaresController, type: :request do
           post api_labwares_path, params: payload
         end.to change(Labware, :count).by(0)
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         json = ActiveSupport::JSON.decode(response.body)
         expect(json['errors']).not_to be_empty
         expect(json['errors'].length).to eq 2
@@ -211,7 +211,7 @@ RSpec.describe Api::LabwaresController, type: :request do
           post api_labwares_path, params: payload
         end.to change(Labware, :count).by(0)
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         json = ActiveSupport::JSON.decode(response.body)
         expect(json['errors']).not_to be_empty
         expect(json['errors'].length).to eq 1

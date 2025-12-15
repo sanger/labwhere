@@ -58,13 +58,13 @@ RSpec.describe Api::LocationTypesController, type: :request do
   it 'should return an error if the location type has invalid attributes' do
     post api_location_types_path,
          params: { location_type: attributes_for(:location_type).except(:name).merge(user_code: admin_swipe_card_id) }
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(ActiveSupport::JSON.decode(response.body)['errors']).not_to be_empty
   end
 
   it 'should return an error if the user is invalid' do
     post api_location_types_path, params: { location_type: attributes_for(:location_type) }
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(ActiveSupport::JSON.decode(response.body)['errors']).not_to be_empty
   end
 
@@ -82,7 +82,7 @@ RSpec.describe Api::LocationTypesController, type: :request do
     location_type2 = create(:location_type)
     patch api_location_type_path(location_type1),
           params: { location_type: { user_code: admin_swipe_card_id, name: location_type2.name } }
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(ActiveSupport::JSON.decode(response.body)['errors']).not_to be_empty
   end
 end
