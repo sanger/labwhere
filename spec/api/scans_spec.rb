@@ -25,7 +25,7 @@ RSpec.describe Api::ScansController, type: :request do
     post api_scans_path,
          params: { scan: { location_barcode: '999999:1', labware_barcodes: new_labware.join_barcodes,
                            user_code: sci_swipe_card_id } }
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(ActiveSupport::JSON.decode(response.body)['errors']).not_to be_empty
   end
 
@@ -33,7 +33,7 @@ RSpec.describe Api::ScansController, type: :request do
     location = create(:location)
     post api_scans_path,
          params: { scan: { location_barcode: location.barcode, labware_barcodes: new_labware.join_barcodes } }
-    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response).to have_http_status(:unprocessable_content)
     expect(ActiveSupport::JSON.decode(response.body)['errors']).not_to be_empty
   end
 end
