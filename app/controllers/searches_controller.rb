@@ -22,6 +22,6 @@ class SearchesController < ApplicationController
   end
 
   def search_params
-    params.require(:search).permit(:term)
+    params.expect(search: [:term])
   end
 end
