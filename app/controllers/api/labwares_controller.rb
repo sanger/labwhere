@@ -18,7 +18,7 @@ class Api::LabwaresController < ApiController
     if uploader.run
       render json: Labware.by_barcode_known_locations(uploader.labwares), each_serializer: LabwareLiteSerializer
     else
-      render json: { errors: uploader.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: uploader.errors.full_messages }, status: :unprocessable_content
     end
   end
 
