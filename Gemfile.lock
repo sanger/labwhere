@@ -90,8 +90,9 @@ GEM
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     amq-protocol (2.3.3)
-    ancestry (4.3.3)
+    ancestry (5.0.0)
       activerecord (>= 5.2.6)
+      logger
     ast (2.4.3)
     base64 (0.3.0)
     bigdecimal (4.0.1)
@@ -241,7 +242,7 @@ GEM
     pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
-    prism (1.8.0)
+    prism (1.9.0)
     pry (0.16.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
