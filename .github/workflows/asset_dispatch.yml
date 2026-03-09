@@ -15,19 +15,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: nelonoel/branch-name@v1.0.1
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true # Runs bundle install and caches gems. See the ruby_test.yml
-                              # example if you need more control over bundler.
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+      # Create a release tag based on the branch name and .release-version file
+      - name: Set release tag
+        # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
+        # On the develop branch this might create RELEASE_VERSION=2.4.6-987654321-develop
+        # On the master branch this would then only create RELEASE_VERSION=2.4.6
+        run: echo "RELEASE_VERSION=$(printf -- '%s%s\n' $(cat .release-version) $([ ${BRANCH_NAME} = "develop" ] && printf -- '-%s-develop' ${GITHUB_RUN_ID} || echo ""))" >> $GITHUB_ENV
 
       - name: Set up environment
         run: |
           cp config/database.yml.example config/database.yml
           cp config/bunny.yml.example config/bunny.yml
 
-      - name: Compile Build
-        run: ./compile-build
+      - name: Create Build
+        run: ./compile-build '' v${{ env.RELEASE_VERSION }} ${BRANCH_NAME}
 
       - name: Create release
         uses: ncipollo/release-action@v1.8.8
