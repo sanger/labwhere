@@ -8,7 +8,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    action_text-trix (2.1.16)
+    action_text-trix (2.1.17)
       railties
     actioncable (8.1.2)
       actionpack (= 8.1.2)
@@ -183,7 +183,7 @@ GEM
       turbolinks
     jquery-ui-rails (8.0.0)
       railties (>= 3.2.16)
-    json (2.18.1)
+    json (2.19.1)
     json_api_client (1.23.0)
       activemodel (>= 6.0.0)
       activesupport (>= 6.0.0)
