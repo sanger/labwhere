@@ -30,7 +30,7 @@ class Api::LocationTypesController < ApiController
     if @location_type.submit(params)
       render json: @location_type, serializer: LocationTypeSerializer
     else
-      render json: { errors: @location_type.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @location_type.errors.full_messages }, status: :unprocessable_content
     end
   end
 end

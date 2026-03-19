@@ -59,7 +59,7 @@ RSpec.describe CoordinatesForm, type: :model do
       let(:coordinates_params) do
         {
           coordinates: coordinates.map.with_index { |c, i| { id: c.id, labware_barcode: labwares[i].barcode } }
-                                  .push({ id: create(:coordinate) }) # Missing labware_barcode
+                       .push({ id: create(:coordinate) }) # Missing labware_barcode
         }
       end
 

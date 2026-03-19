@@ -14,7 +14,7 @@ class Api::Locations::CoordinatesController < ApiController
     if coordinate_form.submit(params)
       render json: coordinate
     else
-      render json: { errors: coordinate_form.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: coordinate_form.errors.full_messages }, status: :unprocessable_content
     end
   end
 

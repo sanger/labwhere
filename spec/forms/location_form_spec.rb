@@ -94,7 +94,7 @@ RSpec.describe LocationForm, type: :model do
     location_form = LocationForm.new
     res = location_form.submit(
       controller_params.merge(location: attributes_for(:unordered_location)
-                                          .merge(user_code: admin_swipe_card_id))
+                                        .merge(user_code: admin_swipe_card_id))
     )
     expect(res).to be_truthy
     expect(location_form.location).to be_unordered
@@ -103,7 +103,7 @@ RSpec.describe LocationForm, type: :model do
     location_form = LocationForm.new
     res = location_form.submit(
       controller_params.merge(location: attributes_for(:ordered_location_with_parent)
-                                          .merge(user_code: admin_swipe_card_id))
+                                        .merge(user_code: admin_swipe_card_id))
     )
     expect(res).to be_truthy
     expect(location_form.location).to be_ordered

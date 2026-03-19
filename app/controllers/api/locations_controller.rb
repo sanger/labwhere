@@ -37,7 +37,7 @@ class Api::LocationsController < ApiController
     if location
       render json: { labwares: location.labwares.to_a, depth: location.max_descendant_depth }
     else
-      render json: { errors: ['Location not found'] }, status: :unprocessable_entity
+      render json: { errors: ['Location not found'] }, status: :unprocessable_content
     end
   end
 
@@ -51,7 +51,7 @@ class Api::LocationsController < ApiController
     if succeeded
       render json: @location, serializer: "#{@location.type}Serializer".constantize
     else
-      render json: { errors: @location.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @location.errors.full_messages }, status: :unprocessable_content
     end
   end
 

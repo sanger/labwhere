@@ -7,7 +7,7 @@ class Api::SearchesController < ApiController
     if @search.valid?
       render json: @search.results
     else
-      render json: @search.errors.full_messages, status: :unprocessable_entity
+      render json: @search.errors.full_messages, status: :unprocessable_content
     end
   end
 
