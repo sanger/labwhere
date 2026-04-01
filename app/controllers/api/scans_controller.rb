@@ -7,7 +7,7 @@ class Api::ScansController < ApiController
     if @scan.submit(params)
       render json: @scan, serializer: ScanSerializer
     else
-      render json: { errors: @scan.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @scan.errors.full_messages }, status: :unprocessable_content
     end
   end
 end

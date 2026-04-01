@@ -67,7 +67,7 @@ Rails.application.routes.draw do
     get 'locations/info', to: 'locations#info'
     post 'labwares/searches', to: 'labwares/searches#create'
     post 'labwares/locations', to: 'labwares/locations#create'
- 
+
     # This needs to be a post due to the number of barcodes that will be passed which is not possible with a get
     post 'labwares_by_barcode', to: 'labwares#by_barcode'
 
@@ -111,4 +111,5 @@ Rails.application.routes.draw do
 
   match '/about', to: 'about#show', via: :get
 
+  get '/health' => 'rails/health#show', :as => :rails_health_check
 end
