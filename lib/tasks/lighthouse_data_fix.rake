@@ -10,8 +10,8 @@ namespace :lighthouse_boxes do
       puts "Labwares to remove: #{dodgy_labware_barcodes}"
       puts "Number labwares to remove: #{dodgy_labware_barcodes.count}"
 
-      barcode_to_destination_location_id = dodgy_labware.each_with_object({}) do |lw, object|
-        object[lw.barcode] = lw.location_id
+      barcode_to_destination_location_id = dodgy_labware.to_h do |lw|
+        [lw.barcode, lw.location_id]
       end
       puts "Box barcode to desired location: #{barcode_to_destination_location_id}"
 
