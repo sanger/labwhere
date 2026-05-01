@@ -46,7 +46,6 @@ Lint/AmbiguousBlockAssociation:
 Naming/MemoizedInstanceVariableName:
   Enabled: false
 
-
 # There is a lot of existing inconsistent code making it not worth enforcing this cop
 Naming/PredicateMethod:
   Enabled: false
@@ -61,6 +60,10 @@ Style/HashSyntax:
 Style/CaseEquality:
   Exclude:
     - 'config/initializers/02_proc.rb'
+
+Style/OneClassPerFile:
+  Exclude:
+    - 'spec/**/*'
 
 # Causes a lot of Rubocop errors
 RSpecRails/InferredSpecType:

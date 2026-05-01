@@ -56,7 +56,7 @@ class MoveLocationForm
                        .uniq
                        .collect(&:strip)
                        .collect do |barcode|
-                         Location.find_by(barcode: barcode) || barcode
+      Location.find_by(barcode: barcode) || barcode
     end
   end
 
