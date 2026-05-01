@@ -2,9 +2,9 @@
 
 # ApplicationController - base for all controllers
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
+  # LabWhere is not vulnerable to CSRF attacks as it does not have user logins or sessions
+  # but we want to handle the issues gracefully if an idle user tries to perform an action after the session has expired
+  protect_from_forgery with: :reset_session
 
   # Reset the connection check for every request so it will only
   # try to connect once for every request
