@@ -1,0 +1,22 @@
+name: CI Formatting
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_ENV: test
+
+    steps:
+    - name: Checkout Repository
+      uses: sanger/.github/.github/actions/setup/checkout@master
+
+    - name: Setup Ruby
+      uses: sanger/.github/.github/actions/setup/ruby@master
+
+    - name: Run rubocop
+      run: bundle exec rubocop -c .rubocop.yml --fail-fast
