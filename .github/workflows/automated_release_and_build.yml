@@ -10,26 +10,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: nelonoel/branch-name@v1.0.1
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - name: Export node version
-        id: node_version
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-      - name: Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
+      - name: Checkout Repository
+        uses: sanger/.github/.github/actions/setup/checkout@master
+
+      - name: Setup Ruby
+        uses: sanger/.github/.github/actions/setup/ruby@master
+
+      - name: Setup Node
+        uses: sanger/.github/.github/actions/setup/node@master
+
+      - name: Get release version
+        id: get_version
+        run: echo "RELEASE_VERSION=$(cat .release-version)" >> "$GITHUB_ENV"
 
       # Create a release tag based on the branch name and .release-version file
       - name: Set release tag
-        # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
-        # On the develop branch this might create RELEASE_VERSION=2.4.6-987654321-develop
-        # On the master branch this would then only create RELEASE_VERSION=2.4.6
-        run: echo "RELEASE_VERSION=$(printf -- '%s%s\n' $(cat .release-version) $([ ${BRANCH_NAME} = "develop" ] && printf -- '-%s-develop' ${GITHUB_RUN_ID} || echo ""))" >> $GITHUB_ENV
+        id: set_tag
+        uses: sanger/.github/.github/actions/release/set-release-tag@master
+        with:
+          branch_name: ${{ env.BRANCH_NAME }}
+          release_version: ${{ env.RELEASE_VERSION }}
+          github_run_id: ${{ github.run_id }}
 
       - name: Set up environment
         run: |
@@ -39,12 +40,10 @@ jobs:
       - name: Create Build
         run: ./compile-build '' v${{ env.RELEASE_VERSION }} ${BRANCH_NAME}
 
+      # Create a GitHub release with the release asset as an artifact
       - name: Create release and upload release.tar.gz
-        uses: ncipollo/release-action@v1.8.8
+        uses: sanger/.github/.github/actions/release/create-release@master
         with:
-          name: ${{ env.RELEASE_VERSION }}
-          tag: v${{ env.RELEASE_VERSION }}
-          prerelease: ${{ !(github.ref == 'refs/heads/master') }}
-          commit: ${{ github.sha }}
-          artifacts: release.tar.gz
-          artifactErrorsFailBuild: true
+          release_name: ${{ steps.set_tag.outputs.release_version_tag }}
+          github_ref: ${{ github.ref }}
+          commit_sha: ${{ github.sha }}
