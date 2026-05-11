@@ -10,11 +10,15 @@ jobs:
 
     services:
       mysql:
+        # Use the Mysql docker image https://hub.docker.com/_/mysql
         image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: password
         ports:
-          - 3306
+         - 3306 # Default port mappings
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        env:
+            MYSQL_ALLOW_EMPTY_PASSWORD: yes
+            MYSQL_ROOT_PASSWORD: ''
+            MYSQL_DATABASE: labwhere_test
 
     steps:
     - name: Checkout Repository
