@@ -6,6 +6,17 @@ on:
 
 jobs:
   test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306
+
+    steps:
     - name: Checkout Repository
       uses: sanger/.github/.github/actions/setup/checkout@master
 
