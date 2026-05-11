@@ -6,6 +6,9 @@ on:
       - master
       - develop
 
+env:
+  BRANCH_NAME: ${{ github.ref_name }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
