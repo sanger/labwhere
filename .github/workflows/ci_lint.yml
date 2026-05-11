@@ -1,4 +1,4 @@
-name: CI Formatting
+name: CI Lint
 
 on:
   - push
