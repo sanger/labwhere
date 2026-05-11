@@ -9,6 +9,7 @@ on:
       release_name:
         description: Release/Asset name
         required: true
+        default: x.y.z-uat.1
 
 jobs:
   build:
