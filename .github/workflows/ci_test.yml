@@ -1,0 +1,39 @@
+name: CI Tests
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    branches:
+      - develop
+      - master
+
+jobs:
+  test:
+    - name: Checkout Repository
+      uses: sanger/.github/.github/actions/setup/checkout@master
+
+    - name: Setup Node
+      uses: sanger/.github/.github/actions/setup/node@master
+
+    - run: npm install
+
+    - name: Setup Ruby
+      uses: sanger/.github/.github/actions/setup/ruby@master
+
+    - name: Set up environment
+      env:
+        DBPORT: ${{ job.services.mysql.ports[3306] }}
+      run: |
+        cp config/database.yml.example config/database.yml
+        cp config/bunny.yml.example config/bunny.yml
+        bundle exec rails db:setup
+        bundle exec rails about
+        bundle exec rails stats
+
+    - name: Run tests
+      env:
+        DBPORT: ${{ job.services.mysql.ports[3306] }}
+      run: bundle exec rake
