@@ -32,7 +32,7 @@ RSpec.describe 'Warehouse Messaging', type: :feature do
     context 'when we cannot connect to RabbitMQ' do
       it 'provides Labware basic functionality without failing' do
         expect { testing_scenario }.not_to raise_error
-        expect(page).to have_content "#{num_plates} labwares scanned in to Location"
+        expect(page).to have_text "#{num_plates} labwares scanned in to Location"
       end
 
       it 'notifies the exception' do
