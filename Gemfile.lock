@@ -183,7 +183,7 @@ GEM
       turbolinks
     jquery-ui-rails (8.0.0)
       railties (>= 3.2.16)
-    json (2.21.1)
+    json (2.21.2)
     json_api_client (1.23.0)
       activemodel (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -446,8 +446,8 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    with_model (2.2.0)
-      activerecord (>= 7.0)
+    with_model (2.3.0)
+      activerecord (>= 7.2)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.8.2)
