@@ -89,7 +89,7 @@ GEM
       uri (>= 0.13.1)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
-    amq-protocol (2.3.3)
+    amq-protocol (2.9.0)
     ancestry (4.3.3)
       activerecord (>= 5.2.6)
     ast (2.4.3)
@@ -99,8 +99,9 @@ GEM
     bootsnap (1.26.0)
       msgpack (~> 1.5)
     builder (3.3.0)
-    bunny (2.24.0)
-      amq-protocol (~> 2.3)
+    bunny (3.2.0)
+      amq-protocol (~> 2.8)
+      logger (~> 1, >= 1.7)
       sorted_set (~> 1, >= 1.0.2)
     byebug (13.0.0)
       reline (>= 0.6.0)
@@ -313,7 +314,7 @@ GEM
       logger
       prism (>= 1.6.0)
       tsort
-    rbtree (0.4.6)
+    rbtree (0.4.7)
     rdoc (8.0.0)
       erb
       prism (>= 1.6.0)
@@ -403,10 +404,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
-    set (1.1.1)
-    sorted_set (1.0.3)
+    sorted_set (1.1.0)
       rbtree
-      set (~> 1.0)
     spring (4.7.0)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
