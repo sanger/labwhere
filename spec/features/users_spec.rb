@@ -22,7 +22,7 @@ RSpec.describe 'Users', type: :feature do
       select teams.first.name, from: 'Team'
       click_button 'Create User'
     end.to change(User, :count).by(1)
-    expect(page).to have_content('User successfully created')
+    expect(page).to have_text('User successfully created')
   end
 
   it 'Allows a user to edit an existing user' do
@@ -52,7 +52,7 @@ RSpec.describe 'Users', type: :feature do
       select 'Admin', from: 'Type'
       click_button 'Create User'
     end.to change(Administrator, :count).by(1)
-    expect(page).to have_content('User successfully created')
+    expect(page).to have_text('User successfully created')
   end
 
   it 'Allows a user to be deactivated' do
@@ -64,7 +64,7 @@ RSpec.describe 'Users', type: :feature do
       uncheck 'Active'
       click_button 'Update User'
     end.to change { user.reload.active? }.from(true).to(false)
-    expect(page).to have_content('User successfully updated')
+    expect(page).to have_text('User successfully updated')
   end
 
   it 'Allows a user to be activated' do
@@ -77,7 +77,7 @@ RSpec.describe 'Users', type: :feature do
       check 'Active'
       click_button 'Update User'
     end.to change { user.reload.active? }.from(false).to(true)
-    expect(page).to have_content('User successfully updated')
+    expect(page).to have_text('User successfully updated')
   end
 
   it 'Reports an error if the user adds a user with invalid attributes' do
@@ -91,7 +91,7 @@ RSpec.describe 'Users', type: :feature do
       select teams.first.name, from: 'Team'
       click_button 'Create User'
     end.to_not change(User, :count)
-    expect(page).to have_content('error prohibited this record from being saved')
+    expect(page).to have_text('error prohibited this record from being saved')
   end
 
   # This test causes intermittent failures on CI. Not sure why.
