@@ -78,7 +78,7 @@ class LocationsController < ApplicationController
   end
 
   def current_resource
-    @current_resource ||= Location.includes(:labwares).find(params[:id]) if params[:id]
+    @current_resource ||= Location.includes(:labwares).find(params[:id]) if params[:id] # rubocop:disable Rails/StrongParametersExpect
   end
 
   def permitted_params

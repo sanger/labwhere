@@ -41,6 +41,6 @@ class PrintersController < ApplicationController
   private
 
   def current_resource
-    @current_resource ||= Printer.find(params[:id]) if params[:id]
+    @current_resource ||= Printer.find(params[:id]) if params[:id] # rubocop:disable Rails/StrongParametersExpect
   end
 end

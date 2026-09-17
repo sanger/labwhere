@@ -53,6 +53,6 @@ class UsersController < ApplicationController
   private
 
   def current_resource
-    @current_resource ||= User.find(params[:id]) if params[:id]
+    @current_resource ||= User.find(params[:id]) if params[:id] # rubocop:disable Rails/StrongParametersExpect
   end
 end

@@ -60,6 +60,6 @@ class LocationTypesController < ApplicationController
   private
 
   def current_resource
-    @current_resource ||= LocationType.find(params[:id]) if params[:id]
+    @current_resource ||= LocationType.find(params[:id]) if params[:id] # rubocop:disable Rails/StrongParametersExpect
   end
 end
