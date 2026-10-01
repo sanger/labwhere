@@ -17,7 +17,7 @@ RSpec.describe LabelPrinter, type: :feature do
       find(:data_id, location.id).click_link 'Print Barcode'
       select printer.name, from: 'Printer'
       click_button 'Print'
-      expect(page).to have_content(I18n.t('printing.success'))
+      expect(page).to have_text(I18n.t('printing.success'))
     end
   end
 end

@@ -21,7 +21,7 @@ RSpec.describe 'UploadLabware', type: :feature do
     fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
     attach_file('Upload a file here', Rails.root.join('spec/data/to_upload.csv'))
     click_button 'Go!'
-    expect(page).to have_content('Labware successfully uploaded')
+    expect(page).to have_text('Labware successfully uploaded')
   end
 
   it 'reports an error if the file is the wrong format' do
@@ -29,7 +29,7 @@ RSpec.describe 'UploadLabware', type: :feature do
     fill_in 'User swipe card id/barcode', with: sci_swipe_card_id
     attach_file('Upload a file here', Rails.root.join('spec/data/to_upload_wrong_format.txt'))
     click_button 'Go!'
-    expect(page).to have_content('error prohibited this record from being saved')
-    expect(page).to have_content('File must be a csv.')
+    expect(page).to have_text('error prohibited this record from being saved')
+    expect(page).to have_text('File must be a csv.')
   end
 end

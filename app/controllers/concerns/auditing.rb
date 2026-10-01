@@ -30,6 +30,6 @@ module Auditing
   ##
   # Get a list of audits for the model.
   def audits
-    @audits ||= model.find(params[key]).audits if params[key]
+    @audits ||= model.find(params[key]).audits if params[key] # rubocop:disable Rails/StrongParametersExpect
   end
 end

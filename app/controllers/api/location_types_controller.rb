@@ -23,7 +23,7 @@ class Api::LocationTypesController < ApiController
   private
 
   def current_resource
-    LocationType.find(params[:id]) if params[:id]
+    LocationType.find(params[:id]) if params[:id] # rubocop:disable Rails/StrongParametersExpect
   end
 
   def process_location_type
