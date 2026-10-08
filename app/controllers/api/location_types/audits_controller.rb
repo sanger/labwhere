@@ -9,6 +9,6 @@ class Api::LocationTypes::AuditsController < ApiController
   private
 
   def current_resource
-    LocationType.find(params[:location_type_id]).audits if params[:location_type_id]
+    LocationType.find(params[:location_type_id]).audits if params[:location_type_id] # rubocop:disable Rails/StrongParametersExpect
   end
 end

@@ -31,6 +31,6 @@ class Api::Locations::CoordinatesController < ApiController
   end
 
   def coordinate
-    @coordinate ||= Coordinate.find(params[:id])
+    @coordinate ||= Coordinate.find(params[:id]) # rubocop:disable Rails/StrongParametersExpect
   end
 end
