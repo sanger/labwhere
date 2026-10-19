@@ -435,7 +435,7 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
-    uri (1.1.1)
+    uri (1.1.2)
     useragent (0.16.11)
     web-console (4.3.0)
       actionview (>= 8.0.0)
@@ -446,7 +446,7 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    with_model (2.4.0)
+    with_model (2.5.0)
       activerecord (>= 8.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
