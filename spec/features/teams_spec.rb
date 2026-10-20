@@ -16,7 +16,7 @@ RSpec.describe 'Teams', type: :feature do
       fill_in 'Number', with: team.number
       click_button 'Create Team'
     end.to change(Team, :count).by(1)
-    expect(page).to have_content('Team successfully created')
+    expect(page).to have_text('Team successfully created')
   end
 
   it 'Allows a user to edit an existing team' do
@@ -29,7 +29,7 @@ RSpec.describe 'Teams', type: :feature do
       fill_in 'Name', with: new_team.name
       click_button 'Update Team'
     end.to change { team.reload.name }.to(new_team.name)
-    expect(page).to have_content('Team successfully updated')
+    expect(page).to have_text('Team successfully updated')
   end
 
   it 'Reports an error if user adds a team with invalid attributes' do
@@ -43,7 +43,7 @@ RSpec.describe 'Teams', type: :feature do
       fill_in 'Number', with: team.number
       click_button 'Create Team'
     end.to_not change(Team, :count)
-    expect(page).to have_content('error prohibited this record from being saved')
+    expect(page).to have_text('error prohibited this record from being saved')
   end
 
   it 'Does not allow an unauthorised user (scientist) to modify teams' do
@@ -58,8 +58,8 @@ RSpec.describe 'Teams', type: :feature do
       fill_in 'Number', with: team.number
       click_button 'Create Team'
     end.to_not change(Team, :count)
-    expect(page).to have_content('error prohibited this record from being saved')
-    expect(page).to have_content('User is not authorised')
+    expect(page).to have_text('error prohibited this record from being saved')
+    expect(page).to have_text('User is not authorised')
   end
 
   # This test causes intermittent failures on CI. Not sure why.

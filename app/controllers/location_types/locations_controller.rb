@@ -9,7 +9,7 @@ class LocationTypes::LocationsController < ApplicationController
   protected
 
   def locations
-    LocationType.find(params[:location_type_id]).locations if params[:location_type_id]
+    LocationType.find(params[:location_type_id]).locations if params[:location_type_id] # rubocop:disable Rails/StrongParametersExpect
   end
 
   helper_method :locations
