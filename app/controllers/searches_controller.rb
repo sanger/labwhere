@@ -18,7 +18,7 @@ class SearchesController < ApplicationController
   private
 
   def current_resource
-    @current_resource ||= Search.find(params[:id]) if params[:id]
+    @current_resource ||= Search.find(params[:id]) if params[:id] # rubocop:disable Rails/StrongParametersExpect
   end
 
   def search_params

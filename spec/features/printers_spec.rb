@@ -16,7 +16,7 @@ RSpec.describe 'Printers', type: :feature do
       fill_in 'User swipe card id/barcode', with: administrator.barcode
       click_button 'Create Printer'
     end.to change(Printer, :count).by(1)
-    expect(page).to have_content('Printer successfully created')
+    expect(page).to have_text('Printer successfully created')
   end
 
   it 'Should allow a user to edit an existing printer' do
@@ -29,7 +29,7 @@ RSpec.describe 'Printers', type: :feature do
       fill_in 'Name', with: new_printer.name
       click_button 'Update Printer'
     end.to change { printer.reload.name }.to(new_printer.name)
-    expect(page).to have_content('Printer successfully updated')
+    expect(page).to have_text('Printer successfully updated')
   end
 
   it 'Should return an error if a printer is created with invalid attributes' do
@@ -40,7 +40,7 @@ RSpec.describe 'Printers', type: :feature do
       fill_in 'User swipe card id/barcode', with: administrator.barcode
       click_button 'Create Printer'
     end.to_not change(Printer, :count)
-    expect(page).to have_content('error prohibited this record from being saved')
+    expect(page).to have_text('error prohibited this record from being saved')
   end
 
   it 'Prevents scientists from adding a printer as they are not authorised' do
@@ -52,8 +52,8 @@ RSpec.describe 'Printers', type: :feature do
       fill_in 'Name', with: printer.name
       click_button 'Create Printer'
     end.to_not change(Printer, :count)
-    expect(page).to have_content('error prohibited this record from being saved')
-    expect(page).to have_content('User is not authorised')
+    expect(page).to have_text('error prohibited this record from being saved')
+    expect(page).to have_text('User is not authorised')
   end
 
   it 'Prevents scientists from editing an existing printer as they are not authorised' do
@@ -68,8 +68,8 @@ RSpec.describe 'Printers', type: :feature do
       fill_in 'Name', with: new_printer.name
       click_button 'Update Printer'
     end.to_not change(Printer, :count)
-    expect(page).to have_content('error prohibited this record from being saved')
-    expect(page).to have_content('User is not authorised')
+    expect(page).to have_text('error prohibited this record from being saved')
+    expect(page).to have_text('User is not authorised')
   end
 
   # This test causes intermittent failures on CI. Not sure why.

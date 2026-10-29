@@ -21,7 +21,7 @@ RSpec.describe 'Scans', type: :feature do
       fill_in 'Labware barcodes', with: labwares.join_barcodes
       click_button 'Go!'
     end.to change(Scan, :count).by(1)
-    expect(page).to have_content(Scan.first.message)
+    expect(page).to have_text(Scan.first.message)
   end
 
   it 'displays the line number for scanned labware', js: true do
@@ -62,7 +62,7 @@ RSpec.describe 'Scans', type: :feature do
       fill_in 'Start position', with: 5
       click_button 'Go!'
     end.to change(Scan, :count).by(1)
-    expect(page).to have_content(Scan.first.message)
+    expect(page).to have_text(Scan.first.message)
   end
 
   it 'allows a user to scan out some labware with no location' do
@@ -73,7 +73,7 @@ RSpec.describe 'Scans', type: :feature do
       fill_in 'Labware barcodes', with: labwares.join_barcodes
       click_button 'Go!'
     end.to change(Scan, :count).by(1)
-    expect(page).to have_content(Scan.first.message)
+    expect(page).to have_text(Scan.first.message)
   end
 
   it 'reports an error if the user adds a scan with invalid attributes' do
@@ -86,9 +86,9 @@ RSpec.describe 'Scans', type: :feature do
       fill_in 'Labware barcodes', with: labwares.join_barcodes
       click_button 'Go!'
     end.to_not change(Scan, :count)
-    expect(page).to have_content('error prohibited this record from being saved')
+    expect(page).to have_text('error prohibited this record from being saved')
     expect(page).to have_field('Location barcode', with: location.barcode)
-    expect(page).to have_content(labwares.join_barcodes("\r "))
+    expect(page).to have_text(labwares.join_barcodes("\r "))
   end
 
   it 'Does not allow an unauthorised user to modify locations' do
@@ -100,7 +100,7 @@ RSpec.describe 'Scans', type: :feature do
       fill_in 'Labware barcodes', with: labwares.join_barcodes
       click_button 'Go!'
     end.to_not change(Scan, :count)
-    expect(page).to have_content('errors prohibited this record from being saved')
+    expect(page).to have_text('errors prohibited this record from being saved')
   end
 
   describe 'Reservations' do
@@ -116,7 +116,7 @@ RSpec.describe 'Scans', type: :feature do
         click_button 'Go!'
       end.to_not change(Scan, :count)
 
-      expect(page).to have_content('error prohibited this record from being saved')
+      expect(page).to have_text('error prohibited this record from being saved')
     end
 
     it 'does not allow a user to scan labware out of a location reserved by another team' do
@@ -129,7 +129,7 @@ RSpec.describe 'Scans', type: :feature do
         click_button 'Go!'
       end.to change(Scan, :count).by(0)
 
-      expect(page).to have_content('errors prohibited this record from being saved')
+      expect(page).to have_text('errors prohibited this record from being saved')
     end
 
     it 'does not allow a user to scan labware out of a location with a parent reserved by another team' do
@@ -144,7 +144,7 @@ RSpec.describe 'Scans', type: :feature do
         click_button 'Go!'
       end.to change(Scan, :count).by(0)
 
-      expect(page).to have_content('errors prohibited this record from being saved')
+      expect(page).to have_text('errors prohibited this record from being saved')
     end
   end
 end
