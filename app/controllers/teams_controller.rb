@@ -41,6 +41,6 @@ class TeamsController < ApplicationController
   private
 
   def current_resource
-    @current_resource ||= Team.find(params[:id]) if params[:id]
+    @current_resource ||= Team.find(params[:id]) if params[:id] # rubocop:disable Rails/StrongParametersExpect
   end
 end
