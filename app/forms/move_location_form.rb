@@ -33,8 +33,8 @@ class MoveLocationForm
     @controller = params[:controller]
     @action = params[:action]
     @user_code = params[form_name][:user_code]
-    @parent_location_barcode =  params[form_name][:parent_location_barcode]
-    @child_location_barcodes =  params[form_name][:child_location_barcodes]
+    @parent_location_barcode = params[form_name][:parent_location_barcode]
+    @child_location_barcodes = params[form_name][:child_location_barcodes]
   end
 
   def assign_attributes

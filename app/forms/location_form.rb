@@ -162,7 +162,7 @@ class LocationForm
     locations
   end
 
-  # rubocop:disable Style/ExplicitBlockArgument
+  # rubocop:disable-next Style/ExplicitBlockArgument
   def run_transaction
     ActiveRecord::Base.transaction do
       yield
@@ -171,7 +171,6 @@ class LocationForm
   rescue StandardError
     false
   end
-  # rubocop:enable Style/ExplicitBlockArgument
 
   def set_team
     @location.team_id = reserve_param? ? current_user.team_id : nil
