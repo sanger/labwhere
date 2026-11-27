@@ -180,7 +180,7 @@ module FormObject
     end
   end
 
-  # rubocop:disable Style/ExplicitBlockArgument
+  # rubocop:disable-next Style/ExplicitBlockArgument
   def run_transaction
     if valid?
       begin
@@ -195,5 +195,4 @@ module FormObject
       false
     end
   end
-  # rubocop:enable Style/ExplicitBlockArgument
 end

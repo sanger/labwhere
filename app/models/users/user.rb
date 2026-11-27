@@ -68,9 +68,8 @@ class User < ApplicationRecord
   end
 
   def check_password_fields
-    # rubocop:todo Lint/AmbiguousBlockAssociation
+    # rubocop:todo-next Lint/AmbiguousBlockAssociation
     remove_password_fields %i[swipe_card_id barcode].reject { |attr| self[attr].present? }
-    # rubocop:enable Lint/AmbiguousBlockAssociation
   end
 
   def remove_password_fields(attrs)
