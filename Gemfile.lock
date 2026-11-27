@@ -90,8 +90,9 @@ GEM
     addressable (2.9.2)
       public_suffix (>= 2.0.2, < 8.0)
     amq-protocol (2.10.0)
-    ancestry (4.3.3)
+    ancestry (5.1.0)
       activerecord (>= 5.2.6)
+      logger
     ast (2.4.3)
     base64 (0.3.0)
     bigdecimal (4.1.3)
@@ -130,7 +131,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.3.8)
-    connection_pool (3.0.2)
+    connection_pool (3.0.3)
     crass (1.0.8)
     csv (3.3.7)
     database_cleaner (2.1.0)
