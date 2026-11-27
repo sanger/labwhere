@@ -9,13 +9,13 @@ RSpec.describe 'Searches', type: :feature do
     visit root_path
     fill_in 'Term', with: 'A search term'
     click_button 'Search'
-    expect(page).to have_content('Your search returned 0 results')
+    expect(page).to have_text('Your search returned 0 results')
   end
 
   it 'should fail silently if somebody clicks the search button for no reason' do
     visit root_path
     click_button 'Search'
-    expect(page).to have_content('Scan In/Out')
+    expect(page).to have_text('Scan In/Out')
   end
 
   it 'with a search term that finds a location should output the results' do
@@ -23,8 +23,8 @@ RSpec.describe 'Searches', type: :feature do
     visit root_path
     fill_in 'Term', with: 'A sunny location'
     click_button 'Search'
-    expect(page).to have_content('Your search returned 1 result')
-    expect(page).to have_content(location.name)
+    expect(page).to have_text('Your search returned 1 result')
+    expect(page).to have_text(location.name)
   end
 
   it 'with a term that finds a location type should output the result' do
@@ -32,8 +32,8 @@ RSpec.describe 'Searches', type: :feature do
     visit root_path
     fill_in 'Term', with: 'Site'
     click_button 'Search'
-    expect(page).to have_content('Your search returned 1 result')
-    expect(page).to have_content('A Site')
+    expect(page).to have_text('Your search returned 1 result')
+    expect(page).to have_text('A Site')
   end
 
   it 'with a term that finds labware should output the result' do
@@ -41,8 +41,8 @@ RSpec.describe 'Searches', type: :feature do
     visit root_path
     fill_in 'Term', with: labwares.first.barcode
     click_button 'Search'
-    expect(page).to have_content('Your search returned 1 result')
-    expect(page).to have_content(labwares.first.barcode)
+    expect(page).to have_text('Your search returned 1 result')
+    expect(page).to have_text(labwares.first.barcode)
   end
 
   it 'with a term that spans more than one resource should output all of the results' do
@@ -51,8 +51,8 @@ RSpec.describe 'Searches', type: :feature do
     visit root_path
     fill_in 'Term', with: 'A stupid'
     click_button 'Search'
-    expect(page).to have_content('Your search returned 2 results')
-    expect(page).to have_content(location.name)
+    expect(page).to have_text('Your search returned 2 results')
+    expect(page).to have_text(location.name)
   end
 
   describe 'drilling down', js: true do
@@ -64,10 +64,10 @@ RSpec.describe 'Searches', type: :feature do
       click_button 'Search'
       find(:data_id, location_type.id).find(:data_behavior, 'drilldown').click
       location_type.locations.each do |location|
-        expect(page).to have_content(location.name)
+        expect(page).to have_text(location.name)
       end
       other_locations.each do |location|
-        expect(page).to have_no_content(location.name)
+        expect(page).to have_no_text(location.name)
       end
     end
 
@@ -78,7 +78,7 @@ RSpec.describe 'Searches', type: :feature do
       click_button 'Search'
       find(:data_id, location.id).find(:data_behavior, 'drilldown').click
       location.children.each do |child|
-        expect(page).to have_content(child.name)
+        expect(page).to have_text(child.name)
       end
     end
 
@@ -91,7 +91,7 @@ RSpec.describe 'Searches', type: :feature do
         find(:data_behavior, 'drilldown').click
         within("#location_#{location.children.first.id}") do
           click_link('Further information')
-          expect(page).to have_content(location.children.first.location_type.name)
+          expect(page).to have_text(location.children.first.location_type.name)
         end
       end
     end

@@ -9,7 +9,7 @@ class Locations::LabwaresController < ApplicationController
   protected
 
   def labwares
-    @labwares ||= Location.find(params[:location_id]).labwares
+    @labwares ||= Location.find(params[:location_id]).labwares # rubocop:disable Rails/StrongParametersExpect
   end
 
   helper_method :labwares

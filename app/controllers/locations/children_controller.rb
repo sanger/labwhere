@@ -9,7 +9,7 @@ class Locations::ChildrenController < ApplicationController
   protected
 
   def children
-    @children ||= Location.find(params[:location_id]).children.includes(:location_type, :labwares, :audits)
+    @children ||= Location.find(params[:location_id]).children.includes(:location_type, :labwares, :audits) # rubocop:disable Rails/StrongParametersExpect
   end
 
   helper_method :children

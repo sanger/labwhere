@@ -30,7 +30,7 @@ class PrintsController < ApplicationController
   private
 
   def current_resource
-    @current_resource ||= Location.find(params[:location_id]) if params[:location_id]
+    @current_resource ||= Location.find(params[:location_id]) if params[:location_id] # rubocop:disable Rails/StrongParametersExpect
   end
 
   def location_ids
@@ -38,7 +38,7 @@ class PrintsController < ApplicationController
   end
 
   def location_resource
-    Location.find(params[:location_id])
+    Location.find(params[:location_id]) # rubocop:disable Rails/StrongParametersExpect
   end
 
   def message_suffix
